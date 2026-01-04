@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond, Crimson_Pro } from "next/font/google";
 import "./globals.css";
+import { Providers } from "@/components/Providers";
+import { CartDrawer } from "@/components/ui/CartDrawer";
+import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
+import { BackToTop } from "@/components/ui/BackToTop";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -37,7 +41,12 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${cormorant.variable} ${crimson.variable} antialiased`}
       >
-        {children}
+        <Providers>
+          {children}
+          <CartDrawer />
+          <NewsletterPopup />
+          <BackToTop />
+        </Providers>
       </body>
     </html>
   );
