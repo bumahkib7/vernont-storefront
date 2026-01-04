@@ -1,26 +1,206 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-playfair: var(--font-playfair);
+  --font-cormorant: var(--font-cormorant);
+  --font-crimson: var(--font-crimson);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-gold: var(--gold);
+  --color-champagne: var(--champagne);
+  --color-rose-gold: var(--rose-gold);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --radius: 0.5rem;
+  --background: #FDFBF7;
+  --foreground: #1A1A1A;
+  --card: #FFFFFF;
+  --card-foreground: #1A1A1A;
+  --popover: #FFFFFF;
+  --popover-foreground: #1A1A1A;
+  --primary: #1A1A1A;
+  --primary-foreground: #FDFBF7;
+  --secondary: #F5F0E8;
+  --secondary-foreground: #1A1A1A;
+  --muted: #F5F0E8;
+  --muted-foreground: #6B6B6B;
+  --accent: #D4AF37;
+  --accent-foreground: #1A1A1A;
+  --destructive: #DC2626;
+  --border: #E5E0D8;
+  --input: #E5E0D8;
+  --ring: #D4AF37;
+  --gold: #D4AF37;
+  --champagne: #F7E7CE;
+  --rose-gold: #B76E79;
+  --chart-1: #D4AF37;
+  --chart-2: #B76E79;
+  --chart-3: #8B7355;
+  --chart-4: #C9B896;
+  --chart-5: #E8D5B7;
+  --sidebar: #FDFBF7;
+  --sidebar-foreground: #1A1A1A;
+  --sidebar-primary: #D4AF37;
+  --sidebar-primary-foreground: #1A1A1A;
+  --sidebar-accent: #F5F0E8;
+  --sidebar-accent-foreground: #1A1A1A;
+  --sidebar-border: #E5E0D8;
+  --sidebar-ring: #D4AF37;
+}
+
+.dark {
+  --background: #0F0F0F;
+  --foreground: #FDFBF7;
+  --card: #1A1A1A;
+  --card-foreground: #FDFBF7;
+  --popover: #1A1A1A;
+  --popover-foreground: #FDFBF7;
+  --primary: #D4AF37;
+  --primary-foreground: #0F0F0F;
+  --secondary: #262626;
+  --secondary-foreground: #FDFBF7;
+  --muted: #262626;
+  --muted-foreground: #A3A3A3;
+  --accent: #D4AF37;
+  --accent-foreground: #0F0F0F;
+  --destructive: #EF4444;
+  --border: #333333;
+  --input: #333333;
+  --ring: #D4AF37;
+  --gold: #D4AF37;
+  --champagne: #3D3629;
+  --rose-gold: #B76E79;
+  --chart-1: #D4AF37;
+  --chart-2: #B76E79;
+  --chart-3: #C9B896;
+  --chart-4: #8B7355;
+  --chart-5: #5C4D3C;
+  --sidebar: #0F0F0F;
+  --sidebar-foreground: #FDFBF7;
+  --sidebar-primary: #D4AF37;
+  --sidebar-primary-foreground: #0F0F0F;
+  --sidebar-accent: #262626;
+  --sidebar-accent-foreground: #FDFBF7;
+  --sidebar-border: #333333;
+  --sidebar-ring: #D4AF37;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-crimson), Georgia, serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-playfair), Georgia, serif;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Luxury utility classes */
+.font-display {
+  font-family: var(--font-playfair), Georgia, serif;
+}
+
+.font-serif {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+.font-body {
+  font-family: var(--font-crimson), Georgia, serif;
+}
+
+.text-gold {
+  color: var(--gold);
+}
+
+.bg-gold {
+  background-color: var(--gold);
+}
+
+.border-gold {
+  border-color: var(--gold);
+}
+
+.text-champagne {
+  color: var(--champagne);
+}
+
+.bg-champagne {
+  background-color: var(--champagne);
+}
+
+.text-rose-gold {
+  color: var(--rose-gold);
+}
+
+/* Elegant animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Luxury button styles */
+.btn-luxury {
+  @apply px-8 py-3 bg-primary text-primary-foreground font-display tracking-widest uppercase text-sm transition-all duration-300 hover:bg-accent hover:text-accent-foreground;
+}
+
+.btn-outline-luxury {
+  @apply px-8 py-3 border border-primary text-primary font-display tracking-widest uppercase text-sm transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
 }
