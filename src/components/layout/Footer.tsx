@@ -163,7 +163,7 @@ export function Footer() {
           <p className="font-serif text-xs text-primary-foreground/50">
             &copy; {new Date().getFullYear()} Vernont. All rights reserved.
           </p>
-          <div className="flex space-x-6">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             <Link
               href="/privacy"
               className="font-serif text-xs text-primary-foreground/50 hover:text-gold transition-colors"
@@ -181,6 +181,12 @@ export function Footer() {
               className="font-serif text-xs text-primary-foreground/50 hover:text-gold transition-colors"
             >
               Cookie Policy
+            </Link>
+            <Link
+              href="/imprint"
+              className="font-serif text-xs text-primary-foreground/50 hover:text-gold transition-colors"
+            >
+              Imprint
             </Link>
           </div>
         </div>
