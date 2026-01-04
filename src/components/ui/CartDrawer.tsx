@@ -1,6 +1,5 @@
 "use client";
 
-import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { X, Minus, Plus, ShoppingBag, Sparkles, Truck } from "lucide-react";
@@ -173,9 +172,11 @@ export function CartDrawer() {
                 <p className="font-serif text-xs text-muted-foreground text-center">
                   Shipping & taxes calculated at checkout
                 </p>
-                <Button className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6">
-                  Proceed to Checkout
-                </Button>
+                <Link href="/checkout" onClick={closeCart}>
+                  <Button className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6">
+                    Proceed to Checkout
+                  </Button>
+                </Link>
                 <button
                   onClick={closeCart}
                   className="w-full font-serif text-sm text-center underline hover:text-gold transition-colors"
