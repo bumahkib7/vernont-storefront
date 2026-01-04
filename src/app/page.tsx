@@ -73,6 +73,7 @@ export default function Home() {
               fill
               className="object-cover"
               priority
+              unoptimized
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
           </motion.div>
@@ -211,6 +212,7 @@ export default function Home() {
                         alt={collection.name}
                         fill
                         className="object-cover"
+                        unoptimized
                       />
                     </motion.div>
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
@@ -247,6 +249,7 @@ export default function Home() {
                   alt="Perfume craftsmanship"
                   fill
                   className="object-cover"
+                  unoptimized
                 />
                 {/* Decorative elements */}
                 <motion.div
@@ -364,6 +367,7 @@ export default function Home() {
               alt="Luxury perfume experience"
               fill
               className="object-cover"
+              unoptimized
             />
             <div className="absolute inset-0 bg-black/60" />
           </motion.div>
@@ -419,6 +423,7 @@ export default function Home() {
                     alt={`Instagram post ${index + 1}`}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-110"
+                    unoptimized
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
                     <Sparkles className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" />

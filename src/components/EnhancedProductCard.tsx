@@ -81,6 +81,7 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
                 isHovered ? "scale-110" : "scale-100"
               } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
               onLoad={() => setIsImageLoaded(true)}
+              unoptimized
             />
 
             {/* Overlay gradient */}

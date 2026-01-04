@@ -136,6 +136,7 @@ export function TestimonialsCarousel() {
                       alt={testimonials[current].name}
                       fill
                       className="object-cover"
+                      unoptimized
                     />
                   </div>
                   <div className="text-left">
