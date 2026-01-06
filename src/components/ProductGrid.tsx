@@ -1,21 +1,10 @@
 "use client";
 
-import { ProductCard } from "./ProductCard";
-
-export interface Product {
-  id: string;
-  name: string;
-  brand?: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-  category?: string;
-  isNew?: boolean;
-  isBestseller?: boolean;
-}
+import { EnhancedProductCard } from "./EnhancedProductCard";
+import type { DisplayProduct } from "@/lib/transforms";
 
 interface ProductGridProps {
-  products: Product[];
+  products: DisplayProduct[];
   title?: string;
   subtitle?: string;
 }
@@ -38,8 +27,8 @@ export function ProductGrid({ products, title, subtitle }: ProductGridProps) {
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {products.map((product) => (
-          <ProductCard key={product.id} {...product} />
+        {products.map((product, index) => (
+          <EnhancedProductCard key={product.id} product={product} index={index} />
         ))}
       </div>
     </div>

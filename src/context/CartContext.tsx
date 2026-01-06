@@ -1,27 +1,36 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from "react";
+import { cartApi, Cart, CartLineItem, ApiError } from "@/lib/api";
 
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  size: string;
-  quantity: number;
-  image: string;
-}
+const CART_ID_KEY = "vernont-cart-id";
+const CURRENCY_KEY = "vernont-currency";
 
 interface CartContextType {
-  items: CartItem[];
+  // Cart state
+  cart: Cart | null;
+  items: CartLineItem[];
   isOpen: boolean;
+  loading: boolean;
+  error: string | null;
+
+  // Computed
   itemCount: number;
   subtotal: number;
+  total: number;
+
+  // Currency
   currency: string;
   setCurrency: (currency: string) => void;
-  addItem: (item: CartItem) => void;
-  removeItem: (id: string, size: string) => void;
-  updateQuantity: (id: string, size: string, quantity: number) => void;
+
+  // Cart operations
+  addItem: (variantId: string, quantity?: number) => Promise<void>;
+  removeItem: (lineItemId: string) => Promise<void>;
+  updateQuantity: (lineItemId: string, quantity: number) => Promise<void>;
   clearCart: () => void;
+  refreshCart: () => Promise<void>;
+
+  // UI state
   openCart: () => void;
   closeCart: () => void;
   toggleCart: () => void;
@@ -46,84 +55,218 @@ const currencySymbols: Record<string, string> = {
 };
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<Cart | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [currency, setCurrency] = useState("GBP");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [currency, setCurrencyState] = useState("GBP");
+  const [initialized, setInitialized] = useState(false);
 
-  // Load cart from localStorage
+  // Get cart ID from storage
+  const getCartId = useCallback((): string | null => {
+    if (typeof window === "undefined") return null;
+    return localStorage.getItem(CART_ID_KEY);
+  }, []);
+
+  // Save cart ID to storage
+  const saveCartId = useCallback((cartId: string) => {
+    if (typeof window === "undefined") return;
+    localStorage.setItem(CART_ID_KEY, cartId);
+  }, []);
+
+  // Clear cart ID from storage
+  const clearCartId = useCallback(() => {
+    if (typeof window === "undefined") return;
+    localStorage.removeItem(CART_ID_KEY);
+  }, []);
+
+  // Initialize cart on mount
   useEffect(() => {
-    const savedCart = localStorage.getItem("vernont-cart");
-    const savedCurrency = localStorage.getItem("vernont-currency");
-    if (savedCart) {
-      setItems(JSON.parse(savedCart));
-    }
-    if (savedCurrency) {
-      setCurrency(savedCurrency);
+    const initCart = async () => {
+      if (initialized) return;
+
+      // Load currency preference
+      const savedCurrency = localStorage.getItem(CURRENCY_KEY);
+      if (savedCurrency) {
+        setCurrencyState(savedCurrency);
+      }
+
+      const cartId = getCartId();
+      if (cartId) {
+        try {
+          setLoading(true);
+          const response = await cartApi.get(cartId);
+          setCart(response.cart);
+        } catch (err) {
+          // Cart not found or expired, clear it
+          if (err instanceof ApiError && err.status === 404) {
+            clearCartId();
+          }
+          console.warn("Failed to load cart:", err);
+        } finally {
+          setLoading(false);
+        }
+      }
+      setInitialized(true);
+    };
+
+    initCart();
+  }, [initialized, getCartId, clearCartId]);
+
+  // Save currency preference
+  const setCurrency = useCallback((newCurrency: string) => {
+    setCurrencyState(newCurrency);
+    if (typeof window !== "undefined") {
+      localStorage.setItem(CURRENCY_KEY, newCurrency);
     }
   }, []);
 
-  // Save cart to localStorage
-  useEffect(() => {
-    localStorage.setItem("vernont-cart", JSON.stringify(items));
-  }, [items]);
+  // Ensure cart exists (create if needed)
+  const ensureCart = useCallback(async (): Promise<Cart> => {
+    if (cart) return cart;
 
-  useEffect(() => {
-    localStorage.setItem("vernont-currency", currency);
-  }, [currency]);
-
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const addItem = (newItem: CartItem) => {
-    setItems((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.id === newItem.id && item.size === newItem.size
-      );
-      if (existingIndex > -1) {
-        const updated = [...prev];
-        updated[existingIndex].quantity += newItem.quantity;
-        return updated;
+    const cartId = getCartId();
+    if (cartId) {
+      try {
+        const response = await cartApi.get(cartId);
+        setCart(response.cart);
+        return response.cart;
+      } catch {
+        // Cart expired or not found
+        clearCartId();
       }
-      return [...prev, newItem];
+    }
+
+    // Create new cart
+    const response = await cartApi.create({
+      currency_code: currency.toLowerCase(),
     });
-    setIsOpen(true);
-  };
+    setCart(response.cart);
+    saveCartId(response.cart.id);
+    return response.cart;
+  }, [cart, currency, getCartId, clearCartId, saveCartId]);
 
-  const removeItem = (id: string, size: string) => {
-    setItems((prev) => prev.filter((item) => !(item.id === id && item.size === size)));
-  };
+  // Refresh cart from server
+  const refreshCart = useCallback(async () => {
+    const cartId = getCartId();
+    if (!cartId) return;
 
-  const updateQuantity = (id: string, size: string, quantity: number) => {
+    try {
+      setLoading(true);
+      const response = await cartApi.get(cartId);
+      setCart(response.cart);
+    } catch (err) {
+      if (err instanceof ApiError && err.status === 404) {
+        clearCartId();
+        setCart(null);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [getCartId, clearCartId]);
+
+  // Add item to cart
+  const addItem = useCallback(async (variantId: string, quantity: number = 1) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const currentCart = await ensureCart();
+      const response = await cartApi.addLineItem(currentCart.id, {
+        variant_id: variantId,
+        quantity,
+      });
+      setCart(response.cart);
+      setIsOpen(true); // Open cart drawer when item added
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to add item to cart";
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [ensureCart]);
+
+  // Remove item from cart
+  const removeItem = useCallback(async (lineItemId: string) => {
+    if (!cart) return;
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await cartApi.removeLineItem(cart.id, lineItemId);
+      setCart(response.cart);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to remove item";
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [cart]);
+
+  // Update item quantity
+  const updateQuantity = useCallback(async (lineItemId: string, quantity: number) => {
+    if (!cart) return;
+
     if (quantity < 1) {
-      removeItem(id, size);
+      await removeItem(lineItemId);
       return;
     }
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id && item.size === size ? { ...item, quantity } : item
-      )
-    );
-  };
 
-  const clearCart = () => setItems([]);
-  const openCart = () => setIsOpen(true);
-  const closeCart = () => setIsOpen(false);
-  const toggleCart = () => setIsOpen((prev) => !prev);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await cartApi.updateLineItem(cart.id, lineItemId, { quantity });
+      setCart(response.cart);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "Failed to update quantity";
+      setError(message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, [cart, removeItem]);
+
+  // Clear cart (local state only - doesn't delete from server)
+  const clearCart = useCallback(() => {
+    clearCartId();
+    setCart(null);
+    setError(null);
+  }, [clearCartId]);
+
+  // UI state handlers
+  const openCart = useCallback(() => setIsOpen(true), []);
+  const closeCart = useCallback(() => setIsOpen(false), []);
+  const toggleCart = useCallback(() => setIsOpen((prev) => !prev), []);
+
+  // Computed values
+  const items = cart?.items ?? [];
+  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+  // Prices from backend are in minor units (cents)
+  const subtotal = cart?.subtotal ?? 0;
+  const total = cart?.total ?? 0;
 
   return (
     <CartContext.Provider
       value={{
+        cart,
         items,
         isOpen,
+        loading,
+        error,
         itemCount,
         subtotal,
+        total,
         currency,
         setCurrency,
         addItem,
         removeItem,
         updateQuantity,
         clearCart,
+        refreshCart,
         openCart,
         closeCart,
         toggleCart,
@@ -142,7 +285,16 @@ export function useCart() {
   return context;
 }
 
-export function formatPrice(price: number, currency: string = "GBP"): string {
+// Format price from minor units (cents) to display string
+export function formatPrice(priceMinor: number, currency: string = "GBP"): string {
+  const price = priceMinor / 100;
+  const converted = price * currencyRates[currency];
+  const symbol = currencySymbols[currency];
+  return `${symbol}${converted.toFixed(2)}`;
+}
+
+// Format price that's already in major units
+export function formatPriceMajor(price: number, currency: string = "GBP"): string {
   const converted = price * currencyRates[currency];
   const symbol = currencySymbols[currency];
   return `${symbol}${converted.toFixed(2)}`;

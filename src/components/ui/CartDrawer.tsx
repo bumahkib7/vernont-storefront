@@ -2,16 +2,17 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X, Minus, Plus, ShoppingBag, Sparkles, Truck } from "lucide-react";
+import { X, Minus, Plus, ShoppingBag, Sparkles, Truck, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { Button } from "@/components/ui/button";
 
 export function CartDrawer() {
-  const { items, isOpen, closeCart, removeItem, updateQuantity, subtotal, currency, itemCount } = useCart();
+  const { items, isOpen, closeCart, removeItem, updateQuantity, subtotal, currency, itemCount, loading, error } = useCart();
 
-  const freeShippingThreshold = currency === "GBP" ? 75 : currency === "EUR" ? 85 : 95;
-  const remaining = freeShippingThreshold - subtotal;
+  // Free shipping threshold in minor units (cents)
+  const freeShippingThreshold = currency === "GBP" ? 7500 : currency === "EUR" ? 8500 : 9500;
+  const remaining = Math.max(0, freeShippingThreshold - subtotal);
   const progress = Math.min((subtotal / freeShippingThreshold) * 100, 100);
 
   return (
@@ -52,6 +53,13 @@ export function CartDrawer() {
               </button>
             </div>
 
+            {/* Error Message */}
+            {error && (
+              <div className="px-6 py-3 bg-red-50 text-red-600 text-sm font-serif">
+                {error}
+              </div>
+            )}
+
             {/* Free Shipping Progress */}
             {items.length > 0 && (
               <div className="px-6 py-4 bg-secondary/50">
@@ -80,7 +88,14 @@ export function CartDrawer() {
             )}
 
             {/* Items */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto relative">
+              {/* Loading overlay */}
+              {loading && (
+                <div className="absolute inset-0 bg-background/50 flex items-center justify-center z-10">
+                  <Loader2 className="h-6 w-6 animate-spin text-gold" />
+                </div>
+              )}
+
               {items.length === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                   <motion.div
@@ -102,7 +117,7 @@ export function CartDrawer() {
                 <ul className="divide-y divide-border">
                   {items.map((item, index) => (
                     <motion.li
-                      key={`${item.id}-${item.size}`}
+                      key={item.id}
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: -20 }}
@@ -111,29 +126,41 @@ export function CartDrawer() {
                     >
                       <div className="flex gap-4">
                         <div className="relative w-20 h-20 bg-secondary flex-shrink-0">
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fill
-                            className="object-cover"
-                          />
+                          {item.thumbnail && (
+                            <Image
+                              src={item.thumbnail}
+                              alt={item.title}
+                              fill
+                              className="object-cover"
+                              unoptimized
+                            />
+                          )}
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-display text-sm tracking-wide truncate">
-                            {item.name}
-                          </h4>
-                          <p className="font-serif text-xs text-muted-foreground mt-1">
-                            {item.size}
-                          </p>
+                          <Link
+                            href={item.product_handle ? `/product/${item.product_handle}` : '#'}
+                            onClick={closeCart}
+                            className="hover:text-gold transition-colors"
+                          >
+                            <h4 className="font-display text-sm tracking-wide truncate">
+                              {item.title}
+                            </h4>
+                          </Link>
+                          {item.variant_title && (
+                            <p className="font-serif text-xs text-muted-foreground mt-1">
+                              {item.variant_title}
+                            </p>
+                          )}
                           <p className="font-display text-sm mt-2">
-                            {formatPrice(item.price, currency)}
+                            {formatPrice(item.unit_price, currency)}
                           </p>
 
                           <div className="flex items-center justify-between mt-3">
                             <div className="flex items-center border border-border">
                               <button
-                                onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
-                                className="p-1.5 hover:bg-secondary transition-colors"
+                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                disabled={loading}
+                                className="p-1.5 hover:bg-secondary transition-colors disabled:opacity-50"
                               >
                                 <Minus className="h-3 w-3" />
                               </button>
@@ -141,15 +168,17 @@ export function CartDrawer() {
                                 {item.quantity}
                               </span>
                               <button
-                                onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
-                                className="p-1.5 hover:bg-secondary transition-colors"
+                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                disabled={loading}
+                                className="p-1.5 hover:bg-secondary transition-colors disabled:opacity-50"
                               >
                                 <Plus className="h-3 w-3" />
                               </button>
                             </div>
                             <button
-                              onClick={() => removeItem(item.id, item.size)}
-                              className="font-serif text-xs text-muted-foreground hover:text-foreground underline"
+                              onClick={() => removeItem(item.id)}
+                              disabled={loading}
+                              className="font-serif text-xs text-muted-foreground hover:text-foreground underline disabled:opacity-50"
                             >
                               Remove
                             </button>
@@ -173,8 +202,15 @@ export function CartDrawer() {
                   Shipping & taxes calculated at checkout
                 </p>
                 <Link href="/checkout" onClick={closeCart}>
-                  <Button className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6">
-                    Proceed to Checkout
+                  <Button
+                    className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      "Proceed to Checkout"
+                    )}
                   </Button>
                 </Link>
                 <button

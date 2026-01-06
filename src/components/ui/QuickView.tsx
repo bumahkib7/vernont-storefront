@@ -6,11 +6,12 @@ import Link from "next/link";
 import { X, Minus, Plus, Heart, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useCart, formatPrice } from "@/context/CartContext";
+import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
 interface Product {
   id: string;
+  variantId?: string;
   name: string;
   brand: string;
   price: number;
@@ -47,16 +48,18 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
   const currentPrice = sizes.find((s) => s.size === selectedSize)?.price || product.price;
   const isWishlisted = isInWishlist(product.id);
 
-  const handleAddToCart = () => {
-    addItem({
-      id: product.id,
-      name: product.name,
-      price: currentPrice,
-      size: selectedSize,
-      quantity,
-      image: product.image,
-    });
-    onClose();
+  const handleAddToCart = async () => {
+    const variantId = product.variantId || product.id;
+    if (!variantId) {
+      console.error("No variant ID available");
+      return;
+    }
+    try {
+      await addItem(variantId, quantity);
+      onClose();
+    } catch (err) {
+      console.error("Failed to add to cart:", err);
+    }
   };
 
   return (
@@ -113,7 +116,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
                   </p>
 
                   <p className="font-display text-2xl mb-6">
-                    {formatPrice(currentPrice, currency)}
+                    {formatPriceMajor(currentPrice, currency)}
                   </p>
 
                   {product.description && (

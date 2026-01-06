@@ -1,15 +1,14 @@
+"use client";
+
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Gift, Package, Heart, Sparkles } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ProductGrid } from "@/components/ProductGrid";
-import { getBestsellers } from "@/data/products";
+import { useProducts } from "@/lib/hooks";
+import { transformProducts, getBestsellers } from "@/lib/transforms";
 import { Button } from "@/components/ui/button";
-
-export const metadata = {
-  title: "Gift Sets & Ideas | Vernont",
-  description: "Find the perfect fragrance gift for your loved ones. Gift sets, luxury packaging, and personalization available.",
-};
 
 const giftCategories = [
   {
@@ -38,8 +37,36 @@ const giftCategories = [
   },
 ];
 
+// Loading skeleton
+function ProductsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      {[...Array(4)].map((_, i) => (
+        <div key={i} className="animate-pulse">
+          <div className="aspect-[3/4] bg-muted" />
+          <div className="pt-5 text-center space-y-2">
+            <div className="h-3 w-16 bg-muted mx-auto" />
+            <div className="h-5 w-32 bg-muted mx-auto" />
+            <div className="h-3 w-24 bg-muted mx-auto" />
+            <div className="h-5 w-20 bg-muted mx-auto" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function GiftsPage() {
-  const bestsellers = getBestsellers();
+  // Fetch products from API
+  const { data: productsData, isLoading, error } = useProducts({ limit: 20 });
+
+  // Transform and get bestsellers
+  const bestsellers = useMemo(() => {
+    if (!productsData?.items) return [];
+    const allProducts = transformProducts(productsData.items);
+    const bestsellerProducts = getBestsellers(allProducts);
+    return bestsellerProducts.length > 0 ? bestsellerProducts.slice(0, 4) : allProducts.slice(0, 4);
+  }, [productsData]);
 
   return (
     <PageLayout>
@@ -52,6 +79,7 @@ export default function GiftsPage() {
             fill
             className="object-cover"
             priority
+            unoptimized
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
@@ -126,11 +154,31 @@ export default function GiftsPage() {
       {/* Bestsellers as Gift Ideas */}
       <section className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <ProductGrid
-            products={bestsellers}
-            title="Popular Gift Choices"
-            subtitle="Bestselling Fragrances"
-          />
+          {isLoading ? (
+            <>
+              <div className="text-center mb-12">
+                <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+                  Bestselling Fragrances
+                </p>
+                <h2 className="font-display text-3xl md:text-4xl tracking-wide">
+                  Popular Gift Choices
+                </h2>
+              </div>
+              <ProductsSkeleton />
+            </>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="font-serif text-muted-foreground">
+                Unable to load products. Please try again later.
+              </p>
+            </div>
+          ) : (
+            <ProductGrid
+              products={bestsellers}
+              title="Popular Gift Choices"
+              subtitle="Bestselling Fragrances"
+            />
+          )}
           <div className="text-center mt-12">
             <Link href="/fragrances">
               <Button variant="outline" className="btn-outline-luxury">
