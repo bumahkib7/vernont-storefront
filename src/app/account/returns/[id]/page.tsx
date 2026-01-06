@@ -21,12 +21,16 @@ import { returnsApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
 interface ReturnItem {
-  id: string;
-  order_line_item_id: string;
+  item_id: string;
+  quantity: number;
+  reason_id?: string;
+  note?: string;
+  // Optional fields that may be enriched by the backend
+  id?: string;
+  order_line_item_id?: string;
   title?: string | null;
   description?: string | null;
   thumbnail?: string | null;
-  quantity: number;
   unit_price?: number | null;
   refund_amount?: number | null;
 }
@@ -37,10 +41,10 @@ interface Return {
   order_display_id?: number | null;
   customer_id?: string | null;
   status: string;
-  reason: string;
+  reason?: string | null;
   reason_note?: string | null;
-  refund_amount: number;
-  currency_code: string;
+  refund_amount?: number | null;
+  currency_code?: string | null;
   requested_at?: string | null;
   approved_at?: string | null;
   received_at?: string | null;
@@ -278,7 +282,7 @@ export default function ReturnDetailsPage() {
           </div>
           <div className="divide-y divide-border">
             {returnData.items?.map((item) => (
-              <div key={item.id} className="p-6 flex gap-4">
+              <div key={item.item_id} className="p-6 flex gap-4">
                 <div className="h-20 w-20 bg-secondary flex-shrink-0 overflow-hidden">
                   {item.thumbnail ? (
                     <img
@@ -320,7 +324,7 @@ export default function ReturnDetailsPage() {
             <div className="flex justify-between">
               <span className="font-display tracking-wide">Total Refund</span>
               <span className="font-display text-xl tracking-wide text-gold">
-                ${(returnData.refund_amount / 100).toFixed(2)}
+                ${((returnData.refund_amount ?? 0) / 100).toFixed(2)}
               </span>
             </div>
           </div>
@@ -340,7 +344,7 @@ export default function ReturnDetailsPage() {
               <h2 className="font-display text-lg tracking-wide">Return Reason</h2>
             </div>
             <p className="font-serif text-sm mb-2">
-              {reasonLabels[returnData.reason] || returnData.reason}
+              {returnData.reason ? (reasonLabels[returnData.reason] || returnData.reason) : "Not specified"}
             </p>
             {returnData.reason_note && (
               <p className="font-serif text-sm text-muted-foreground italic">

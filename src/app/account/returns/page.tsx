@@ -18,9 +18,13 @@ import { returnsApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 
 interface ReturnItem {
-  id: string;
-  title?: string | null;
+  item_id: string;
   quantity: number;
+  reason_id?: string;
+  note?: string;
+  // Optional fields that may be enriched by the backend
+  id?: string;
+  title?: string | null;
   thumbnail?: string | null;
   refund_amount?: number | null;
 }
@@ -30,11 +34,12 @@ interface Return {
   order_id: string;
   order_display_id?: number | null;
   status: string;
-  reason: string;
+  reason?: string | null;
   reason_note?: string | null;
-  refund_amount: number;
-  currency_code: string;
+  refund_amount?: number | null;
+  currency_code?: string | null;
   created_at: string;
+  updated_at: string;
   items?: ReturnItem[] | null;
 }
 
@@ -152,7 +157,7 @@ export default function ReturnsPage() {
                         <div className="flex -space-x-2">
                           {returnItem.items?.slice(0, 3).map((item, i) => (
                             <div
-                              key={item.id || i}
+                              key={item.item_id || i}
                               className="h-12 w-12 border-2 border-background bg-secondary rounded overflow-hidden"
                             >
                               {item.thumbnail ? (
@@ -171,7 +176,7 @@ export default function ReturnsPage() {
                         </div>
                         <div>
                           <p className="font-serif text-sm">
-                            {reasonLabels[returnItem.reason] || returnItem.reason}
+                            {returnItem.reason ? (reasonLabels[returnItem.reason] || returnItem.reason) : "Not specified"}
                           </p>
                           <p className="font-serif text-xs text-muted-foreground">
                             {returnItem.items?.length || 0} item{(returnItem.items?.length || 0) !== 1 ? "s" : ""}
@@ -181,7 +186,7 @@ export default function ReturnsPage() {
                       <div className="text-right">
                         <p className="font-serif text-xs text-muted-foreground">Refund Amount</p>
                         <p className="font-display text-xl tracking-wide">
-                          ${(returnItem.refund_amount / 100).toFixed(2)}
+                          ${((returnItem.refund_amount ?? 0) / 100).toFixed(2)}
                         </p>
                       </div>
                     </div>
