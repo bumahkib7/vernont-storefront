@@ -711,6 +711,22 @@ export function useLogout(options?: UseMutationOptions<void, Error, void>) {
 }
 
 /**
+ * Delete account
+ */
+export function useDeleteAccount(options?: UseMutationOptions<{ status: string }, Error, void>) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => authApi.deleteAccount(),
+    onSuccess: () => {
+      queryClient.removeQueries({ queryKey: queryKeys.auth.all });
+      queryClient.removeQueries({ queryKey: queryKeys.customer.all });
+    },
+    ...options,
+  });
+}
+
+/**
  * Forgot password
  */
 export function useForgotPassword(

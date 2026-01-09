@@ -45,6 +45,7 @@ import {
   type ProductCollection,
   type CollectionsListResponse,
   type CategoriesListResponse,
+  type ProductCategory,
   type ProductTag,
   type TagsListResponse,
   type CartResponse,
@@ -205,6 +206,14 @@ export const authApi = {
       body: JSON.stringify(data),
     });
   },
+
+  async deleteAccount(): Promise<{ status: string }> {
+    return apiRequest<{ status: string }>(
+      '/auth/customer/delete',
+      { method: 'DELETE' },
+      z.object({ status: z.string() })
+    );
+  },
 };
 
 // ==================
@@ -253,8 +262,8 @@ export const productsApi = {
   },
 
   async getByHandle(handle: string, currencyCode?: string): Promise<{ product: Product }> {
-    // Use the list endpoint with handle filter and return first item
-    const params = new URLSearchParams({ handle, size: '1' });
+    // Fetch products and find by handle client-side (backend may not filter by handle correctly)
+    const params = new URLSearchParams({ size: '100' });
     if (currencyCode) params.append('currencyCode', currencyCode);
 
     const response = await apiRequest<ProductsListResponse>(
@@ -263,11 +272,12 @@ export const productsApi = {
       ProductsListResponseSchema
     );
 
-    if (response.items.length === 0) {
+    const product = response.items.find(p => p.handle === handle);
+    if (!product) {
       throw new ApiError(404, 'NOT_FOUND', `Product with handle '${handle}' not found`);
     }
 
-    return { product: response.items[0] };
+    return { product };
   },
 
   async getById(id: string, currencyCode?: string): Promise<{ product: Product }> {
@@ -349,7 +359,21 @@ export const collectionsApi = {
 // ==================
 export const categoriesApi = {
   async list(): Promise<CategoriesListResponse> {
-    return apiRequest('/storefront/categories', {}, CategoriesListResponseSchema);
+    return apiRequest('/store/product-categories', {}, CategoriesListResponseSchema);
+  },
+
+  async getByHandle(handle: string): Promise<{ product_category: ProductCategory }> {
+    // First fetch with handle filter
+    const response = await apiRequest(
+      `/store/product-categories?handle=${encodeURIComponent(handle)}`,
+      {},
+      CategoriesListResponseSchema
+    );
+    const category = response.product_categories[0];
+    if (!category) {
+      throw new Error(`Category not found: ${handle}`);
+    }
+    return { product_category: category };
   },
 
   async getProducts(handle: string, params?: {
@@ -357,15 +381,19 @@ export const categoriesApi = {
     offset?: number;
     currency?: string;
   }): Promise<ProductsListResponse> {
+    // First get the category by handle to get its ID
+    const { product_category } = await categoriesApi.getByHandle(handle);
+
+    // Then fetch products by category ID
     const searchParams = new URLSearchParams();
+    searchParams.append('categoryId', product_category.id);
     if (params) {
       Object.entries(params).forEach(([key, value]) => {
         if (value !== undefined) searchParams.append(key, String(value));
       });
     }
-    const query = searchParams.toString();
     return apiRequest(
-      `/storefront/categories/${handle}/products${query ? `?${query}` : ''}`,
+      `/store/products?${searchParams.toString()}`,
       {},
       ProductsListResponseSchema
     );
@@ -430,6 +458,7 @@ export const cartApi = {
     email?: string;
     region_id?: string;
     promo_codes?: string[];
+    gift_card_code?: string;
     shipping_address?: Address;
     billing_address?: Address | { address_id?: string };
   }): Promise<CartResponse> {
@@ -475,6 +504,7 @@ export const cartApi = {
   async createPaymentSession(cartId: string, data?: {
     email?: string;
     metadata?: Record<string, string>;
+    gift_card_code?: string;
   }): Promise<PaymentSessionResponse> {
     return apiRequest(
       `/store/carts/${cartId}/payment-sessions`,
@@ -493,6 +523,20 @@ export const cartApi = {
 
   async complete(cartId: string): Promise<CompleteCartResponse> {
     return apiRequest(`/store/carts/${cartId}/complete`, { method: 'POST' }, CompleteCartResponseSchema);
+  },
+
+  async validateGiftCard(cartId: string, code: string): Promise<{ valid: boolean; balance?: number; currency_code?: string; error?: string }> {
+    const response = await fetch(`${API_BASE_URL}/store/carts/${cartId}/gift-cards/validate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ code }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      return { valid: false, error: data.error || 'Invalid gift card' };
+    }
+    return data;
   },
 };
 
@@ -835,6 +879,126 @@ export const storeSettingsApi = {
   },
 };
 
+// ==================
+// FAVORITES/WISHLIST API
+// ==================
+
+// Favorites schemas
+const FavoriteSchema = z.object({
+  id: z.string(),
+  productId: z.string(),
+  productHandle: z.string().nullable(),
+  productTitle: z.string().nullable(),
+  productThumbnail: z.string().nullable(),
+  alertEnabled: z.boolean(),
+  priceThreshold: z.number().nullable(),
+  createdAt: z.string(),
+});
+
+const FavoritesListResponseSchema = z.object({
+  favorites: z.array(FavoriteSchema),
+});
+
+const FavoriteCheckResponseSchema = z.object({
+  productId: z.string(),
+  isFavorite: z.boolean(),
+});
+
+const CheckFavoritesResponseSchema = z.object({
+  favorites: z.record(z.string(), z.boolean()),
+});
+
+export type Favorite = z.infer<typeof FavoriteSchema>;
+export type FavoritesListResponse = z.infer<typeof FavoritesListResponseSchema>;
+
+export const favoritesApi = {
+  /**
+   * Get all favorites for logged-in user
+   */
+  async list(): Promise<FavoritesListResponse> {
+    return apiRequest('/store/favorites', {}, FavoritesListResponseSchema);
+  },
+
+  /**
+   * Add product to favorites
+   */
+  async add(productId: string, alertEnabled = false): Promise<Favorite> {
+    return apiRequest(
+      '/store/favorites',
+      {
+        method: 'POST',
+        body: JSON.stringify({ productId, alertEnabled }),
+      },
+      FavoriteSchema
+    );
+  },
+
+  /**
+   * Remove product from favorites
+   */
+  async remove(productId: string): Promise<void> {
+    await apiRequest(`/store/favorites/${productId}`, { method: 'DELETE' }, z.any());
+  },
+
+  /**
+   * Check if product is in favorites
+   */
+  async check(productId: string): Promise<boolean> {
+    const response = await apiRequest(
+      `/store/favorites/check/${productId}`,
+      {},
+      FavoriteCheckResponseSchema
+    );
+    return response.isFavorite;
+  },
+
+  /**
+   * Check multiple products at once
+   */
+  async checkMultiple(productIds: string[]): Promise<Record<string, boolean>> {
+    const response = await apiRequest(
+      '/store/favorites/check',
+      {
+        method: 'POST',
+        body: JSON.stringify({ productIds }),
+      },
+      CheckFavoritesResponseSchema
+    );
+    return response.favorites;
+  },
+
+  /**
+   * Sync favorites from localStorage (for migration after login)
+   */
+  async sync(productIds: string[]): Promise<FavoritesListResponse> {
+    return apiRequest(
+      '/store/favorites/sync',
+      {
+        method: 'POST',
+        body: JSON.stringify({ productIds }),
+      },
+      FavoritesListResponseSchema
+    );
+  },
+
+  /**
+   * Update favorite settings (alerts, price threshold)
+   */
+  async update(
+    productId: string,
+    options: { alertEnabled?: boolean; priceThreshold?: number }
+  ): Promise<Favorite> {
+    return apiRequest(
+      `/store/favorites/${productId}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify(options),
+      },
+      FavoriteSchema
+    );
+  },
+};
+
 // Default export with all APIs
 const api = {
   auth: authApi,
@@ -851,6 +1015,7 @@ const api = {
   exchanges: exchangesApi,
   marketing: marketingApi,
   storeSettings: storeSettingsApi,
+  favorites: favoritesApi,
   utils: { formatPrice, priceFromMinor },
 };
 

@@ -59,15 +59,13 @@ export function transformProduct(product: Product): DisplayProduct {
   // Get first variant for default pricing
   const firstVariant = product.variants[0];
 
-  // Get price from first variant or lowestPriceMinor
+  // Get price from first variant or lowestPriceMinor (prices are in minor units - pence/cents)
   const priceMinor = firstVariant?.priceMinor ?? product.lowestPriceMinor ?? 0;
-  const price = priceMinor > 100 ? priceFromMinor(priceMinor) : priceMinor;
+  const price = priceFromMinor(priceMinor);
 
   // Get original/compare-at price if exists
   const compareAtPriceMinor = firstVariant?.compareAtPriceMinor;
-  const originalPrice = compareAtPriceMinor
-    ? (compareAtPriceMinor > 100 ? priceFromMinor(compareAtPriceMinor) : compareAtPriceMinor)
-    : undefined;
+  const originalPrice = compareAtPriceMinor ? priceFromMinor(compareAtPriceMinor) : undefined;
 
   // Since StorefrontProductDto doesn't have tags/categories, we determine gender from title/description
   const titleLower = product.title.toLowerCase();
@@ -117,8 +115,8 @@ export function transformProduct(product: Product): DisplayProduct {
       return {
         id: v.id,
         title: v.title ?? 'Default',
-        price: vPrice > 100 ? priceFromMinor(vPrice) : vPrice,
-        originalPrice: vCompareAt ? (vCompareAt > 100 ? priceFromMinor(vCompareAt) : vCompareAt) : undefined,
+        price: priceFromMinor(vPrice),
+        originalPrice: vCompareAt ? priceFromMinor(vCompareAt) : undefined,
         sku: v.sku ?? '',
         inventoryQuantity: v.inventoryQuantity ?? undefined,
       };

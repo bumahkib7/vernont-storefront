@@ -6,6 +6,7 @@ import { StoreConfigProvider } from "@/context/StoreConfigContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -32,6 +33,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
+              <ScrollToTop />
               {children}
             </WishlistProvider>
           </CartProvider>

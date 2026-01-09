@@ -6,1056 +6,181 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-playfair: var(--font-playfair);
-  --font-cormorant: var(--font-cormorant);
-  --font-crimson: var(--font-crimson);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
   --color-card: var(--card);
-  --color-gold: var(--gold);
-  --color-champagne: var(--champagne);
-  --color-rose-gold: var(--rose-gold);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
 :root {
-  --radius: 0.5rem;
-  --background: #FDFBF7;
-  --foreground: #1A1A1A;
+  /* Scandinavian Palette - Enhanced Contrast */
+  --background: #FEFEFD;
+  --foreground: #171717;
+
   --card: #FFFFFF;
-  --card-foreground: #1A1A1A;
+  --card-foreground: #171717;
   --popover: #FFFFFF;
-  --popover-foreground: #1A1A1A;
-  --primary: #1A1A1A;
-  --primary-foreground: #FDFBF7;
-  --secondary: #F5F0E8;
-  --secondary-foreground: #1A1A1A;
-  --muted: #F5F0E8;
-  --muted-foreground: #6B6B6B;
-  --accent: #D4AF37;
-  --accent-foreground: #1A1A1A;
-  --destructive: #DC2626;
-  --border: #E5E0D8;
-  --input: #E5E0D8;
-  --ring: #D4AF37;
-  --gold: #D4AF37;
-  --champagne: #F7E7CE;
-  --rose-gold: #B76E79;
-  --chart-1: #D4AF37;
-  --chart-2: #B76E79;
-  --chart-3: #8B7355;
-  --chart-4: #C9B896;
-  --chart-5: #E8D5B7;
-  --sidebar: #FDFBF7;
-  --sidebar-foreground: #1A1A1A;
-  --sidebar-primary: #D4AF37;
-  --sidebar-primary-foreground: #1A1A1A;
-  --sidebar-accent: #F5F0E8;
-  --sidebar-accent-foreground: #1A1A1A;
-  --sidebar-border: #E5E0D8;
-  --sidebar-ring: #D4AF37;
+  --popover-foreground: #171717;
+  --primary: #171717;
+  --primary-foreground: #FEFEFD;
+  --secondary: #F5F5F3;
+  --secondary-foreground: #171717;
+  --muted: #F5F5F3;
+  --muted-foreground: #525252;
+  --accent: #6B7A5D;
+  --accent-foreground: #FFFFFF;
+  --destructive: #B91C1C;
+  --destructive-foreground: #FEFEFD;
+  --border: #D4D4D4;
+  --input: #D4D4D4;
+  --ring: #171717;
 }
 
 .dark {
-  --background: #0F0F0F;
-  --foreground: #FDFBF7;
-  --card: #1A1A1A;
-  --card-foreground: #FDFBF7;
-  --popover: #1A1A1A;
-  --popover-foreground: #FDFBF7;
-  --primary: #D4AF37;
-  --primary-foreground: #0F0F0F;
+  --background: #171717;
+  --foreground: #FEFEFD;
+  --card: #1F1F1F;
+  --card-foreground: #FEFEFD;
+  --popover: #1F1F1F;
+  --popover-foreground: #FEFEFD;
+  --primary: #FEFEFD;
+  --primary-foreground: #171717;
   --secondary: #262626;
-  --secondary-foreground: #FDFBF7;
+  --secondary-foreground: #FEFEFD;
   --muted: #262626;
   --muted-foreground: #A3A3A3;
-  --accent: #D4AF37;
-  --accent-foreground: #0F0F0F;
-  --destructive: #EF4444;
-  --border: #333333;
-  --input: #333333;
-  --ring: #D4AF37;
-  --gold: #D4AF37;
-  --champagne: #3D3629;
-  --rose-gold: #B76E79;
-  --chart-1: #D4AF37;
-  --chart-2: #B76E79;
-  --chart-3: #C9B896;
-  --chart-4: #8B7355;
-  --chart-5: #5C4D3C;
-  --sidebar: #0F0F0F;
-  --sidebar-foreground: #FDFBF7;
-  --sidebar-primary: #D4AF37;
-  --sidebar-primary-foreground: #0F0F0F;
-  --sidebar-accent: #262626;
-  --sidebar-accent-foreground: #FDFBF7;
-  --sidebar-border: #333333;
-  --sidebar-ring: #D4AF37;
+  --accent: #8B9A7D;
+  --accent-foreground: #171717;
+  --destructive: #DC2626;
+  --border: #2E2E2E;
+  --input: #2E2E2E;
+  --ring: #8B9A7D;
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-crimson), Georgia, serif;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-playfair), Georgia, serif;
-  }
+* {
+  border-color: var(--border);
 }
 
-/* Luxury utility classes */
-.font-display {
-  font-family: var(--font-playfair), Georgia, serif;
-}
-
-.font-serif {
-  font-family: var(--font-cormorant), Georgia, serif;
-}
-
-.font-body {
-  font-family: var(--font-crimson), Georgia, serif;
-}
-
-.text-gold {
-  color: var(--gold);
-}
-
-.bg-gold {
-  background-color: var(--gold);
-}
-
-.border-gold {
-  border-color: var(--gold);
-}
-
-.text-champagne {
-  color: var(--champagne);
-}
-
-.bg-champagne {
-  background-color: var(--champagne);
-}
-
-.text-rose-gold {
-  color: var(--rose-gold);
-}
-
-/* Elegant animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.6s ease-out forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.3), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Luxury button styles - using pure CSS instead of @apply with custom classes */
-.btn-luxury {
-  padding: 0.75rem 2rem;
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-  font-family: var(--font-playfair), Georgia, serif;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  transition: all 0.3s ease;
-}
-
-.btn-luxury:hover {
-  background-color: var(--accent);
-  color: var(--accent-foreground);
-}
-
-.btn-outline-luxury {
-  padding: 0.75rem 2rem;
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  font-family: var(--font-playfair), Georgia, serif;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-size: 0.875rem;
-  transition: all 0.3s ease;
-  background: transparent;
-}
-
-.btn-outline-luxury:hover {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
-}
-
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Selection styling */
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), serif;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+/* Selection */
 ::selection {
-  background-color: var(--gold);
-  color: var(--primary);
+  background-color: var(--foreground);
+  color: var(--background);
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: var(--secondary);
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--gold);
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--rose-gold);
-}
-
-/* Focus styles for accessibility */
+/* Focus */
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 1px solid var(--foreground);
   outline-offset: 2px;
 }
 
-/* Image hover zoom effect */
-.image-zoom {
-  overflow: hidden;
-}
-
-.image-zoom img {
-  transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.image-zoom:hover img {
-  transform: scale(1.08);
-}
-
-/* Luxury underline animation */
-.luxury-underline {
-  position: relative;
-}
-
-.luxury-underline::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: var(--gold);
-  transition: width 0.3s ease;
-}
-
-.luxury-underline:hover::after {
-  width: 100%;
-}
-
-/* Glass morphism effect */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Gradient text */
-.text-gradient {
-  background: linear-gradient(135deg, var(--gold), var(--rose-gold));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Pulse animation for badges */
-@keyframes pulse-gold {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(212, 175, 55, 0);
-  }
-}
-
-.animate-pulse-gold {
-  animation: pulse-gold 2s infinite;
-}
-
-/* Float animation */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-/* Stagger children animation helper */
-.stagger-children > * {
-  opacity: 0;
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
-.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
-.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
-.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
-.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
-.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
-.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
-
-/* ========================================
-   ART DECO DESIGN SYSTEM
-   Gatsby-era glamour meets modern luxury
-   ======================================== */
-
-/* Art Deco Color Extensions */
-:root {
-  --deco-black: #0D0D0D;
-  --deco-cream: #F5F0E1;
-  --deco-emerald: #1D4D4F;
-  --deco-burgundy: #722F37;
-  --deco-navy: #1B2838;
-}
-
-/* ===== ART DECO GEOMETRIC PATTERNS ===== */
-
-/* Sunburst/Fan Pattern Background */
-.deco-sunburst {
-  background:
-    repeating-conic-gradient(
-      from 0deg,
-      var(--gold) 0deg 10deg,
-      transparent 10deg 20deg
-    );
-  opacity: 0.05;
-}
-
-/* Chevron Pattern */
-.deco-chevron {
-  background:
-    linear-gradient(135deg, var(--gold) 25%, transparent 25%) -50px 0,
-    linear-gradient(225deg, var(--gold) 25%, transparent 25%) -50px 0,
-    linear-gradient(315deg, var(--gold) 25%, transparent 25%),
-    linear-gradient(45deg, var(--gold) 25%, transparent 25%);
-  background-size: 100px 50px;
-  background-color: transparent;
-  opacity: 0.03;
-}
-
-/* Stepped Pyramid Pattern */
-.deco-stepped {
-  background: linear-gradient(135deg,
-    transparent 50px,
-    var(--gold) 50px, var(--gold) 52px,
-    transparent 52px, transparent 60px,
-    var(--gold) 60px, var(--gold) 62px,
-    transparent 62px);
-  opacity: 0.1;
-}
-
-/* ===== ART DECO FRAMES & BORDERS ===== */
-
-/* Ornate Double Frame */
-.deco-frame {
-  position: relative;
-  border: 1px solid var(--gold);
-}
-
-.deco-frame::before {
-  content: '';
-  position: absolute;
-  inset: 4px;
-  border: 1px solid var(--gold);
-  pointer-events: none;
-}
-
-/* Corner Ornaments Frame */
-.deco-frame-corners {
-  position: relative;
-}
-
-.deco-frame-corners::before,
-.deco-frame-corners::after {
-  content: '';
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-color: var(--gold);
-  border-style: solid;
-}
-
-.deco-frame-corners::before {
-  top: 0;
-  left: 0;
-  border-width: 2px 0 0 2px;
-}
-
-.deco-frame-corners::after {
-  bottom: 0;
-  right: 0;
-  border-width: 0 2px 2px 0;
-}
-
-/* Extended Corner Frame */
-.deco-frame-corners-full {
-  position: relative;
-}
-
-.deco-frame-corners-full::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  border: 2px solid var(--gold);
-  clip-path: polygon(
-    0 0, 40px 0, 40px 2px, 2px 2px, 2px 40px, 0 40px,
-    0 calc(100% - 40px), 2px calc(100% - 40px), 2px calc(100% - 2px), 40px calc(100% - 2px), 40px 100%, 0 100%,
-    100% 100%, calc(100% - 40px) 100%, calc(100% - 40px) calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) calc(100% - 40px), 100% calc(100% - 40px),
-    100% 40px, calc(100% - 2px) 40px, calc(100% - 2px) 2px, calc(100% - 40px) 2px, calc(100% - 40px) 0, 100% 0
-  );
-  pointer-events: none;
-}
-
-/* Stepped Border (Art Deco Ziggurat) */
-.deco-stepped-border {
-  position: relative;
-  padding: 2rem;
-}
-
-.deco-stepped-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(var(--gold), var(--gold)) top left,
-    linear-gradient(var(--gold), var(--gold)) top right,
-    linear-gradient(var(--gold), var(--gold)) bottom left,
-    linear-gradient(var(--gold), var(--gold)) bottom right;
-  background-size: 60px 2px, 60px 2px, 60px 2px, 60px 2px;
-  background-repeat: no-repeat;
-  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
-  pointer-events: none;
-}
-
-.deco-stepped-border::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(var(--gold), var(--gold)) top left,
-    linear-gradient(var(--gold), var(--gold)) top right,
-    linear-gradient(var(--gold), var(--gold)) bottom left,
-    linear-gradient(var(--gold), var(--gold)) bottom right;
-  background-size: 2px 60px, 2px 60px, 2px 60px, 2px 60px;
-  background-repeat: no-repeat;
-  background-position: 0 0, 100% 0, 0 100%, 100% 100%;
-  pointer-events: none;
-}
-
-/* ===== ART DECO DIVIDERS ===== */
-
-/* Ornamental Divider with Diamond */
-.deco-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin: 2rem 0;
-}
-
-.deco-divider::before,
-.deco-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.deco-divider-diamond {
-  width: 10px;
-  height: 10px;
-  background: var(--gold);
-  transform: rotate(45deg);
-}
-
-/* Fan/Sunrise Divider */
-.deco-divider-fan {
-  position: relative;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-
-.deco-divider-fan::before {
-  content: '';
-  position: absolute;
-  width: 80px;
-  height: 40px;
-  background:
-    repeating-conic-gradient(
-      from 180deg at 50% 100%,
-      var(--gold) 0deg 15deg,
-      transparent 15deg 30deg
-    );
-  border-radius: 80px 80px 0 0;
-  opacity: 0.3;
-}
-
-.deco-divider-fan::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--gold);
-}
-
-/* Triple Line Divider */
-.deco-divider-triple {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 1rem 0;
-}
-
-.deco-divider-triple::before,
-.deco-divider-triple::after {
-  content: '';
-  height: 1px;
-  background: linear-gradient(90deg, transparent 10%, var(--gold) 30%, var(--gold) 70%, transparent 90%);
-}
-
-.deco-divider-triple span {
-  height: 2px;
-  background: linear-gradient(90deg, transparent 20%, var(--gold) 35%, var(--gold) 65%, transparent 80%);
-}
-
-/* ===== ART DECO BUTTONS ===== */
-
-/* Gatsby Button - Main CTA */
-.btn-deco {
-  position: relative;
-  padding: 1rem 2.5rem;
-  background: transparent;
-  color: var(--gold);
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  border: 1px solid var(--gold);
-  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  overflow: hidden;
-}
-
-.btn-deco::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid var(--gold);
-  opacity: 0.5;
-  transition: all 0.4s ease;
-}
-
-.btn-deco::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gold);
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-  z-index: -1;
-}
-
-.btn-deco:hover {
-  color: var(--primary);
-}
-
-.btn-deco:hover::after {
-  transform: scaleX(1);
-  transform-origin: left;
-}
-
-/* Filled Deco Button */
-.btn-deco-filled {
-  position: relative;
-  padding: 1rem 2.5rem;
-  background: var(--gold);
-  color: var(--primary);
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  border: none;
-  transition: all 0.4s ease;
-  clip-path: polygon(
-    0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%,
-    10px 100%, 0 calc(100% - 10px)
-  );
-}
-
-.btn-deco-filled:hover {
-  background: var(--rose-gold);
-  transform: translateY(-2px);
-  box-shadow: 0 10px 30px -10px rgba(212, 175, 55, 0.4);
-}
-
-/* Ornate Button with Corner Details */
-.btn-deco-ornate {
-  position: relative;
-  padding: 1rem 3rem;
-  background: transparent;
-  color: var(--gold);
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  border: 1px solid var(--gold);
-  transition: all 0.3s ease;
-}
-
-.btn-deco-ornate::before,
-.btn-deco-ornate::after {
-  content: '';
-  position: absolute;
-  width: 12px;
-  height: 12px;
-  border-color: var(--gold);
-  border-style: solid;
-  transition: all 0.3s ease;
-}
-
-.btn-deco-ornate::before {
-  top: -1px;
-  left: -1px;
-  border-width: 2px 0 0 2px;
-}
-
-.btn-deco-ornate::after {
-  bottom: -1px;
-  right: -1px;
-  border-width: 0 2px 2px 0;
-}
-
-.btn-deco-ornate:hover {
-  background: var(--gold);
-  color: var(--primary);
-}
-
-.btn-deco-ornate:hover::before,
-.btn-deco-ornate:hover::after {
-  width: 20px;
-  height: 20px;
-}
-
-/* ===== ART DECO CARDS ===== */
-
-/* Product Card with Deco Frame */
-.deco-card {
-  position: relative;
-  background: var(--card);
-  transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.deco-card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--rose-gold) 50%, var(--gold) 100%);
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.deco-card:hover::before {
-  opacity: 1;
-}
-
-.deco-card::after {
-  content: '';
-  position: absolute;
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  bottom: 8px;
-  border: 1px solid var(--gold);
-  opacity: 0;
-  transition: all 0.5s ease;
-  pointer-events: none;
-}
-
-.deco-card:hover::after {
-  opacity: 0.5;
-  top: 12px;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-}
-
-/* ===== ART DECO TYPOGRAPHY ===== */
-
-/* Headline with Side Ornaments */
-.deco-headline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-}
-
-.deco-headline::before,
-.deco-headline::after {
-  content: '◆';
-  color: var(--gold);
-  font-size: 0.5em;
-}
-
-/* Stepped Text Effect */
-.deco-text-stepped {
-  text-shadow:
-    1px 1px 0 var(--gold),
-    2px 2px 0 rgba(212, 175, 55, 0.3),
-    3px 3px 0 rgba(212, 175, 55, 0.1);
-}
-
-/* Inline Ornament Text */
-.deco-text-ornate {
-  position: relative;
-  display: inline-block;
-  padding: 0 2rem;
-}
-
-.deco-text-ornate::before,
-.deco-text-ornate::after {
-  content: '—';
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--gold);
-}
-
-.deco-text-ornate::before { left: 0; }
-.deco-text-ornate::after { right: 0; }
-
-/* ===== ART DECO ANIMATIONS ===== */
-
-@keyframes decoGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 5px rgba(212, 175, 55, 0.2),
-      0 0 20px rgba(212, 175, 55, 0.1);
-  }
-  50% {
-    box-shadow:
-      0 0 20px rgba(212, 175, 55, 0.4),
-      0 0 40px rgba(212, 175, 55, 0.2);
-  }
-}
-
-@keyframes decoReveal {
-  0% {
-    clip-path: polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%);
-  }
-  100% {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-}
-
-@keyframes decoLineGrow {
-  0% { transform: scaleX(0); }
-  100% { transform: scaleX(1); }
-}
-
-@keyframes decoPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.6; }
-}
-
-@keyframes decoSparkle {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0.5) rotate(0deg);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1) rotate(180deg);
-  }
-}
-
-.animate-deco-glow {
-  animation: decoGlow 3s ease-in-out infinite;
-}
-
-.animate-deco-reveal {
-  animation: decoReveal 1s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
-.animate-deco-line {
-  animation: decoLineGrow 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-}
-
-.animate-deco-pulse {
-  animation: decoPulse 2s ease-in-out infinite;
-}
-
-/* ===== ART DECO HERO ELEMENTS ===== */
-
-/* Geometric Hero Overlay */
-.deco-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(135deg, rgba(13, 13, 13, 0.9) 0%, transparent 50%),
-    linear-gradient(225deg, rgba(13, 13, 13, 0.6) 0%, transparent 50%);
-  pointer-events: none;
-}
-
-/* Hero Frame */
-.deco-hero-frame {
-  position: absolute;
-  inset: 2rem;
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  pointer-events: none;
-}
-
-.deco-hero-frame::before {
-  content: '';
-  position: absolute;
-  inset: 8px;
-  border: 1px solid rgba(212, 175, 55, 0.15);
-}
-
-/* Corner Decorations for Hero */
-.deco-corner {
-  position: absolute;
-  width: 80px;
-  height: 80px;
-  pointer-events: none;
-}
-
-.deco-corner::before,
-.deco-corner::after {
-  content: '';
-  position: absolute;
-  background: var(--gold);
-}
-
-.deco-corner-tl { top: 2rem; left: 2rem; }
-.deco-corner-tr { top: 2rem; right: 2rem; transform: scaleX(-1); }
-.deco-corner-bl { bottom: 2rem; left: 2rem; transform: scaleY(-1); }
-.deco-corner-br { bottom: 2rem; right: 2rem; transform: scale(-1); }
-
-.deco-corner::before {
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-}
-
-.deco-corner::after {
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 100%;
-}
-
-/* Inner Corner Detail */
-.deco-corner-inner {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  width: 20px;
-  height: 20px;
-  border-left: 1px solid var(--gold);
-  border-top: 1px solid var(--gold);
-  opacity: 0.5;
-}
-
-/* ===== ART DECO BADGE STYLES ===== */
-
-.deco-badge {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1.5rem;
-  background: var(--gold);
-  color: var(--primary);
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
-}
-
-.deco-badge-outline {
-  background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold);
-  clip-path: none;
-}
-
-.deco-badge-outline::before,
-.deco-badge-outline::after {
-  content: '';
-  position: absolute;
+/* Scrollbar */
+::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
-  border: 1px solid var(--gold);
-  transform: rotate(45deg);
 }
 
-.deco-badge-outline::before { left: -3px; }
-.deco-badge-outline::after { right: -3px; }
-
-/* ===== ART DECO NAVIGATION ===== */
-
-.deco-nav-item {
-  position: relative;
-  padding: 0.5rem 0;
-}
-
-.deco-nav-item::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 1px;
-  background: var(--gold);
-  transition: all 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.deco-nav-item:hover::after {
-  width: 100%;
-}
-
-.deco-nav-item::before {
-  content: '◆';
-  position: absolute;
-  bottom: -4px;
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  color: var(--gold);
-  font-size: 6px;
-  transition: transform 0.3s ease;
-}
-
-.deco-nav-item:hover::before {
-  transform: translateX(-50%) scale(1);
-}
-
-/* ===== ART DECO SECTION BACKGROUNDS ===== */
-
-.deco-section-light {
-  background:
-    radial-gradient(circle at 0% 0%, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(183, 110, 121, 0.03) 0%, transparent 50%),
-    var(--background);
-}
-
-.deco-section-dark {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 40%),
-    radial-gradient(circle at 0% 100%, rgba(183, 110, 121, 0.05) 0%, transparent 40%),
-    var(--deco-black);
-  color: var(--deco-cream);
-}
-
-/* Geometric Pattern Overlay */
-.deco-pattern-overlay {
-  position: relative;
-}
-
-.deco-pattern-overlay::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(30deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
-    linear-gradient(150deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
-    linear-gradient(30deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
-    linear-gradient(150deg, var(--gold) 12%, transparent 12.5%, transparent 87%, var(--gold) 87.5%, var(--gold)),
-    linear-gradient(60deg, rgba(212, 175, 55, 0.5) 25%, transparent 25.5%, transparent 75%, rgba(212, 175, 55, 0.5) 75%, rgba(212, 175, 55, 0.5)),
-    linear-gradient(60deg, rgba(212, 175, 55, 0.5) 25%, transparent 25.5%, transparent 75%, rgba(212, 175, 55, 0.5) 75%, rgba(212, 175, 55, 0.5));
-  background-size: 80px 140px;
-  background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
-  opacity: 0.02;
-  pointer-events: none;
-}
-
-/* ===== ART DECO FORM INPUTS ===== */
-
-.deco-input {
+::-webkit-scrollbar-track {
   background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
+/* Button Base Styles */
+button {
+  cursor: pointer;
+}
+
+/* Primary Button - solid dark */
+.btn-primary {
+  background-color: var(--foreground);
+  color: var(--background);
+  padding: 1rem 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+}
+
+/* Secondary Button - outlined */
+.btn-secondary {
+  background-color: transparent;
+  color: var(--foreground);
+  border: 1px solid var(--foreground);
+  padding: 1rem 2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+/* Option Button (variants, filters) */
+.btn-option {
+  background-color: transparent;
+  color: var(--foreground);
   border: 1px solid var(--border);
-  padding: 1rem 1.5rem;
-  font-family: var(--font-cormorant), Georgia, serif;
-  font-size: 1rem;
-  letter-spacing: 0.05em;
-  transition: all 0.3s ease;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: border-color 0.2s, background-color 0.2s;
 }
 
-.deco-input:focus {
-  outline: none;
-  border-color: var(--gold);
-  box-shadow:
-    inset 0 0 0 1px var(--gold),
-    0 0 20px -10px var(--gold);
+.btn-option:hover {
+  border-color: var(--foreground);
 }
 
-.deco-input::placeholder {
-  color: var(--muted-foreground);
-  font-style: italic;
+.btn-option.active {
+  background-color: var(--foreground);
+  color: var(--background);
+  border-color: var(--foreground);
 }

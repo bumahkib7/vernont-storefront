@@ -120,9 +120,12 @@ export function StoreConfigProvider({
       const response = await storeSettingsApi.getSettings(storeId);
       setSettings(response.settings);
     } catch (err) {
-      console.error("Failed to load store settings:", err);
-      setError(err instanceof Error ? err.message : "Failed to load settings");
-      // Don't fail completely - use defaults
+      // Silently fail - store settings endpoint may not be implemented
+      // The app will use default theme values from globals.css
+      if (process.env.NODE_ENV === 'development') {
+        console.debug("Store settings not available, using defaults");
+      }
+      // Don't set error state - this is expected when endpoint doesn't exist
     } finally {
       setLoading(false);
       setInitialized(true);
