@@ -1,15 +1,28 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Save, Loader2, Check, AlertCircle } from "lucide-react";
+import { Save, Loader2, Check, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { useAuth } from "@/context/AuthContext";
 import { customerApi } from "@/lib/api";
+import { useDeleteAccount } from "@/lib/hooks";
 
 export default function ProfilePage() {
-  const { user, refreshUser } = useAuth();
+  const router = useRouter();
+  const { user, refreshUser, logout } = useAuth();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -18,6 +31,17 @@ export default function ProfilePage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [error, setError] = useState("");
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+
+  const deleteAccountMutation = useDeleteAccount({
+    onSuccess: async () => {
+      await logout();
+      router.push("/");
+    },
+    onError: (err) => {
+      setError(err.message || "Failed to delete account");
+    },
+  });
 
   // Initialize form with user data
   useEffect(() => {
@@ -223,10 +247,43 @@ export default function ProfilePage() {
         <Button
           variant="outline"
           className="border-destructive text-destructive hover:bg-destructive hover:text-white"
+          onClick={() => setShowDeleteDialog(true)}
+          disabled={deleteAccountMutation.isPending}
         >
+          {deleteAccountMutation.isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+          ) : (
+            <Trash2 className="h-4 w-4 mr-2" />
+          )}
           Delete Account
         </Button>
       </motion.div>
+
+      {/* Delete Account Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account
+              and remove all your data from our servers, including your order history,
+              wishlist, and addresses.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteAccountMutation.mutate()}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {deleteAccountMutation.isPending ? (
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+              ) : null}
+              Yes, delete my account
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

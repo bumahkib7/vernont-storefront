@@ -63,7 +63,14 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [promoApplied, setPromoApplied] = useState(false);
+  const [promoError, setPromoError] = useState<string | null>(null);
+  const [applyingPromo, setApplyingPromo] = useState(false);
   const [giftWrap, setGiftWrap] = useState(false);
+
+  // Gift card state
+  const [giftCardCode, setGiftCardCode] = useState("");
+  const [giftCardError, setGiftCardError] = useState<string | null>(null);
+  const [applyingGiftCard, setApplyingGiftCard] = useState(false);
 
   // User & addresses state
   const [savedAddresses, setSavedAddresses] = useState<CustomerAddress[]>([]);
@@ -187,11 +194,16 @@ export default function CheckoutPage() {
   // Get selected shipping option
   const selectedShipping = shippingOptions.find((opt) => opt.id === selectedShippingId);
 
-  // Prices in minor units
+  // Prices in minor units - use cart values from backend when available
   const shippingPriceMinor = selectedShipping?.amount ?? 0;
   const giftWrapPriceMinor = giftWrap ? 500 : 0;
-  const discountMinor = promoApplied ? Math.round(subtotal * 0.1) : 0;
-  const totalMinor = subtotal + shippingPriceMinor + giftWrapPriceMinor - discountMinor;
+  // Use discount from cart (set by backend when promo code applied)
+  const discountMinor = cart?.discount_total ?? 0;
+  // Gift card amount from cart (set by backend when gift card applied)
+  const giftCardAmount = cart?.gift_card_total ?? 0;
+  const giftCardApplied = !!cart?.gift_card_code;
+  // Total from cart already includes gift card deduction, but we add shipping/gift wrap client-side
+  const totalMinor = subtotal + shippingPriceMinor + giftWrapPriceMinor - discountMinor - giftCardAmount;
 
   // Get currently selected address (either saved or from form)
   const getSelectedAddress = useCallback((): {
@@ -322,7 +334,7 @@ export default function CheckoutPage() {
       await cartApi.update(cart.id, {
         email: formData.email,
         shipping_address: address,
-        promo_codes: promoApplied ? ["WELCOME10"] : undefined,
+        // Promo codes are already applied via handleApplyPromo
       });
 
       // Step 2: Add shipping method if selected
@@ -330,9 +342,10 @@ export default function CheckoutPage() {
         await cartApi.addShippingMethod(cart.id, { option_id: selectedShippingId });
       }
 
-      // Step 3: Create payment session
+      // Step 3: Create payment session (gift card is already on cart)
       const paymentResponse = await cartApi.createPaymentSession(cart.id, {
         email: formData.email,
+        gift_card_code: cart.gift_card_code || undefined,
       });
 
       setPaymentSession(paymentResponse.payment_session);
@@ -375,9 +388,91 @@ export default function CheckoutPage() {
     }
   };
 
-  const handleApplyPromo = () => {
-    if (promoCode.toLowerCase() === "welcome10") {
+  const handleApplyPromo = async () => {
+    if (!cart || !promoCode.trim()) return;
+
+    setApplyingPromo(true);
+    setPromoError(null);
+
+    try {
+      // Call backend to apply promo code
+      await cartApi.update(cart.id, {
+        promo_codes: [promoCode.trim().toUpperCase()],
+      });
+
+      // Refresh cart to get updated discount
+      await refreshCart();
       setPromoApplied(true);
+    } catch (err) {
+      console.error("Failed to apply promo code:", err);
+      if (err instanceof ApiError) {
+        setPromoError(err.message);
+      } else {
+        setPromoError("Invalid promo code");
+      }
+    } finally {
+      setApplyingPromo(false);
+    }
+  };
+
+  const handleApplyGiftCard = async () => {
+    if (!cart || !giftCardCode.trim()) return;
+
+    setApplyingGiftCard(true);
+    setGiftCardError(null);
+
+    try {
+      const code = giftCardCode.trim().toUpperCase();
+
+      // Basic format validation (XXXX-XXXX-XXXX-XXXX)
+      const formatted = code.replace(/-/g, "");
+      if (formatted.length !== 16) {
+        throw new Error("Gift card code must be 16 characters (XXXX-XXXX-XXXX-XXXX)");
+      }
+
+      // Format the code nicely
+      const formattedCode = formatted.replace(/(.{4})(?=.)/g, "$1-");
+
+      // Apply gift card via cart update API (like promo codes)
+      await cartApi.update(cart.id, {
+        gift_card_code: formattedCode,
+      });
+
+      // Refresh cart to get updated totals with gift card applied
+      await refreshCart();
+
+      // Clear the input field (code is now stored on cart)
+      setGiftCardCode("");
+
+    } catch (err) {
+      console.error("Failed to apply gift card:", err);
+      if (err instanceof ApiError) {
+        setGiftCardError(err.message);
+      } else if (err instanceof Error) {
+        setGiftCardError(err.message);
+      } else {
+        setGiftCardError("Invalid gift card code");
+      }
+    } finally {
+      setApplyingGiftCard(false);
+    }
+  };
+
+  const handleRemoveGiftCard = async () => {
+    if (!cart) return;
+
+    setApplyingGiftCard(true);
+    try {
+      // Remove gift card by sending empty string
+      await cartApi.update(cart.id, {
+        gift_card_code: "",
+      });
+      await refreshCart();
+      setGiftCardError(null);
+    } catch (err) {
+      console.error("Failed to remove gift card:", err);
+    } finally {
+      setApplyingGiftCard(false);
     }
   };
 
@@ -1227,19 +1322,85 @@ export default function CheckoutPage() {
                   </div>
                   <Button
                     onClick={handleApplyPromo}
-                    disabled={promoApplied || !promoCode}
+                    disabled={promoApplied || !promoCode || applyingPromo}
                     variant="outline"
                     className="border-border"
                   >
-                    {promoApplied ? <Check className="h-4 w-4" /> : "Apply"}
+                    {applyingPromo ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : promoApplied ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      "Apply"
+                    )}
                   </Button>
                 </div>
 
-                {promoApplied && (
-                  <p className="text-sm text-gold font-serif mb-4">
-                    Code WELCOME10 applied - 10% off!
+                {promoError && (
+                  <p className="text-sm text-red-500 font-serif mb-2">
+                    {promoError}
                   </p>
                 )}
+
+                {promoApplied && (
+                  <p className="text-sm text-gold font-serif mb-4 flex items-center gap-2">
+                    <Check className="h-3 w-3" />
+                    Code {promoCode.toUpperCase()} applied!
+                  </p>
+                )}
+
+                {/* Gift Card Input */}
+                <div className="mb-6">
+                  <div className="flex gap-2">
+                    <div className="relative flex-1">
+                      <Gift className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <input
+                        type="text"
+                        value={giftCardApplied ? (cart?.gift_card_code || "") : giftCardCode}
+                        onChange={(e) => {
+                          // Format as XXXX-XXXX-XXXX-XXXX
+                          const raw = e.target.value.replace(/[^A-Za-z0-9]/g, "").toUpperCase();
+                          const formatted = raw.replace(/(.{4})(?=.)/g, "$1-").slice(0, 19);
+                          setGiftCardCode(formatted);
+                        }}
+                        placeholder="Gift card code"
+                        disabled={giftCardApplied || applyingGiftCard}
+                        maxLength={19}
+                        className="w-full pl-10 pr-4 py-3 border border-border font-serif text-sm focus:outline-none focus:border-gold disabled:bg-secondary uppercase"
+                      />
+                    </div>
+                    {giftCardApplied ? (
+                      <Button
+                        onClick={handleRemoveGiftCard}
+                        disabled={applyingGiftCard}
+                        variant="outline"
+                        className="border-border text-red-500 hover:text-red-600"
+                      >
+                        {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Remove"}
+                      </Button>
+                    ) : (
+                      <Button
+                        onClick={handleApplyGiftCard}
+                        disabled={!giftCardCode || giftCardCode.length < 19 || applyingGiftCard}
+                        variant="outline"
+                        className="border-border"
+                      >
+                        {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Apply"}
+                      </Button>
+                    )}
+                  </div>
+                  {giftCardError && (
+                    <p className="text-sm text-red-500 font-serif mt-2">
+                      {giftCardError}
+                    </p>
+                  )}
+                  {giftCardApplied && !giftCardError && (
+                    <p className="text-sm text-gold font-serif mt-2 flex items-center gap-2">
+                      <Check className="h-3 w-3" />
+                      Gift card applied: -{formatPrice(giftCardAmount, currency)}
+                    </p>
+                  )}
+                </div>
 
                 <div className="space-y-3 border-t border-border pt-4">
                   <div className="flex justify-between font-serif text-sm">
@@ -1249,8 +1410,18 @@ export default function CheckoutPage() {
 
                   {discountMinor > 0 && (
                     <div className="flex justify-between font-serif text-sm text-gold">
-                      <span>Discount (10%)</span>
+                      <span>Discount{promoApplied ? ` (${promoCode.toUpperCase()})` : ""}</span>
                       <span>-{formatPrice(discountMinor, currency)}</span>
+                    </div>
+                  )}
+
+                  {giftCardAmount > 0 && (
+                    <div className="flex justify-between font-serif text-sm text-gold">
+                      <span className="flex items-center gap-1">
+                        <Gift className="h-3 w-3" />
+                        Gift Card
+                      </span>
+                      <span>-{formatPrice(giftCardAmount, currency)}</span>
                     </div>
                   )}
 

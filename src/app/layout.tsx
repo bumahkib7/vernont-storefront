@@ -1,34 +1,28 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Cormorant_Garamond, Crimson_Pro } from "next/font/google";
+import { EB_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { CartDrawer } from "@/components/ui/CartDrawer";
 import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 import { BackToTop } from "@/components/ui/BackToTop";
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const garamond = EB_Garamond({
+  variable: "--font-heading",
   subsets: ["latin"],
   display: "swap",
+  weight: ["400", "500"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
-});
-
-const crimson = Crimson_Pro({
-  variable: "--font-crimson",
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-  display: "swap",
+  weight: ["300", "400", "500"],
 });
 
 export const metadata: Metadata = {
-  title: "Vernont | Luxury Perfumes",
-  description: "Discover exquisite fragrances that define elegance. Vernont - Where luxury meets artistry.",
+  title: "Vernont",
+  description: "Fragrance, distilled to its essence.",
 };
 
 export default function RootLayout({
@@ -38,9 +32,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${playfair.variable} ${cormorant.variable} ${crimson.variable} antialiased`}
-      >
+      <body className={`${garamond.variable} ${inter.variable}`}>
         <Providers>
           {children}
           <CartDrawer />
