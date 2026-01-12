@@ -37,6 +37,11 @@ import {
   MarketingPreferenceSchema,
   StoreSettingsResponseSchema,
   StoreFeaturesResponseSchema,
+  ReviewSchema,
+  ReviewListResponseSchema,
+  ReviewResponseSchema,
+  ReviewStatsResponseSchema,
+  BatchReviewStatsResponseSchema,
   parseResponse,
   formatPrice,
   priceFromMinor,
@@ -73,6 +78,12 @@ import {
   type Address,
   type StoreSettingsResponse,
   type StoreFeaturesResponse,
+  type Review,
+  type ReviewListResponse,
+  type ReviewResponse,
+  type ReviewStats,
+  type ReviewStatsResponse,
+  type BatchReviewStatsResponse,
 } from './schemas';
 
 // Re-export types and utilities
@@ -92,12 +103,44 @@ export class ApiError extends Error {
   }
 }
 
+// Track if we're currently refreshing to avoid infinite loops
+let isRefreshing = false;
+let refreshPromise: Promise<boolean> | null = null;
+
+// Attempt to refresh auth tokens via HTTP-only cookie
+async function refreshAuthTokens(): Promise<boolean> {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      return response.ok;
+    } catch {
+      return false;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+}
+
 // Utility function for making API requests with optional Zod validation
 // Authentication is handled via HTTP-only cookies (credentials: 'include')
+// Automatically refreshes tokens on 401 errors
 async function apiRequest<T>(
   endpoint: string,
   options: RequestInit = {},
-  schema?: z.ZodSchema<T>
+  schema?: z.ZodSchema<T>,
+  retryOnUnauthorized = true
 ): Promise<T> {
   const url = `${API_BASE_URL}${endpoint}`;
 
@@ -111,6 +154,17 @@ async function apiRequest<T>(
   };
 
   const response = await fetch(url, config);
+
+  // Handle 401 Unauthorized - try to refresh token and retry
+  if (response.status === 401 && retryOnUnauthorized && !endpoint.includes('/auth/')) {
+    const refreshed = await refreshAuthTokens();
+    if (refreshed) {
+      // Retry the original request (without retry to prevent infinite loop)
+      return apiRequest<T>(endpoint, options, schema, false);
+    }
+    // Refresh failed - throw unauthorized error
+    throw new ApiError(401, 'UNAUTHORIZED', 'Session expired. Please log in again.');
+  }
 
   if (!response.ok) {
     let errorData;
@@ -454,6 +508,23 @@ export const cartApi = {
     return apiRequest(`/store/carts/${cartId}`, {}, CartResponseSchema);
   },
 
+  /**
+   * Get current cart from session cookie.
+   * This is the recommended way to get cart - server manages session via HTTP-only cookie.
+   * Returns null if no active cart session exists.
+   */
+  async getCurrent(): Promise<CartResponse | null> {
+    try {
+      return await apiRequest('/store/carts/current', {}, CartResponseSchema);
+    } catch (error) {
+      // 404 means no active cart - this is expected
+      if (error instanceof ApiError && (error.status === 404)) {
+        return null;
+      }
+      throw error;
+    }
+  },
+
   async update(cartId: string, data: {
     email?: string;
     region_id?: string;
@@ -736,7 +807,25 @@ export const returnsApi = {
       ReturnEligibilityResponseSchema
     );
   },
+
+  async getReasons(): Promise<ReturnReason[]> {
+    return apiRequest(
+      '/store/returns/reasons',
+      {},
+      z.array(z.object({
+        value: z.string(),
+        label: z.string(),
+        requiresNote: z.boolean().optional(),
+      }))
+    );
+  },
 };
+
+export interface ReturnReason {
+  value: string;
+  label: string;
+  requiresNote?: boolean;
+}
 
 // ==================
 // EXCHANGES API
@@ -999,6 +1088,179 @@ export const favoritesApi = {
   },
 };
 
+// ==================
+// REVIEWS API
+// ==================
+export const reviewsApi = {
+  /**
+   * Get reviews for a product
+   */
+  async getProductReviews(
+    productId: string,
+    params?: {
+      page?: number;
+      size?: number;
+      sort?: 'NEWEST' | 'OLDEST' | 'HIGHEST_RATED' | 'LOWEST_RATED' | 'MOST_HELPFUL';
+      rating?: number;
+      verified_only?: boolean;
+      with_images?: boolean;
+      search?: string;
+      include_stats?: boolean;
+    }
+  ): Promise<ReviewListResponse> {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) searchParams.append(key, String(value));
+      });
+    }
+    const query = searchParams.toString();
+    return apiRequest(
+      `/store/products/${productId}/reviews${query ? `?${query}` : ''}`,
+      {},
+      ReviewListResponseSchema
+    );
+  },
+
+  /**
+   * Get review statistics for a product
+   */
+  async getProductStats(productId: string): Promise<ReviewStatsResponse> {
+    return apiRequest(
+      `/store/products/${productId}/reviews/stats`,
+      {},
+      ReviewStatsResponseSchema
+    );
+  },
+
+  /**
+   * Get featured reviews for a product
+   */
+  async getFeaturedReviews(productId: string): Promise<{ reviews: Review[] }> {
+    return apiRequest(
+      `/store/products/${productId}/reviews/featured`,
+      {},
+      z.object({ reviews: z.array(ReviewSchema) })
+    );
+  },
+
+  /**
+   * Create a review for a product
+   */
+  async createReview(
+    productId: string,
+    data: {
+      rating: number;
+      title: string;
+      content: string;
+      pros?: string[];
+      cons?: string[];
+      images?: Array<{ url: string; thumbnail_url?: string; caption?: string }>;
+      variant_id?: string;
+    }
+  ): Promise<ReviewResponse> {
+    return apiRequest(
+      `/store/products/${productId}/reviews`,
+      { method: 'POST', body: JSON.stringify(data) },
+      ReviewResponseSchema
+    );
+  },
+
+  /**
+   * Get a single review
+   */
+  async getReview(reviewId: string): Promise<ReviewResponse> {
+    return apiRequest(`/store/reviews/${reviewId}`, {}, ReviewResponseSchema);
+  },
+
+  /**
+   * Update a review
+   */
+  async updateReview(
+    reviewId: string,
+    data: {
+      rating?: number;
+      title?: string;
+      content?: string;
+      pros?: string[];
+      cons?: string[];
+      images?: Array<{ url: string; thumbnail_url?: string; caption?: string }>;
+    }
+  ): Promise<ReviewResponse> {
+    return apiRequest(
+      `/store/reviews/${reviewId}`,
+      { method: 'PATCH', body: JSON.stringify(data) },
+      ReviewResponseSchema
+    );
+  },
+
+  /**
+   * Delete a review
+   */
+  async deleteReview(reviewId: string): Promise<{ success: boolean; message: string }> {
+    return apiRequest(
+      `/store/reviews/${reviewId}`,
+      { method: 'DELETE' },
+      z.object({ success: z.boolean(), message: z.string() })
+    );
+  },
+
+  /**
+   * Vote on a review (helpful/not helpful)
+   */
+  async voteReview(reviewId: string, helpful: boolean): Promise<ReviewResponse> {
+    return apiRequest(
+      `/store/reviews/${reviewId}/vote`,
+      { method: 'POST', body: JSON.stringify({ helpful }) },
+      ReviewResponseSchema
+    );
+  },
+
+  /**
+   * Report a review
+   */
+  async reportReview(
+    reviewId: string,
+    reason: string,
+    description?: string
+  ): Promise<{ success: boolean; message: string }> {
+    return apiRequest(
+      `/store/reviews/${reviewId}/report`,
+      { method: 'POST', body: JSON.stringify({ reason, description }) },
+      z.object({ success: z.boolean(), message: z.string() })
+    );
+  },
+
+  /**
+   * Get current customer's reviews
+   */
+  async getMyReviews(params?: { page?: number; size?: number }): Promise<ReviewListResponse> {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) searchParams.append(key, String(value));
+      });
+    }
+    const query = searchParams.toString();
+    return apiRequest(
+      `/store/customers/me/reviews${query ? `?${query}` : ''}`,
+      {},
+      ReviewListResponseSchema
+    );
+  },
+
+  /**
+   * Get review statistics for multiple products
+   */
+  async getBatchStats(productIds: string[]): Promise<BatchReviewStatsResponse> {
+    return apiRequest(
+      '/store/reviews/stats/batch',
+      { method: 'POST', body: JSON.stringify({ product_ids: productIds }) },
+      BatchReviewStatsResponseSchema
+    );
+  },
+};
+
 // Default export with all APIs
 const api = {
   auth: authApi,
@@ -1016,6 +1278,7 @@ const api = {
   marketing: marketingApi,
   storeSettings: storeSettingsApi,
   favorites: favoritesApi,
+  reviews: reviewsApi,
   utils: { formatPrice, priceFromMinor },
 };
 

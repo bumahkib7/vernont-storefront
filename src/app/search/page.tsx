@@ -3,27 +3,102 @@
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { Search, ArrowLeft, SlidersHorizontal, X } from "lucide-react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { ProductGrid } from "@/components/ProductGrid";
+import Image from "next/image";
+import { Search, ArrowLeft, SlidersHorizontal, X, Loader2, Heart } from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { productsApi, type Product } from "@/lib/api";
-import { transformProducts, type DisplayProduct } from "@/lib/transforms";
+import { useWishlist } from "@/context/WishlistContext";
+import { formatPrice } from "@/context/CartContext";
 
 // Loading skeleton
 function ProductsSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
       {[...Array(8)].map((_, i) => (
         <div key={i} className="animate-pulse">
-          <div className="aspect-[3/4] bg-secondary" />
-          <div className="pt-5 text-center space-y-2">
-            <div className="h-3 w-16 bg-secondary mx-auto" />
-            <div className="h-5 w-32 bg-secondary mx-auto" />
-            <div className="h-3 w-24 bg-secondary mx-auto" />
-            <div className="h-5 w-20 bg-secondary mx-auto" />
+          <div className="aspect-square bg-[var(--surface)] rounded-lg" />
+          <div className="pt-4 space-y-2">
+            <div className="h-3 w-16 bg-[var(--surface)] rounded" />
+            <div className="h-4 w-32 bg-[var(--surface)] rounded" />
+            <div className="h-4 w-20 bg-[var(--surface)] rounded" />
           </div>
         </div>
       ))}
+    </div>
+  );
+}
+
+function ProductCard({ product }: { product: Product }) {
+  const { isInWishlist, toggleItem } = useWishlist();
+  const inWishlist = isInWishlist(product.id);
+  const variant = product.variants?.[0];
+  const price = variant?.priceMinor ?? product.lowestPriceMinor ?? 0;
+  const compareAtPrice = variant?.compareAtPriceMinor;
+  const currency = variant?.currency ?? product.currency ?? "GBP";
+
+  return (
+    <div className="group relative">
+      {/* Wishlist Button */}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          toggleItem(product.id);
+        }}
+        className="absolute top-3 right-3 z-10 p-2 bg-white/80 backdrop-blur-sm rounded-full shadow-sm hover:bg-white transition-all"
+      >
+        <Heart
+          className={`w-4 h-4 transition-colors ${
+            inWishlist ? "fill-red-500 text-red-500" : "text-gray-600"
+          }`}
+        />
+      </button>
+
+      <Link href={`/product/${product.handle || product.id}`}>
+        {/* Image */}
+        <div className="aspect-square relative bg-[var(--surface)] rounded-lg overflow-hidden mb-3">
+          {product.thumbnail ? (
+            <Image
+              src={product.thumbnail}
+              alt={product.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-[var(--muted-foreground)]">
+              No image
+            </div>
+          )}
+
+          {/* Sale Badge */}
+          {compareAtPrice && compareAtPrice > price && (
+            <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-medium px-2 py-1 rounded">
+              Sale
+            </div>
+          )}
+        </div>
+
+        {/* Info */}
+        <div className="space-y-1">
+          {product.brand && (
+            <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide">
+              {product.brand}
+            </p>
+          )}
+          <h3 className="font-medium text-sm line-clamp-2 group-hover:text-[var(--primary)] transition-colors">
+            {product.title}
+          </h3>
+          <div className="flex items-center gap-2">
+            <p className="font-semibold">{formatPrice(price, currency)}</p>
+            {compareAtPrice && compareAtPrice > price && (
+              <p className="text-sm text-[var(--muted-foreground)] line-through">
+                {formatPrice(compareAtPrice, currency)}
+              </p>
+            )}
+          </div>
+        </div>
+      </Link>
     </div>
   );
 }
@@ -38,6 +113,11 @@ function SearchContent() {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("relevance");
   const [searchInput, setSearchInput] = useState(query);
+
+  // Sync search input with URL query
+  useEffect(() => {
+    setSearchInput(query);
+  }, [query]);
 
   // Fetch products when query changes
   useEffect(() => {
@@ -63,22 +143,26 @@ function SearchContent() {
     fetchProducts();
   }, [query]);
 
-  // Transform and sort products
-  const displayProducts = useMemo(() => {
+  // Sort products
+  const sortedProducts = useMemo(() => {
     if (products.length === 0) return [];
-    let transformed = transformProducts(products);
+    let sorted = [...products];
 
     switch (sortBy) {
       case "price-low":
-        return [...transformed].sort((a, b) => a.price - b.price);
+        return sorted.sort((a, b) =>
+          (a.lowestPriceMinor ?? 0) - (b.lowestPriceMinor ?? 0)
+        );
       case "price-high":
-        return [...transformed].sort((a, b) => b.price - a.price);
+        return sorted.sort((a, b) =>
+          (b.lowestPriceMinor ?? 0) - (a.lowestPriceMinor ?? 0)
+        );
       case "name-asc":
-        return [...transformed].sort((a, b) => a.name.localeCompare(b.name));
+        return sorted.sort((a, b) => a.title.localeCompare(b.title));
       case "name-desc":
-        return [...transformed].sort((a, b) => b.name.localeCompare(a.name));
+        return sorted.sort((a, b) => b.title.localeCompare(a.title));
       default:
-        return transformed;
+        return sorted;
     }
   }, [products, sortBy]);
 
@@ -95,40 +179,36 @@ function SearchContent() {
   };
 
   return (
-    <PageLayout>
-      {/* Search Header */}
-      <section className="border-b border-border bg-secondary/30">
-        <div className="container mx-auto px-4 py-12">
+    <div className="min-h-screen bg-[var(--background)]">
+      <Header />
+
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Search Header */}
+        <div className="mb-8">
           {/* Back link */}
           <Link
             href="/fragrances"
-            className="inline-flex items-center gap-2 text-muted-foreground hover:text-gold transition-colors mb-6"
+            className="inline-flex items-center gap-2 text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="font-serif text-sm">Back to all fragrances</span>
+            <span className="text-sm">Back to all fragrances</span>
           </Link>
 
           {/* Search input */}
           <form onSubmit={handleSearch} className="relative max-w-2xl">
-            {/* Decorative corners */}
-            <div className="absolute -top-2 -left-2 w-4 h-4 border-l-2 border-t-2 border-gold/40" />
-            <div className="absolute -top-2 -right-2 w-4 h-4 border-r-2 border-t-2 border-gold/40" />
-            <div className="absolute -bottom-2 -left-2 w-4 h-4 border-l-2 border-b-2 border-gold/40" />
-            <div className="absolute -bottom-2 -right-2 w-4 h-4 border-r-2 border-b-2 border-gold/40" />
-
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gold/60" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-foreground)]" />
             <input
               type="search"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search for fragrances, notes, brands..."
-              className="w-full pl-14 pr-12 py-5 bg-background border border-gold/20 font-serif text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-gold/60 transition-colors"
+              placeholder="Search by name, brand, SKU, or product ID..."
+              className="w-full pl-12 pr-12 py-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
             />
             {searchInput && (
               <button
                 type="button"
                 onClick={clearSearch}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-gold transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -138,144 +218,134 @@ function SearchContent() {
           {/* Search info */}
           {query && (
             <div className="mt-6">
-              <h1 className="font-display text-2xl md:text-3xl tracking-wide">
-                Search results for{" "}
-                <span className="text-gold italic">&ldquo;{query}&rdquo;</span>
+              <h1 className="text-2xl lg:text-3xl font-bold">
+                Search results for &ldquo;{query}&rdquo;
               </h1>
               {!loading && (
-                <p className="font-serif text-muted-foreground mt-2">
-                  {displayProducts.length === 0
+                <p className="text-[var(--muted-foreground)] mt-2">
+                  {sortedProducts.length === 0
                     ? "No products found"
-                    : `Found ${displayProducts.length} fragrance${displayProducts.length !== 1 ? "s" : ""}`}
+                    : `Found ${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
                 </p>
               )}
             </div>
           )}
         </div>
-      </section>
 
-      {/* Filters bar */}
-      {query && displayProducts.length > 0 && (
-        <section className="border-b border-border">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <SlidersHorizontal className="h-4 w-4" />
-                <span className="font-serif text-sm">
-                  {displayProducts.length} result{displayProducts.length !== 1 ? "s" : ""}
-                </span>
-              </div>
-              <div className="flex items-center gap-4">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="font-serif bg-transparent border border-border px-4 py-2 focus:outline-none focus:border-gold text-sm"
-                >
-                  <option value="relevance">Sort by: Relevance</option>
-                  <option value="price-low">Price: Low to High</option>
-                  <option value="price-high">Price: High to Low</option>
-                  <option value="name-asc">Name: A to Z</option>
-                  <option value="name-desc">Name: Z to A</option>
-                </select>
-              </div>
+        {/* Filters bar */}
+        {query && sortedProducts.length > 0 && (
+          <div className="flex flex-wrap items-center justify-between gap-4 pb-6 border-b border-[var(--border)] mb-8">
+            <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
+              <SlidersHorizontal className="h-4 w-4" />
+              <span className="text-sm">
+                {sortedProducts.length} result{sortedProducts.length !== 1 ? "s" : ""}
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-[var(--surface)] border border-[var(--border)] rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)]"
+              >
+                <option value="relevance">Sort by: Relevance</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name-asc">Name: A to Z</option>
+                <option value="name-desc">Name: Z to A</option>
+              </select>
             </div>
           </div>
-        </section>
-      )}
+        )}
 
-      {/* Results */}
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          {!query ? (
-            /* No query - show prompt */
-            <div className="text-center py-16">
-              <div className="relative inline-block mb-8">
-                {/* Decorative frame */}
-                <div className="absolute -inset-4 border border-gold/20" />
-                <div className="absolute -inset-6 border border-gold/10" />
-                <Search className="h-16 w-16 text-gold/30" />
-              </div>
-              <h2 className="font-display text-2xl tracking-wide mb-4">
-                Discover Your Signature Scent
-              </h2>
-              <p className="font-serif text-muted-foreground max-w-md mx-auto mb-8">
-                Enter a search term above to explore our collection of exquisite fragrances.
-                Search by name, brand, or fragrance notes.
-              </p>
-              <div className="flex flex-wrap justify-center gap-3">
-                {["Oud", "Rose", "Jasmine", "Sandalwood", "Amber"].map((term) => (
-                  <button
-                    key={term}
-                    onClick={() => router.push(`/search?q=${encodeURIComponent(term)}`)}
-                    className="px-4 py-2 border border-gold/30 font-serif text-sm hover:border-gold hover:text-gold transition-all"
-                  >
-                    {term}
-                  </button>
-                ))}
-              </div>
+        {/* Results */}
+        {!query ? (
+          /* No query - show prompt */
+          <div className="text-center py-16">
+            <div className="w-20 h-20 rounded-full bg-[var(--surface)] flex items-center justify-center mx-auto mb-6">
+              <Search className="h-10 w-10 text-[var(--muted-foreground)]" />
             </div>
-          ) : loading ? (
-            <ProductsSkeleton />
-          ) : error ? (
-            <div className="text-center py-16">
-              <p className="font-serif text-muted-foreground mb-4">{error}</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="px-6 py-3 border border-gold font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all"
-              >
-                Try Again
-              </button>
-            </div>
-          ) : displayProducts.length === 0 ? (
-            /* No results */
-            <div className="text-center py-16">
-              <div className="relative inline-block mb-8">
-                <div className="absolute -inset-4 border border-gold/20" />
-                <Search className="h-12 w-12 text-gold/20" />
-              </div>
-              <h2 className="font-display text-xl tracking-wide mb-4">
-                No fragrances found
-              </h2>
-              <p className="font-serif text-muted-foreground max-w-md mx-auto mb-8">
-                We couldn&apos;t find any products matching &ldquo;{query}&rdquo;.
-                Try different keywords or browse our collections.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4">
-                <Link
-                  href="/fragrances"
-                  className="px-6 py-3 border border-gold font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all"
+            <h2 className="text-2xl font-bold mb-4">
+              Search our collection
+            </h2>
+            <p className="text-[var(--muted-foreground)] max-w-md mx-auto mb-8">
+              Search by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
+            </p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {["Oud", "Rose", "Tom Ford", "Creed", "Gift Sets"].map((term) => (
+                <button
+                  key={term}
+                  onClick={() => router.push(`/search?q=${encodeURIComponent(term)}`)}
+                  className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-full text-sm hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all"
                 >
-                  Browse All Fragrances
-                </Link>
-                <Link
-                  href="/collections"
-                  className="px-6 py-3 border border-border font-display text-xs tracking-[0.15em] uppercase hover:border-gold transition-all"
-                >
-                  View Collections
-                </Link>
-              </div>
+                  {term}
+                </button>
+              ))}
             </div>
-          ) : (
-            <ProductGrid products={displayProducts} />
-          )}
-        </div>
-      </section>
-    </PageLayout>
+          </div>
+        ) : loading ? (
+          <ProductsSkeleton />
+        ) : error ? (
+          <div className="text-center py-16">
+            <p className="text-[var(--muted-foreground)] mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="btn-primary"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : sortedProducts.length === 0 ? (
+          /* No results */
+          <div className="text-center py-16">
+            <div className="w-20 h-20 rounded-full bg-[var(--surface)] flex items-center justify-center mx-auto mb-6">
+              <Search className="h-10 w-10 text-[var(--muted-foreground)]" />
+            </div>
+            <h2 className="text-xl font-bold mb-4">
+              No products found
+            </h2>
+            <p className="text-[var(--muted-foreground)] max-w-md mx-auto mb-8">
+              We couldn&apos;t find any products matching &ldquo;{query}&rdquo;.
+              Try different keywords or browse our collections.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <Link href="/fragrances" className="btn-primary">
+                Browse All Fragrances
+              </Link>
+              <Link href="/collections" className="btn-secondary">
+                View Collections
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+            {sortedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
+      </main>
+
+      <Footer />
+    </div>
   );
 }
 
 // Wrap in Suspense for useSearchParams
 export default function SearchPage() {
   return (
-    <Suspense fallback={
-      <PageLayout>
-        <section className="py-16">
-          <div className="container mx-auto px-4">
-            <ProductsSkeleton />
-          </div>
-        </section>
-      </PageLayout>
-    }>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[var(--background)]">
+          <Header />
+          <main className="max-w-7xl mx-auto px-4 py-8">
+            <div className="flex items-center justify-center py-16">
+              <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+            </div>
+          </main>
+          <Footer />
+        </div>
+      }
+    >
       <SearchContent />
     </Suspense>
   );

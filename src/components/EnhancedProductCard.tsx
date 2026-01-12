@@ -4,11 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Heart, ShoppingBag, Eye, Star } from "lucide-react";
+import { Heart, Plus, Star, GitCompare } from "lucide-react";
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import type { DisplayProduct } from "@/lib/transforms";
 
 interface EnhancedProductCardProps {
@@ -19,20 +19,28 @@ interface EnhancedProductCardProps {
 export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const { addItem, currency, openCart } = useCart();
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { addToCompare, removeFromCompare, isComparing, isCompareFull } = useCompare();
   const router = useRouter();
 
   const isWishlisted = isInWishlist(product.id);
+  const isInCompare = isComparing(product.id);
   const productUrl = `/product/${product.handle || product.id}`;
 
-  const handleCardClick = () => {
-    router.push(productUrl);
-  };
+  // Get notes preview (top notes only)
+  const notesPreview = product.notes?.top?.slice(0, 3).join(", ") || "";
 
-  const handleQuickView = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  // Mock rating - in production, this would come from the API
+  const rating = 4.6;
+  const reviewCount = 89;
+
+  // Stock status - in production, derive from inventory data
+  const stockStatus = "in_stock" as "in_stock" | "low_stock" | "out_of_stock";
+  const deliveryEstimate = "Tue-Thu";
+
+  const handleCardClick = () => {
     router.push(productUrl);
   };
 
@@ -44,10 +52,13 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
       console.error("No variant ID available for product:", product.id);
       return;
     }
+    setIsAddingToCart(true);
     try {
       await addItem(variantId, 1);
     } catch (err) {
       console.error("Failed to add to cart:", err);
+    } finally {
+      setIsAddingToCart(false);
     }
   };
 
@@ -57,168 +68,191 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
     toggleItem(product.id);
   };
 
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInCompare) {
+      removeFromCompare(product.id);
+    } else if (!isCompareFull) {
+      addToCompare({
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        thumbnail: product.image,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        handle: product.handle,
+        notes: product.notes,
+        longevity: product.longevity,
+        sillage: product.sillage,
+      });
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1, ease: [0.165, 0.84, 0.44, 1] }}
+      transition={{ duration: 0.15, delay: index * 0.05 }}
     >
       <div
-        className="group relative cursor-pointer"
+        className="group relative cursor-pointer card-interactive p-0 overflow-hidden"
         onClick={handleCardClick}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-          {/* Art Deco Image Container */}
-          <div className="relative aspect-[3/4] overflow-hidden bg-secondary">
-            {/* Skeleton loader */}
-            {!isImageLoaded && (
-              <div className="absolute inset-0 bg-secondary animate-pulse" />
+        {/* Image Container */}
+        <div className="relative aspect-[4/5] overflow-hidden bg-[var(--surface)]">
+          {/* Skeleton loader */}
+          {!isImageLoaded && (
+            <div className="absolute inset-0 bg-[var(--surface)] animate-pulse" />
+          )}
+
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className={`object-cover transition-transform duration-300 ${
+              isHovered ? "scale-105" : "scale-100"
+            } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+            onLoad={() => setIsImageLoaded(true)}
+            unoptimized
+          />
+
+          {/* Wishlist Button - always visible */}
+          <button
+            onClick={handleToggleWishlist}
+            className="absolute top-3 left-3 w-9 h-9 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors duration-150"
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart
+              className={`h-4 w-4 transition-colors ${
+                isWishlisted ? "fill-[var(--destructive)] text-[var(--destructive)]" : "text-[var(--muted-foreground)]"
+              }`}
+            />
+          </button>
+
+          {/* Badges */}
+          <div className="absolute top-3 right-3 flex flex-col gap-1.5">
+            {product.isNew && (
+              <span className="badge badge-new">New</span>
             )}
-
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className={`object-cover transition-all duration-700 ease-out ${
-                isHovered ? "scale-105" : "scale-100"
-              } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
-              onLoad={() => setIsImageLoaded(true)}
-              unoptimized
-            />
-
-            {/* Art Deco Overlay */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.4 }}
-              className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"
-            />
-
-            {/* Art Deco Inner Frame - appears on hover */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: isHovered ? 1 : 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="absolute inset-4 border border-gold/50 pointer-events-none"
-            />
-
-            {/* Corner Ornaments */}
-            <div className="absolute top-3 left-3 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-              <span className="absolute top-0 left-0 w-full h-px bg-gold" />
-              <span className="absolute top-0 left-0 h-full w-px bg-gold" />
-            </div>
-            <div className="absolute top-3 right-3 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-              <span className="absolute top-0 right-0 w-full h-px bg-gold" />
-              <span className="absolute top-0 right-0 h-full w-px bg-gold" />
-            </div>
-            <div className="absolute bottom-3 left-3 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-              <span className="absolute bottom-0 left-0 w-full h-px bg-gold" />
-              <span className="absolute bottom-0 left-0 h-full w-px bg-gold" />
-            </div>
-            <div className="absolute bottom-3 right-3 w-6 h-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-              <span className="absolute bottom-0 right-0 w-full h-px bg-gold" />
-              <span className="absolute bottom-0 right-0 h-full w-px bg-gold" />
-            </div>
-
-            {/* Art Deco Badges */}
-            <div className="absolute top-5 left-5 flex flex-col gap-2">
-              {product.isNew && (
-                <span
-                  className="bg-gold text-primary font-display text-[10px] tracking-[0.15em] uppercase px-3 py-1.5"
-                  style={{ clipPath: 'polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)' }}
-                >
-                  New
-                </span>
-              )}
-              {product.isBestseller && (
-                <span
-                  className="bg-primary text-primary-foreground font-display text-[10px] tracking-[0.15em] uppercase px-3 py-1.5"
-                  style={{ clipPath: 'polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)' }}
-                >
-                  Bestseller
-                </span>
-              )}
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span
-                  className="bg-rose-gold text-white font-display text-[10px] tracking-[0.15em] uppercase px-3 py-1.5"
-                  style={{ clipPath: 'polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%)' }}
-                >
-                  Sale
-                </span>
-              )}
-            </div>
-
-            {/* Art Deco Wishlist Button */}
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleToggleWishlist}
-              className="absolute top-5 right-5 w-9 h-9 bg-white/95 backdrop-blur-sm flex items-center justify-center shadow-lg hover:bg-gold transition-colors duration-300 group/heart"
-            >
-              <Heart
-                className={`h-4 w-4 transition-colors ${
-                  isWishlisted ? "fill-rose-gold text-rose-gold" : "text-gray-700 group-hover/heart:text-primary"
-                }`}
-              />
-            </motion.button>
-
-            {/* Art Deco Quick Actions */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 15 }}
-              transition={{ duration: 0.4, ease: [0.165, 0.84, 0.44, 1] }}
-              className="absolute bottom-5 left-5 right-5 flex gap-2"
-            >
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 bg-gold text-primary font-display text-[10px] tracking-[0.2em] uppercase hover:bg-white transition-colors duration-300"
-              >
-                <ShoppingBag className="h-3.5 w-3.5" />
-                Add to Bag
-              </button>
-              <button
-                onClick={handleQuickView}
-                className="w-11 flex items-center justify-center bg-white/95 backdrop-blur-sm hover:bg-gold transition-colors duration-300 group/eye"
-              >
-                <Eye className="h-4 w-4 group-hover/eye:text-primary" />
-              </button>
-            </motion.div>
+            {product.isBestseller && (
+              <span className="badge badge-bestseller">Bestseller</span>
+            )}
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="badge badge-sale">Sale</span>
+            )}
           </div>
 
-          {/* Art Deco Info Section */}
-          <div className="pt-6 text-center relative">
-            {/* Decorative line */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 flex items-center gap-2">
-              <span className="h-px w-6 bg-gold/30" />
-              <span className="w-1 h-1 bg-gold/50 rotate-45" />
-              <span className="h-px w-6 bg-gold/30" />
-            </div>
-
-            <p className="font-display text-gold tracking-[0.25em] uppercase text-[10px] mb-2 mt-2">
-              {product.brand}
-            </p>
-            <h3 className="font-display text-lg tracking-[0.08em] mb-1.5 group-hover:text-gold transition-colors duration-300">
-              {product.name}
-            </h3>
-            <p className="font-serif text-muted-foreground text-sm mb-3 italic">
-              {product.category}
-            </p>
-
-            <div className="flex items-center justify-center gap-3">
-              <p className="font-display text-lg tracking-[0.05em]">
-                {formatPriceMajor(product.price, currency)}
-              </p>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <p className="font-serif text-sm text-muted-foreground line-through">
-                  {formatPriceMajor(product.originalPrice, currency)}
-                </p>
-              )}
-            </div>
-          </div>
+          {/* Compare Button - appears on hover */}
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            transition={{ duration: 0.15 }}
+            onClick={handleToggleCompare}
+            disabled={isCompareFull && !isInCompare}
+            className={`absolute bottom-3 right-3 px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-1.5 transition-colors duration-150 ${
+              isInCompare
+                ? "bg-[var(--primary)] text-white"
+                : isCompareFull
+                ? "bg-white/60 text-[var(--muted-foreground)] cursor-not-allowed"
+                : "bg-white/90 backdrop-blur-sm text-[var(--foreground)] hover:bg-white"
+            }`}
+            aria-label={isInCompare ? "Remove from compare" : "Add to compare"}
+          >
+            <GitCompare className="h-3 w-3" />
+            {isInCompare ? "Comparing" : "Compare"}
+          </motion.button>
         </div>
+
+        {/* Product Info */}
+        <div className="p-4 space-y-2">
+          {/* Brand */}
+          <p className="text-xs font-medium text-[var(--muted-foreground)] uppercase tracking-wide">
+            {product.brand}
+          </p>
+
+          {/* Name - 2 lines max */}
+          <h3 className="font-semibold text-[var(--foreground)] line-clamp-2 leading-snug">
+            {product.name}
+          </h3>
+
+          {/* Notes Preview - 1 line */}
+          {notesPreview && (
+            <p className="text-sm text-[var(--subtle)] line-clamp-1">
+              Top: {notesPreview}
+            </p>
+          )}
+
+          {/* Rating */}
+          <div className="flex items-center gap-1.5">
+            <div className="star-rating">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className={`h-3.5 w-3.5 ${
+                    i < Math.floor(rating) ? "fill-current" : "fill-none opacity-30"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="rating-text tabular-nums">{rating}</span>
+            <span className="rating-count">({reviewCount})</span>
+          </div>
+
+          {/* Size Options */}
+          {product.variants.length > 1 && (
+            <div className="flex flex-wrap gap-1.5">
+              {product.variants.slice(0, 3).map((variant) => (
+                <span
+                  key={variant.id}
+                  className="text-xs px-2 py-0.5 rounded-full bg-[var(--surface)] text-[var(--muted-foreground)] border border-[var(--border)]"
+                >
+                  {variant.title}
+                </span>
+              ))}
+              {product.variants.length > 3 && (
+                <span className="text-xs px-2 py-0.5 text-[var(--muted-foreground)]">
+                  +{product.variants.length - 3}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Price */}
+          <div className="flex items-center gap-2">
+            <span className={`price tabular-nums ${product.originalPrice && product.originalPrice > product.price ? "price-sale" : ""}`}>
+              {formatPriceMajor(product.price, currency)}
+            </span>
+            {product.originalPrice && product.originalPrice > product.price && (
+              <span className="price-sm price-original tabular-nums">
+                {formatPriceMajor(product.originalPrice, currency)}
+              </span>
+            )}
+          </div>
+
+          {/* Decision Row - Stock + Delivery */}
+          <p className="decision-row truncate">
+            <span className={stockStatus === "in_stock" ? "in-stock" : stockStatus === "low_stock" ? "low-stock" : "out-of-stock"}>
+              {stockStatus === "in_stock" ? "In stock" : stockStatus === "low_stock" ? "Low stock" : "Out of stock"}
+            </span>
+            {stockStatus !== "out_of_stock" && (
+              <> &bull; Delivers {deliveryEstimate}</>
+            )}
+          </p>
+
+          {/* Add to Bag Button */}
+          <button
+            onClick={handleAddToCart}
+            disabled={isAddingToCart || stockStatus === "out_of_stock"}
+            className="w-full btn-secondary btn-sm flex items-center justify-center gap-2 mt-2"
+          >
+            <Plus className="h-4 w-4" />
+            {isAddingToCart ? "Adding..." : "Add to Bag"}
+          </button>
+        </div>
+      </div>
     </motion.div>
   );
 }

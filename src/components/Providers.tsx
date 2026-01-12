@@ -6,6 +6,8 @@ import { StoreConfigProvider } from "@/context/StoreConfigContext";
 import { AuthProvider } from "@/context/AuthContext";
 import { CartProvider } from "@/context/CartContext";
 import { WishlistProvider } from "@/context/WishlistContext";
+import { CompareProvider } from "@/context/CompareContext";
+import { NavigationProvider } from "@/context/NavigationContext";
 import { ScrollToTop } from "@/components/ScrollToTop";
 
 export function Providers({ children }: { children: React.ReactNode }) {
@@ -33,8 +35,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         <AuthProvider>
           <CartProvider>
             <WishlistProvider>
-              <ScrollToTop />
-              {children}
+              <CompareProvider>
+                <NavigationProvider>
+                  <ScrollToTop />
+                  {children}
+                </NavigationProvider>
+              </CompareProvider>
             </WishlistProvider>
           </CartProvider>
         </AuthProvider>

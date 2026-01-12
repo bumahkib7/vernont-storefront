@@ -21,6 +21,7 @@ import {
   returnsApi,
   exchangesApi,
   marketingApi,
+  reviewsApi,
   type Product,
   type ProductsListResponse,
   type ProductCollection,
@@ -56,6 +57,12 @@ import {
   type ExchangeEligibilityResponse,
   type MarketingPreference,
   type Address,
+  type Review,
+  type ReviewListResponse,
+  type ReviewResponse,
+  type ReviewStats,
+  type ReviewStatsResponse,
+  type BatchReviewStatsResponse,
 } from './api';
 
 // ==================
@@ -168,6 +175,23 @@ export const queryKeys = {
     all: ['marketing'] as const,
     preferences: (customerId: string) =>
       [...queryKeys.marketing.all, 'preferences', customerId] as const,
+  },
+
+  // Reviews
+  reviews: {
+    all: ['reviews'] as const,
+    byProduct: (productId: string, params?: Parameters<typeof reviewsApi.getProductReviews>[1]) =>
+      [...queryKeys.reviews.all, 'product', productId, params] as const,
+    stats: (productId: string) =>
+      [...queryKeys.reviews.all, 'stats', productId] as const,
+    featured: (productId: string) =>
+      [...queryKeys.reviews.all, 'featured', productId] as const,
+    byId: (reviewId: string) =>
+      [...queryKeys.reviews.all, 'id', reviewId] as const,
+    myReviews: (params?: { page?: number; size?: number }) =>
+      [...queryKeys.reviews.all, 'my', params] as const,
+    batchStats: (productIds: string[]) =>
+      [...queryKeys.reviews.all, 'batch-stats', productIds] as const,
   },
 } as const;
 
@@ -1202,6 +1226,207 @@ export function usePublicSubscribe(
 ) {
   return useMutation({
     mutationFn: (data) => marketingApi.publicSubscribe(data),
+    ...options,
+  });
+}
+
+// ==================
+// REVIEWS HOOKS
+// ==================
+
+/**
+ * Fetch reviews for a product
+ */
+export function useProductReviews(
+  productId: string,
+  params?: Parameters<typeof reviewsApi.getProductReviews>[1],
+  options?: Omit<UseQueryOptions<ReviewListResponse>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.reviews.byProduct(productId, params),
+    queryFn: () => reviewsApi.getProductReviews(productId, params),
+    enabled: !!productId,
+    ...options,
+  });
+}
+
+/**
+ * Fetch review statistics for a product
+ */
+export function useProductReviewStats(
+  productId: string,
+  options?: Omit<UseQueryOptions<ReviewStatsResponse>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.reviews.stats(productId),
+    queryFn: () => reviewsApi.getProductStats(productId),
+    enabled: !!productId,
+    ...options,
+  });
+}
+
+/**
+ * Fetch featured reviews for a product
+ */
+export function useFeaturedReviews(
+  productId: string,
+  options?: Omit<UseQueryOptions<{ reviews: Review[] }>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.reviews.featured(productId),
+    queryFn: () => reviewsApi.getFeaturedReviews(productId),
+    enabled: !!productId,
+    ...options,
+  });
+}
+
+/**
+ * Fetch current customer's reviews
+ */
+export function useMyReviews(
+  params?: { page?: number; size?: number },
+  options?: Omit<UseQueryOptions<ReviewListResponse>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.reviews.myReviews(params),
+    queryFn: () => reviewsApi.getMyReviews(params),
+    ...options,
+  });
+}
+
+/**
+ * Create a review
+ */
+export function useCreateReview(
+  options?: UseMutationOptions<
+    ReviewResponse,
+    Error,
+    { productId: string; data: Parameters<typeof reviewsApi.createReview>[1] }
+  >
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ productId, data }) => reviewsApi.createReview(productId, data),
+    onSuccess: (data, variables) => {
+      // Invalidate product reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.byProduct(variables.productId),
+      });
+      // Invalidate stats
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.stats(variables.productId),
+      });
+      // Invalidate my reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.myReviews(),
+      });
+    },
+    ...options,
+  });
+}
+
+/**
+ * Update a review
+ */
+export function useUpdateReview(
+  options?: UseMutationOptions<
+    ReviewResponse,
+    Error,
+    { reviewId: string; productId: string; data: Parameters<typeof reviewsApi.updateReview>[1] }
+  >
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ reviewId, data }) => reviewsApi.updateReview(reviewId, data),
+    onSuccess: (data, variables) => {
+      // Invalidate product reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.byProduct(variables.productId),
+      });
+      // Invalidate stats
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.stats(variables.productId),
+      });
+      // Invalidate my reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.myReviews(),
+      });
+    },
+    ...options,
+  });
+}
+
+/**
+ * Delete a review
+ */
+export function useDeleteReview(
+  options?: UseMutationOptions<
+    { success: boolean; message: string },
+    Error,
+    { reviewId: string; productId: string }
+  >
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ reviewId }) => reviewsApi.deleteReview(reviewId),
+    onSuccess: (data, variables) => {
+      // Invalidate product reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.byProduct(variables.productId),
+      });
+      // Invalidate stats
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.stats(variables.productId),
+      });
+      // Invalidate my reviews
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.myReviews(),
+      });
+    },
+    ...options,
+  });
+}
+
+/**
+ * Vote on a review
+ */
+export function useVoteReview(
+  options?: UseMutationOptions<
+    ReviewResponse,
+    Error,
+    { reviewId: string; productId: string; helpful: boolean }
+  >
+) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ reviewId, helpful }) => reviewsApi.voteReview(reviewId, helpful),
+    onSuccess: (data, variables) => {
+      // Update the review in cache
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.reviews.byProduct(variables.productId),
+      });
+    },
+    ...options,
+  });
+}
+
+/**
+ * Report a review
+ */
+export function useReportReview(
+  options?: UseMutationOptions<
+    { success: boolean; message: string },
+    Error,
+    { reviewId: string; reason: string; description?: string }
+  >
+) {
+  return useMutation({
+    mutationFn: ({ reviewId, reason, description }) =>
+      reviewsApi.reportReview(reviewId, reason, description),
     ...options,
   });
 }

@@ -29,6 +29,8 @@ export interface DisplayProduct {
     heart: string[];
     base: string[];
   };
+  longevity?: number;
+  sillage?: number;
   variantId?: string;
   currency?: string;
   variants: Array<{
@@ -83,6 +85,22 @@ export function transformProduct(product: Product): DisplayProduct {
   const isNew = combined.includes('new arrival') || combined.includes('new release');
   const isBestseller = combined.includes('bestseller') || combined.includes('best seller');
 
+  // Extract fragrance notes from metadata
+  const fragranceMetadata = product.metadata?.fragrance;
+  const notes = fragranceMetadata?.notes ? {
+    top: fragranceMetadata.notes.top ?? [],
+    heart: fragranceMetadata.notes.heart ?? [],
+    base: fragranceMetadata.notes.base ?? [],
+  } : undefined;
+
+  // Override gender from metadata if available
+  if (fragranceMetadata?.gender) {
+    const metadataGender = fragranceMetadata.gender.toLowerCase();
+    if (metadataGender === 'masculine') gender = 'men';
+    else if (metadataGender === 'feminine') gender = 'women';
+    else if (metadataGender === 'unisex') gender = 'unisex';
+  }
+
   // Collect all images from imageUrls array (these are strings in the DTO)
   const images: string[] = [];
   if (product.thumbnail) images.push(product.thumbnail);
@@ -102,11 +120,14 @@ export function transformProduct(product: Product): DisplayProduct {
     originalPrice,
     image: product.thumbnail ?? uniqueImages[0] ?? '/placeholder.jpg',
     images: uniqueImages.length > 0 ? uniqueImages : ['/placeholder.jpg'],
-    category: 'Eau de Parfum', // Default category since DTO doesn't include it
+    category: fragranceMetadata?.concentration || 'Eau de Parfum',
     gender,
     isNew,
     isBestseller,
     description: product.description ?? undefined,
+    notes,
+    longevity: fragranceMetadata?.longevity ?? undefined,
+    sillage: fragranceMetadata?.sillage ?? undefined,
     currency: product.currency ?? firstVariant?.currency ?? 'GBP',
     variantId: firstVariant?.id,
     variants: product.variants.map((v: StorefrontVariant) => {

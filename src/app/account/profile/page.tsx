@@ -3,9 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Save, Loader2, Check, AlertCircle, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Save, Loader2, Check, AlertCircle, Trash2, Lock, User } from "lucide-react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -43,7 +41,6 @@ export default function ProfilePage() {
     },
   });
 
-  // Initialize form with user data
   useEffect(() => {
     if (user) {
       setFormData({
@@ -85,183 +82,203 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="space-y-8">
-      {/* Header */}
-      <div>
-        <h1 className="font-display text-3xl tracking-wide mb-2">Profile Settings</h1>
-        <p className="font-serif text-muted-foreground">
-          Manage your personal information
-        </p>
-      </div>
-
+    <div className="space-y-6">
       {/* Profile Form */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-card border border-border p-6"
+        className="bg-[var(--surface)] border border-[var(--border)] rounded-lg overflow-hidden"
       >
-        <h2 className="font-display text-xl tracking-wide mb-6">Personal Information</h2>
-
-        {/* Success Message */}
-        {isSaved && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-green-500/10 border border-green-500/20 text-green-500 text-sm font-serif flex items-center gap-2"
-          >
-            <Check className="h-4 w-4" />
-            Profile updated successfully
-          </motion.div>
-        )}
-
-        {/* Error Message */}
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-serif flex items-center gap-2"
-          >
-            <AlertCircle className="h-4 w-4" />
-            {error}
-          </motion.div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* First Name */}
-            <div>
-              <label className="block font-display text-sm tracking-wider uppercase mb-2">
-                First Name
-              </label>
-              <Input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="John"
-                className="h-12 font-serif bg-background border-border focus:border-gold"
-                disabled={isLoading}
-              />
-            </div>
-
-            {/* Last Name */}
-            <div>
-              <label className="block font-display text-sm tracking-wider uppercase mb-2">
-                Last Name
-              </label>
-              <Input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                placeholder="Doe"
-                className="h-12 font-serif bg-background border-border focus:border-gold"
-                disabled={isLoading}
-              />
-            </div>
+        <div className="flex items-center gap-3 p-5 border-b border-[var(--border)]">
+          <div className="h-10 w-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center">
+            <User className="h-5 w-5 text-[var(--primary)]" />
           </div>
-
-          {/* Email (Read Only) */}
           <div>
-            <label className="block font-display text-sm tracking-wider uppercase mb-2">
-              Email Address
-            </label>
-            <Input
-              type="email"
-              value={user?.email || ""}
-              className="h-12 font-serif bg-secondary border-border text-muted-foreground cursor-not-allowed"
-              disabled
-            />
-            <p className="mt-1 text-xs font-serif text-muted-foreground">
-              Email cannot be changed
-            </p>
+            <h2 className="font-semibold">Personal Information</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">Update your profile details</p>
           </div>
+        </div>
 
-          {/* Phone */}
-          <div>
-            <label className="block font-display text-sm tracking-wider uppercase mb-2">
-              Phone Number
-            </label>
-            <Input
-              type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              placeholder="+1 (555) 000-0000"
-              className="h-12 font-serif bg-background border-border focus:border-gold"
-              disabled={isLoading}
-            />
-          </div>
-
-          {/* Submit Button */}
-          <div className="pt-4">
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="btn-luxury bg-gold text-primary hover:bg-gold/90"
+        <div className="p-5">
+          {/* Success Message */}
+          {isSaved && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-5 p-3 bg-green-500/10 border border-green-500/20 rounded-lg text-green-600 text-sm flex items-center gap-2"
             >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-              ) : (
-                <Save className="h-4 w-4 mr-2" />
-              )}
-              Save Changes
-            </Button>
-          </div>
-        </form>
+              <Check className="h-4 w-4" />
+              Profile updated successfully
+            </motion.div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-5 p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-[var(--destructive)] text-sm flex items-center gap-2"
+            >
+              <AlertCircle className="h-4 w-4" />
+              {error}
+            </motion.div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* First Name */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  placeholder="John"
+                  className="w-full px-3 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-sm"
+                  disabled={isLoading}
+                />
+              </div>
+
+              {/* Last Name */}
+              <div>
+                <label className="block text-sm font-medium mb-1.5">
+                  Last Name
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Doe"
+                  className="w-full px-3 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-sm"
+                  disabled={isLoading}
+                />
+              </div>
+            </div>
+
+            {/* Email (Read Only) */}
+            <div>
+              <label className="block text-sm font-medium mb-1.5">
+                Email Address
+              </label>
+              <input
+                type="email"
+                value={user?.email || ""}
+                className="w-full px-3 py-2.5 bg-[var(--background)]/50 border border-[var(--border)] rounded-lg text-[var(--muted-foreground)] cursor-not-allowed text-sm"
+                disabled
+              />
+              <p className="mt-1.5 text-xs text-[var(--muted-foreground)]">
+                Email cannot be changed
+              </p>
+            </div>
+
+            {/* Phone */}
+            <div>
+              <label className="block text-sm font-medium mb-1.5">
+                Phone Number <span className="text-[var(--muted-foreground)]">(optional)</span>
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="+44 7123 456789"
+                className="w-full px-3 py-2.5 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-sm"
+                disabled={isLoading}
+              />
+            </div>
+
+            {/* Submit Button */}
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="btn-primary flex items-center gap-2"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Save className="h-4 w-4" />
+                )}
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
       </motion.div>
 
       {/* Password Section */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="bg-card border border-border p-6"
+        transition={{ delay: 0.05 }}
+        className="bg-[var(--surface)] border border-[var(--border)] rounded-lg overflow-hidden"
       >
-        <h2 className="font-display text-xl tracking-wide mb-4">Password</h2>
-        <p className="font-serif text-muted-foreground mb-4">
-          To change your password, use the password reset flow.
-        </p>
-        <Button
-          variant="outline"
-          className="border-border hover:border-gold"
-          onClick={() => window.location.href = "/forgot-password"}
-        >
-          Change Password
-        </Button>
+        <div className="flex items-center gap-3 p-5 border-b border-[var(--border)]">
+          <div className="h-10 w-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center">
+            <Lock className="h-5 w-5 text-[var(--primary)]" />
+          </div>
+          <div>
+            <h2 className="font-semibold">Password</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">Manage your password</p>
+          </div>
+        </div>
+
+        <div className="p-5">
+          <p className="text-sm text-[var(--muted-foreground)] mb-4">
+            To change your password, use the password reset flow. We&apos;ll send you an email with instructions.
+          </p>
+          <button
+            onClick={() => window.location.href = "/forgot-password"}
+            className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--background)] transition-colors text-sm font-medium"
+          >
+            Change Password
+          </button>
+        </div>
       </motion.div>
 
       {/* Danger Zone */}
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="bg-card border border-destructive/20 p-6"
+        transition={{ delay: 0.1 }}
+        className="bg-[var(--surface)] border border-[var(--destructive)]/20 rounded-lg overflow-hidden"
       >
-        <h2 className="font-display text-xl tracking-wide text-destructive mb-4">
-          Danger Zone
-        </h2>
-        <p className="font-serif text-muted-foreground mb-4">
-          Once you delete your account, there is no going back. Please be certain.
-        </p>
-        <Button
-          variant="outline"
-          className="border-destructive text-destructive hover:bg-destructive hover:text-white"
-          onClick={() => setShowDeleteDialog(true)}
-          disabled={deleteAccountMutation.isPending}
-        >
-          {deleteAccountMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin mr-2" />
-          ) : (
-            <Trash2 className="h-4 w-4 mr-2" />
-          )}
-          Delete Account
-        </Button>
+        <div className="flex items-center gap-3 p-5 border-b border-[var(--destructive)]/20">
+          <div className="h-10 w-10 rounded-lg bg-[var(--destructive)]/10 flex items-center justify-center">
+            <Trash2 className="h-5 w-5 text-[var(--destructive)]" />
+          </div>
+          <div>
+            <h2 className="font-semibold text-[var(--destructive)]">Danger Zone</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">Irreversible actions</p>
+          </div>
+        </div>
+
+        <div className="p-5">
+          <p className="text-sm text-[var(--muted-foreground)] mb-4">
+            Once you delete your account, there is no going back. This will permanently remove all your data including order history, wishlist, and addresses.
+          </p>
+          <button
+            onClick={() => setShowDeleteDialog(true)}
+            disabled={deleteAccountMutation.isPending}
+            className="flex items-center gap-2 px-4 py-2 border border-[var(--destructive)]/30 text-[var(--destructive)] rounded-lg hover:bg-[var(--destructive)]/10 transition-colors text-sm font-medium disabled:opacity-50"
+          >
+            {deleteAccountMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Trash2 className="h-4 w-4" />
+            )}
+            Delete Account
+          </button>
+        </div>
       </motion.div>
 
       {/* Delete Account Confirmation Dialog */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-        <AlertDialogContent>
+        <AlertDialogContent className="bg-[var(--surface)] border border-[var(--border)]">
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
@@ -271,10 +288,10 @@ export default function ProfilePage() {
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel className="border-[var(--border)]">Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={() => deleteAccountMutation.mutate()}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-[var(--destructive)] text-white hover:bg-[var(--destructive)]/90"
             >
               {deleteAccountMutation.isPending ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />

@@ -8,42 +8,60 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { loadStripe, Stripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { Lock, AlertCircle } from "lucide-react";
+import { Lock, AlertCircle, ArrowLeft, Loader2, Shield } from "lucide-react";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { formatPrice } from "@/context/CartContext";
 
-// Stripe appearance for luxury styling
+// Stripe appearance matching Clarity Commerce design system
 const stripeAppearance = {
-  theme: "flat" as const,
+  theme: "stripe" as const,
   variables: {
-    fontFamily: '"Cormorant Garamond", Georgia, serif',
-    fontSizeBase: "16px",
-    colorPrimary: "#D4AF37",
-    colorBackground: "#FFFFFF",
-    colorText: "#1A1A1A",
-    colorDanger: "#B76E79",
-    borderRadius: "0px",
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontSizeBase: "14px",
+    colorPrimary: "#18181b",
+    colorBackground: "#ffffff",
+    colorText: "#18181b",
+    colorDanger: "#dc2626",
+    borderRadius: "8px",
     spacingUnit: "4px",
   },
   rules: {
     ".Input": {
-      border: "1px solid #E5E5E5",
-      padding: "12px 16px",
+      border: "1px solid #e4e4e7",
+      padding: "12px 14px",
+      borderRadius: "8px",
+      fontSize: "14px",
+      transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+    },
+    ".Input:hover": {
+      borderColor: "#a1a1aa",
     },
     ".Input:focus": {
-      border: "1px solid #D4AF37",
-      boxShadow: "0 0 0 1px #D4AF37",
+      borderColor: "#18181b",
+      boxShadow: "0 0 0 3px rgba(24, 24, 27, 0.1)",
     },
     ".Label": {
-      fontFamily: '"Crimson Pro", Georgia, serif',
-      fontSize: "14px",
+      fontSize: "13px",
       fontWeight: "500",
-      marginBottom: "8px",
+      marginBottom: "6px",
+      color: "#3f3f46",
     },
     ".Error": {
-      color: "#B76E79",
-      fontSize: "13px",
+      color: "#dc2626",
+      fontSize: "12px",
+      marginTop: "4px",
+    },
+    ".Tab": {
+      borderRadius: "8px",
+      border: "1px solid #e4e4e7",
+      padding: "12px 16px",
+    },
+    ".Tab:hover": {
+      borderColor: "#a1a1aa",
+    },
+    ".Tab--selected": {
+      borderColor: "#18181b",
+      backgroundColor: "#fafafa",
     },
   },
 };
@@ -103,8 +121,6 @@ function PaymentForm({
       if (paymentIntent && paymentIntent.status === "succeeded") {
         onSuccess(paymentIntent.id);
       } else if (paymentIntent && paymentIntent.status === "requires_action") {
-        // 3D Secure or other authentication required
-        // Stripe handles this automatically with redirect: "if_required"
         setError("Additional authentication required. Please complete the verification.");
       } else {
         setError("Payment was not completed. Please try again.");
@@ -118,13 +134,20 @@ function PaymentForm({
 
   return (
     <form onSubmit={handleSubmit}>
-      <div className="p-4 bg-secondary/30 mb-6 flex items-center gap-2">
-        <Lock className="h-4 w-4 text-gold" />
-        <span className="font-serif text-sm text-muted-foreground">
-          All transactions are secure and encrypted by Stripe
-        </span>
+      {/* Security Badge */}
+      <div className="mb-6 p-3 bg-[var(--surface)] border border-[var(--border)] rounded-lg flex items-center gap-3">
+        <div className="w-8 h-8 rounded-full bg-[var(--success)]/10 flex items-center justify-center">
+          <Shield className="h-4 w-4 text-[var(--success)]" />
+        </div>
+        <div>
+          <p className="text-sm font-medium">Secure Payment</p>
+          <p className="text-xs text-[var(--muted-foreground)]">
+            All transactions are encrypted by Stripe
+          </p>
+        </div>
       </div>
 
+      {/* Payment Element */}
       <div className="mb-6">
         <PaymentElement
           onReady={() => setIsReady(true)}
@@ -134,44 +157,44 @@ function PaymentForm({
         />
       </div>
 
+      {/* Error Message */}
       {error && (
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 bg-red-50 border border-red-200 flex items-start gap-3"
+          className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-lg flex items-start gap-3"
         >
-          <AlertCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
-          <p className="text-sm text-red-700 font-serif">{error}</p>
+          <AlertCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
+          <p className="text-sm text-[var(--destructive)]">{error}</p>
         </motion.div>
       )}
 
-      <div className="flex items-center justify-between mt-8">
+      {/* Actions */}
+      <div className="flex items-center justify-between pt-6 border-t border-[var(--border)]">
         <button
           type="button"
           onClick={onBack}
           disabled={isProcessing}
-          className="flex items-center gap-2 font-serif text-sm text-muted-foreground hover:text-gold transition-colors disabled:opacity-50"
+          className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors disabled:opacity-50"
         >
+          <ArrowLeft className="h-4 w-4" />
           Return to shipping
         </button>
-        <Button
+
+        <button
           type="submit"
           disabled={!stripe || !elements || isProcessing || !isReady}
-          className="btn-luxury bg-gold text-primary hover:bg-gold/90 min-w-[200px] disabled:opacity-50"
+          className="btn-primary min-w-[180px] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? (
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full"
-            />
+            <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
             <>
-              <Lock className="h-4 w-4 mr-2" />
+              <Lock className="h-4 w-4" />
               Pay {formatPrice(total, currency)}
             </>
           )}
-        </Button>
+        </button>
       </div>
     </form>
   );
@@ -196,12 +219,11 @@ export function StripePaymentForm({
 
   if (!stripePromise || !clientSecret) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="w-8 h-8 border-2 border-gold/30 border-t-gold rounded-full"
-        />
+      <div className="flex flex-col items-center justify-center py-12">
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)] mb-4" />
+        <p className="text-sm text-[var(--muted-foreground)]">
+          Loading payment options...
+        </p>
       </div>
     );
   }

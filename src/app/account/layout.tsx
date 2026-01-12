@@ -1,20 +1,33 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { User, Package, MapPin, Heart, Settings, LogOut, Loader2, RotateCcw } from "lucide-react";
-import { PageLayout } from "@/components/layout/PageLayout";
+import {
+  User,
+  Package,
+  MapPin,
+  Heart,
+  Settings,
+  LogOut,
+  Loader2,
+  RotateCcw,
+  ChevronRight,
+  Menu,
+  X,
+} from "lucide-react";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
 
 const accountNavigation = [
-  { name: "Dashboard", href: "/account", icon: User },
+  { name: "Overview", href: "/account", icon: User },
   { name: "Orders", href: "/account/orders", icon: Package },
   { name: "Returns", href: "/account/returns", icon: RotateCcw },
   { name: "Addresses", href: "/account/addresses", icon: MapPin },
   { name: "Wishlist", href: "/wishlist", icon: Heart },
-  { name: "Settings", href: "/account/profile", icon: Settings },
+  { name: "Profile", href: "/account/profile", icon: Settings },
 ];
 
 export default function AccountLayout({
@@ -25,9 +38,12 @@ export default function AccountLayout({
   const router = useRouter();
   const pathname = usePathname();
   const { user, isAuthenticated, isLoading, logout } = useAuth();
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
 
-  // Redirect to login if not authenticated
+  // Redirect to login if not authenticated (after initial load completes)
   useEffect(() => {
+    // Only redirect if we've finished loading AND we're not authenticated
+    // The isAuthenticated can come from persisted Zustand state, so we trust it
     if (!isLoading && !isAuthenticated) {
       router.push(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
@@ -38,100 +54,166 @@ export default function AccountLayout({
     router.push("/");
   };
 
-  // Show loading while checking auth
-  if (isLoading) {
+  // Show loading only if we're loading AND not authenticated from persisted state
+  // If user is authenticated (from persisted state), show content immediately
+  if (!isAuthenticated && isLoading) {
     return (
-      <PageLayout>
+      <div className="min-h-screen bg-[var(--background)]">
+        <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-gold" />
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
-      </PageLayout>
+        <Footer />
+      </div>
     );
   }
 
-  // Don't render if not authenticated (will redirect)
+  // If not authenticated and not loading, we'll be redirecting
   if (!isAuthenticated) {
     return (
-      <PageLayout>
+      <div className="min-h-screen bg-[var(--background)]">
+        <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-gold" />
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
-      </PageLayout>
+        <Footer />
+      </div>
     );
   }
 
+  const currentPage = accountNavigation.find((item) => item.href === pathname);
+
   return (
-    <PageLayout>
-      <div className="min-h-[80vh] py-12">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row gap-8">
-            {/* Sidebar */}
-            <motion.aside
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3 }}
-              className="lg:w-64 flex-shrink-0"
-            >
-              {/* User Info */}
-              <div className="mb-6 p-6 bg-card border border-border">
-                <div className="flex items-center gap-4">
-                  <div className="h-14 w-14 rounded-full bg-gold/20 flex items-center justify-center text-xl font-display text-gold">
-                    {user?.firstName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
-                  </div>
-                  <div>
-                    <p className="font-display text-lg tracking-wide">
-                      {user?.firstName} {user?.lastName}
-                    </p>
-                    <p className="font-serif text-sm text-muted-foreground truncate max-w-[150px]">
-                      {user?.email}
-                    </p>
-                  </div>
-                </div>
+    <div className="min-h-screen bg-[var(--background)]">
+      <Header />
+
+      {/* Account Header */}
+      <div className="border-b border-[var(--border)] bg-[var(--surface)]">
+        <div className="max-w-7xl mx-auto px-4 py-6">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              {/* Avatar */}
+              <div className="h-12 w-12 rounded-full bg-[var(--primary)] flex items-center justify-center text-lg font-semibold text-white">
+                {user?.firstName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || "U"}
               </div>
+              <div>
+                <h1 className="text-xl font-semibold">
+                  {user?.firstName ? `${user.firstName} ${user.lastName || ""}`.trim() : "My Account"}
+                </h1>
+                <p className="text-sm text-[var(--muted-foreground)]">{user?.email}</p>
+              </div>
+            </div>
 
-              {/* Navigation */}
-              <nav className="space-y-1">
-                {accountNavigation.map((item) => {
-                  const isActive = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      className={`flex items-center gap-3 px-4 py-3 font-serif text-sm transition-colors ${
-                        isActive
-                          ? "bg-gold/10 text-gold border-l-2 border-gold"
-                          : "hover:bg-secondary text-muted-foreground hover:text-foreground"
-                      }`}
-                    >
-                      <item.icon className="h-4 w-4" />
-                      {item.name}
-                    </Link>
-                  );
-                })}
-
-                {/* Logout */}
-                <button
-                  onClick={handleLogout}
-                  className="flex items-center gap-3 px-4 py-3 w-full font-serif text-sm text-destructive hover:bg-secondary transition-colors"
-                >
-                  <LogOut className="h-4 w-4" />
-                  Sign Out
-                </button>
-              </nav>
-            </motion.aside>
-
-            {/* Main Content */}
-            <motion.main
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.1 }}
-              className="flex-1 min-w-0"
+            {/* Mobile menu toggle */}
+            <button
+              onClick={() => setMobileNavOpen(!mobileNavOpen)}
+              className="lg:hidden p-2 rounded-lg hover:bg-[var(--background)] transition-colors"
             >
-              {children}
-            </motion.main>
+              {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+
+            {/* Desktop logout */}
+            <button
+              onClick={handleLogout}
+              className="hidden lg:flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--destructive)] transition-colors"
+            >
+              <LogOut className="h-4 w-4" />
+              Sign Out
+            </button>
           </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center gap-1 mt-6 -mb-px">
+            {accountNavigation.map((item) => {
+              const isActive = pathname === item.href;
+              return (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors ${
+                    isActive
+                      ? "border-[var(--primary)] text-[var(--primary)]"
+                      : "border-transparent text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:border-[var(--border)]"
+                  }`}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.name}
+                </Link>
+              );
+            })}
+          </nav>
         </div>
+
+        {/* Mobile Navigation */}
+        {mobileNavOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="lg:hidden border-t border-[var(--border)]"
+          >
+            <nav className="px-4 py-2">
+              {accountNavigation.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={() => setMobileNavOpen(false)}
+                    className={`flex items-center justify-between py-3 border-b border-[var(--border)] last:border-0 ${
+                      isActive
+                        ? "text-[var(--primary)]"
+                        : "text-[var(--foreground)]"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <item.icon className="h-4 w-4" />
+                      <span className="text-sm font-medium">{item.name}</span>
+                    </div>
+                    <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)]" />
+                  </Link>
+                );
+              })}
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-3 py-3 w-full text-[var(--destructive)]"
+              >
+                <LogOut className="h-4 w-4" />
+                <span className="text-sm font-medium">Sign Out</span>
+              </button>
+            </nav>
+          </motion.div>
+        )}
       </div>
-    </PageLayout>
+
+      {/* Breadcrumb */}
+      {pathname !== "/account" && (
+        <div className="max-w-7xl mx-auto px-4 py-4">
+          <nav className="flex items-center gap-2 text-sm">
+            <Link href="/account" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
+              Account
+            </Link>
+            <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)]" />
+            <span className="text-[var(--foreground)] font-medium">
+              {currentPage?.name || "Page"}
+            </span>
+          </nav>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        <motion.div
+          key={pathname}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          {children}
+        </motion.div>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

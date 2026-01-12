@@ -5,9 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
 
 // Google OAuth Client ID - should be in env
@@ -108,154 +107,173 @@ function LoginContent() {
 
   if (authLoading) {
     return (
-      <PageLayout>
+      <div className="min-h-screen bg-[var(--background)]">
+        <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-gold" />
+          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
-      </PageLayout>
+        <Footer />
+      </div>
     );
   }
 
   return (
-    <PageLayout>
-      <div className="min-h-[80vh] flex items-center justify-center px-4 py-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md"
-        >
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="font-display text-3xl md:text-4xl tracking-wide mb-3">
-              Welcome Back
-            </h1>
-            <p className="font-serif text-muted-foreground">
-              Sign in to your account to continue
-            </p>
-          </div>
+    <div className="min-h-screen bg-[var(--background)]">
+      <Header />
 
-          {/* Card */}
-          <div className="bg-card border border-border p-8">
-            {/* Google Sign In */}
-            {GOOGLE_CLIENT_ID && (
-              <>
-                <div id="google-signin-button" className="w-full mb-6" />
+      <main className="py-12 lg:py-20">
+        <div className="max-w-md mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Header */}
+            <div className="text-center mb-8">
+              <h1 className="text-2xl lg:text-3xl font-bold mb-2">
+                Welcome back
+              </h1>
+              <p className="text-[var(--muted-foreground)]">
+                Sign in to your account to continue
+              </p>
+            </div>
 
-                <div className="relative mb-6">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-border" />
+            {/* Card */}
+            <div className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-6 lg:p-8">
+              {/* Google Sign In */}
+              {GOOGLE_CLIENT_ID && (
+                <>
+                  <div id="google-signin-button" className="w-full mb-6" />
+
+                  <div className="relative mb-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-[var(--border)]" />
+                    </div>
+                    <div className="relative flex justify-center text-sm">
+                      <span className="px-4 bg-[var(--surface)] text-[var(--muted-foreground)]">
+                        or continue with email
+                      </span>
+                    </div>
                   </div>
-                  <div className="relative flex justify-center text-sm">
-                    <span className="px-4 bg-card font-serif text-muted-foreground">
-                      or continue with email
-                    </span>
-                  </div>
-                </div>
-              </>
-            )}
+                </>
+              )}
 
-            {/* Error Message */}
-            {error && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-serif"
-              >
-                {error}
-              </motion.div>
-            )}
-
-            {/* Login Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
-              {/* Email */}
-              <div>
-                <label className="block font-display text-sm tracking-wider uppercase mb-2">
-                  Email Address
-                </label>
-                <div className="relative">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="pl-11 h-12 font-serif bg-background border-border focus:border-gold"
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-
-              {/* Password */}
-              <div>
-                <label className="block font-display text-sm tracking-wider uppercase mb-2">
-                  Password
-                </label>
-                <div className="relative">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your password"
-                    className="pl-11 pr-11 h-12 font-serif bg-background border-border focus:border-gold"
-                    disabled={isLoading}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Forgot Password */}
-              <div className="text-right">
-                <Link
-                  href="/forgot-password"
-                  className="font-serif text-sm text-muted-foreground hover:text-gold transition-colors"
+              {/* Error Message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-[var(--destructive)] text-sm"
                 >
-                  Forgot your password?
+                  {error}
+                </motion.div>
+              )}
+
+              {/* Login Form */}
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full pl-10 pr-4 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                      disabled={isLoading}
+                    />
+                  </div>
+                </div>
+
+                {/* Password */}
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      className="w-full pl-10 pr-12 py-3 bg-[var(--background)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                      disabled={isLoading}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4" />
+                      ) : (
+                        <Eye className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Forgot Password */}
+                <div className="text-right">
+                  <Link
+                    href="/forgot-password"
+                    className="text-sm text-[var(--primary)] hover:underline"
+                  >
+                    Forgot your password?
+                  </Link>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full btn-primary btn-lg flex items-center justify-center gap-2"
+                >
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <>
+                      Sign In
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              {/* Register Link */}
+              <p className="mt-6 text-center text-[var(--muted-foreground)]">
+                Don&apos;t have an account?{" "}
+                <Link
+                  href={`/register${redirect !== "/account" ? `?redirect=${redirect}` : ""}`}
+                  className="text-[var(--primary)] hover:underline font-medium"
+                >
+                  Create one
                 </Link>
+              </p>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="mt-8 flex items-center justify-center gap-6 text-sm text-[var(--muted-foreground)]">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-[var(--success)]" />
+                <span>Secure login</span>
               </div>
+              <div className="flex items-center gap-2">
+                <Lock className="w-3.5 h-3.5" />
+                <span>SSL encrypted</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </main>
 
-              {/* Submit Button */}
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="w-full h-12 btn-luxury bg-gold text-primary hover:bg-gold/90"
-              >
-                {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <>
-                    Sign In
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </form>
-
-            {/* Register Link */}
-            <p className="mt-8 text-center font-serif text-muted-foreground">
-              Don&apos;t have an account?{" "}
-              <Link
-                href={`/register${redirect !== "/account" ? `?redirect=${redirect}` : ""}`}
-                className="text-gold hover:underline"
-              >
-                Create one
-              </Link>
-            </p>
-          </div>
-        </motion.div>
-      </div>
-    </PageLayout>
+      <Footer />
+    </div>
   );
 }
 
@@ -263,11 +281,13 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <PageLayout>
+        <div className="min-h-screen bg-[var(--background)]">
+          <Header />
           <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-gold" />
+            <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
           </div>
-        </PageLayout>
+          <Footer />
+        </div>
       }
     >
       <LoginContent />

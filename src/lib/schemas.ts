@@ -59,6 +59,42 @@ export const StorefrontVariantSchema = z.object({
 export type StorefrontVariant = z.infer<typeof StorefrontVariantSchema>;
 
 /**
+ * Fragrance Notes schema - matches backend FragranceNotes
+ */
+export const FragranceNotesSchema = z.object({
+  top: z.array(z.string()).nullable().optional(),
+  heart: z.array(z.string()).nullable().optional(),
+  base: z.array(z.string()).nullable().optional(),
+});
+
+export type FragranceNotes = z.infer<typeof FragranceNotesSchema>;
+
+/**
+ * Fragrance Metadata schema - matches backend FragranceMetadata
+ */
+export const FragranceMetadataSchema = z.object({
+  notes: FragranceNotesSchema.nullable().optional(),
+  concentration: z.string().nullable().optional(),
+  longevity: z.number().nullable().optional(),
+  sillage: z.number().nullable().optional(),
+  gender: z.string().nullable().optional(),
+  season: z.array(z.string()).nullable().optional(),
+  occasion: z.array(z.string()).nullable().optional(),
+  ingredients: z.string().nullable().optional(),
+});
+
+export type FragranceMetadata = z.infer<typeof FragranceMetadataSchema>;
+
+/**
+ * Product metadata schema
+ */
+export const ProductMetadataSchema = z.object({
+  fragrance: FragranceMetadataSchema.nullable().optional(),
+}).passthrough();
+
+export type ProductMetadata = z.infer<typeof ProductMetadataSchema>;
+
+/**
  * StorefrontProductDto
  */
 export const StorefrontProductSchema = z.object({
@@ -72,6 +108,7 @@ export const StorefrontProductSchema = z.object({
   lowestPriceMinor: z.number().nullable().optional(),
   currency: z.string().nullable().optional(),
   variants: z.array(StorefrontVariantSchema).default([]),
+  metadata: ProductMetadataSchema.nullable().optional(),
 });
 
 export type StorefrontProduct = z.infer<typeof StorefrontProductSchema>;
@@ -401,6 +438,7 @@ export const StoreOrderLineItemSchema = z.object({
   description: z.string().nullable().optional(),
   thumbnail: z.string().nullable().optional(),
   variant_id: z.string().nullable().optional(),
+  variant_title: z.string().nullable().optional(),
   quantity: z.number(),
   unit_price: z.number(),
   total: z.number(),
@@ -645,35 +683,49 @@ export type MeResponse = z.infer<typeof MeResponseSchema>;
 // RETURN SCHEMAS
 // ==================
 
-export const ReturnItemSchema = z.object({
-  item_id: z.string(),
-  quantity: z.number(),
-  reason_id: z.string().optional(),
-  note: z.string().optional(),
-});
-
-export type ReturnItem = z.infer<typeof ReturnItemSchema>;
-
-export const ReturnSchema = z.object({
+export const StoreReturnItemSchema = z.object({
   id: z.string(),
-  order_id: z.string(),
-  status: z.string(),
-  items: z.array(ReturnItemSchema).optional(),
-  refund_amount: z.number().optional(),
-  created_at: z.string(),
-  updated_at: z.string(),
+  orderLineItemId: z.string(),
+  variantId: z.string().nullable().optional(),
+  title: z.string(),
+  description: z.string().nullable().optional(),
+  thumbnail: z.string().nullable().optional(),
+  quantity: z.number(),
+  unitPrice: z.number(),
+  total: z.number(),
 });
 
-export type Return = z.infer<typeof ReturnSchema>;
+export type StoreReturnItem = z.infer<typeof StoreReturnItemSchema>;
+
+export const StoreReturnSchema = z.object({
+  id: z.string(),
+  orderId: z.string(),
+  orderDisplayId: z.number().nullable().optional(),
+  status: z.string(),
+  reason: z.string(),
+  reasonNote: z.string().nullable().optional(),
+  refundAmount: z.number(),
+  currencyCode: z.string(),
+  items: z.array(StoreReturnItemSchema),
+  requestedAt: z.string(),
+  approvedAt: z.string().nullable().optional(),
+  receivedAt: z.string().nullable().optional(),
+  refundedAt: z.string().nullable().optional(),
+  returnDeadline: z.string(),
+  daysRemaining: z.number(),
+  canCancel: z.boolean(),
+});
+
+export type StoreReturn = z.infer<typeof StoreReturnSchema>;
 
 export const ReturnResponseSchema = z.object({
-  return: ReturnSchema,
+  return_request: StoreReturnSchema,
 });
 
 export type ReturnResponse = z.infer<typeof ReturnResponseSchema>;
 
 export const ReturnListResponseSchema = z.object({
-  returns: z.array(ReturnSchema),
+  returns: z.array(StoreReturnSchema),
   count: z.number(),
   offset: z.number(),
   limit: z.number(),
@@ -681,13 +733,25 @@ export const ReturnListResponseSchema = z.object({
 
 export type ReturnListResponse = z.infer<typeof ReturnListResponseSchema>;
 
+export const EligibleItemSchema = z.object({
+  orderLineItemId: z.string(),
+  variantId: z.string().nullable().optional(),
+  title: z.string(),
+  thumbnail: z.string().nullable().optional(),
+  quantity: z.number(),
+  returnableQuantity: z.number(),
+  unitPrice: z.number(),
+  currencyCode: z.string(),
+});
+
+export type EligibleItem = z.infer<typeof EligibleItemSchema>;
+
 export const ReturnEligibilityResponseSchema = z.object({
   eligible: z.boolean(),
-  reason: z.string().optional(),
-  eligible_items: z.array(z.object({
-    item_id: z.string(),
-    quantity: z.number(),
-  })).optional(),
+  deadline: z.string().nullable().optional(),
+  daysRemaining: z.number().nullable().optional(),
+  reason: z.string().nullable().optional(),
+  items: z.array(EligibleItemSchema),
 });
 
 export type ReturnEligibilityResponse = z.infer<typeof ReturnEligibilityResponseSchema>;
@@ -700,7 +764,7 @@ export const ExchangeSchema = z.object({
   id: z.string(),
   order_id: z.string(),
   status: z.string(),
-  return_items: z.array(ReturnItemSchema).optional(),
+  return_items: z.array(StoreReturnItemSchema).optional(),
   additional_items: z.array(z.object({
     variant_id: z.string(),
     quantity: z.number(),
@@ -890,3 +954,91 @@ export const StoreFeaturesResponseSchema = z.object({
 });
 
 export type StoreFeaturesResponse = z.infer<typeof StoreFeaturesResponseSchema>;
+
+// ==================
+// REVIEW SCHEMAS
+// ==================
+
+export const ReviewImageSchema = z.object({
+  url: z.string(),
+  thumbnail_url: z.string().nullable().optional(),
+  caption: z.string().nullable().optional(),
+  sort_order: z.number().optional(),
+});
+
+export type ReviewImage = z.infer<typeof ReviewImageSchema>;
+
+export const ReviewSchema = z.object({
+  id: z.string(),
+  product_id: z.string(),
+  customer_id: z.string(),
+  customer_name: z.string(),
+  customer_avatar: z.string().nullable().optional(),
+  rating: z.number(),
+  title: z.string(),
+  content: z.string(),
+  pros: z.array(z.string()).nullable().optional(),
+  cons: z.array(z.string()).nullable().optional(),
+  images: z.array(ReviewImageSchema).nullable().optional(),
+  verified_purchase: z.boolean(),
+  variant_title: z.string().nullable().optional(),
+  helpful_count: z.number(),
+  not_helpful_count: z.number(),
+  status: z.string(),
+  is_featured: z.boolean(),
+  is_edited: z.boolean(),
+  admin_response: z.string().nullable().optional(),
+  admin_response_at: z.string().nullable().optional(),
+  created_at: z.string(),
+  updated_at: z.string(),
+});
+
+export type Review = z.infer<typeof ReviewSchema>;
+
+export const RatingDistributionItemSchema = z.object({
+  stars: z.number(),
+  count: z.number(),
+  percent: z.number(),
+});
+
+export type RatingDistributionItem = z.infer<typeof RatingDistributionItemSchema>;
+
+export const ReviewStatsSchema = z.object({
+  product_id: z.string(),
+  average_rating: z.union([z.number(), z.string()]).transform(v => typeof v === 'string' ? parseFloat(v) : v),
+  total_reviews: z.number(),
+  verified_purchase_count: z.number(),
+  with_images_count: z.number(),
+  recommendation_percent: z.number(),
+  rating_distribution: z.array(RatingDistributionItemSchema),
+});
+
+export type ReviewStats = z.infer<typeof ReviewStatsSchema>;
+
+export const ReviewListResponseSchema = z.object({
+  reviews: z.array(ReviewSchema),
+  page: z.number(),
+  size: z.number(),
+  total: z.number(),
+  stats: ReviewStatsSchema.nullable().optional(),
+});
+
+export type ReviewListResponse = z.infer<typeof ReviewListResponseSchema>;
+
+export const ReviewResponseSchema = z.object({
+  review: ReviewSchema,
+});
+
+export type ReviewResponse = z.infer<typeof ReviewResponseSchema>;
+
+export const ReviewStatsResponseSchema = z.object({
+  stats: ReviewStatsSchema,
+});
+
+export type ReviewStatsResponse = z.infer<typeof ReviewStatsResponseSchema>;
+
+export const BatchReviewStatsResponseSchema = z.object({
+  stats: z.record(z.string(), ReviewStatsSchema),
+});
+
+export type BatchReviewStatsResponse = z.infer<typeof BatchReviewStatsResponseSchema>;
