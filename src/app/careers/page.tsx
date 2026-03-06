@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Careers | Vernont",
-  description: "Join the Vernont team. Explore career opportunities in the world of luxury fragrance.",
+  description: "Join the Vernont team. Explore career opportunities in the world of luxury eyewear.",
 };
 
 const openPositions = [
   {
-    title: "Senior Perfumer",
+    title: "Senior Eyewear Designer",
     department: "Product Development",
     location: "Munich, Germany",
     type: "Full-time",

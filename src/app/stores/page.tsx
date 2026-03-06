@@ -10,7 +10,7 @@ const stores = [
   {
     name: "Munich Flagship",
     type: "Flagship Store",
-    address: "Parfümstraße 42, 80331 Munich, Germany",
+    address: "Maximilianstraße 42, 80331 Munich, Germany",
     phone: "+49 89 123 456 789",
     hours: "Mon-Sat: 10:00-19:00, Sun: Closed",
   },
@@ -64,7 +64,7 @@ export default function StoresPage() {
           </h1>
           <p className="font-serif text-muted-foreground max-w-2xl mx-auto">
             Visit one of our boutiques to experience the world of Vernont in person.
-            Our fragrance consultants are ready to help you find your signature scent.
+            Our eyewear stylists are ready to help you find your perfect frame.
           </p>
         </div>
 
@@ -102,10 +102,10 @@ export default function StoresPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <h3 className="font-display text-lg mb-2">Fragrance Consultation</h3>
+              <h3 className="font-display text-lg mb-2">Frame Fitting</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                Our expert consultants will help you discover your perfect fragrance through
-                a personalized consultation.
+                Our expert stylists will help you discover your perfect frame through
+                a personalized fitting session.
               </p>
             </div>
             <div>
@@ -115,9 +115,9 @@ export default function StoresPage() {
               </p>
             </div>
             <div>
-              <h3 className="font-display text-lg mb-2">Engraving</h3>
+              <h3 className="font-display text-lg mb-2">Custom Adjustments</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                Add a personal touch with complimentary engraving on select bottles.
+                Add a personal touch with complimentary adjustments and nose pad fitting on select frames.
               </p>
             </div>
           </div>

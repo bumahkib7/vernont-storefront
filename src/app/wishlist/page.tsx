@@ -74,12 +74,12 @@ export default function WishlistPage() {
             className="text-center py-12"
           >
             <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
-              Start building your collection by saving your favourite fragrances.
+              Start building your collection by saving your favourite eyewear.
               Click the heart icon on any product to add it to your wishlist.
             </p>
-            <Link href="/fragrances">
+            <Link href="/eyewear">
               <Button className="btn-luxury bg-gold text-primary hover:bg-gold/90">
-                Explore Fragrances
+                Explore Eyewear
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -95,9 +95,9 @@ export default function WishlistPage() {
             <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
               We couldn&apos;t find your saved products. They may no longer be available.
             </p>
-            <Link href="/fragrances">
+            <Link href="/eyewear">
               <Button className="btn-luxury bg-gold text-primary hover:bg-gold/90">
-                Explore Fragrances
+                Explore Eyewear
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
@@ -111,7 +111,7 @@ export default function WishlistPage() {
             </div>
 
             <div className="text-center">
-              <Link href="/fragrances">
+              <Link href="/eyewear">
                 <Button variant="outline" className="btn-outline-luxury">
                   Continue Shopping
                   <ArrowRight className="ml-2 h-4 w-4" />

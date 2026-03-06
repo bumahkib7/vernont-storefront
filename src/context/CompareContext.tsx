@@ -13,13 +13,18 @@ interface CompareItem {
   price: number; // Major units (e.g., 200 for £200)
   originalPrice?: number;
   handle: string;
-  notes?: {
-    top: string[];
-    heart: string[];
-    base: string[];
+  frameShape?: string;
+  frameMaterial?: string;
+  lensType?: string[];
+  measurements?: {
+    lensWidth?: number | null;
+    bridgeWidth?: number | null;
+    templeLength?: number | null;
+    lensHeight?: number | null;
   };
-  longevity?: number;
-  sillage?: number;
+  uvProtection?: string;
+  weight?: number;
+  madeIn?: string;
 }
 
 interface CompareContextType {

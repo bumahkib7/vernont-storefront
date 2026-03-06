@@ -3,7 +3,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {
   title: "Craftsmanship | Vernont",
-  description: "Discover the artistry and expertise behind every Vernont fragrance.",
+  description: "Discover the artistry and expertise behind every Vernont frame.",
 };
 
 export default function CraftsmanshipPage() {
@@ -29,12 +29,12 @@ export default function CraftsmanshipPage() {
             Craftsmanship
           </h1>
           <p className="font-serif text-lg text-white/80 max-w-2xl mx-auto">
-            Where tradition meets innovation in the pursuit of olfactory excellence
+            Where tradition meets innovation in the pursuit of optical excellence
           </p>
         </div>
       </section>
 
-      {/* Master Perfumers */}
+      {/* Master Artisans */}
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -43,26 +43,26 @@ export default function CraftsmanshipPage() {
                 Our Artisans
               </p>
               <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
-                Master Perfumers
+                Master Artisans
               </h2>
               <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
                 <p>
-                  Behind every Vernont fragrance is a team of master perfumers, each bringing
-                  decades of experience and an unparalleled nose for exceptional scents. Our
-                  perfumers are artists who have dedicated their lives to understanding the
-                  complex language of fragrance.
+                  Behind every Vernont frame is a team of master artisans, each bringing
+                  decades of experience and an unparalleled eye for exceptional eyewear. Our
+                  artisans are designers who have dedicated their lives to understanding the
+                  complex language of form and function.
                 </p>
                 <p>
-                  Trained in the finest perfumery schools of Grasse and Paris, they combine
-                  classical techniques with innovative approaches to create fragrances that
-                  are both timeless and contemporary.
+                  Trained in the finest workshops of Italy and Japan, they combine
+                  classical techniques with innovative approaches to create eyewear that
+                  is both timeless and contemporary.
                 </p>
               </div>
             </div>
             <div className="relative aspect-[4/5]">
               <Image
                 src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80"
-                alt="Master perfumer at work"
+                alt="Master artisan at work"
                 fill
                 className="object-cover"
               />
@@ -86,36 +86,36 @@ export default function CraftsmanshipPage() {
               <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
                 <span className="font-display text-gold text-xl">01</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Inspiration</h3>
+              <h3 className="font-display text-lg tracking-wide mb-3">Design</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                Every fragrance begins with a story, an emotion, or a memory that our perfumers wish to capture.
+                Every frame begins with a vision, a silhouette, or an aesthetic that our artisans wish to bring to life.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
                 <span className="font-display text-gold text-xl">02</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Selection</h3>
+              <h3 className="font-display text-lg tracking-wide mb-3">Material Selection</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                We source the finest raw materials from around the world, each chosen for its exceptional quality.
+                We source the finest materials from around the world, each chosen for its exceptional quality and durability.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
                 <span className="font-display text-gold text-xl">03</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Composition</h3>
+              <h3 className="font-display text-lg tracking-wide mb-3">Hand-Finishing</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                Through countless iterations, our perfumers craft the perfect balance of notes and accords.
+                Through countless iterations, our artisans craft the perfect balance of form, fit, and finish.
               </p>
             </div>
             <div className="text-center">
               <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
                 <span className="font-display text-gold text-xl">04</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Maturation</h3>
+              <h3 className="font-display text-lg tracking-wide mb-3">Quality Control</h3>
               <p className="font-serif text-muted-foreground text-sm">
-                Each fragrance rests for weeks to allow the ingredients to marry and develop their full character.
+                Each frame undergoes rigorous inspection to ensure every detail meets our exacting standards.
               </p>
             </div>
           </div>
@@ -129,7 +129,7 @@ export default function CraftsmanshipPage() {
             <div className="relative aspect-[4/5] order-2 lg:order-1">
               <Image
                 src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=80"
-                alt="Precious ingredients"
+                alt="Premium materials"
                 fill
                 className="object-cover"
               />
@@ -139,18 +139,18 @@ export default function CraftsmanshipPage() {
                 Exceptional Materials
               </p>
               <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
-                The Finest Ingredients
+                The Finest Materials
               </h2>
               <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
                 <p>
-                  We travel the world to source the most precious and rare ingredients:
-                  Bulgarian rose from the Valley of Roses, Indian sandalwood from Mysore,
-                  Italian bergamot from Calabria, and Tahitian vanilla from the islands
-                  of French Polynesia.
+                  We travel the world to source the most precious and refined materials:
+                  Italian acetate from Mazzucchelli, Japanese titanium from Fukui,
+                  German hinges from OBE, and sustainable bio-acetate from
+                  leading European manufacturers.
                 </p>
                 <p>
-                  Each ingredient is carefully evaluated and selected by our team of experts,
-                  ensuring that only the finest materials make it into our fragrances.
+                  Each material is carefully evaluated and selected by our team of experts,
+                  ensuring that only the finest components make it into our eyewear.
                 </p>
               </div>
             </div>
@@ -165,8 +165,8 @@ export default function CraftsmanshipPage() {
             Our Promise of Quality
           </h2>
           <p className="font-serif text-primary-foreground/80 leading-relaxed">
-            Every Vernont fragrance undergoes rigorous quality testing to ensure it meets
-            our exacting standards. From stability testing to olfactory evaluation by our
+            Every Vernont frame undergoes rigorous quality testing to ensure it meets
+            our exacting standards. From stress testing to optical evaluation by our
             panel of experts, we leave nothing to chance in our pursuit of perfection.
           </p>
         </div>

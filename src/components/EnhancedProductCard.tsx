@@ -29,8 +29,9 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
   const isInCompare = isComparing(product.id);
   const productUrl = `/product/${product.handle || product.id}`;
 
-  // Get notes preview (top notes only)
-  const notesPreview = product.notes?.top?.slice(0, 3).join(", ") || "";
+  // Get frame shape label and polarized status
+  const frameShapeLabel = product.frameShape || "";
+  const isPolarized = product.lensType?.includes("polarized") || product.lensType?.includes("Polarized") || false;
 
   // Mock rating - in production, this would come from the API
   const rating = 4.6;
@@ -82,9 +83,13 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
         price: product.price,
         originalPrice: product.originalPrice,
         handle: product.handle,
-        notes: product.notes,
-        longevity: product.longevity,
-        sillage: product.sillage,
+        frameShape: product.frameShape,
+        frameMaterial: product.frameMaterial,
+        lensType: product.lensType,
+        measurements: product.measurements,
+        uvProtection: product.uvProtection,
+        weight: product.weight,
+        madeIn: product.madeIn,
       });
     }
   };
@@ -178,12 +183,19 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
             {product.name}
           </h3>
 
-          {/* Notes Preview - 1 line */}
-          {notesPreview && (
-            <p className="text-sm text-[var(--subtle)] line-clamp-1">
-              Top: {notesPreview}
-            </p>
-          )}
+          {/* Frame Shape & Polarized Badge */}
+          <div className="flex items-center gap-2">
+            {frameShapeLabel && (
+              <p className="text-sm text-[var(--subtle)] line-clamp-1">
+                {frameShapeLabel}
+              </p>
+            )}
+            {isPolarized && (
+              <span className="text-[10px] font-medium px-1.5 py-0.5 rounded bg-blue-100 text-blue-700">
+                Polarized
+              </span>
+            )}
+          </div>
 
           {/* Rating */}
           <div className="flex items-center gap-1.5">

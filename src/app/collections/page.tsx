@@ -36,7 +36,7 @@ function CollectionCard({
   };
   index: number;
 }) {
-  // Use curated fragrance images instead of backend thumbnails
+  // Use curated eyewear images instead of backend thumbnails
   const imageUrl = getCollectionImage(collection.handle, index);
 
   return (
@@ -86,11 +86,11 @@ export default function CollectionsPage() {
               Our Collections
             </p>
             <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
-              Curated Fragrances
+              Curated Eyewear
             </h1>
             <p className="text-lg text-neutral-600">
               Explore our carefully curated collections, each telling a unique story
-              through the art of perfumery.
+              through the art of eyewear design.
             </p>
           </div>
         </div>
@@ -130,13 +130,13 @@ export default function CollectionsPage() {
             Not sure where to start?
           </h2>
           <p className="text-neutral-600 mb-8 max-w-md mx-auto">
-            Browse all our fragrances or use our filters to find your perfect scent.
+            Browse all our eyewear or use our filters to find your perfect frame.
           </p>
           <Link
-            href="/fragrances"
+            href="/eyewear"
             className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
           >
-            Shop All Fragrances
+            Shop All Eyewear
             <ArrowRight className="h-4 w-4" />
           </Link>
         </div>

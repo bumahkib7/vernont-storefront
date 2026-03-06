@@ -1,31 +1,10 @@
 "use client";
 
-import { Truck, Globe, RotateCcw, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { StaggeredChildren, StaggeredChild } from "./AnimatedSection";
+import { content } from "@/config/vertical";
 
-const features = [
-  {
-    icon: Truck,
-    title: "Free UK Delivery",
-    description: "On orders over £75",
-  },
-  {
-    icon: Globe,
-    title: "International Shipping",
-    description: "EU & Worldwide delivery",
-  },
-  {
-    icon: RotateCcw,
-    title: "30-Day Returns",
-    description: "Hassle-free returns",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure Checkout",
-    description: "100% secure payment",
-  },
-];
+const features = content.shippingFeatures;
 
 export function ShippingBanner() {
   return (

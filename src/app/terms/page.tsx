@@ -2,7 +2,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {
   title: "Terms of Service | Vernont",
-  description: "Terms and conditions for using Vernont luxury perfumes website and services.",
+  description: "Terms and conditions for using Vernont luxury eyewear website and services.",
 };
 
 export default function TermsPage() {

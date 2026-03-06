@@ -18,6 +18,7 @@ import {
 import { ordersApi, type Order } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";
+import { toast } from "sonner";
 
 const statusConfig: Record<string, { icon: typeof Package; color: string; bg: string }> = {
   pending: { icon: Clock, color: "text-amber-600", bg: "bg-amber-500/10" },
@@ -48,6 +49,7 @@ export default function OrdersPage() {
         setOrders(response.orders || []);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
+        toast.error("Failed to load orders");
       } finally {
         setIsLoading(false);
       }
@@ -230,7 +232,7 @@ export default function OrdersPage() {
               <p className="text-[var(--muted-foreground)] mb-6">
                 You haven&apos;t placed any orders yet
               </p>
-              <Link href="/fragrances" className="btn-primary">
+              <Link href="/eyewear" className="btn-primary">
                 Start Shopping
               </Link>
             </>

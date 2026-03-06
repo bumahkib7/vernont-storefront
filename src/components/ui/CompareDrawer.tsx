@@ -6,6 +6,7 @@ import { X, Plus, ArrowRight, GitCompare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 import { formatPriceMajor } from "@/context/CartContext";
+import { product as productConfig, verticalConfig } from "@/config/vertical";
 
 export function CompareDrawer() {
   const { items, removeFromCompare, clearCompare, isDrawerOpen, closeDrawer, itemCount } = useCompare();
@@ -67,11 +68,11 @@ export function CompareDrawer() {
                     Add products from the shop to compare them side by side
                   </p>
                   <Link
-                    href="/fragrances"
+                    href="/eyewear"
                     onClick={closeDrawer}
                     className="btn-primary"
                   >
-                    Browse Fragrances
+                    Browse Eyewear
                   </Link>
                 </div>
               ) : (
@@ -124,7 +125,7 @@ export function CompareDrawer() {
                     {Array.from({ length: 3 - itemCount }).map((_, i) => (
                       <Link
                         key={`empty-${i}`}
-                        href="/fragrances"
+                        href="/eyewear"
                         onClick={closeDrawer}
                         className="aspect-[3/4] rounded-lg border-2 border-dashed border-[var(--border)] flex flex-col items-center justify-center hover:border-[var(--primary)] hover:bg-[var(--primary)]/5 transition-colors group cursor-pointer"
                       >
@@ -163,89 +164,47 @@ export function CompareDrawer() {
                         </div>
                       </div>
 
-                      {/* Notes */}
-                      <div className="bg-[var(--surface)] rounded-lg p-4 border border-[var(--border)]">
-                        <h4 className="font-semibold text-sm mb-3">Fragrance Notes</h4>
-                        <div className="space-y-3">
-                          {["top", "heart", "base"].map((noteType) => (
-                            <div key={noteType}>
-                              <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide mb-1">
-                                {noteType === "top" ? "Top Notes" : noteType === "heart" ? "Heart Notes" : "Base Notes"}
-                              </p>
-                              <div className="grid grid-cols-3 gap-4">
-                                {items.map((item) => {
-                                  const notes = item.notes?.[noteType as keyof typeof item.notes] || [];
-                                  return (
-                                    <p key={item.id} className="text-sm">
-                                      {notes.length > 0 ? notes.join(", ") : "—"}
-                                    </p>
-                                  );
-                                })}
-                                {Array.from({ length: 3 - itemCount }).map((_, i) => (
-                                  <div key={`empty-${noteType}-${i}`} className="text-[var(--muted-foreground)]">—</div>
-                                ))}
+                      {/* Comparison spec groups from config */}
+                      {productConfig.comparisonSpecs.map((group) => (
+                        <div key={group.title} className="bg-[var(--surface)] rounded-lg p-4 border border-[var(--border)]">
+                          <h4 className="font-semibold text-sm mb-3">{group.title}</h4>
+                          <div className="space-y-3">
+                            {group.specs.map((spec) => (
+                              <div key={spec.key}>
+                                <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide mb-1">
+                                  {spec.label}
+                                </p>
+                                <div className="grid grid-cols-3 gap-4">
+                                  {items.map((item) => {
+                                    let value: unknown;
+                                    if (spec.fromItem) {
+                                      value = (item as unknown as Record<string, unknown>)[spec.key];
+                                    } else if (spec.key === "lensType") {
+                                      const lt = item.lensType;
+                                      value = lt && lt.length > 0 ? lt.join(", ") : null;
+                                    } else if (item.measurements && spec.key in item.measurements) {
+                                      value = item.measurements[spec.key as keyof typeof item.measurements];
+                                    } else {
+                                      value = (item as unknown as Record<string, unknown>)[spec.key];
+                                    }
+                                    const display = value != null
+                                      ? `${value}${spec.unit || ""}`
+                                      : "—";
+                                    return (
+                                      <p key={item.id} className={`text-sm ${spec.unit ? "tabular-nums" : ""}`}>
+                                        {display}
+                                      </p>
+                                    );
+                                  })}
+                                  {Array.from({ length: 3 - itemCount }).map((_, i) => (
+                                    <div key={`empty-${spec.key}-${i}`} className="text-[var(--muted-foreground)]">—</div>
+                                  ))}
+                                </div>
                               </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Performance */}
-                      <div className="bg-[var(--surface)] rounded-lg p-4 border border-[var(--border)]">
-                        <h4 className="font-semibold text-sm mb-3">Performance</h4>
-                        <div className="space-y-4">
-                          {/* Longevity */}
-                          <div>
-                            <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide mb-2">Longevity</p>
-                            <div className="grid grid-cols-3 gap-4">
-                              {items.map((item) => {
-                                const longevity = item.longevity ?? 5;
-                                return (
-                                  <div key={item.id} className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <div className="flex-1 h-2 bg-[var(--border)] rounded-full overflow-hidden">
-                                        <div
-                                          className="h-full bg-[var(--primary)] rounded-full transition-all"
-                                          style={{ width: `${longevity * 10}%` }}
-                                        />
-                                      </div>
-                                      <span className="text-sm font-medium tabular-nums w-8">{longevity}/10</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                              {Array.from({ length: 3 - itemCount }).map((_, i) => (
-                                <div key={`empty-long-${i}`} className="text-[var(--muted-foreground)]">—</div>
-                              ))}
-                            </div>
-                          </div>
-                          {/* Sillage */}
-                          <div>
-                            <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-wide mb-2">Sillage</p>
-                            <div className="grid grid-cols-3 gap-4">
-                              {items.map((item) => {
-                                const sillage = item.sillage ?? 5;
-                                return (
-                                  <div key={item.id} className="space-y-1">
-                                    <div className="flex items-center gap-2">
-                                      <div className="flex-1 h-2 bg-[var(--border)] rounded-full overflow-hidden">
-                                        <div
-                                          className="h-full bg-[var(--accent)] rounded-full transition-all"
-                                          style={{ width: `${sillage * 10}%` }}
-                                        />
-                                      </div>
-                                      <span className="text-sm font-medium tabular-nums w-8">{sillage}/10</span>
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                              {Array.from({ length: 3 - itemCount }).map((_, i) => (
-                                <div key={`empty-sil-${i}`} className="text-[var(--muted-foreground)]">—</div>
-                              ))}
-                            </div>
+                            ))}
                           </div>
                         </div>
-                      </div>
+                      ))}
                     </div>
                   )}
 
@@ -256,11 +215,11 @@ export function CompareDrawer() {
                         Add at least one more product to compare
                       </p>
                       <Link
-                        href="/fragrances"
+                        href="/eyewear"
                         onClick={closeDrawer}
                         className="inline-flex items-center gap-2 mt-3 text-sm text-[var(--primary)] hover:underline"
                       >
-                        Browse more fragrances
+                        Browse more eyewear
                         <ArrowRight className="h-4 w-4" />
                       </Link>
                     </div>

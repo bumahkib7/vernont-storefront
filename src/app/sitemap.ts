@@ -6,7 +6,7 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9000";
 // Static pages that don't change often
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
-  { url: "/fragrances", priority: 0.9, changeFrequency: "daily" as const },
+  { url: "/eyewear", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/new", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/gifts", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/for-him", priority: 0.8, changeFrequency: "weekly" as const },

@@ -18,11 +18,8 @@ interface Product {
   image: string;
   category: string;
   description?: string;
-  notes?: {
-    top: string[];
-    heart: string[];
-    base: string[];
-  };
+  frameShape?: string;
+  frameMaterial?: string;
 }
 
 interface QuickViewProps {
@@ -33,19 +30,19 @@ interface QuickViewProps {
 
 export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState("50ml");
+  const [selectedStyle, setSelectedStyle] = useState("Standard");
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
 
   if (!product) return null;
 
-  const sizes = [
-    { size: "30ml", price: product.price * 0.6 },
-    { size: "50ml", price: product.price },
-    { size: "100ml", price: product.price * 1.6 },
+  const styles = [
+    { style: "Standard", price: product.price },
+    { style: "Polarized", price: product.price * 1.2 },
+    { style: "Photochromic", price: product.price * 1.4 },
   ];
 
-  const currentPrice = sizes.find((s) => s.size === selectedSize)?.price || product.price;
+  const currentPrice = styles.find((s) => s.style === selectedStyle)?.price || product.price;
   const isWishlisted = isInWishlist(product.id);
 
   const handleAddToCart = async () => {
@@ -125,21 +122,21 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
                     </p>
                   )}
 
-                  {/* Size Selection */}
+                  {/* Lens Option Selection */}
                   <div className="mb-6">
-                    <p className="font-display text-sm tracking-wider uppercase mb-3">Size</p>
+                    <p className="font-display text-sm tracking-wider uppercase mb-3">Lens Option</p>
                     <div className="flex gap-3">
-                      {sizes.map((s) => (
+                      {styles.map((s) => (
                         <button
-                          key={s.size}
-                          onClick={() => setSelectedSize(s.size)}
+                          key={s.style}
+                          onClick={() => setSelectedStyle(s.style)}
                           className={`px-4 py-2 border font-serif text-sm transition-colors ${
-                            selectedSize === s.size
+                            selectedStyle === s.style
                               ? "border-gold text-gold bg-gold/10"
                               : "border-border hover:border-gold"
                           }`}
                         >
-                          {s.size}
+                          {s.style}
                         </button>
                       ))}
                     </div>

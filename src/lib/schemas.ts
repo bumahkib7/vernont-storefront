@@ -59,37 +59,47 @@ export const StorefrontVariantSchema = z.object({
 export type StorefrontVariant = z.infer<typeof StorefrontVariantSchema>;
 
 /**
- * Fragrance Notes schema - matches backend FragranceNotes
+ * Eyewear Measurements schema
  */
-export const FragranceNotesSchema = z.object({
-  top: z.array(z.string()).nullable().optional(),
-  heart: z.array(z.string()).nullable().optional(),
-  base: z.array(z.string()).nullable().optional(),
+export const EyewearMeasurementsSchema = z.object({
+  lensWidth: z.number().nullable().optional(),
+  bridgeWidth: z.number().nullable().optional(),
+  templeLength: z.number().nullable().optional(),
+  lensHeight: z.number().nullable().optional(),
 });
 
-export type FragranceNotes = z.infer<typeof FragranceNotesSchema>;
+export type EyewearMeasurements = z.infer<typeof EyewearMeasurementsSchema>;
 
 /**
- * Fragrance Metadata schema - matches backend FragranceMetadata
+ * Eyewear Metadata schema
  */
-export const FragranceMetadataSchema = z.object({
-  notes: FragranceNotesSchema.nullable().optional(),
-  concentration: z.string().nullable().optional(),
-  longevity: z.number().nullable().optional(),
-  sillage: z.number().nullable().optional(),
+export const EyewearMetadataSchema = z.object({
+  frameShape: z.string().nullable().optional(),
+  frameMaterial: z.string().nullable().optional(),
+  lensType: z.array(z.string()).nullable().optional(),
+  frameColor: z.string().nullable().optional(),
+  lensColor: z.string().nullable().optional(),
   gender: z.string().nullable().optional(),
-  season: z.array(z.string()).nullable().optional(),
-  occasion: z.array(z.string()).nullable().optional(),
-  ingredients: z.string().nullable().optional(),
+  category: z.string().nullable().optional(),
+  measurements: EyewearMeasurementsSchema.nullable().optional(),
+  frameSize: z.string().nullable().optional(),
+  uvProtection: z.string().nullable().optional(),
+  weight: z.number().nullable().optional(),
+  madeIn: z.string().nullable().optional(),
+  faceShapes: z.array(z.string()).nullable().optional(),
 });
 
-export type FragranceMetadata = z.infer<typeof FragranceMetadataSchema>;
+export type EyewearMetadata = z.infer<typeof EyewearMetadataSchema>;
+
+// Generic alias — the schema itself remains permissive via .passthrough()
+export const VerticalMetadataSchema = EyewearMetadataSchema;
+export type VerticalMetadata = EyewearMetadata;
 
 /**
  * Product metadata schema
  */
 export const ProductMetadataSchema = z.object({
-  fragrance: FragranceMetadataSchema.nullable().optional(),
+  eyewear: EyewearMetadataSchema.nullable().optional(),
 }).passthrough();
 
 export type ProductMetadata = z.infer<typeof ProductMetadataSchema>;

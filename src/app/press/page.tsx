@@ -5,14 +5,14 @@ import { Button } from "@/components/ui/button";
 
 export const metadata = {
   title: "Press | Vernont",
-  description: "Press resources, media kit, and contact information for Vernont luxury perfumes.",
+  description: "Press resources, media kit, and contact information for Vernont luxury eyewear.",
 };
 
 const pressReleases = [
   {
     date: "January 2024",
     title: "Vernont Launches New Signature Collection",
-    excerpt: "The luxury fragrance house unveils its most ambitious collection to date...",
+    excerpt: "The luxury eyewear house unveils its most ambitious collection to date...",
   },
   {
     date: "December 2023",
@@ -27,10 +27,10 @@ const pressReleases = [
 ];
 
 const pressFeatures = [
-  { publication: "Vogue", quote: "The epitome of modern luxury fragrance." },
-  { publication: "Harper's Bazaar", quote: "Vernont redefines what it means to smell exceptional." },
-  { publication: "Elle", quote: "A new era in fine perfumery has arrived." },
-  { publication: "GQ", quote: "The fragrance brand every connoisseur should know." },
+  { publication: "Vogue", quote: "The epitome of modern luxury eyewear." },
+  { publication: "Harper's Bazaar", quote: "Vernont redefines what it means to look exceptional." },
+  { publication: "Elle", quote: "A new era in fine eyewear craftsmanship has arrived." },
+  { publication: "GQ", quote: "The eyewear brand every connoisseur should know." },
 ];
 
 export default function PressPage() {

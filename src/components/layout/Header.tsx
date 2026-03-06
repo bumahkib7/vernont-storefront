@@ -10,6 +10,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
 import { productsApi, type Product } from "@/lib/api";
+import { product as productConfig } from "@/config/vertical";
 
 export function Header() {
   const router = useRouter();
@@ -191,7 +192,7 @@ export function Header() {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)]" />
                 <input
                   type="text"
-                  placeholder="Search fragrances..."
+                  placeholder={productConfig.searchPlaceholder}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowResults(true)}
@@ -432,7 +433,7 @@ export function Header() {
                 <Search className="w-5 h-5 text-[var(--muted-foreground)]" />
                 <input
                   type="text"
-                  placeholder="Search fragrances, brands..."
+                  placeholder={productConfig.searchPlaceholder}
                   autoFocus
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
@@ -517,7 +518,7 @@ export function Header() {
                     <div>
                       <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">Popular Searches</h3>
                       <div className="flex flex-wrap gap-2">
-                        {["Oud", "Rose", "Creed Aventus", "Tom Ford", "Gift Sets"].map((term) => (
+                        {productConfig.popularSearches.slice(0, 5).map((term) => (
                           <button
                             key={term}
                             onClick={() => setSearchQuery(term)}

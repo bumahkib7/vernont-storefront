@@ -8,6 +8,8 @@ import { CompareBar } from "@/components/ui/CompareBar";
 // Newsletter popup disabled - using inline newsletter section instead
 // import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { Toaster } from "sonner";
+import { content } from "@/config/vertical";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -17,14 +19,16 @@ const inter = Inter({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
 
+const { siteMetadata } = content;
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Vernont | Designer & Niche Fragrances",
-    template: "%s | Vernont",
+    default: siteMetadata.titleDefault,
+    template: siteMetadata.titleTemplate,
   },
-  description: "Shop 2,400+ authentic fragrances from 180+ brands. Free shipping over £75, 30-day returns, and free samples with every order.",
-  keywords: ["fragrances", "perfume", "cologne", "designer fragrances", "niche perfumes", "luxury scents"],
+  description: siteMetadata.description,
+  keywords: siteMetadata.keywords,
   authors: [{ name: "Vernont" }],
   creator: "Vernont",
   icons: {
@@ -42,13 +46,13 @@ export const metadata: Metadata = {
     locale: "en_GB",
     url: siteUrl,
     siteName: "Vernont",
-    title: "Vernont | Designer & Niche Fragrances",
-    description: "Shop 2,400+ authentic fragrances from 180+ brands. Free shipping over £75, 30-day returns, and free samples with every order.",
+    title: siteMetadata.titleDefault,
+    description: siteMetadata.description,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vernont | Designer & Niche Fragrances",
-    description: "Shop 2,400+ authentic fragrances from 180+ brands. Free shipping over £75.",
+    title: siteMetadata.titleDefault,
+    description: siteMetadata.description,
   },
   robots: {
     index: true,
@@ -77,6 +81,7 @@ export default function RootLayout({
           <CompareDrawer />
           <CompareBar />
           <BackToTop />
+          <Toaster position="bottom-right" richColors />
         </Providers>
       </body>
     </html>

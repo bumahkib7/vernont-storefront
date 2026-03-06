@@ -34,7 +34,7 @@ const faqs: FAQItem[] = [
   {
     category: "Returns & Refunds",
     question: "What is your return policy?",
-    answer: "We accept returns of unopened products within 30 days of delivery. Items must be in their original packaging and condition. Please contact our customer service to initiate a return.",
+    answer: "We accept returns of unworn eyewear within 30 days of delivery. Items must be in their original packaging and condition, with all tags attached. Please contact our customer service to initiate a return.",
   },
   {
     category: "Returns & Refunds",
@@ -48,23 +48,28 @@ const faqs: FAQItem[] = [
   },
   {
     category: "Products",
-    question: "Are your perfumes authentic?",
-    answer: "All Vernont fragrances are 100% authentic and created in our own perfumery. We guarantee the quality and authenticity of every product we sell.",
+    question: "How do I find the right frame size?",
+    answer: "Frame measurements are printed on the inside of the temple arm (e.g. 52-18-140). The first number is the lens width, the second is the bridge width, and the third is the temple length, all in millimeters. Visit our Size Guide page for a detailed chart matching these measurements to face sizes from XS to XL.",
   },
   {
     category: "Products",
-    question: "How should I store my perfume?",
-    answer: "Store your fragrance in a cool, dry place away from direct sunlight and heat. Keep the bottle tightly closed when not in use. Proper storage helps maintain the fragrance quality.",
+    question: "What is the difference between polarized and UV400 lenses?",
+    answer: "UV400 lenses block 100% of UVA and UVB rays, protecting your eyes from sun damage. Polarized lenses do the same but also reduce glare from reflective surfaces like water, snow, and roads. All Vernont sunglasses include UV400 protection; polarized options are available on select styles.",
   },
   {
     category: "Products",
-    question: "What is the difference between Eau de Parfum and Eau de Toilette?",
-    answer: "Eau de Parfum (EDP) contains a higher concentration of fragrance oils (15-20%) and typically lasts longer. Eau de Toilette (EDT) has a lower concentration (5-15%) and is lighter, perfect for everyday wear.",
+    question: "Which frame shape suits my face?",
+    answer: "As a general guide: round faces pair well with angular or rectangular frames, square faces suit round or oval frames, oval faces can wear most shapes, and heart-shaped faces look great with bottom-heavy or cat-eye styles. Visit our eyewear collection to explore shapes that complement your features.",
   },
   {
     category: "Products",
-    question: "Do you offer samples?",
-    answer: "Yes! We offer discovery sets and sample sizes so you can explore our fragrances before committing to a full bottle. Check our Gifts section for available options.",
+    question: "Can I get prescription lenses fitted?",
+    answer: "Yes! Most of our frames are prescription-ready. You can order frames only and have your optician fit prescription lenses, or contact us for our prescription lens fitting service. Single vision, bifocal, and progressive options are available.",
+  },
+  {
+    category: "Products",
+    question: "Do you offer a cleaning kit?",
+    answer: "Yes! Every order includes a complimentary microfiber cleaning cloth. We also offer premium cleaning kits with lens spray, a hard case, and a microfiber pouch. Check our Accessories section for available options.",
   },
   {
     category: "Account & Payments",
@@ -104,7 +109,7 @@ export default function FAQPage() {
             Frequently Asked Questions
           </h1>
           <p className="font-serif text-muted-foreground">
-            Find answers to common questions about orders, shipping, returns, and more.
+            Find answers to common questions about our eyewear, orders, shipping, returns, and more.
           </p>
         </div>
 

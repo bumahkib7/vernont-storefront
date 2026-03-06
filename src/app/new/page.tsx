@@ -164,7 +164,7 @@ export default function NewArrivalsPage() {
               Latest Creations
             </h2>
             <p className="font-serif text-muted-foreground mt-3">
-              {isLoading ? "Loading..." : `${newProducts.length} New Fragrances`}
+              {isLoading ? "Loading..." : `${newProducts.length} New Arrivals`}
             </p>
           </motion.div>
 
@@ -192,8 +192,8 @@ export default function NewArrivalsPage() {
               <p className="font-serif text-muted-foreground mb-6">
                 New arrivals are on their way. Check back soon.
               </p>
-              <Link href="/fragrances" className="btn-deco-ornate inline-block">
-                Browse All Fragrances
+              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+                Browse All Eyewear
               </Link>
             </motion.div>
           ) : (
@@ -219,7 +219,7 @@ export default function NewArrivalsPage() {
       </section>
 
       {/* Categories Section */}
-      <CategoryButtons title="Explore by Scent Family" />
+      <CategoryButtons title="Explore by Style" />
 
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
@@ -250,10 +250,10 @@ export default function NewArrivalsPage() {
             </p>
 
             <Link
-              href="/fragrances"
+              href="/eyewear"
               className="btn-deco-ornate inline-block"
             >
-              View All Fragrances
+              View All Eyewear
             </Link>
           </motion.div>
         </div>

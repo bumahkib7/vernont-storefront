@@ -32,7 +32,7 @@ export default function ContactPage() {
           </h1>
           <p className="font-serif text-muted-foreground max-w-2xl mx-auto">
             We would love to hear from you. Whether you have a question about our
-            fragrances, need assistance with an order, or simply want to say hello.
+            eyewear, need assistance with an order, or simply want to say hello.
           </p>
         </div>
 

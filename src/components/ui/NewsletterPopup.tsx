@@ -101,7 +101,7 @@ export function NewsletterPopup() {
 
                     <p className="font-serif text-muted-foreground text-center mb-6">
                       Subscribe to receive <span className="text-gold font-semibold">10% off</span> your first order,
-                      exclusive access to new collections, and curated fragrance stories.
+                      exclusive access to new collections, and curated eyewear stories.
                     </p>
 
                     {/* Benefits */}

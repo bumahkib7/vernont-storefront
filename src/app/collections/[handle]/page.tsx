@@ -141,10 +141,10 @@ export default function CollectionPage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href="/fragrances"
+                href="/eyewear"
                 className="text-sm text-neutral-500 hover:text-black transition-colors"
               >
-                View All Fragrances
+                View All Eyewear
               </Link>
             </div>
           </div>
@@ -199,7 +199,7 @@ export default function CollectionPage() {
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-neutral-100 animate-pulse" />
               ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "fragrance" : "fragrances"}`
+                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
               )}
             </p>
 
@@ -216,10 +216,10 @@ export default function CollectionPage() {
                 This collection is being curated. Check back soon.
               </p>
               <Link
-                href="/fragrances"
+                href="/eyewear"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
               >
-                Browse All Fragrances
+                Browse All Eyewear
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>

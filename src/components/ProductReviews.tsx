@@ -466,6 +466,7 @@ function ReviewCard({ review, productId, isAuthenticated }: ReviewCardProps) {
         <button
           onClick={() => setShowReportModal(true)}
           disabled={!isAuthenticated}
+          aria-label="Report this review"
           className="flex items-center gap-1 text-[var(--muted-foreground)] hover:text-[var(--destructive)] disabled:opacity-50 transition-colors ml-auto"
         >
           <Flag className="w-4 h-4" />

@@ -4,31 +4,12 @@ import Link from "next/link";
 import { useState } from "react";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
-import { Check, Truck, RotateCcw, Shield, Mail, Instagram, Facebook, Twitter } from "lucide-react";
+import { Check, Mail, Instagram, Facebook, Twitter } from "lucide-react";
+import { content, DEFAULT_HELP_LINKS, DEFAULT_COMPANY_LINKS } from "@/config/vertical";
 
-// Static links that don't come from API
-const HELP_LINKS = [
-  { label: "Contact Us", href: "/contact" },
-  { label: "Shipping & Delivery", href: "/shipping" },
-  { label: "Returns & Exchanges", href: "/returns" },
-  { label: "FAQ", href: "/faq" },
-  { label: "Track Order", href: "/track" },
-  { label: "Size Guide", href: "/size-guide" },
-];
-
-const COMPANY_LINKS = [
-  { label: "About Us", href: "/about" },
-  { label: "Careers", href: "/careers" },
-  { label: "Press", href: "/press" },
-  { label: "Affiliate Program", href: "/affiliates" },
-];
-
-const TRUST_FEATURES = [
-  { icon: Check, label: "100% Authentic" },
-  { icon: Truck, label: "Free shipping £75+" },
-  { icon: RotateCcw, label: "30-day returns" },
-  { icon: Shield, label: "Secure checkout" },
-];
+const HELP_LINKS = DEFAULT_HELP_LINKS;
+const COMPANY_LINKS = DEFAULT_COMPANY_LINKS;
+const TRUST_FEATURES = content.trustBadges;
 
 export function Footer() {
   const { storeName } = useStoreBranding();
@@ -74,12 +55,12 @@ export function Footer() {
               </span>
             </Link>
             <p className="text-white/70 text-sm mb-4 max-w-xs">
-              2,400+ authentic fragrances from 180+ brands. Free samples with every order.
+              {content.footerDescription}
             </p>
 
             {/* Newsletter Signup */}
             <div className="mb-6">
-              <p className="font-semibold mb-2">Get 10% off your first order</p>
+              <p className="font-semibold mb-2">{content.newsletterCta.headline}</p>
               {subscribed ? (
                 <div className="flex items-center gap-2 text-[var(--success)]">
                   <Check className="h-4 w-4" />

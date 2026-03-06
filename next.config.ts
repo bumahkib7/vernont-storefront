@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  turbopack: {
+    root: __dirname,
+  },
   images: {
     remotePatterns: [
       {
@@ -15,6 +18,30 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
     ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/fragrances",
+        destination: "/eyewear",
+        permanent: true,
+      },
+      {
+        source: "/fragrances/:path*",
+        destination: "/eyewear/:path*",
+        permanent: true,
+      },
+      {
+        source: "/fragrance-quiz",
+        destination: "/face-shape-guide",
+        permanent: true,
+      },
+      {
+        source: "/quiz",
+        destination: "/face-shape-guide",
+        permanent: true,
+      },
+    ];
   },
 };
 

@@ -129,7 +129,7 @@ export default function UnisexPage() {
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1920&q=80"
-            alt="Unisex Fragrances"
+            alt="Unisex Eyewear"
             fill
             className="object-cover"
             priority
@@ -181,7 +181,7 @@ export default function UnisexPage() {
             transition={{ delay: 0.6 }}
             className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Fragrances that defy convention, designed for anyone
+            Frames that transcend trends, designed for anyone
             who appreciates exceptional craftsmanship
           </motion.p>
 
@@ -229,7 +229,7 @@ export default function UnisexPage() {
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/50" />
             </div>
             <h2 className="font-display text-3xl md:text-4xl tracking-wide">
-              Genderless Fragrances
+              Unisex Eyewear
             </h2>
           </motion.div>
 
@@ -243,7 +243,7 @@ export default function UnisexPage() {
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
               ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "fragrance" : "fragrances"}`
+                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
               )}
             </p>
 
@@ -274,8 +274,8 @@ export default function UnisexPage() {
               <p className="font-serif text-muted-foreground mb-6">
                 Our unisex collection is being curated.
               </p>
-              <Link href="/fragrances" className="btn-deco-ornate inline-block">
-                Browse All Fragrances
+              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+                Browse All Eyewear
               </Link>
             </motion.div>
           ) : (
@@ -301,7 +301,7 @@ export default function UnisexPage() {
       </section>
 
       {/* Categories Section */}
-      <CategoryButtons title="Shop by Scent Family" />
+      <CategoryButtons title="Shop by Frame Shape" />
 
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
@@ -324,18 +324,18 @@ export default function UnisexPage() {
             </div>
 
             <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-4">
-              Find Your Signature
+              Find Your Style
             </h2>
             <p className="font-serif text-muted-foreground mb-8">
-              Take our fragrance quiz to discover the perfect unisex scent
-              that matches your personality
+              Use our face shape guide to discover the perfect unisex frames
+              that match your features
             </p>
 
             <Link
-              href="/fragrance-quiz"
+              href="/face-shape-guide"
               className="btn-deco-ornate inline-block"
             >
-              Take the Quiz
+              Find Your Fit
             </Link>
           </motion.div>
         </div>

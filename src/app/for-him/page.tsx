@@ -129,7 +129,7 @@ export default function ForHimPage() {
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=1920&q=80"
-            alt="Fragrances for Him"
+            alt="Eyewear for Him"
             fill
             className="object-cover"
             priority
@@ -181,8 +181,8 @@ export default function ForHimPage() {
             transition={{ delay: 0.6 }}
             className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Refined fragrances for the modern gentleman,
-            from invigorating fresh scents to distinguished woody compositions
+            Bold frames for the modern gentleman,
+            from classic aviators to refined rectangular silhouettes
           </motion.p>
 
           <motion.div
@@ -229,7 +229,7 @@ export default function ForHimPage() {
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/50" />
             </div>
             <h2 className="font-display text-3xl md:text-4xl tracking-wide">
-              Masculine Fragrances
+              Men's Eyewear
             </h2>
           </motion.div>
 
@@ -243,7 +243,7 @@ export default function ForHimPage() {
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
               ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "cologne" : "colognes"}`
+                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
               )}
             </p>
 
@@ -274,8 +274,8 @@ export default function ForHimPage() {
               <p className="font-serif text-muted-foreground mb-6">
                 Our masculine collection is being curated.
               </p>
-              <Link href="/fragrances" className="btn-deco-ornate inline-block">
-                Browse All Fragrances
+              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+                Browse All Eyewear
               </Link>
             </motion.div>
           ) : (
@@ -301,7 +301,7 @@ export default function ForHimPage() {
       </section>
 
       {/* Categories Section */}
-      <CategoryButtons title="Shop by Scent Family" />
+      <CategoryButtons title="Shop by Frame Shape" />
 
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
@@ -324,18 +324,18 @@ export default function ForHimPage() {
             </div>
 
             <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-4">
-              Discover Your Signature
+              Discover Your Style
             </h2>
             <p className="font-serif text-muted-foreground mb-8">
-              Take our fragrance quiz to find the perfect cologne
-              that matches your personality and lifestyle
+              Use our face shape guide to find the perfect frames
+              that match your features and lifestyle
             </p>
 
             <Link
-              href="/fragrance-quiz"
+              href="/face-shape-guide"
               className="btn-deco-ornate inline-block"
             >
-              Take the Quiz
+              Find Your Fit
             </Link>
           </motion.div>
         </div>

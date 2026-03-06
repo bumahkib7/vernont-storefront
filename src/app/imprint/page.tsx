@@ -2,7 +2,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {
   title: "Imprint | Vernont",
-  description: "Legal information and company details for Vernont luxury perfumes.",
+  description: "Legal information and company details for Vernont luxury eyewear.",
 };
 
 export default function ImprintPage() {
@@ -17,7 +17,7 @@ export default function ImprintPage() {
           <section>
             <h2 className="font-display text-2xl tracking-wide mb-4">Company Information</h2>
             <div className="text-muted-foreground leading-relaxed space-y-2">
-              <p><strong>Vernont Luxury Fragrances GmbH</strong></p>
+              <p><strong>Vernont Luxury Eyewear GmbH</strong></p>
               <p>Parfümstraße 42</p>
               <p>80331 Munich</p>
               <p>Germany</p>

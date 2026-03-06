@@ -4,6 +4,17 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Edit2, Trash2, MapPin, Loader2, X, Check, AlertCircle } from "lucide-react";
 import { customerApi, type CustomerAddress } from "@/lib/api";
+import { toast } from "sonner";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface AddressFormData {
   first_name: string;
@@ -41,6 +52,8 @@ export default function AddressesPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState<string | null>(null);
 
   const fetchAddresses = async () => {
     try {
@@ -48,6 +61,7 @@ export default function AddressesPage() {
       setAddresses(response.addresses || []);
     } catch (error) {
       console.error("Failed to fetch addresses:", error);
+      toast.error("Failed to load addresses");
     } finally {
       setIsLoading(false);
     }
@@ -124,17 +138,24 @@ export default function AddressesPage() {
     }
   };
 
-  const handleDelete = async (addressId: string) => {
-    if (!confirm("Are you sure you want to delete this address?")) return;
+  const handleDeleteClick = (addressId: string) => {
+    setAddressToDelete(addressId);
+    setDeleteDialogOpen(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    if (!addressToDelete) return;
+
+    const addressId = addressToDelete;
+    setDeleteDialogOpen(false);
+    setAddressToDelete(null);
     setDeletingId(addressId);
     try {
       await customerApi.deleteAddress(addressId);
       setAddresses((prev) => prev.filter((a) => a.id !== addressId));
-      setSuccess("Address deleted successfully");
-      setTimeout(() => setSuccess(""), 3000);
+      toast.success("Address deleted successfully");
     } catch (err: any) {
-      setError(err.message || "Failed to delete address");
+      toast.error(err.message || "Failed to delete address");
     } finally {
       setDeletingId(null);
     }
@@ -229,7 +250,7 @@ export default function AddressesPage() {
                   Edit
                 </button>
                 <button
-                  onClick={() => handleDelete(address.id)}
+                  onClick={() => handleDeleteClick(address.id)}
                   disabled={deletingId === address.id}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-[var(--destructive)]/30 text-[var(--destructive)] rounded-lg hover:bg-[var(--destructive)]/10 transition-colors disabled:opacity-50"
                 >
@@ -495,6 +516,29 @@ export default function AddressesPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete Address</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this address? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setAddressToDelete(null)}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteConfirm}
+              className="bg-[var(--destructive)] text-white hover:bg-[var(--destructive)]/90"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

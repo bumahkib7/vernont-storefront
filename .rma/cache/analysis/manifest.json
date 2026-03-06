@@ -1,0 +1,580 @@
+{
+  "files": {
+    "./src/app/account/addresses/page.tsx": {
+      "content_hash": 2558248413614444204,
+      "mtime": 1771066448,
+      "analyzed": true
+    },
+    "./src/app/stores/page.tsx": {
+      "content_hash": 2447594056554060021,
+      "mtime": 1767559605,
+      "analyzed": true
+    },
+    "./src/app/account/orders/page.tsx": {
+      "content_hash": 6852545251668111221,
+      "mtime": 1771066500,
+      "analyzed": true
+    },
+    "./src/lib/transforms.ts": {
+      "content_hash": 5822868858042027075,
+      "mtime": 1768222032,
+      "analyzed": true
+    },
+    "./src/context/StoreConfigContext.tsx": {
+      "content_hash": 12958225017735513670,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/components/ui/LoadingSpinner.tsx": {
+      "content_hash": 432830315140826703,
+      "mtime": 1767560352,
+      "analyzed": true
+    },
+    "./src/app/privacy/page.tsx": {
+      "content_hash": 3355320858161991414,
+      "mtime": 1767559140,
+      "analyzed": true
+    },
+    "./src/app/checkout/confirmation/page.tsx": {
+      "content_hash": 6724151955579287736,
+      "mtime": 1768247122,
+      "analyzed": true
+    },
+    "./src/app/imprint/page.tsx": {
+      "content_hash": 16477633509300062615,
+      "mtime": 1767559161,
+      "analyzed": true
+    },
+    "./src/components/ui/BackToTop.tsx": {
+      "content_hash": 302006481475046626,
+      "mtime": 1767560352,
+      "analyzed": true
+    },
+    "./src/components/ProductJsonLd.tsx": {
+      "content_hash": 13270831141631797246,
+      "mtime": 1767690627,
+      "analyzed": true
+    },
+    "./next-env.d.ts": {
+      "content_hash": 5358381720837004561,
+      "mtime": 1768246925,
+      "analyzed": true
+    },
+    "./src/components/ui/AnnouncementBar.tsx": {
+      "content_hash": 16782972873820834711,
+      "mtime": 1767590424,
+      "analyzed": true
+    },
+    "./src/providers/index.tsx": {
+      "content_hash": 10343577280662601096,
+      "mtime": 1768227958,
+      "analyzed": true
+    },
+    "./src/app/for-her/page.tsx": {
+      "content_hash": 13698719908134033426,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/components/ui/AnimatedSection.tsx": {
+      "content_hash": 6611841487504908609,
+      "mtime": 1767560068,
+      "analyzed": true
+    },
+    "./src/components/layout/PageLayout.tsx": {
+      "content_hash": 3383278037142457628,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/components/ui/sheet.tsx": {
+      "content_hash": 2380345933593092586,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/app/checkout/page.tsx": {
+      "content_hash": 3443765424503882536,
+      "mtime": 1771066490,
+      "analyzed": true
+    },
+    "./src/hooks/useApiCart.ts": {
+      "content_hash": 6782242877049953608,
+      "mtime": 1767579091,
+      "analyzed": true
+    },
+    "./src/app/product/[id]/page.tsx": {
+      "content_hash": 1053915802070346018,
+      "mtime": 1771066458,
+      "analyzed": true
+    },
+    "./components.json": {
+      "content_hash": 84636086394635361,
+      "mtime": 1767558523,
+      "analyzed": true
+    },
+    "./src/app/robots.ts": {
+      "content_hash": 11368732388063980602,
+      "mtime": 1768247490,
+      "analyzed": true
+    },
+    "./src/app/about/page.tsx": {
+      "content_hash": 7600294987880501354,
+      "mtime": 1767937089,
+      "analyzed": true
+    },
+    "./pnpm-workspace.yaml": {
+      "content_hash": 3254636806255483686,
+      "mtime": 1767558498,
+      "analyzed": true
+    },
+    "./src/app/new/page.tsx": {
+      "content_hash": 8192726948758637778,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/components/ProductGrid.tsx": {
+      "content_hash": 10277814917846455671,
+      "mtime": 1767577774,
+      "analyzed": true
+    },
+    "./src/app/opengraph-image.tsx": {
+      "content_hash": 5575020127489095401,
+      "mtime": 1768249459,
+      "analyzed": true
+    },
+    "./package.json": {
+      "content_hash": 9641089814815184780,
+      "mtime": 1771066404,
+      "analyzed": true
+    },
+    "./src/app/sustainability/page.tsx": {
+      "content_hash": 7074138185639038344,
+      "mtime": 1767559553,
+      "analyzed": true
+    },
+    "./src/components/ui/CurrencySelector.tsx": {
+      "content_hash": 12798693834659019961,
+      "mtime": 1767560067,
+      "analyzed": true
+    },
+    "./src/components/ui/carousel.tsx": {
+      "content_hash": 8119476169611204365,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/context/CartContext.tsx": {
+      "content_hash": 7412903014958425639,
+      "mtime": 1768247206,
+      "analyzed": true
+    },
+    "./src/hooks/useCart.ts": {
+      "content_hash": 17007119196229428862,
+      "mtime": 1768227935,
+      "analyzed": true
+    },
+    "./src/context/NavigationContext.tsx": {
+      "content_hash": 14145896650118092954,
+      "mtime": 1768220465,
+      "analyzed": true
+    },
+    "./src/components/ui/CompareDrawer.tsx": {
+      "content_hash": 10813127742185268567,
+      "mtime": 1768222055,
+      "analyzed": true
+    },
+    "./src/app/wishlist/page.tsx": {
+      "content_hash": 6228802053698253139,
+      "mtime": 1767578238,
+      "analyzed": true
+    },
+    "./src/app/reset-password/page.tsx": {
+      "content_hash": 5372660268298283907,
+      "mtime": 1767588500,
+      "analyzed": true
+    },
+    "./src/app/cookies/page.tsx": {
+      "content_hash": 13165148035466895211,
+      "mtime": 1767559187,
+      "analyzed": true
+    },
+    "./src/components/checkout/PrintableReceipt.tsx": {
+      "content_hash": 6886183034266864062,
+      "mtime": 1768247127,
+      "analyzed": true
+    },
+    "./src/app/account/returns/page.tsx": {
+      "content_hash": 10038055321117125787,
+      "mtime": 1768223399,
+      "analyzed": true
+    },
+    "./src/context/CompareContext.tsx": {
+      "content_hash": 1513978830919689344,
+      "mtime": 1768222094,
+      "analyzed": true
+    },
+    "./src/components/ui/separator.tsx": {
+      "content_hash": 5235043716807835946,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/lib/collection-images.ts": {
+      "content_hash": 3732774476441076136,
+      "mtime": 1768247925,
+      "analyzed": true
+    },
+    "./src/app/page.tsx": {
+      "content_hash": 2238750721720352,
+      "mtime": 1768245475,
+      "analyzed": true
+    },
+    "./src/app/fragrances/page.tsx": {
+      "content_hash": 6415929182741495347,
+      "mtime": 1768220626,
+      "analyzed": true
+    },
+    "./src/components/layout/Header.tsx": {
+      "content_hash": 801934478156712159,
+      "mtime": 1768246839,
+      "analyzed": true
+    },
+    "./src/components/checkout/StripePaymentForm.tsx": {
+      "content_hash": 5292753881081279430,
+      "mtime": 1768226433,
+      "analyzed": true
+    },
+    "./src/components/ui/alert-dialog.tsx": {
+      "content_hash": 12654547821507102617,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/lib/useHeroScroll.ts": {
+      "content_hash": 12826041132130473754,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/app/contact/page.tsx": {
+      "content_hash": 3456089361554326375,
+      "mtime": 1767559412,
+      "analyzed": true
+    },
+    "./src/components/ScrollToTop.tsx": {
+      "content_hash": 16188194141150379993,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/app/collections/[handle]/page.tsx": {
+      "content_hash": 9746670645342326115,
+      "mtime": 1768247962,
+      "analyzed": true
+    },
+    "./src/app/register/page.tsx": {
+      "content_hash": 17343005995519661991,
+      "mtime": 1768222432,
+      "analyzed": true
+    },
+    "./src/app/sitemap.ts": {
+      "content_hash": 12519959867155885113,
+      "mtime": 1768247481,
+      "analyzed": true
+    },
+    "./src/app/account/layout.tsx": {
+      "content_hash": 7279309792838388103,
+      "mtime": 1768228337,
+      "analyzed": true
+    },
+    "./src/stores/auth.ts": {
+      "content_hash": 12442740823288975336,
+      "mtime": 1768227884,
+      "analyzed": true
+    },
+    "./src/app/gifts/page.tsx": {
+      "content_hash": 7243092735884583608,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/context/WishlistContext.tsx": {
+      "content_hash": 17852699634522174832,
+      "mtime": 1768228109,
+      "analyzed": true
+    },
+    "./src/components/ProductCard.tsx": {
+      "content_hash": 11732254478946707524,
+      "mtime": 1771066530,
+      "analyzed": true
+    },
+    "./src/app/unisex/page.tsx": {
+      "content_hash": 1994034242041152442,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/app/account/orders/[id]/page.tsx": {
+      "content_hash": 14396288004541400904,
+      "mtime": 1768246959,
+      "analyzed": true
+    },
+    "./src/app/account/page.tsx": {
+      "content_hash": 12288983491657855574,
+      "mtime": 1768222569,
+      "analyzed": true
+    },
+    "./src/app/forgot-password/page.tsx": {
+      "content_hash": 683104459438289734,
+      "mtime": 1767588459,
+      "analyzed": true
+    },
+    "./src/components/WriteReviewForm.tsx": {
+      "content_hash": 14426443546857183014,
+      "mtime": 1768229936,
+      "analyzed": true
+    },
+    "./src/app/account/profile/page.tsx": {
+      "content_hash": 5720192528399097304,
+      "mtime": 1768222701,
+      "analyzed": true
+    },
+    "./src/components/ui/button.tsx": {
+      "content_hash": 2557714254449912005,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/app/terms/page.tsx": {
+      "content_hash": 15195445108968670633,
+      "mtime": 1767559119,
+      "analyzed": true
+    },
+    "./eslint.config.mjs": {
+      "content_hash": 14248706358715258113,
+      "mtime": 1767558498,
+      "analyzed": true
+    },
+    "./src/app/account/returns/[id]/page.tsx": {
+      "content_hash": 1737913263463665582,
+      "mtime": 1768246982,
+      "analyzed": true
+    },
+    "./src/components/ProductReviews.tsx": {
+      "content_hash": 17448237922541762199,
+      "mtime": 1771066545,
+      "analyzed": true
+    },
+    "./src/components/ui/Logo.tsx": {
+      "content_hash": 3384090603230194376,
+      "mtime": 1768246814,
+      "analyzed": true
+    },
+    "./src/components/ui/CartDrawer.tsx": {
+      "content_hash": 7039113331979960317,
+      "mtime": 1771066568,
+      "analyzed": true
+    },
+    "./tsconfig.json": {
+      "content_hash": 7592353895491801485,
+      "mtime": 1767558498,
+      "analyzed": true
+    },
+    "./src/app/shipping/page.tsx": {
+      "content_hash": 10786080437062148284,
+      "mtime": 1767559470,
+      "analyzed": true
+    },
+    "./src/app/category/[handle]/page.tsx": {
+      "content_hash": 8371802843066334245,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/stores/ui.ts": {
+      "content_hash": 7721065460061406947,
+      "mtime": 1768227902,
+      "analyzed": true
+    },
+    "./postcss.config.mjs": {
+      "content_hash": 5450328259893531108,
+      "mtime": 1767558498,
+      "analyzed": true
+    },
+    "./src/app/layout.tsx": {
+      "content_hash": 17047031097396819973,
+      "mtime": 1771066413,
+      "analyzed": true
+    },
+    "./src/hooks/useWishlist.ts": {
+      "content_hash": 3445382791844416817,
+      "mtime": 1768247449,
+      "analyzed": true
+    },
+    "./src/components/CategoryButtons.tsx": {
+      "content_hash": 4319920351396406123,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/app/for-him/page.tsx": {
+      "content_hash": 3417800195393598661,
+      "mtime": 1767937106,
+      "analyzed": true
+    },
+    "./src/app/login/page.tsx": {
+      "content_hash": 10844614706694464210,
+      "mtime": 1768222293,
+      "analyzed": true
+    },
+    "./src/app/press/page.tsx": {
+      "content_hash": 16784206975799457253,
+      "mtime": 1767559527,
+      "analyzed": true
+    },
+    "./src/components/ui/SearchOverlay.tsx": {
+      "content_hash": 14842020512268764908,
+      "mtime": 1771066540,
+      "analyzed": true
+    },
+    "./src/components/ui/navigation-menu.tsx": {
+      "content_hash": 4276838661691274729,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/components/ui/avatar.tsx": {
+      "content_hash": 4880944976656402932,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/components/Providers.tsx": {
+      "content_hash": 10665250263847603018,
+      "mtime": 1768220481,
+      "analyzed": true
+    },
+    "./src/hooks/useAuth.ts": {
+      "content_hash": 5886676023107934616,
+      "mtime": 1768247412,
+      "analyzed": true
+    },
+    "./src/lib/hooks.ts": {
+      "content_hash": 15949046457203629981,
+      "mtime": 1768229827,
+      "analyzed": true
+    },
+    "./src/app/craftsmanship/page.tsx": {
+      "content_hash": 6017179279754350849,
+      "mtime": 1767937089,
+      "analyzed": true
+    },
+    "./src/components/ui/badge.tsx": {
+      "content_hash": 10147557942620013450,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/app/twitter-image.tsx": {
+      "content_hash": 3261109633360644952,
+      "mtime": 1768249467,
+      "analyzed": true
+    },
+    "./src/app/collections/page.tsx": {
+      "content_hash": 1852411719449244586,
+      "mtime": 1768247948,
+      "analyzed": true
+    },
+    "./src/components/ui/CompareBar.tsx": {
+      "content_hash": 5725466169901903574,
+      "mtime": 1768220989,
+      "analyzed": true
+    },
+    "./src/components/ui/NewsletterPopup.tsx": {
+      "content_hash": 8882666923986131622,
+      "mtime": 1767560067,
+      "analyzed": true
+    },
+    "./public/manifest.json": {
+      "content_hash": 5621660333182571947,
+      "mtime": 1768249509,
+      "analyzed": true
+    },
+    "./src/components/layout/Footer.tsx": {
+      "content_hash": 18315914046884144956,
+      "mtime": 1768246863,
+      "analyzed": true
+    },
+    "./amplify.yml": {
+      "content_hash": 2056759317412031581,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/app/faq/page.tsx": {
+      "content_hash": 10010020335308694680,
+      "mtime": 1767559441,
+      "analyzed": true
+    },
+    "./src/lib/api.ts": {
+      "content_hash": 11250567699166670972,
+      "mtime": 1768229761,
+      "analyzed": true
+    },
+    "./next.config.ts": {
+      "content_hash": 8506533087376884271,
+      "mtime": 1767936227,
+      "analyzed": true
+    },
+    "./src/providers/QueryProvider.tsx": {
+      "content_hash": 12752663274664511954,
+      "mtime": 1768227874,
+      "analyzed": true
+    },
+    "./src/components/ui/QuickView.tsx": {
+      "content_hash": 6106828378626960212,
+      "mtime": 1767579757,
+      "analyzed": true
+    },
+    "./src/context/AuthContext.tsx": {
+      "content_hash": 16260083347198829628,
+      "mtime": 1768228047,
+      "analyzed": true
+    },
+    "./src/app/careers/page.tsx": {
+      "content_hash": 14943939349659993270,
+      "mtime": 1767937089,
+      "analyzed": true
+    },
+    "./src/app/size-guide/page.tsx": {
+      "content_hash": 17823309968544467151,
+      "mtime": 1767559634,
+      "analyzed": true
+    },
+    "./src/components/EnhancedProductCard.tsx": {
+      "content_hash": 14206307480093632306,
+      "mtime": 1768222047,
+      "analyzed": true
+    },
+    "./src/lib/schemas.ts": {
+      "content_hash": 10582692470462489334,
+      "mtime": 1768247167,
+      "analyzed": true
+    },
+    "./src/components/ui/card.tsx": {
+      "content_hash": 11634373622494669181,
+      "mtime": 1767558550,
+      "analyzed": true
+    },
+    "./src/components/ui/ShippingBanner.tsx": {
+      "content_hash": 6142304169689773516,
+      "mtime": 1767590532,
+      "analyzed": true
+    },
+    "./src/lib/utils.ts": {
+      "content_hash": 17854309099577803788,
+      "mtime": 1767558527,
+      "analyzed": true
+    },
+    "./src/components/ui/input.tsx": {
+      "content_hash": 14185316471053675311,
+      "mtime": 1767588532,
+      "analyzed": true
+    },
+    "./src/app/search/page.tsx": {
+      "content_hash": 8355827667148598522,
+      "mtime": 1771066509,
+      "analyzed": true
+    },
+    "./src/stores/wishlist.ts": {
+      "content_hash": 16105742523554294523,
+      "mtime": 1768228069,
+      "analyzed": true
+    }
+  },
+  "version": 0
+}

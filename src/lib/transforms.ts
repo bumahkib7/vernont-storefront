@@ -3,8 +3,9 @@
  * Transforms API responses to component-friendly formats
  */
 
-import type { Product, ProductCollection, StorefrontVariant } from './schemas';
+import type { Product, ProductCollection, StorefrontVariant, VerticalMetadata } from './schemas';
 import { priceFromMinor } from './schemas';
+import { product as productConfig } from '@/config/vertical';
 
 /**
  * Component-friendly product format
@@ -24,13 +25,23 @@ export interface DisplayProduct {
   isBestseller: boolean;
   collection?: string;
   description?: string;
-  notes?: {
-    top: string[];
-    heart: string[];
-    base: string[];
+  frameShape?: string;
+  frameMaterial?: string;
+  lensType?: string[];
+  frameColor?: string;
+  lensColor?: string;
+  eyewearCategory?: string;
+  measurements?: {
+    lensWidth?: number | null;
+    bridgeWidth?: number | null;
+    templeLength?: number | null;
+    lensHeight?: number | null;
   };
-  longevity?: number;
-  sillage?: number;
+  frameSize?: string;
+  uvProtection?: string;
+  weight?: number;
+  madeIn?: string;
+  faceShapes?: string[];
   variantId?: string;
   currency?: string;
   variants: Array<{
@@ -85,19 +96,14 @@ export function transformProduct(product: Product): DisplayProduct {
   const isNew = combined.includes('new arrival') || combined.includes('new release');
   const isBestseller = combined.includes('bestseller') || combined.includes('best seller');
 
-  // Extract fragrance notes from metadata
-  const fragranceMetadata = product.metadata?.fragrance;
-  const notes = fragranceMetadata?.notes ? {
-    top: fragranceMetadata.notes.top ?? [],
-    heart: fragranceMetadata.notes.heart ?? [],
-    base: fragranceMetadata.notes.base ?? [],
-  } : undefined;
+  // Extract vertical-specific metadata using configured namespace
+  const eyewearMetadata = product.metadata?.[productConfig.metadataNamespace] as VerticalMetadata | undefined;
 
   // Override gender from metadata if available
-  if (fragranceMetadata?.gender) {
-    const metadataGender = fragranceMetadata.gender.toLowerCase();
-    if (metadataGender === 'masculine') gender = 'men';
-    else if (metadataGender === 'feminine') gender = 'women';
+  if (eyewearMetadata?.gender) {
+    const metadataGender = eyewearMetadata.gender!.toLowerCase();
+    if (metadataGender === 'feminine' || metadataGender === 'women') gender = 'women';
+    else if (metadataGender === 'masculine' || metadataGender === 'men') gender = 'men';
     else if (metadataGender === 'unisex') gender = 'unisex';
   }
 
@@ -120,14 +126,23 @@ export function transformProduct(product: Product): DisplayProduct {
     originalPrice,
     image: product.thumbnail ?? uniqueImages[0] ?? '/placeholder.jpg',
     images: uniqueImages.length > 0 ? uniqueImages : ['/placeholder.jpg'],
-    category: fragranceMetadata?.concentration || 'Eau de Parfum',
+    category: eyewearMetadata?.category || 'Sunglasses',
     gender,
     isNew,
     isBestseller,
     description: product.description ?? undefined,
-    notes,
-    longevity: fragranceMetadata?.longevity ?? undefined,
-    sillage: fragranceMetadata?.sillage ?? undefined,
+    frameShape: eyewearMetadata?.frameShape ?? undefined,
+    frameMaterial: eyewearMetadata?.frameMaterial ?? undefined,
+    lensType: eyewearMetadata?.lensType ?? undefined,
+    frameColor: eyewearMetadata?.frameColor ?? undefined,
+    lensColor: eyewearMetadata?.lensColor ?? undefined,
+    eyewearCategory: eyewearMetadata?.category ?? undefined,
+    measurements: eyewearMetadata?.measurements ?? undefined,
+    frameSize: eyewearMetadata?.frameSize ?? undefined,
+    uvProtection: eyewearMetadata?.uvProtection ?? undefined,
+    weight: eyewearMetadata?.weight ?? undefined,
+    madeIn: eyewearMetadata?.madeIn ?? undefined,
+    faceShapes: eyewearMetadata?.faceShapes ?? undefined,
     currency: product.currency ?? firstVariant?.currency ?? 'GBP',
     variantId: firstVariant?.id,
     variants: product.variants.map((v: StorefrontVariant) => {

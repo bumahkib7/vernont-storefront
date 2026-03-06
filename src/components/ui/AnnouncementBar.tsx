@@ -1,14 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Truck, Gift, Sparkles } from "lucide-react";
+import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { content } from "@/config/vertical";
 
-const announcements = [
-  { icon: Truck, text: "Free UK Delivery on orders over £75" },
-  { icon: Gift, text: "Complimentary gift wrapping on all orders" },
-  { icon: Sparkles, text: "Free samples with every purchase" },
-];
+const announcements = content.announcements;
 
 export function AnnouncementBar() {
   const [isVisible, setIsVisible] = useState(true);

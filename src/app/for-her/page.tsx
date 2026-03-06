@@ -129,7 +129,7 @@ export default function ForHerPage() {
         <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1588405748880-12d1d2a59f75?w=1920&q=80"
-            alt="Fragrances for Her"
+            alt="Eyewear for Her"
             fill
             className="object-cover"
             priority
@@ -181,8 +181,8 @@ export default function ForHerPage() {
             transition={{ delay: 0.6 }}
             className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Fragrances that celebrate the essence of femininity,
-            from ethereal florals to captivating orientals
+            Eyewear that celebrates timeless femininity,
+            from chic cat-eyes to elegant oversized frames
           </motion.p>
 
           <motion.div
@@ -229,7 +229,7 @@ export default function ForHerPage() {
               <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/50" />
             </div>
             <h2 className="font-display text-3xl md:text-4xl tracking-wide">
-              Feminine Fragrances
+              Women's Eyewear
             </h2>
           </motion.div>
 
@@ -243,7 +243,7 @@ export default function ForHerPage() {
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
               ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "perfume" : "perfumes"}`
+                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
               )}
             </p>
 
@@ -274,8 +274,8 @@ export default function ForHerPage() {
               <p className="font-serif text-muted-foreground mb-6">
                 Our feminine collection is being curated.
               </p>
-              <Link href="/fragrances" className="btn-deco-ornate inline-block">
-                Browse All Fragrances
+              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+                Browse All Eyewear
               </Link>
             </motion.div>
           ) : (
@@ -301,7 +301,7 @@ export default function ForHerPage() {
       </section>
 
       {/* Categories Section */}
-      <CategoryButtons title="Shop by Scent Family" />
+      <CategoryButtons title="Shop by Frame Shape" />
 
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
@@ -324,18 +324,18 @@ export default function ForHerPage() {
             </div>
 
             <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-4">
-              Find Your Signature Scent
+              Find Your Perfect Frame
             </h2>
             <p className="font-serif text-muted-foreground mb-8">
-              Take our fragrance quiz to discover the perfect perfume
-              that matches your personality and style
+              Use our face shape guide to discover the perfect frames
+              that match your features and style
             </p>
 
             <Link
-              href="/fragrance-quiz"
+              href="/face-shape-guide"
               className="btn-deco-ornate inline-block"
             >
-              Take the Quiz
+              Find Your Fit
             </Link>
           </motion.div>
         </div>

@@ -1,0 +1,1 @@
+{"path":"./src/hooks/useApiCart.ts","language":"typescript","metrics":{"lines_of_code":235,"lines_of_comments":25,"blank_lines":40,"cyclomatic_complexity":33,"cognitive_complexity":589,"function_count":16,"class_count":0,"import_count":2},"findings":[]}

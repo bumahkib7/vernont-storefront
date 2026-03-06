@@ -10,6 +10,8 @@ import { Footer } from "@/components/layout/Footer";
 import { productsApi, type Product } from "@/lib/api";
 import { useWishlist } from "@/context/WishlistContext";
 import { formatPrice } from "@/context/CartContext";
+import { toast } from "sonner";
+import { product as productConfig, verticalConfig } from "@/config/vertical";
 
 // Loading skeleton
 function ProductsSkeleton() {
@@ -135,6 +137,7 @@ function SearchContent() {
       } catch (err) {
         console.error("Search error:", err);
         setError("Unable to search products. Please try again.");
+        toast.error("Search failed");
       } finally {
         setLoading(false);
       }
@@ -187,11 +190,11 @@ function SearchContent() {
         <div className="mb-8">
           {/* Back link */}
           <Link
-            href="/fragrances"
+            href={verticalConfig.catalogPath}
             className="inline-flex items-center gap-2 text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors mb-6"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span className="text-sm">Back to all fragrances</span>
+            <span className="text-sm">Back to all {verticalConfig.label.toLowerCase()}</span>
           </Link>
 
           {/* Search input */}
@@ -271,7 +274,7 @@ function SearchContent() {
               Search by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
-              {["Oud", "Rose", "Tom Ford", "Creed", "Gift Sets"].map((term) => (
+              {productConfig.suggestedSearches.map((term) => (
                 <button
                   key={term}
                   onClick={() => router.push(`/search?q=${encodeURIComponent(term)}`)}
@@ -308,8 +311,8 @@ function SearchContent() {
               Try different keywords or browse our collections.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link href="/fragrances" className="btn-primary">
-                Browse All Fragrances
+              <Link href={verticalConfig.catalogPath} className="btn-primary">
+                Browse All {verticalConfig.label}
               </Link>
               <Link href="/collections" className="btn-secondary">
                 View Collections

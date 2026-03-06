@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, X, SlidersHorizontal, Grid3X3, LayoutGrid, Check, Truck } from "lucide-react";
+import { ChevronDown, X, SlidersHorizontal, Grid3X3, LayoutGrid, Check } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -9,27 +9,10 @@ import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { priceFromMinor } from "@/lib/schemas";
+import { product as productConfig, content } from "@/config/vertical";
 
-// Quick filter chips
-const QUICK_FILTERS = [
-  { label: "All", value: "" },
-  { label: "For Her", value: "women" },
-  { label: "For Him", value: "men" },
-  { label: "Unisex", value: "unisex" },
-  { label: "Gift Sets", value: "gift-sets" },
-  { label: "Under £75", value: "under-75" },
-  { label: "Niche", value: "niche" },
-  { label: "Designer", value: "designer" },
-];
-
-const SORT_OPTIONS = [
-  { value: "featured", label: "Featured" },
-  { value: "bestselling", label: "Best Selling" },
-  { value: "price-low", label: "Price: Low to High" },
-  { value: "price-high", label: "Price: High to Low" },
-  { value: "newest", label: "Newest First" },
-  { value: "rating", label: "Highest Rated" },
-];
+const QUICK_FILTERS = productConfig.quickFilters;
+const SORT_OPTIONS = productConfig.sortOptions;
 
 // Generate price ranges from min/max
 function generatePriceRanges(min?: number, max?: number) {
@@ -205,7 +188,7 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
   );
 }
 
-export default function FragrancesPage() {
+export default function EyewearPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(4);
@@ -265,11 +248,12 @@ export default function FragrancesPage() {
     let products = transformProducts(productsData.items);
 
     // Quick filter
-    if (quickFilter === "under-75") {
-      products = products.filter((p) => p.price < 7500);
+    if (quickFilter === "under-150") {
+      products = products.filter((p) => p.price < 15000);
     } else if (quickFilter) {
       products = products.filter((p) =>
-        p.category?.toLowerCase().includes(quickFilter.toLowerCase())
+        p.category?.toLowerCase().includes(quickFilter.toLowerCase()) ||
+        p.frameShape?.toLowerCase().includes(quickFilter.toLowerCase())
       );
     }
 
@@ -376,7 +360,7 @@ export default function FragrancesPage() {
 
       {/* Sizes */}
       {sizes.length > 0 && (
-        <FilterSection title="Size">
+        <FilterSection title="Frame Size">
           <div className="flex flex-wrap gap-2">
             {sizes.map((size) => (
               <button
@@ -414,9 +398,9 @@ export default function FragrancesPage() {
         {/* Page Header */}
         <section className="bg-[var(--surface)] border-b border-[var(--border)]">
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold mb-2">All Fragrances</h1>
+            <h1 className="text-3xl font-bold mb-2">{productConfig.catalogTitle}</h1>
             <p className="text-[var(--muted-foreground)]">
-              2,400+ authentic fragrances from 180+ brands
+              {productConfig.catalogDescription}
             </p>
 
             {/* Quick Filters */}
@@ -443,7 +427,6 @@ export default function FragrancesPage() {
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
-                {/* Mobile filter button - only show when there are filters */}
                 {hasFiltersToShow && (
                   <button
                     onClick={() => setMobileFiltersOpen(true)}
@@ -464,7 +447,6 @@ export default function FragrancesPage() {
               </div>
 
               <div className="flex items-center gap-3">
-                {/* Grid toggle - desktop only */}
                 <div className="hidden lg:flex items-center gap-1 border border-[var(--border)] rounded-md p-1">
                   <button
                     onClick={() => setGridCols(3)}
@@ -542,14 +524,12 @@ export default function FragrancesPage() {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto flex">
-          {/* Desktop Sidebar - only show when there are filters */}
           {hasFiltersToShow && (
             <aside className="hidden lg:block w-64 flex-shrink-0 px-4 lg:px-8 py-8 border-r border-[var(--border)]">
               <FilterContent />
             </aside>
           )}
 
-          {/* Products Grid */}
           <section className="flex-1 px-4 lg:px-8 py-8">
             {isLoading ? (
               <div className={`grid grid-cols-2 lg:grid-cols-${gridCols} gap-4 lg:gap-6`}>
@@ -593,7 +573,6 @@ export default function FragrancesPage() {
               </div>
             )}
 
-            {/* Load more placeholder */}
             {displayProducts.length > 0 && (
               <div className="text-center mt-12">
                 <p className="text-sm text-[var(--muted-foreground)] mb-4">
@@ -608,22 +587,12 @@ export default function FragrancesPage() {
         <div className="border-t border-[var(--border)] bg-[var(--surface)]">
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-[var(--success)]" />
-                <span>100% Authentic</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Truck className="h-4 w-4" />
-                <span>Free shipping £75+</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-[var(--success)]" />
-                <span>30-day returns</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-[var(--success)]" />
-                <span>Free samples included</span>
-              </div>
+              {content.trustBandCatalog.map((item) => (
+                <div key={item.label} className="flex items-center gap-2">
+                  <item.icon className="h-4 w-4 text-[var(--success)]" />
+                  <span>{item.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>

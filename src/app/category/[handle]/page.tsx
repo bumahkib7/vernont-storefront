@@ -14,42 +14,47 @@ import { useHeroScroll } from "@/lib/useHeroScroll";
 
 // Category hero images and descriptions
 const categoryMeta: Record<string, { image: string; tagline: string; description: string }> = {
-  floral: {
+  aviator: {
     image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1920&q=80",
-    tagline: "Blooming Elegance",
-    description: "Delicate bouquets that capture the essence of spring gardens and romantic evenings"
+    tagline: "Classic Freedom",
+    description: "Timeless teardrop silhouettes that evoke a spirit of adventure and effortless style"
   },
-  oriental: {
+  "cat-eye": {
     image: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1920&q=80",
-    tagline: "Mysterious Allure",
-    description: "Rich, warm compositions inspired by the exotic spices and resins of the East"
+    tagline: "Feline Elegance",
+    description: "Upswept frames that add dramatic flair and vintage sophistication to any look"
   },
-  fresh: {
+  round: {
     image: "https://images.unsplash.com/photo-1523293182086-7651a899d37f?w=1920&q=80",
-    tagline: "Pure Vitality",
-    description: "Invigorating scents that evoke ocean breezes and sun-drenched citrus groves"
+    tagline: "Retro Sophistication",
+    description: "Circular frames that bring intellectual charm and laid-back refinement"
   },
-  gourmand: {
+  wayfarer: {
     image: "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=1920&q=80",
-    tagline: "Sweet Indulgence",
-    description: "Delicious accords of vanilla, caramel, and spices that delight the senses"
+    tagline: "Effortless Cool",
+    description: "Iconic trapezoidal frames that define casual elegance and universal appeal"
   },
-  woody: {
+  square: {
     image: "https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=1920&q=80",
-    tagline: "Timeless Depth",
-    description: "Sophisticated compositions of cedar, sandalwood, and precious woods"
+    tagline: "Bold Structure",
+    description: "Angular frames that convey confidence and sharp, modern sensibility"
   },
-  citrus: {
+  rectangular: {
     image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1920&q=80",
-    tagline: "Radiant Energy",
-    description: "Bright, zesty notes that spark joy and refresh the spirit"
+    tagline: "Refined Classic",
+    description: "Clean, proportioned frames that complement any face shape with understated elegance"
+  },
+  oversized: {
+    image: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1920&q=80",
+    tagline: "Statement Luxury",
+    description: "Generously proportioned frames that command attention and exude glamour"
   },
 };
 
 const defaultMeta = {
   image: "https://images.unsplash.com/photo-1615634260167-c8cdede054de?w=1920&q=80",
   tagline: "Discover Excellence",
-  description: "Explore our carefully curated selection of exceptional fragrances"
+  description: "Explore our carefully curated selection of exceptional eyewear"
 };
 
 // Loading skeleton
@@ -296,7 +301,7 @@ export default function CategoryPage() {
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
               ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "fragrance" : "fragrances"}`
+                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
               )}
             </p>
 
@@ -313,12 +318,12 @@ export default function CategoryPage() {
               className="text-center py-20"
             >
               <div className="w-16 h-16 mx-auto mb-6 border border-gold/30 rotate-45" />
-              <h3 className="font-display text-2xl tracking-wide mb-3">No Fragrances Yet</h3>
+              <h3 className="font-display text-2xl tracking-wide mb-3">No Eyewear Yet</h3>
               <p className="font-serif text-muted-foreground mb-6">
                 This category is being curated. Check back soon.
               </p>
-              <Link href="/fragrances" className="btn-deco-ornate inline-block">
-                Browse All Fragrances
+              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+                Browse All Eyewear
               </Link>
             </motion.div>
           ) : (

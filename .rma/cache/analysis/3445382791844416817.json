@@ -1,0 +1,1 @@
+{"path":"./src/hooks/useWishlist.ts","language":"typescript","metrics":{"lines_of_code":154,"lines_of_comments":26,"blank_lines":17,"cyclomatic_complexity":10,"cognitive_complexity":210,"function_count":29,"class_count":0,"import_count":5},"findings":[]}

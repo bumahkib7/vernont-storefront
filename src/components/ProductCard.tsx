@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Heart, Star } from "lucide-react";
 import { useState } from "react";
 import { useWishlist } from "@/context/WishlistContext";
+import { toast } from "sonner";
 
 interface ProductCardProps {
   id: string;
@@ -42,10 +43,15 @@ export function ProductCard({
     <div className="group relative">
       {/* Wishlist button */}
       <button
-        onClick={(e) => {
+        onClick={async (e) => {
           e.preventDefault();
           e.stopPropagation();
-          toggleItem(id);
+          try {
+            await toggleItem(id);
+            toast.success(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
+          } catch (err) {
+            toast.error("Failed to update wishlist");
+          }
         }}
         className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all ${
           isWishlisted

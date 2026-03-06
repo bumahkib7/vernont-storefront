@@ -35,6 +35,7 @@ import {
   CustomerAddress,
   ShippingOption,
 } from "@/lib/api";
+import { toast } from "sonner";
 
 type CheckoutStep = "information" | "shipping" | "payment";
 
@@ -146,6 +147,7 @@ export default function CheckoutPage() {
         }
       } catch (err) {
         console.error("Failed to fetch customer profile:", err);
+        toast.error("Failed to load your profile");
         setShowAddressForm(true);
       } finally {
         setLoadingAddresses(false);
@@ -170,6 +172,7 @@ export default function CheckoutPage() {
         }
       } catch (err) {
         console.error("Failed to fetch shipping options:", err);
+        toast.error("Failed to load shipping options");
         setShippingOptions([]);
       } finally {
         setLoadingShipping(false);
@@ -305,6 +308,7 @@ export default function CheckoutPage() {
       });
     } catch (err) {
       console.error("Failed to save address:", err);
+      toast.error("Failed to save address");
     }
   };
 
@@ -424,10 +428,13 @@ export default function CheckoutPage() {
       console.error("Failed to apply gift card:", err);
       if (err instanceof ApiError) {
         setGiftCardError(err.message);
+        toast.error(err.message);
       } else if (err instanceof Error) {
         setGiftCardError(err.message);
+        toast.error(err.message);
       } else {
         setGiftCardError("Invalid gift card code");
+        toast.error("Invalid gift card code");
       }
     } finally {
       setApplyingGiftCard(false);
@@ -446,6 +453,7 @@ export default function CheckoutPage() {
       setGiftCardError(null);
     } catch (err) {
       console.error("Failed to remove gift card:", err);
+      toast.error("Failed to remove gift card");
     } finally {
       setApplyingGiftCard(false);
     }
@@ -578,7 +586,7 @@ export default function CheckoutPage() {
                     View Order Details
                   </Link>
                   <Link
-                    href="/fragrances"
+                    href="/eyewear"
                     className="block w-full btn-secondary"
                   >
                     Continue Shopping

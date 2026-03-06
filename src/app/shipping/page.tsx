@@ -128,9 +128,9 @@ export default function ShippingPage() {
               <h3 className="font-display text-lg tracking-wide mb-3 text-foreground">Return Eligibility</h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Items must be returned within 30 days of delivery</li>
-                <li>Products must be unopened and in their original packaging</li>
-                <li>Items must be in their original condition</li>
-                <li>Personalized or engraved items cannot be returned</li>
+                <li>Items must be unworn and in their original packaging with tags attached</li>
+                <li>Items must be in their original condition with no scratches</li>
+                <li>Custom prescription lenses cannot be returned</li>
               </ul>
             </div>
 

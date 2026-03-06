@@ -28,13 +28,15 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useCompare } from "@/context/CompareContext";
 import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/ProductJsonLd";
 import { use } from "react";
+import { toast } from "sonner";
+import { verticalConfig } from "@/config/vertical";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
 const INFO_TABS = [
-  { id: "notes", label: "Fragrance Notes" },
+  { id: "specs", label: "Specifications" },
   { id: "details", label: "Details" },
   { id: "shipping", label: "Shipping & Returns" },
   { id: "reviews", label: "Reviews" },
@@ -46,7 +48,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
-  const [activeTab, setActiveTab] = useState("notes");
+  const [activeTab, setActiveTab] = useState("specs");
   const [showWriteReview, setShowWriteReview] = useState(false);
 
   const { addItem, currency } = useCart();
@@ -103,10 +105,10 @@ export default function ProductPage({ params }: ProductPageProps) {
             The product you're looking for doesn't exist or has been removed.
           </p>
           <Link
-            href="/fragrances"
+            href={verticalConfig.catalogPath}
             className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
           >
-            Browse All Fragrances
+            Browse All {verticalConfig.label}
           </Link>
         </div>
       </PageLayout>
@@ -133,6 +135,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       setTimeout(() => setIsAdded(false), 2000);
     } catch (err) {
       console.error("Failed to add to cart:", err);
+      toast.error("Failed to add to cart");
     }
   };
 
@@ -145,9 +148,9 @@ export default function ProductPage({ params }: ProductPageProps) {
       thumbnail: product.image,
       price: currentPrice,
       originalPrice: currentOriginalPrice || undefined,
-      notes: product.notes,
-      longevity: product.longevity,
-      sillage: product.sillage,
+      frameShape: product.frameShape,
+      frameMaterial: product.frameMaterial,
+      lensType: product.lensType,
     });
   };
 
@@ -161,7 +164,7 @@ export default function ProductPage({ params }: ProductPageProps) {
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: "https://vernont.com" },
-          { name: "Fragrances", url: "https://vernont.com/fragrances" },
+          { name: verticalConfig.label, url: `https://vernont.com${verticalConfig.catalogPath}` },
           { name: product.name, url: productUrl },
         ]}
       />
@@ -171,7 +174,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         <div className="flex items-center gap-2 text-sm text-neutral-400">
           <Link href="/" className="hover:text-black transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3" />
-          <Link href="/fragrances" className="hover:text-black transition-colors">Fragrances</Link>
+          <Link href={verticalConfig.catalogPath} className="hover:text-black transition-colors">{verticalConfig.label}</Link>
           <ChevronRight className="w-3 h-3" />
           <span className="text-black truncate">{product.name}</span>
         </div>
@@ -406,7 +409,7 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
               <div className="text-center">
                 <Package className="w-5 h-5 mx-auto mb-1 text-neutral-400" />
-                <p className="text-xs text-neutral-500">Free samples</p>
+                <p className="text-xs text-neutral-500">Free case</p>
               </div>
             </div>
           </div>
@@ -434,48 +437,69 @@ export default function ProductPage({ params }: ProductPageProps) {
 
         {/* Tab Content */}
         <div className="max-w-2xl">
-          {activeTab === "notes" && (
+          {activeTab === "specs" && (
             <div className="space-y-6">
-              {product.notes && (product.notes.top.length > 0 || product.notes.heart.length > 0 || product.notes.base.length > 0) ? (
+              {product.frameShape || product.frameMaterial || product.lensType ? (
                 <>
                   <div className="grid md:grid-cols-3 gap-6">
-                    {product.notes.top.length > 0 && (
+                    {product.frameShape && (
                       <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Top Notes</p>
-                        <div className="flex flex-wrap gap-2">
-                          {product.notes.top.map((note) => (
-                            <span key={note} className="px-2 py-1 bg-white text-sm border border-neutral-200">{note}</span>
-                          ))}
-                        </div>
+                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Frame Shape</p>
+                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.frameShape}</span>
                       </div>
                     )}
-                    {product.notes.heart.length > 0 && (
+                    {product.frameMaterial && (
                       <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Heart Notes</p>
-                        <div className="flex flex-wrap gap-2">
-                          {product.notes.heart.map((note) => (
-                            <span key={note} className="px-2 py-1 bg-white text-sm border border-neutral-200">{note}</span>
-                          ))}
-                        </div>
+                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Frame Material</p>
+                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.frameMaterial}</span>
                       </div>
                     )}
-                    {product.notes.base.length > 0 && (
+                    {product.lensType && (
                       <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Base Notes</p>
-                        <div className="flex flex-wrap gap-2">
-                          {product.notes.base.map((note) => (
-                            <span key={note} className="px-2 py-1 bg-white text-sm border border-neutral-200">{note}</span>
-                          ))}
-                        </div>
+                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Lens Type</p>
+                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.lensType}</span>
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-neutral-500">
-                    Top notes are the first impression. Heart notes emerge as top notes fade. Base notes are the lasting foundation.
-                  </p>
+                  <div className="border border-neutral-200">
+                    <table className="w-full text-sm">
+                      <tbody>
+                        {product.measurements && (
+                          <tr className="border-b border-neutral-200">
+                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Measurements</td>
+                            <td className="px-4 py-3">
+                              {[
+                                product.measurements.lensWidth && `Lens: ${product.measurements.lensWidth}mm`,
+                                product.measurements.bridgeWidth && `Bridge: ${product.measurements.bridgeWidth}mm`,
+                                product.measurements.templeLength && `Temple: ${product.measurements.templeLength}mm`,
+                              ].filter(Boolean).join(" / ") || "—"}
+                            </td>
+                          </tr>
+                        )}
+                        {product.uvProtection && (
+                          <tr className="border-b border-neutral-200">
+                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">UV Protection</td>
+                            <td className="px-4 py-3">{product.uvProtection}</td>
+                          </tr>
+                        )}
+                        {product.weight && (
+                          <tr className="border-b border-neutral-200">
+                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Weight</td>
+                            <td className="px-4 py-3">{product.weight}</td>
+                          </tr>
+                        )}
+                        {product.faceShapes && product.faceShapes.length > 0 && (
+                          <tr>
+                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Recommended Face Shapes</td>
+                            <td className="px-4 py-3">{product.faceShapes.join(", ")}</td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </>
               ) : (
-                <p className="text-neutral-500">Fragrance notes information not available for this product.</p>
+                <p className="text-neutral-500">Specifications not available for this product.</p>
               )}
             </div>
           )}
@@ -592,7 +616,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <p className="text-neutral-500">Based on your browsing</p>
               </div>
               <Link
-                href="/fragrances"
+                href={verticalConfig.catalogPath}
                 className="text-sm hover:underline flex items-center gap-1"
               >
                 View all

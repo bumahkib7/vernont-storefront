@@ -76,7 +76,7 @@ export function PrintableReceipt({ order }: PrintableReceiptProps) {
           >
             VERNONT
           </h1>
-          <p className="text-sm text-gray-600">Designer & Niche Fragrances</p>
+          <p className="text-sm text-gray-600">Designer & Luxury Eyewear</p>
         </div>
 
         {/* Receipt Title */}
@@ -194,7 +194,7 @@ export function PrintableReceipt({ order }: PrintableReceiptProps) {
             Questions? Contact us at support@vernont.com
           </p>
           <p>
-            Vernont | www.vernont.com | 100% Authentic Fragrances
+            Vernont | www.vernont.com | 100% Authentic Eyewear
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Minus, Plus, Loader2, ShoppingBag, Truck, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
+import { toast } from "sonner";
 
 const FREE_SHIPPING_THRESHOLD = 7500; // £75 in pence
 
@@ -102,11 +103,11 @@ export function CartDrawer() {
                     Add something nice to get started
                   </p>
                   <Link
-                    href="/fragrances"
+                    href="/eyewear"
                     onClick={closeCart}
                     className="btn-primary"
                   >
-                    Shop Fragrances
+                    Shop Eyewear
                   </Link>
                 </div>
               ) : (
@@ -153,7 +154,13 @@ export function CartDrawer() {
                           <div className="flex items-center justify-between mt-3">
                             <div className="inline-flex items-center border border-[var(--border)] rounded-md">
                               <button
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                onClick={async () => {
+                                  try {
+                                    await updateQuantity(item.id, item.quantity - 1);
+                                  } catch (err) {
+                                    toast.error("Failed to update quantity");
+                                  }
+                                }}
                                 disabled={loading}
                                 className="p-1.5 hover:bg-[var(--surface)] transition-colors disabled:opacity-30 rounded-l-md"
                               >
@@ -161,7 +168,13 @@ export function CartDrawer() {
                               </button>
                               <span className="w-8 text-center text-sm font-medium tabular-nums">{item.quantity}</span>
                               <button
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                onClick={async () => {
+                                  try {
+                                    await updateQuantity(item.id, item.quantity + 1);
+                                  } catch (err) {
+                                    toast.error("Failed to update quantity");
+                                  }
+                                }}
                                 disabled={loading}
                                 className="p-1.5 hover:bg-[var(--surface)] transition-colors disabled:opacity-30 rounded-r-md"
                               >
@@ -169,7 +182,13 @@ export function CartDrawer() {
                               </button>
                             </div>
                             <button
-                              onClick={() => removeItem(item.id)}
+                              onClick={async () => {
+                                try {
+                                  await removeItem(item.id);
+                                } catch (err) {
+                                  toast.error("Failed to remove item");
+                                }
+                              }}
                               disabled={loading}
                               className="text-sm text-[var(--muted-foreground)] hover:text-[var(--destructive)] transition-colors disabled:opacity-30"
                             >

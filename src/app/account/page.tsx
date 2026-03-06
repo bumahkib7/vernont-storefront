@@ -274,7 +274,7 @@ export default function AccountDashboard() {
                 <p className="text-sm text-[var(--muted-foreground)] mb-4">
                   When you place an order, it will appear here
                 </p>
-                <Link href="/fragrances" className="btn-primary btn-sm">
+                <Link href="/eyewear" className="btn-primary btn-sm">
                   Start Shopping
                 </Link>
               </div>

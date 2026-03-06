@@ -2,7 +2,7 @@ import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
-export const alt = "Vernont - Designer & Niche Fragrances";
+export const alt = "Vernont - Designer & Luxury Eyewear";
 export const size = {
   width: 1200,
   height: 630,
@@ -54,7 +54,7 @@ export default async function Image() {
             textTransform: "uppercase",
           }}
         >
-          Designer & Niche Fragrances
+          Designer & Luxury Eyewear
         </div>
 
         {/* Subtle line */}
@@ -77,7 +77,7 @@ export default async function Image() {
             fontSize: 18,
           }}
         >
-          <span>2,400+ Fragrances</span>
+          <span>1,200+ Frames</span>
           <span>180+ Brands</span>
           <span>Free Shipping</span>
         </div>

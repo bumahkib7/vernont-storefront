@@ -13,28 +13,28 @@ import { useHeroScroll } from "@/lib/useHeroScroll";
 
 const giftCategories = [
   {
-    title: "Gift Sets",
-    description: "Curated collections for the perfect present",
+    title: "Gift Cards",
+    description: "Let them choose their perfect frame",
     icon: Package,
-    href: "/gifts/sets",
+    href: "/gifts/cards",
   },
   {
-    title: "For Her",
-    description: "Feminine fragrances she will love",
+    title: "Cases & Pouches",
+    description: "Premium protective cases she or he will love",
     icon: Heart,
-    href: "/for-her",
+    href: "/gifts/cases",
   },
   {
-    title: "For Him",
-    description: "Sophisticated scents for gentlemen",
+    title: "Chains & Cords",
+    description: "Sophisticated eyewear chains and accessories",
     icon: Sparkles,
-    href: "/for-him",
+    href: "/gifts/chains",
   },
   {
-    title: "Luxury Minis",
-    description: "Discovery sets and travel sizes",
+    title: "Cleaning Kits",
+    description: "Luxury lens care and cleaning sets",
     icon: Gift,
-    href: "/gifts/minis",
+    href: "/gifts/cleaning-kits",
   },
 ];
 
@@ -138,7 +138,7 @@ export default function GiftsPage() {
             transition={{ delay: 0.6 }}
             className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Give the gift of luxury. Every Vernont fragrance comes beautifully presented
+            Give the gift of luxury. Every Vernont frame comes beautifully presented
             with complimentary gift wrapping.
           </motion.p>
 
@@ -207,7 +207,7 @@ export default function GiftsPage() {
               {
                 icon: Sparkles,
                 title: "Gift Cards Available",
-                description: "Let them choose their perfect scent with a Vernont gift card"
+                description: "Let them choose their perfect frame with a Vernont gift card"
               }
             ].map((service, index) => (
               <motion.div
@@ -302,7 +302,7 @@ export default function GiftsPage() {
               Popular Gift Choices
             </h2>
             <p className="font-serif text-muted-foreground mt-3">
-              Bestselling Fragrances
+              Bestselling Eyewear
             </p>
           </motion.div>
 
@@ -344,8 +344,8 @@ export default function GiftsPage() {
                 viewport={{ once: true }}
                 className="text-center mt-12"
               >
-                <Link href="/fragrances" className="btn-deco-ornate inline-flex items-center gap-2">
-                  <span>View All Fragrances</span>
+                <Link href="/eyewear" className="btn-deco-ornate inline-flex items-center gap-2">
+                  <span>View All Eyewear</span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
               </motion.div>
@@ -374,15 +374,15 @@ export default function GiftsPage() {
               Not Sure What to Choose?
             </h2>
             <p className="font-serif text-muted-foreground mb-8">
-              Take our fragrance quiz to find the perfect gift
-              that matches their personality
+              Try our face shape guide to find the perfect frame
+              that flatters their features
             </p>
 
             <Link
-              href="/fragrance-quiz"
+              href="/face-shape-guide"
               className="btn-deco-ornate inline-block"
             >
-              Take the Quiz
+              Find Your Frame Shape
             </Link>
           </motion.div>
         </div>

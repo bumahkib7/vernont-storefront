@@ -342,7 +342,7 @@ function ConfirmationContent() {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-3 justify-center mb-8">
-            <Link href="/fragrances">
+            <Link href="/eyewear">
               <button className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors w-full sm:w-auto">
                 Continue Shopping
                 <ArrowRight className="h-4 w-4" />

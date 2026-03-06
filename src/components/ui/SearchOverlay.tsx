@@ -7,6 +7,8 @@ import { Search, X, Loader2, TrendingUp, Clock, Tag, ArrowRight } from "lucide-r
 import { productsApi, type Product } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
+import { product as productConfig } from "@/config/vertical";
 
 interface SearchOverlayProps {
   isOpen: boolean;
@@ -18,15 +20,8 @@ interface SearchSuggestions {
   brands: string[];
 }
 
-// Popular searches to show when input is empty
-const POPULAR_SEARCHES = [
-  "Oud",
-  "Rose",
-  "Jasmine",
-  "Sandalwood",
-  "Amber",
-  "Musk",
-];
+// Popular searches from vertical config
+const POPULAR_SEARCHES = productConfig.popularSearches;
 
 export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const router = useRouter();
@@ -74,6 +69,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         setProducts(productsRes.products);
       } catch (err) {
         console.error("Search error:", err);
+        toast.error("Search suggestions failed");
       } finally {
         setLoading(false);
       }
@@ -147,7 +143,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search for fragrances, notes, brands..."
+                placeholder={`Search for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
                 className="w-full pl-14 pr-12 py-5 bg-transparent border border-gold/20 font-serif text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-gold/60 transition-colors"
               />
               {loading && (
