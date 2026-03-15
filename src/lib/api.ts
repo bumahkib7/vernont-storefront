@@ -1261,6 +1261,65 @@ export const reviewsApi = {
   },
 };
 
+// ==================
+// AI SHOPPING ASSISTANT API
+// ==================
+export const aiApi = {
+  /**
+   * Stream a chat response from the AI shopping assistant (SSE).
+   * Returns the raw Response so the caller can read the stream.
+   */
+  async chat(sessionId: string, message: string): Promise<Response> {
+    const url = `${API_BASE_URL}/store/ai/chat`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ sessionId, message }),
+    });
+
+    if (response.status === 429) {
+      throw new ApiError(429, 'RATE_LIMITED', 'You are sending messages too quickly. Please wait a moment.');
+    }
+
+    if (!response.ok) {
+      let errorData;
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = { message: 'AI assistant is unavailable right now.' };
+      }
+      throw new ApiError(
+        response.status,
+        errorData.error?.code || 'AI_ERROR',
+        errorData.error?.message || errorData.message || 'AI assistant is unavailable right now.'
+      );
+    }
+
+    return response;
+  },
+
+  /**
+   * Find products using natural language (AI-powered search).
+   */
+  async findProducts(query: string): Promise<{ products: Product[]; suggestions: string[] }> {
+    return apiRequest(
+      '/store/ai/find-products',
+      { method: 'POST', body: JSON.stringify({ query }) }
+    );
+  },
+
+  /**
+   * Clear an AI chat session.
+   */
+  async clearSession(sessionId: string): Promise<void> {
+    await apiRequest(
+      `/store/ai/session/${sessionId}`,
+      { method: 'DELETE' }
+    );
+  },
+};
+
 // Default export with all APIs
 const api = {
   auth: authApi,
@@ -1279,6 +1338,7 @@ const api = {
   storeSettings: storeSettingsApi,
   favorites: favoritesApi,
   reviews: reviewsApi,
+  ai: aiApi,
   utils: { formatPrice, priceFromMinor },
 };
 

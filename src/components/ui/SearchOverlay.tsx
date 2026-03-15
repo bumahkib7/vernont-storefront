@@ -3,8 +3,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Loader2, TrendingUp, Clock, Tag, ArrowRight } from "lucide-react";
+import { Search, X, Loader2, TrendingUp, Clock, Tag, ArrowRight, Sparkles } from "lucide-react";
 import { productsApi, type Product } from "@/lib/api";
+import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -31,6 +32,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const openAssistantWithMessage = useShoppingAssistantStore((s) => s.openWithMessage);
 
   // Focus input when opened
   useEffect(() => {
@@ -321,10 +323,42 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   <p className="font-serif text-muted-foreground mt-2">
                     Try different keywords or browse our collections
                   </p>
+
+                  {/* AI assistant prompt */}
+                  <p className="font-serif text-sm text-muted-foreground mt-4 mb-2 flex items-center justify-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Try asking our AI:
+                  </p>
+                  <div className="flex flex-wrap justify-center gap-2 mb-4">
+                    {["red frames under 50", "lightweight titanium", "best for oval face"].map((s) => (
+                      <button
+                        key={s}
+                        onClick={() => {
+                          onClose();
+                          openAssistantWithMessage(s);
+                        }}
+                        className="px-3 py-1.5 border border-gold/20 font-serif text-xs hover:border-gold hover:text-gold transition-all"
+                      >
+                        &ldquo;{s}&rdquo;
+                      </button>
+                    ))}
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      onClose();
+                      openAssistantWithMessage(`I'm looking for: ${query}`);
+                    }}
+                    className="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-foreground text-background font-display text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-all"
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Ask AI Assistant
+                  </button>
+
                   <Link
                     href="/collections"
                     onClick={onClose}
-                    className="inline-flex items-center gap-2 mt-6 px-6 py-3 border border-gold font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all"
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 border border-gold font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all ml-3"
                   >
                     Browse Collections
                     <ArrowRight className="h-4 w-4" />

@@ -4,11 +4,12 @@ import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ArrowLeft, SlidersHorizontal, X, Loader2, Heart } from "lucide-react";
+import { Search, ArrowLeft, SlidersHorizontal, X, Loader2, Heart, Sparkles } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { productsApi, type Product } from "@/lib/api";
+import { productsApi, aiApi, type Product } from "@/lib/api";
 import { useWishlist } from "@/context/WishlistContext";
+import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import { formatPrice } from "@/context/CartContext";
 import { toast } from "sonner";
 import { product as productConfig, verticalConfig } from "@/config/vertical";
@@ -115,6 +116,8 @@ function SearchContent() {
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("relevance");
   const [searchInput, setSearchInput] = useState(query);
+  const [aiSuggestions, setAiSuggestions] = useState<string[]>([]);
+  const openAssistantWithMessage = useShoppingAssistantStore((s) => s.openWithMessage);
 
   // Sync search input with URL query
   useEffect(() => {
@@ -145,6 +148,27 @@ function SearchContent() {
 
     fetchProducts();
   }, [query]);
+
+  // Fetch AI suggestions when results are few or empty
+  useEffect(() => {
+    if (!query || products.length > 5) {
+      setAiSuggestions([]);
+      return;
+    }
+
+    const fetchAiSuggestions = async () => {
+      try {
+        const result = await aiApi.findProducts(query);
+        setAiSuggestions(result.suggestions || []);
+      } catch {
+        // Silently fail - AI suggestions are non-critical
+      }
+    };
+
+    // Small delay so it doesn't race with product results
+    const timer = setTimeout(fetchAiSuggestions, 500);
+    return () => clearTimeout(timer);
+  }, [query, products.length]);
 
   // Sort products
   const sortedProducts = useMemo(() => {
@@ -310,6 +334,37 @@ function SearchContent() {
               We couldn&apos;t find any products matching &ldquo;{query}&rdquo;.
               Try different keywords or browse our collections.
             </p>
+
+            {/* AI Suggestions */}
+            {aiSuggestions.length > 0 && (
+              <div className="mb-8 max-w-md mx-auto">
+                <p className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center justify-center gap-1.5">
+                  <Sparkles className="w-4 h-4" />
+                  Try asking:
+                </p>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {aiSuggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => router.push(`/search?q=${encodeURIComponent(suggestion)}`)}
+                      className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-full text-sm hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Ask AI Assistant */}
+            <button
+              onClick={() => openAssistantWithMessage(`I'm looking for: ${query}`)}
+              className="mb-6 inline-flex items-center gap-2 px-5 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-neutral-800 transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              Ask our AI Assistant
+            </button>
+
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link href={verticalConfig.catalogPath} className="btn-primary">
                 Browse All {verticalConfig.label}
@@ -320,11 +375,41 @@ function SearchContent() {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
-            {sortedProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {sortedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+
+            {/* AI suggestions when few results */}
+            {sortedProducts.length > 0 && sortedProducts.length <= 5 && aiSuggestions.length > 0 && (
+              <div className="mt-10 pt-8 border-t border-[var(--border)] text-center">
+                <p className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center justify-center gap-1.5">
+                  <Sparkles className="w-4 h-4" />
+                  Did you mean...
+                </p>
+                <div className="flex flex-wrap justify-center gap-2 mb-4">
+                  {aiSuggestions.map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      onClick={() => router.push(`/search?q=${encodeURIComponent(suggestion)}`)}
+                      className="px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-full text-sm hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  onClick={() => openAssistantWithMessage(`I'm looking for: ${query}`)}
+                  className="inline-flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors"
+                >
+                  <Sparkles className="w-3.5 h-3.5" />
+                  Need more help? Ask our AI assistant
+                </button>
+              </div>
+            )}
+          </>
         )}
       </main>
 

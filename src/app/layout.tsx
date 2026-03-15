@@ -8,6 +8,7 @@ import { CompareBar } from "@/components/ui/CompareBar";
 // Newsletter popup disabled - using inline newsletter section instead
 // import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 import { BackToTop } from "@/components/ui/BackToTop";
+import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 
@@ -81,6 +82,7 @@ export default function RootLayout({
           <CompareDrawer />
           <CompareBar />
           <BackToTop />
+          <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>
       </body>

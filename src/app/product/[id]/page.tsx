@@ -8,6 +8,7 @@ import {
   Minus,
   Plus,
   Check,
+  Sparkles,
   Truck,
   RotateCcw,
   Shield,
@@ -30,6 +31,7 @@ import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/ProductJsonLd";
 import { use } from "react";
 import { toast } from "sonner";
 import { verticalConfig } from "@/config/vertical";
+import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -54,6 +56,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
   const { addToCompare, isComparing, itemCount: compareCount } = useCompare();
+  const openAssistantWithProduct = useShoppingAssistantStore((s) => s.openWithProduct);
 
   const { data: productData, isLoading, error } = useProductByHandle(id);
   const { data: relatedData } = useProducts({ limit: 8 });
@@ -412,6 +415,22 @@ export default function ProductPage({ params }: ProductPageProps) {
                 <p className="text-xs text-neutral-500">Free case</p>
               </div>
             </div>
+
+            {/* Ask AI about this product */}
+            <button
+              onClick={() =>
+                openAssistantWithProduct({
+                  id: product.id,
+                  name: product.name,
+                  brand: product.brand || undefined,
+                  price: formatPriceMajor(currentPrice, currency),
+                })
+              }
+              className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-neutral-200 text-sm text-neutral-600 hover:border-black hover:text-black transition-colors"
+            >
+              <Sparkles className="w-4 h-4" />
+              Ask about this product
+            </button>
           </div>
         </div>
       </section>
