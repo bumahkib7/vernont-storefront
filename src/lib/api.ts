@@ -93,7 +93,12 @@ import {
 // Re-export types and utilities
 export * from './schemas';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+// In production, route through Next.js rewrite proxy so cookies are same-origin
+// (required for mobile Safari which blocks third-party cookies via ITP).
+const API_BASE_URL =
+  typeof window !== 'undefined' && process.env.NODE_ENV === 'production'
+    ? '/api/proxy'
+    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
 /**
  * Resolve an image URL to a publicly accessible URL.

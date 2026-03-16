@@ -1,8 +1,19 @@
 import type { NextConfig } from "next";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
+  },
+  // Proxy /api/proxy/* to the backend so auth cookies are same-origin (fixes mobile Safari)
+  async rewrites() {
+    return [
+      {
+        source: "/api/proxy/:path*",
+        destination: `${API_URL}/:path*`,
+      },
+    ];
   },
   images: {
     formats: ["image/avif", "image/webp"],
