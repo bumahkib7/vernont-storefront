@@ -1,18 +1,63 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, X, Send, Loader2, Sparkles, RotateCcw } from "lucide-react";
+import {
+  MessageCircle,
+  X,
+  Send,
+  Loader2,
+  Sparkles,
+  RotateCcw,
+  Search,
+  Package,
+  ShoppingCart,
+  RotateCw,
+  Eye,
+  Tag,
+  Headphones,
+  CheckCircle2,
+  XCircle,
+} from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { aiApi, ApiError } from "@/lib/api";
+import Markdown from "react-markdown";
+import { aiApi, resolveImageUrl, ApiError } from "@/lib/api";
 import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
+import Image from "next/image";
 
 // ---------- Types ----------
+interface ToolActivity {
+  toolName: string;
+  toolId: string;
+  status: "executing" | "complete" | "error";
+}
+
 interface ChatMessage {
   id: string;
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
+  tools: ToolActivity[];
 }
+
+// ---------- Tool Display Config ----------
+const TOOL_META: Record<string, { icon: typeof Search; label: string; activeLabel: string }> = {
+  search_products:      { icon: Search,       label: "Searched products",        activeLabel: "Searching products..." },
+  get_product_details:  { icon: Eye,          label: "Viewed product details",   activeLabel: "Loading product details..." },
+  check_stock:          { icon: Package,      label: "Checked stock",            activeLabel: "Checking availability..." },
+  add_to_cart:          { icon: ShoppingCart,  label: "Added to cart",            activeLabel: "Adding to cart..." },
+  remove_from_cart:     { icon: ShoppingCart,  label: "Removed from cart",        activeLabel: "Removing from cart..." },
+  get_cart:             { icon: ShoppingCart,  label: "Viewed cart",              activeLabel: "Loading cart..." },
+  apply_promo_code:     { icon: Tag,          label: "Applied promo code",       activeLabel: "Applying promo code..." },
+  get_customer_orders:  { icon: Package,      label: "Loaded orders",            activeLabel: "Looking up orders..." },
+  get_order:            { icon: Package,      label: "Loaded order details",     activeLabel: "Loading order..." },
+  get_order_by_display_id: { icon: Package,   label: "Found order",             activeLabel: "Finding order..." },
+  check_return_eligibility: { icon: RotateCw, label: "Checked return eligibility", activeLabel: "Checking return eligibility..." },
+  initiate_return:      { icon: RotateCw,     label: "Initiated return",         activeLabel: "Initiating return..." },
+  get_return_status:    { icon: RotateCw,     label: "Checked return status",    activeLabel: "Checking return status..." },
+  cancel_return:        { icon: RotateCw,     label: "Cancelled return",         activeLabel: "Cancelling return..." },
+  get_return_reasons:   { icon: RotateCw,     label: "Loaded return reasons",    activeLabel: "Loading return reasons..." },
+  escalate_to_human:    { icon: Headphones,   label: "Escalated to support",     activeLabel: "Connecting to support..." },
+};
 
 // ---------- Helpers ----------
 const QUICK_SUGGESTIONS = [
@@ -37,7 +82,110 @@ function getOrCreateSessionId(): string {
   return id;
 }
 
-// ---------- Component ----------
+// ---------- Sub-components ----------
+
+/** Compact tool activity pill */
+function ToolPill({ tool }: { tool: ToolActivity }) {
+  const meta = TOOL_META[tool.toolName] || {
+    icon: Sparkles,
+    label: tool.toolName.replace(/_/g, " "),
+    activeLabel: `Running ${tool.toolName.replace(/_/g, " ")}...`,
+  };
+  const Icon = meta.icon;
+  const isActive = tool.status === "executing";
+  const isError = tool.status === "error";
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium transition-all ${
+        isActive
+          ? "bg-neutral-100 text-neutral-600 animate-pulse"
+          : isError
+          ? "bg-red-50 text-red-600"
+          : "bg-neutral-50 text-neutral-500"
+      }`}
+    >
+      {isActive ? (
+        <Loader2 className="w-2.5 h-2.5 animate-spin" />
+      ) : isError ? (
+        <XCircle className="w-2.5 h-2.5" />
+      ) : (
+        <Icon className="w-2.5 h-2.5" />
+      )}
+      {isActive ? meta.activeLabel : meta.label}
+    </span>
+  );
+}
+
+/** Markdown message renderer with image support */
+function MessageContent({ content }: { content: string }) {
+  if (!content) return null;
+
+  // Convert [Attached image: URL] to markdown
+  const processed = content.replace(
+    /\[Attached image:\s*(https?:\/\/[^\]]+)\]/g,
+    "![]($1)"
+  );
+
+  return (
+    <Markdown
+      components={{
+        p: ({ children }) => <p className="mb-1.5 last:mb-0">{children}</p>,
+        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+        em: ({ children }) => <em className="italic">{children}</em>,
+        ul: ({ children }) => <ul className="mb-1.5 ml-3 list-disc space-y-0.5 last:mb-0">{children}</ul>,
+        ol: ({ children }) => <ol className="mb-1.5 ml-3 list-decimal space-y-0.5 last:mb-0">{children}</ol>,
+        li: ({ children }) => <li className="text-[13px]">{children}</li>,
+        code: ({ children, className: cn }) => {
+          if (cn?.includes("language-")) {
+            return (
+              <pre className="my-1.5 overflow-x-auto rounded bg-black/5 p-2 text-[11px]">
+                <code className="font-mono">{children}</code>
+              </pre>
+            );
+          }
+          return <code className="rounded bg-black/5 px-1 py-0.5 text-[11px] font-mono">{children}</code>;
+        },
+        pre: ({ children }) => <>{children}</>,
+        a: ({ href, children }) => (
+          <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline underline-offset-2 hover:text-blue-800">
+            {children}
+          </a>
+        ),
+        img: ({ src, alt }) => {
+          const resolved = resolveImageUrl(typeof src === "string" ? src : undefined);
+          if (!resolved) return null;
+          return (
+            <span className="my-1.5 block">
+              <span className="relative block overflow-hidden rounded-lg border border-neutral-200 max-w-[200px]">
+                <Image
+                  src={resolved}
+                  alt={alt || "Product"}
+                  width={200}
+                  height={200}
+                  className="w-full h-auto object-cover rounded-lg"
+                  unoptimized
+                />
+              </span>
+            </span>
+          );
+        },
+        table: ({ children }) => (
+          <div className="my-1.5 overflow-x-auto rounded border border-neutral-200">
+            <table className="w-full text-[11px]">{children}</table>
+          </div>
+        ),
+        thead: ({ children }) => <thead className="bg-neutral-50">{children}</thead>,
+        th: ({ children }) => <th className="px-2 py-1 text-left font-medium">{children}</th>,
+        td: ({ children }) => <td className="border-t px-2 py-1">{children}</td>,
+      }}
+    >
+      {processed}
+    </Markdown>
+  );
+}
+
+// ---------- Main Component ----------
 export function ShoppingAssistant() {
   const { isOpen, productContext, prefillMessage, open, close, clearContext } =
     useShoppingAssistantStore();
@@ -72,7 +220,7 @@ export function ShoppingAssistant() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, prefillMessage]);
 
-  // Streaming chat send
+  // NDJSON streaming chat
   const sendMessage = useCallback(
     async (text: string) => {
       if (!text.trim() || isStreaming) return;
@@ -82,96 +230,127 @@ export function ShoppingAssistant() {
         role: "user",
         content: text.trim(),
         timestamp: new Date(),
+        tools: [],
       };
       setMessages((prev) => [...prev, userMsg]);
       setInput("");
       setIsStreaming(true);
       setRateLimited(false);
 
-      // Placeholder for assistant response
       const assistantId = generateId();
       setMessages((prev) => [
         ...prev,
-        { id: assistantId, role: "assistant", content: "", timestamp: new Date() },
+        { id: assistantId, role: "assistant", content: "", timestamp: new Date(), tools: [] },
       ]);
 
       try {
         const response = await aiApi.chat(sessionId, text.trim());
-
-        if (!response.body) {
-          throw new Error("No response body");
-        }
+        if (!response.body) throw new Error("No response body");
 
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
         let buffer = "";
+        let accumulated = "";
+        const toolActivities: ToolActivity[] = [];
+
+        const updateMsg = () => {
+          setMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, content: accumulated, tools: [...toolActivities] } : m
+            )
+          );
+        };
 
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
 
           buffer += decoder.decode(value, { stream: true });
-
-          // Parse SSE events
           const lines = buffer.split("\n");
           buffer = lines.pop() || "";
 
           for (const line of lines) {
-            if (line.startsWith("data: ")) {
-              const data = line.slice(6);
-              if (data === "[DONE]") break;
+            const trimmed = line.trim();
+            if (!trimmed) continue;
 
-              try {
-                const parsed = JSON.parse(data);
-                const token = parsed.content || parsed.delta || parsed.text || "";
-                if (token) {
-                  setMessages((prev) =>
-                    prev.map((m) =>
-                      m.id === assistantId ? { ...m, content: m.content + token } : m
-                    )
-                  );
+            // Handle SSE-style "data: " prefix (backwards compat)
+            const jsonStr = trimmed.startsWith("data: ") ? trimmed.slice(6) : trimmed;
+            if (jsonStr === "[DONE]") continue;
+
+            try {
+              const parsed = JSON.parse(jsonStr);
+
+              switch (parsed.type) {
+                case "message": {
+                  const token = parsed.content || parsed.text || parsed.delta || "";
+                  if (token) {
+                    accumulated += token;
+                    updateMsg();
+                  }
+                  break;
                 }
-              } catch {
-                // Plain text token (non-JSON SSE)
-                if (data.trim()) {
-                  setMessages((prev) =>
-                    prev.map((m) =>
-                      m.id === assistantId ? { ...m, content: m.content + data } : m
-                    )
-                  );
+                case "tool_call": {
+                  toolActivities.push({
+                    toolName: parsed.tool,
+                    toolId: parsed.tool_id || generateId(),
+                    status: "executing",
+                  });
+                  updateMsg();
+                  break;
                 }
+                case "tool_result": {
+                  const idx = toolActivities.findIndex(
+                    (t) => t.toolId === parsed.tool_id || t.toolName === parsed.tool
+                  );
+                  if (idx !== -1) {
+                    toolActivities[idx].status = parsed.status === "error" ? "error" : "complete";
+                  }
+                  updateMsg();
+                  break;
+                }
+                case "done":
+                  break;
+                case "error":
+                  accumulated += "\n\nSorry, something went wrong. Please try again.";
+                  updateMsg();
+                  break;
+                default: {
+                  // Legacy: plain text token
+                  const fallback = parsed.content || parsed.delta || parsed.text || "";
+                  if (fallback) {
+                    accumulated += fallback;
+                    updateMsg();
+                  }
+                }
+              }
+            } catch {
+              // Non-JSON line — treat as plain text
+              if (jsonStr.trim()) {
+                accumulated += jsonStr;
+                updateMsg();
               }
             }
           }
         }
 
-        // If assistant message is still empty after stream, add fallback
+        // Fallback if empty
+        if (!accumulated) {
+          accumulated = "I'm sorry, I couldn't generate a response. Please try again.";
+          updateMsg();
+        }
+      } catch (err) {
+        const errorText =
+          err instanceof ApiError && err.status === 429
+            ? "You're sending messages too quickly. Please wait a moment."
+            : "Sorry, I'm having trouble right now. Please try again in a moment.";
+
+        if (err instanceof ApiError && err.status === 429) setRateLimited(true);
+
         setMessages((prev) =>
           prev.map((m) =>
-            m.id === assistantId && !m.content
-              ? { ...m, content: "I'm sorry, I couldn't generate a response. Please try again." }
-              : m
+            m.id === assistantId ? { ...m, content: errorText } : m
           )
         );
-      } catch (err) {
-        if (err instanceof ApiError && err.status === 429) {
-          setRateLimited(true);
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantId
-                ? { ...m, content: "You're sending messages too quickly. Please wait a moment and try again." }
-                : m
-            )
-          );
-        } else {
-          setMessages((prev) =>
-            prev.map((m) =>
-              m.id === assistantId
-                ? { ...m, content: "Sorry, I'm having trouble right now. Please try again in a moment." }
-                : m
-            )
-          );
-        }
       } finally {
         setIsStreaming(false);
       }
@@ -240,7 +419,7 @@ export function ShoppingAssistant() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-4rem)] bg-white rounded-xl shadow-2xl border border-neutral-200 flex flex-col overflow-hidden"
+            className="fixed bottom-6 right-6 z-50 w-[400px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100vh-4rem)] bg-white rounded-xl shadow-2xl border border-neutral-200 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-black text-white flex-shrink-0">
@@ -281,7 +460,7 @@ export function ShoppingAssistant() {
                   </div>
                   <h4 className="font-medium text-sm mb-1">Hi! How can I help?</h4>
                   <p className="text-xs text-neutral-500 mb-5 max-w-[250px]">
-                    I can help you find the perfect product, answer questions, or give recommendations.
+                    I can help you find products, check orders, process returns, or give recommendations.
                   </p>
 
                   {/* Product context button */}
@@ -314,19 +493,37 @@ export function ShoppingAssistant() {
                     key={msg.id}
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
-                    <div
-                      className={`max-w-[85%] px-3 py-2 rounded-xl text-sm leading-relaxed whitespace-pre-wrap ${
-                        msg.role === "user"
-                          ? "bg-black text-white rounded-br-sm"
-                          : "bg-neutral-100 text-neutral-800 rounded-bl-sm"
-                      }`}
-                    >
-                      {msg.content || (
-                        <span className="flex items-center gap-1.5 text-neutral-400">
-                          <Loader2 className="w-3 h-3 animate-spin" />
-                          Thinking...
-                        </span>
+                    <div className="max-w-[88%] min-w-0">
+                      {/* Tool activity pills */}
+                      {msg.role === "assistant" && msg.tools.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-1">
+                          {msg.tools.map((tool) => (
+                            <ToolPill key={tool.toolId} tool={tool} />
+                          ))}
+                        </div>
                       )}
+
+                      {/* Message bubble */}
+                      <div
+                        className={`px-3 py-2 rounded-xl text-[13px] leading-relaxed overflow-hidden break-words [overflow-wrap:anywhere] ${
+                          msg.role === "user"
+                            ? "bg-black text-white rounded-br-sm"
+                            : "bg-neutral-100 text-neutral-800 rounded-bl-sm"
+                        }`}
+                      >
+                        {msg.content ? (
+                          msg.role === "assistant" ? (
+                            <MessageContent content={msg.content} />
+                          ) : (
+                            <span className="whitespace-pre-wrap">{msg.content}</span>
+                          )
+                        ) : (
+                          <span className="flex items-center gap-1.5 text-neutral-400">
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                            Thinking...
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 ))
