@@ -5,6 +5,7 @@
 
 import type { Product, ProductCollection, StorefrontVariant, VerticalMetadata } from './schemas';
 import { priceFromMinor } from './schemas';
+import { resolveImageUrl } from './api';
 import { product as productConfig } from '@/config/vertical';
 
 /**
@@ -107,15 +108,20 @@ export function transformProduct(product: Product): DisplayProduct {
     else if (metadataGender === 'unisex') gender = 'unisex';
   }
 
-  // Collect all images from imageUrls array (these are strings in the DTO)
-  const images: string[] = [];
-  if (product.thumbnail) images.push(product.thumbnail);
+  // Collect all images from imageUrls array, resolving through the /files proxy
+  const rawImages: string[] = [];
+  if (product.thumbnail) rawImages.push(product.thumbnail);
   if (product.imageUrls && product.imageUrls.length > 0) {
-    images.push(...product.imageUrls);
+    rawImages.push(...product.imageUrls);
   }
 
-  // Dedupe images
-  const uniqueImages = [...new Set(images)];
+  // Resolve URLs through the backend proxy and dedupe
+  const resolvedImages = rawImages
+    .map(url => resolveImageUrl(url))
+    .filter((url): url is string => url !== null);
+  const uniqueImages = [...new Set(resolvedImages)];
+
+  const resolvedThumbnail = resolveImageUrl(product.thumbnail);
 
   return {
     id: product.handle, // Use handle as ID for URL routing
@@ -124,7 +130,7 @@ export function transformProduct(product: Product): DisplayProduct {
     brand: product.brand ?? 'Vernont',
     price,
     originalPrice,
-    image: product.thumbnail ?? uniqueImages[0] ?? '/placeholder.jpg',
+    image: resolvedThumbnail ?? uniqueImages[0] ?? '/placeholder.jpg',
     images: uniqueImages.length > 0 ? uniqueImages : ['/placeholder.jpg'],
     category: eyewearMetadata?.category || 'Sunglasses',
     gender,

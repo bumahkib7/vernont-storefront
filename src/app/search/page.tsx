@@ -7,7 +7,7 @@ import Image from "next/image";
 import { Search, ArrowLeft, SlidersHorizontal, X, Loader2, Heart, Sparkles } from "lucide-react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { productsApi, aiApi, type Product } from "@/lib/api";
+import { productsApi, aiApi, resolveImageUrl, type Product } from "@/lib/api";
 import { useWishlist } from "@/context/WishlistContext";
 import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import { formatPrice } from "@/context/CartContext";
@@ -60,9 +60,9 @@ function ProductCard({ product }: { product: Product }) {
       <Link href={`/product/${product.handle || product.id}`}>
         {/* Image */}
         <div className="aspect-square relative bg-[var(--surface)] rounded-lg overflow-hidden mb-3">
-          {product.thumbnail ? (
+          {resolveImageUrl(product.thumbnail) ? (
             <Image
-              src={product.thumbnail}
+              src={resolveImageUrl(product.thumbnail)!}
               alt={product.title}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"

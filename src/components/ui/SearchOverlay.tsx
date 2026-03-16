@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, X, Loader2, TrendingUp, Clock, Tag, ArrowRight, Sparkles } from "lucide-react";
-import { productsApi, type Product } from "@/lib/api";
+import { productsApi, resolveImageUrl, type Product } from "@/lib/api";
 import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import Image from "next/image";
 import Link from "next/link";
@@ -270,10 +270,10 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             onClick={onClose}
                             className="flex items-center gap-4 p-3 border border-transparent hover:border-gold/20 hover:bg-gold/5 transition-all group"
                           >
-                            {product.thumbnail ? (
+                            {resolveImageUrl(product.thumbnail) ? (
                               <div className="relative w-16 h-16 bg-secondary flex-shrink-0">
                                 <Image
-                                  src={product.thumbnail}
+                                  src={resolveImageUrl(product.thumbnail)!}
                                   alt={product.title}
                                   fill
                                   className="object-cover"

@@ -6,6 +6,7 @@ import { X, Plus, ArrowRight, GitCompare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 import { formatPriceMajor } from "@/context/CartContext";
+import { resolveImageUrl } from "@/lib/api";
 import { product as productConfig, verticalConfig } from "@/config/vertical";
 
 export function CompareDrawer() {
@@ -93,9 +94,9 @@ export function CompareDrawer() {
                         </button>
                         <Link href={`/product/${item.handle}`} onClick={closeDrawer}>
                           <div className="aspect-square relative bg-[var(--surface)]">
-                            {item.thumbnail ? (
+                            {resolveImageUrl(item.thumbnail) ? (
                               <Image
-                                src={item.thumbnail}
+                                src={resolveImageUrl(item.thumbnail)!}
                                 alt={item.name}
                                 fill
                                 className="object-cover"

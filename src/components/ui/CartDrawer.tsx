@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X, Minus, Plus, Loader2, ShoppingBag, Truck, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
+import { resolveImageUrl } from "@/lib/api";
 import { toast } from "sonner";
 
 const FREE_SHIPPING_THRESHOLD = 7500; // £75 in pence
@@ -120,9 +121,9 @@ export function CartDrawer() {
                           onClick={closeCart}
                           className="relative w-20 h-20 bg-[var(--surface)] rounded-lg flex-shrink-0 overflow-hidden"
                         >
-                          {item.thumbnail ? (
+                          {resolveImageUrl(item.thumbnail) ? (
                             <Image
-                              src={item.thumbnail}
+                              src={resolveImageUrl(item.thumbnail)!}
                               alt={item.title}
                               fill
                               className="object-cover"
