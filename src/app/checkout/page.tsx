@@ -1151,7 +1151,6 @@ export default function CheckoutPage() {
                           alt={item.title}
                           fill
                           className="object-cover"
-                          unoptimized
                         />
                       )}
                       <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--primary)] text-white text-xs rounded-sm flex items-center justify-center font-medium">

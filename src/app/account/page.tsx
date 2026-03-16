@@ -219,7 +219,6 @@ export default function AccountDashboard() {
                           width={56}
                           height={56}
                           className="object-cover w-full h-full"
-                          unoptimized
                         />
                       ) : (
                         <ShoppingBag className="h-6 w-6 text-[var(--muted-foreground)]" />

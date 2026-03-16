@@ -31,7 +31,6 @@ export function CompareBar() {
                   alt={item.name}
                   fill
                   className="object-cover"
-                  unoptimized
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-[var(--surface)] text-[var(--muted-foreground)]">

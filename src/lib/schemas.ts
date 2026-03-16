@@ -233,6 +233,38 @@ export const ProductCollectionSchema = StoreCollectionSchema;
 export type ProductCollection = StoreCollection;
 
 // ==================
+// BRAND SCHEMAS (match StoreBrandDto)
+// ==================
+
+export const StoreBrandSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  description: z.string().nullable().optional(),
+  logo_url: z.string().nullable().optional(),
+  website_url: z.string().nullable().optional(),
+  tier: z.string(),
+  product_count: z.number().default(0),
+});
+
+export type StoreBrand = z.infer<typeof StoreBrandSchema>;
+
+export const BrandsListResponseSchema = z.object({
+  brands: z.array(StoreBrandSchema),
+  count: z.number(),
+  offset: z.number(),
+  limit: z.number(),
+});
+
+export type BrandsListResponse = z.infer<typeof BrandsListResponseSchema>;
+
+export const BrandResponseSchema = z.object({
+  brand: StoreBrandSchema,
+});
+
+export type BrandResponse = z.infer<typeof BrandResponseSchema>;
+
+// ==================
 // CATEGORY SCHEMAS (match StoreProductCategoryDto)
 // ==================
 

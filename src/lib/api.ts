@@ -42,6 +42,8 @@ import {
   ReviewResponseSchema,
   ReviewStatsResponseSchema,
   BatchReviewStatsResponseSchema,
+  BrandsListResponseSchema,
+  BrandResponseSchema,
   parseResponse,
   formatPrice,
   priceFromMinor,
@@ -84,6 +86,8 @@ import {
   type ReviewStats,
   type ReviewStatsResponse,
   type BatchReviewStatsResponse,
+  type BrandsListResponse,
+  type BrandResponse,
 } from './schemas';
 
 // Re-export types and utilities
@@ -433,6 +437,30 @@ export const collectionsApi = {
       {},
       ProductsListResponseSchema
     );
+  },
+};
+
+// ==================
+// BRANDS API
+// ==================
+export const brandsApi = {
+  async list(params?: { q?: string; tier?: string; limit?: number; offset?: number }): Promise<BrandsListResponse> {
+    const searchParams = new URLSearchParams();
+    if (params) {
+      Object.entries(params).forEach(([key, value]) => {
+        if (value !== undefined) searchParams.append(key, String(value));
+      });
+    }
+    const query = searchParams.toString();
+    return apiRequest(
+      `/store/brands${query ? `?${query}` : ''}`,
+      {},
+      BrandsListResponseSchema
+    );
+  },
+
+  async getBySlug(slug: string): Promise<BrandResponse> {
+    return apiRequest(`/store/brands/${slug}`, {}, BrandResponseSchema);
   },
 };
 
@@ -1353,6 +1381,7 @@ const api = {
   auth: authApi,
   products: productsApi,
   collections: collectionsApi,
+  brands: brandsApi,
   categories: categoriesApi,
   tags: tagsApi,
   cart: cartApi,

@@ -127,7 +127,6 @@ export function CartDrawer() {
                               alt={item.title}
                               fill
                               className="object-cover"
-                              unoptimized
                             />
                           ) : (
                             <div className="absolute inset-0 flex items-center justify-center text-[var(--muted-foreground)]">

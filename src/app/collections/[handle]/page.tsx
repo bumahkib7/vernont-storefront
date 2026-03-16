@@ -159,12 +159,11 @@ export default function CollectionPage() {
       <section className="relative h-[40vh] min-h-[300px] max-h-[500px] flex items-center">
         <div className="absolute inset-0">
           <Image
-            src={getCollectionHeroImage(handle)}
+            src={getCollectionHeroImage(handle, collection?.thumbnail)}
             alt={collection?.title || "Collection"}
             fill
             className="object-cover"
             priority
-            unoptimized
           />
           <div className="absolute inset-0 bg-black/40" />
         </div>

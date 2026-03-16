@@ -1,37 +1,52 @@
 // Collection image utilities
-// Uses vertical config for curated images per collection handle
+// Prefers real thumbnails from the API, falls back to curated config images
 
 import { collectionImages } from "@/config/vertical";
+import { resolveImageUrl } from "@/lib/api";
+
+// Fallback placeholder images (generic eyewear)
+const FALLBACK_IMAGES = [
+  "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80",
+  "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=800&q=80",
+  "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=800&q=80",
+  "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=800&q=80",
+];
 
 /**
- * Get a curated image for a collection
- * Ignores backend thumbnails and uses curated images instead
+ * Get an image for a collection.
+ * Priority: API thumbnail > config handle map > fallback
  */
-export function getCollectionImage(handle: string, index: number = 0): string {
+export function getCollectionImage(handle: string, index: number = 0, apiThumbnail?: string | null): string {
+  // 1. Use real API thumbnail if available
+  const resolved = resolveImageUrl(apiThumbnail);
+  if (resolved) return resolved;
+
   const normalizedHandle = handle.toLowerCase().replace(/[_\s]/g, "-");
 
-  // Check for exact match in config handle map
+  // 2. Check config handle map
   if (collectionImages.handleMap[normalizedHandle]) {
     return collectionImages.handleMap[normalizedHandle];
   }
 
-  // Check for partial match
+  // 3. Partial match in config
   for (const [key, image] of Object.entries(collectionImages.handleMap)) {
     if (normalizedHandle.includes(key) || key.includes(normalizedHandle)) {
       return image;
     }
   }
 
-  // Use index-based fallback from curated defaults
-  return collectionImages.defaultImages[index % collectionImages.defaultImages.length];
+  // 4. Fallback
+  return FALLBACK_IMAGES[index % FALLBACK_IMAGES.length];
 }
 
 /**
  * Get hero image for collection page banner
- * Returns a higher quality/different crop version
  */
-export function getCollectionHeroImage(handle: string): string {
-  // Use the same logic but with different size parameter
-  const baseImage = getCollectionImage(handle, 0);
-  return baseImage.replace("w=800", "w=1920");
+export function getCollectionHeroImage(handle: string, apiThumbnail?: string | null): string {
+  const baseImage = getCollectionImage(handle, 0, apiThumbnail);
+  // For Unsplash URLs, request higher resolution
+  if (baseImage.includes("unsplash.com")) {
+    return baseImage.replace("w=800", "w=1920");
+  }
+  return baseImage;
 }

@@ -10,6 +10,7 @@ import {
 import {
   productsApi,
   collectionsApi,
+  brandsApi,
   categoriesApi,
   tagsApi,
   cartApi,
@@ -57,6 +58,9 @@ import {
   type ExchangeEligibilityResponse,
   type MarketingPreference,
   type Address,
+  type BrandsListResponse,
+  type BrandResponse,
+  type StoreBrand,
   type Review,
   type ReviewListResponse,
   type ReviewResponse,
@@ -98,6 +102,15 @@ export const queryKeys = {
     list: () => [...queryKeys.categories.all, 'list'] as const,
     products: (handle: string, params?: Parameters<typeof categoriesApi.getProducts>[1]) =>
       [...queryKeys.categories.all, 'products', handle, params] as const,
+  },
+
+  // Brands
+  brands: {
+    all: ['brands'] as const,
+    list: (params?: Parameters<typeof brandsApi.list>[0]) =>
+      [...queryKeys.brands.all, 'list', params] as const,
+    bySlug: (slug: string) =>
+      [...queryKeys.brands.all, 'slug', slug] as const,
   },
 
   // Tags
@@ -338,6 +351,39 @@ export function useCategoryProducts(
     queryKey: queryKeys.categories.products(handle, params),
     queryFn: () => categoriesApi.getProducts(handle, params),
     enabled: !!handle,
+    ...options,
+  });
+}
+
+// ==================
+// BRANDS HOOKS
+// ==================
+
+/**
+ * Fetch all brands
+ */
+export function useBrands(
+  params?: Parameters<typeof brandsApi.list>[0],
+  options?: Omit<UseQueryOptions<BrandsListResponse>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.brands.list(params),
+    queryFn: () => brandsApi.list(params),
+    ...options,
+  });
+}
+
+/**
+ * Fetch a brand by slug
+ */
+export function useBrandBySlug(
+  slug: string,
+  options?: Omit<UseQueryOptions<BrandResponse>, 'queryKey' | 'queryFn'>
+) {
+  return useQuery({
+    queryKey: queryKeys.brands.bySlug(slug),
+    queryFn: () => brandsApi.getBySlug(slug),
+    enabled: !!slug,
     ...options,
   });
 }

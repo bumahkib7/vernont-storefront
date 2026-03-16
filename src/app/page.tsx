@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
-import { useProducts } from "@/lib/hooks";
+import { useProducts, useCategories, useBrands } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { useCompare } from "@/context/CompareContext";
 import {
@@ -19,16 +19,22 @@ import { content } from "@/config/vertical";
 import { AiProductFinder } from "@/components/ai/ai-product-finder";
 
 const FRAME_SHAPES = content.shopBySection.items;
-const VISUAL_CATEGORIES = content.visualCategories;
-const TESTIMONIALS = content.testimonials;
 
 export default function Home() {
   const { data: productsData, isLoading } = useProducts({ limit: 12 });
+  const { data: brandsData } = useBrands();
+  const { data: categoriesData } = useCategories();
   const { openDrawer } = useCompare();
 
-  const [selectedShapes, setSelectedShapes] = useState<string[]>([]);
-  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const totalProducts = productsData?.total ?? 0;
+  const totalBrands = brandsData?.brands?.length ?? 0;
 
+  // Build dynamic categories from API with first product as image
+  const topCategories = categoriesData?.product_categories
+    ?.filter((c) => !c.parent_category_id && c.is_active !== false)
+    ?.slice(0, 6) ?? [];
+
+  const [selectedShapes, setSelectedShapes] = useState<string[]>([]);
   const displayProducts = productsData?.items ? transformProducts(productsData.items) : [];
   const bestSellers = displayProducts.slice(0, 8);
   const newArrivals = displayProducts.slice(4, 12);
@@ -38,14 +44,6 @@ export default function Home() {
       prev.includes(shape) ? prev.filter((s) => s !== shape) : [...prev, shape]
     );
   };
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % TESTIMONIALS.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
 
   const scrollProducts = (containerId: string, direction: 'left' | 'right') => {
     const container = document.getElementById(containerId);
@@ -73,7 +71,6 @@ export default function Home() {
                       alt=""
                       fill
                       className="object-cover"
-                      unoptimized
                       priority
                     />
                     <div className="absolute inset-0 bg-black/60" />
@@ -88,7 +85,9 @@ export default function Home() {
                     <span className="block font-medium">{content.hero.headlineAccent}</span>
                   </h1>
                   <p className="text-lg text-white/70 mb-10 max-w-md leading-relaxed">
-                    {content.hero.description}
+                    {totalProducts > 0 && totalBrands > 0
+                      ? `Discover ${totalProducts}+ designer frames from ${totalBrands}+ brands. Complimentary cleaning kit with every order.`
+                      : content.hero.description}
                   </p>
 
                   <div className="flex flex-wrap gap-4 mb-12">
@@ -134,7 +133,6 @@ export default function Home() {
                         alt={product.name}
                         fill
                         className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        unoptimized
                       />
                       <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
                       <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
@@ -224,35 +222,30 @@ export default function Home() {
         </section>
 
         {/* Shop by Category */}
-        <section className="py-20 lg:py-28 px-6 lg:px-20">
-          <div className="max-w-[1500px] mx-auto">
-            <div className="text-center mb-10">
-              <h2 className="text-2xl lg:text-3xl font-medium">Shop by Category</h2>
-            </div>
+        {topCategories.length > 0 && (
+          <section className="py-20 lg:py-28 px-6 lg:px-20">
+            <div className="max-w-[1500px] mx-auto">
+              <div className="text-center mb-10">
+                <h2 className="text-2xl lg:text-3xl font-medium">Shop by Category</h2>
+              </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
-              {VISUAL_CATEGORIES.map((category) => (
-                <Link
-                  key={category.label}
-                  href={category.href}
-                  className="group relative aspect-[3/4] overflow-hidden bg-[var(--background)]"
-                >
-                  <Image
-                    src={category.image}
-                    alt={category.label}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    unoptimized
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/50 transition-colors" />
-                  <div className="absolute inset-0 flex items-end p-4">
-                    <span className="text-white font-medium">{category.label}</span>
-                  </div>
-                </Link>
-              ))}
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
+                {topCategories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={`/category/${category.handle}`}
+                    className="group relative aspect-[3/4] overflow-hidden bg-neutral-100"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/5 group-hover:from-black/50 transition-colors z-10" />
+                    <div className="absolute inset-0 flex items-end p-4 z-20">
+                      <span className="text-white font-medium">{category.name}</span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* Shop by Frame Shape */}
         <section className="py-20 lg:py-28 px-6 lg:px-20">
@@ -327,7 +320,7 @@ export default function Home() {
         <section className="py-20 lg:py-28 px-6 lg:px-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <p className="text-sm font-medium tracking-wide uppercase text-[var(--muted-foreground)] mb-2">Rated {content.reviewSummary.rating}/5 · {content.reviewSummary.count} reviews</p>
+              <p className="text-sm font-medium tracking-wide uppercase text-[var(--muted-foreground)] mb-2">What Our Customers Say</p>
             </div>
 
             {/* Testimonial */}

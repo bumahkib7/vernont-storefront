@@ -80,7 +80,6 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
               isHovered ? "scale-105" : "scale-100"
             } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
             onLoad={() => setIsImageLoaded(true)}
-            unoptimized
           />
 
           {/* Wishlist Button */}

@@ -72,23 +72,17 @@ async function fetchBrands(): Promise<
   Array<{ handle: string; updatedAt: string }>
 > {
   try {
-    const response = await fetch(`${BACKEND_URL}/store/categories?limit=200`, {
+    const response = await fetch(`${BACKEND_URL}/store/brands?limit=200`, {
       next: { revalidate: 3600 },
     });
     if (!response.ok) return [];
     const data = await response.json();
-    // Filter for brand categories only
-    const brands =
-      data.categories?.filter(
-        (cat: any) =>
-          cat.parent_category_id === null ||
-          cat.handle?.startsWith("brand-") ||
-          cat.metadata?.type === "brand"
-      ) || [];
-    return brands.map((brand: any) => ({
-      handle: brand.handle || brand.id,
-      updatedAt: brand.updated_at || new Date().toISOString(),
-    }));
+    return (
+      data.brands?.map((brand: any) => ({
+        handle: brand.slug || brand.id,
+        updatedAt: new Date().toISOString(),
+      })) || []
+    );
   } catch (error) {
     console.error("Failed to fetch brands for sitemap:", error);
     return [];

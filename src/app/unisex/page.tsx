@@ -133,7 +133,6 @@ export default function UnisexPage() {
             fill
             className="object-cover"
             priority
-            unoptimized
           />
           <div className="deco-hero-overlay" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/50" />

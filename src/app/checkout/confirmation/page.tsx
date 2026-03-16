@@ -258,7 +258,6 @@ function ConfirmationContent() {
                         alt={item.title}
                         fill
                         className="object-cover"
-                        unoptimized
                       />
                     )}
                   </div>

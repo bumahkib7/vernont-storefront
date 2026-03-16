@@ -314,7 +314,6 @@ export default function OrderDetailsPage() {
                       width={80}
                       height={80}
                       className="h-full w-full object-cover"
-                      unoptimized
                     />
                   ) : (
                     <div className="h-full w-full flex items-center justify-center">

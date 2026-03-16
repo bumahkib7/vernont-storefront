@@ -209,7 +209,6 @@ export default function ProductPage({ params }: ProductPageProps) {
                 fill
                 className="object-cover"
                 priority
-                unoptimized
               />
 
               {/* Badges */}
@@ -242,7 +241,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                       selectedImage === index ? "border-black" : "border-transparent hover:border-neutral-300"
                     }`}
                   >
-                    <Image src={img} alt="" fill className="object-cover" unoptimized />
+                    <Image src={img} alt="" fill className="object-cover" />
                   </button>
                 ))}
               </div>

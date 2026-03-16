@@ -166,7 +166,6 @@ export default function ReturnsPage() {
                                     width={40}
                                     height={40}
                                     className="h-full w-full object-cover"
-                                    unoptimized
                                   />
                                 ) : (
                                   <div className="h-full w-full flex items-center justify-center">

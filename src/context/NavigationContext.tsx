@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, ReactNode, useMemo } from "react";
-import { useCollections, useCategories } from "@/lib/hooks";
+import { useCollections, useCategories, useBrands } from "@/lib/hooks";
 import { navigation, verticalConfig } from "@/config/vertical";
 
 interface NavItem {
@@ -37,9 +37,10 @@ const STATIC_DISCOVER_ITEMS = navigation.discoverItems;
 export function NavigationProvider({ children }: { children: ReactNode }) {
   const { data: collectionsData, isLoading: collectionsLoading, error: collectionsError } = useCollections();
   const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = useCategories();
+  const { data: brandsData, isLoading: brandsLoading, error: brandsError } = useBrands();
 
-  const isLoading = collectionsLoading || categoriesLoading;
-  const error = collectionsError || categoriesError || null;
+  const isLoading = collectionsLoading || categoriesLoading || brandsLoading;
+  const error = collectionsError || categoriesError || brandsError || null;
 
   // Process collections into nav items
   const collections = useMemo(() => {
@@ -87,11 +88,19 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     ];
   }, [categoriesData]);
 
+  // Top brands sorted by product count (for nav dropdowns and footer)
+  const topBrands = useMemo(() => {
+    if (!brandsData?.brands) return [];
+    return [...brandsData.brands]
+      .sort((a, b) => b.product_count - a.product_count)
+      .slice(0, 8);
+  }, [brandsData]);
+
   // Build main navigation
   const mainNav = useMemo((): NavItem[] => {
     // Shop dropdown - combine categories and static items
     const shopDropdownItems = [
-      ...navigation.shopDropdownItems,
+      ...STATIC_SHOP_ITEMS,
       ...genderCategories,
     ];
 
@@ -99,13 +108,27 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     const collectionsDropdownItems = collections.length > 0
       ? [
           { label: "All Collections", href: "/collections" },
-          ...collections.slice(0, 6), // Limit to 6 items
+          ...collections.slice(0, 6),
         ]
       : [
           { label: "All Collections", href: "/collections" },
           { label: "New Arrivals", href: "/collections/new-arrivals" },
           { label: "Best Sellers", href: "/collections/best-sellers" },
           { label: "Gift Sets", href: "/collections/gift-sets" },
+        ];
+
+    // Brands dropdown — real brands from API
+    const brandsDropdownItems = topBrands.length > 0
+      ? [
+          { label: "All Brands", href: "/brands" },
+          ...topBrands.slice(0, 6).map((b) => ({
+            label: b.name,
+            href: `/brands/${b.slug}`,
+          })),
+          { label: "View All Brands", href: "/brands" },
+        ]
+      : [
+          { label: "All Brands", href: "/brands" },
         ];
 
     return [
@@ -125,11 +148,7 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         label: "Brands",
         href: "/brands",
         hasDropdown: true,
-        dropdownItems: [
-          { label: "All Brands", href: "/brands" },
-          { label: "Designer", href: "/brands?type=designer" },
-          { label: "Niche", href: "/brands?type=niche" },
-        ],
+        dropdownItems: brandsDropdownItems,
       },
       {
         label: "Discover",
@@ -138,18 +157,39 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         dropdownItems: STATIC_DISCOVER_ITEMS,
       },
     ];
-  }, [collections, genderCategories]);
+  }, [collections, genderCategories, topBrands]);
 
-  // Footer shop links
+  // Footer shop links — use real categories when available
   const footerShopLinks = useMemo(() => {
+    if (shopCategories.length > 0) {
+      return [
+        { label: "All Eyewear", href: "/eyewear" },
+        ...shopCategories.slice(0, 4).map((c) => ({
+          label: c.label,
+          href: c.href,
+        })),
+        { label: "New Arrivals", href: "/eyewear?sort=newest" },
+      ];
+    }
     return [
       ...navigation.footerShopLinks,
       ...genderCategories.slice(0, 3),
     ];
-  }, [genderCategories]);
+  }, [shopCategories, genderCategories]);
 
-  // Footer brand links from vertical config
-  const footerBrandLinks = useMemo(() => navigation.footerBrandLinks, []);
+  // Footer brand links — real brands from API
+  const footerBrandLinks = useMemo(() => {
+    if (topBrands.length > 0) {
+      return [
+        { label: "All Brands", href: "/brands" },
+        ...topBrands.slice(0, 6).map((b) => ({
+          label: b.name,
+          href: `/brands/${b.slug}`,
+        })),
+      ];
+    }
+    return navigation.footerBrandLinks;
+  }, [topBrands]);
 
   return (
     <NavigationContext.Provider

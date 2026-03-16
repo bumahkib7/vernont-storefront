@@ -6,7 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
-import { useProducts } from "@/lib/hooks";
+import { useProducts, useBrands } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { priceFromMinor } from "@/lib/schemas";
 import { product as productConfig, content } from "@/config/vertical";
@@ -201,6 +201,7 @@ export default function EyewearPage() {
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
   const { data: productsData, isLoading, error } = useProducts({ limit: 100 });
+  const { data: brandsData } = useBrands();
 
   // Extract filter options from API response
   const filters = productsData?.filters;
@@ -400,7 +401,9 @@ export default function EyewearPage() {
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
             <h1 className="text-3xl font-bold mb-2">{productConfig.catalogTitle}</h1>
             <p className="text-[var(--muted-foreground)]">
-              {productConfig.catalogDescription}
+              {productsData?.total && brandsData?.brands?.length
+                ? `${productsData.total} products across ${brandsData.brands.length} brands`
+                : productConfig.catalogDescription}
             </p>
 
             {/* Quick Filters */}

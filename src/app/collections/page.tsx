@@ -36,8 +36,7 @@ function CollectionCard({
   };
   index: number;
 }) {
-  // Use curated eyewear images instead of backend thumbnails
-  const imageUrl = getCollectionImage(collection.handle, index);
+  const imageUrl = getCollectionImage(collection.handle, index, collection.thumbnail);
 
   return (
     <Link
@@ -50,7 +49,6 @@ function CollectionCard({
           alt={collection.title}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
-          unoptimized
         />
         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
       </div>

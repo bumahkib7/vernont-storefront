@@ -175,7 +175,6 @@ function MessageContent({ content }: { content: string }) {
                   width={180}
                   height={180}
                   className="w-full h-auto object-cover rounded-lg"
-                  unoptimized
                 />
               </span>
             </span>
@@ -528,7 +527,6 @@ export function ShoppingAssistant() {
                               alt={productContext.name}
                               fill
                               className="object-cover"
-                              unoptimized
                             />
                           </div>
                         )}
