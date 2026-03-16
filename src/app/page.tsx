@@ -16,6 +16,7 @@ import {
   ChevronLeft,
 } from "lucide-react";
 import { content } from "@/config/vertical";
+import { AiProductFinder } from "@/components/ai/ai-product-finder";
 
 const FRAME_SHAPES = content.shopBySection.items;
 const VISUAL_CATEGORIES = content.visualCategories;
@@ -212,6 +213,13 @@ export default function Home() {
                     </div>
                   ))}
             </div>
+          </div>
+        </section>
+
+        {/* AI Product Finder */}
+        <section className="py-20 lg:py-28 px-6 lg:px-20 bg-[var(--surface)] border-y border-[var(--border)]">
+          <div className="max-w-[1500px] mx-auto">
+            <AiProductFinder />
           </div>
         </section>
 

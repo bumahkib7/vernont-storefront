@@ -16,35 +16,37 @@ import { formatPrice } from "@/context/CartContext";
 const stripeAppearance = {
   theme: "stripe" as const,
   variables: {
-    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+    fontFamily: '"Manrope", system-ui, -apple-system, sans-serif',
     fontSizeBase: "14px",
-    colorPrimary: "#18181b",
-    colorBackground: "#ffffff",
-    colorText: "#18181b",
+    colorPrimary: "#0A0A0A",
+    colorBackground: "#FAFAF8",
+    colorText: "#0A0A0A",
     colorDanger: "#dc2626",
-    borderRadius: "8px",
+    borderRadius: "4px",
     spacingUnit: "4px",
   },
   rules: {
     ".Input": {
-      border: "1px solid #e4e4e7",
+      border: "1px solid #E8E7E3",
       padding: "12px 14px",
-      borderRadius: "8px",
+      borderRadius: "4px",
       fontSize: "14px",
       transition: "border-color 0.15s ease, box-shadow 0.15s ease",
     },
     ".Input:hover": {
-      borderColor: "#a1a1aa",
+      borderColor: "#D4D3CE",
     },
     ".Input:focus": {
-      borderColor: "#18181b",
-      boxShadow: "0 0 0 3px rgba(24, 24, 27, 0.1)",
+      borderColor: "#0A0A0A",
+      boxShadow: "none",
     },
     ".Label": {
-      fontSize: "13px",
+      fontSize: "11px",
       fontWeight: "500",
       marginBottom: "6px",
-      color: "#3f3f46",
+      color: "#717168",
+      letterSpacing: "0.05em",
+      textTransform: "uppercase" as const,
     },
     ".Error": {
       color: "#dc2626",
@@ -52,16 +54,16 @@ const stripeAppearance = {
       marginTop: "4px",
     },
     ".Tab": {
-      borderRadius: "8px",
-      border: "1px solid #e4e4e7",
+      borderRadius: "4px",
+      border: "1px solid #E8E7E3",
       padding: "12px 16px",
     },
     ".Tab:hover": {
-      borderColor: "#a1a1aa",
+      borderColor: "#D4D3CE",
     },
     ".Tab--selected": {
-      borderColor: "#18181b",
-      backgroundColor: "#fafafa",
+      borderColor: "#0A0A0A",
+      backgroundColor: "#FAFAF8",
     },
   },
 };
@@ -135,13 +137,13 @@ function PaymentForm({
   return (
     <form onSubmit={handleSubmit}>
       {/* Security Badge */}
-      <div className="mb-6 p-3 bg-[var(--surface)] border border-[var(--border)] rounded-lg flex items-center gap-3">
-        <div className="w-8 h-8 rounded-full bg-[var(--success)]/10 flex items-center justify-center">
+      <div className="mb-6 p-3 bg-[var(--surface)] border border-[var(--border)] rounded-sm flex items-center gap-3">
+        <div className="w-8 h-8 rounded-sm bg-[var(--success)]/10 flex items-center justify-center">
           <Shield className="h-4 w-4 text-[var(--success)]" />
         </div>
         <div>
-          <p className="text-sm font-medium">Secure Payment</p>
-          <p className="text-xs text-[var(--muted-foreground)]">
+          <p className="text-xs font-medium tracking-wider uppercase">Secure Payment</p>
+          <p className="text-[11px] text-[var(--muted-foreground)]">
             All transactions are encrypted by Stripe
           </p>
         </div>
@@ -162,7 +164,7 @@ function PaymentForm({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-lg flex items-start gap-3"
+          className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-sm flex items-start gap-3"
         >
           <AlertCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
           <p className="text-sm text-[var(--destructive)]">{error}</p>
@@ -184,7 +186,7 @@ function PaymentForm({
         <button
           type="submit"
           disabled={!stripe || !elements || isProcessing || !isReady}
-          className="btn-primary min-w-[180px] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="btn-primary min-w-[200px] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? (
             <Loader2 className="h-4 w-4 animate-spin" />

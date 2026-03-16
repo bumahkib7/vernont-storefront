@@ -541,7 +541,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--surface)]">
+    <div className="min-h-screen bg-[var(--background)]">
       {/* Success Overlay */}
       <AnimatePresence>
         {paymentSuccess && (
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 15 }}
-                className="w-20 h-20 bg-[var(--success)] rounded-full flex items-center justify-center mx-auto mb-6"
+                className="w-16 h-16 bg-[var(--success)] rounded-sm flex items-center justify-center mx-auto mb-6"
               >
                 <Check className="h-10 w-10 text-white" strokeWidth={3} />
               </motion.div>
@@ -566,13 +566,13 @@ export default function CheckoutPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <h2 className="text-2xl font-bold mb-2">Order Confirmed!</h2>
+                <h2 className="text-2xl font-semibold tracking-tight mb-2">Order Confirmed!</h2>
                 <p className="text-[var(--muted-foreground)] mb-6">
                   Thank you for your order. We&apos;ll send you a confirmation email shortly.
                 </p>
 
                 {orderNumber && (
-                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--surface)] rounded-lg border border-[var(--border)] mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--surface)] rounded-sm border border-[var(--border)] mb-6">
                     <span className="text-sm text-[var(--muted-foreground)]">Order:</span>
                     <span className="font-semibold">{orderNumber}</span>
                   </div>
@@ -599,13 +599,13 @@ export default function CheckoutPage() {
       </AnimatePresence>
 
       {/* Header */}
-      <header className="bg-[var(--background)] border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold">
+      <header className="bg-[var(--background)] border-b border-[var(--border)] h-[72px]">
+        <div className="max-w-[1200px] mx-auto px-4 h-full">
+          <div className="flex items-center justify-between h-full">
+            <Link href="/" className="text-xl font-semibold tracking-[0.25em] uppercase">
               {storeName || "Vernont"}
             </Link>
-            <div className="flex items-center gap-2 text-sm text-[var(--muted-foreground)]">
+            <div className="flex items-center gap-2 text-xs font-medium tracking-wider uppercase text-[var(--muted-foreground)]">
               <Lock className="h-4 w-4" />
               <span>Secure Checkout</span>
             </div>
@@ -615,7 +615,7 @@ export default function CheckoutPage() {
 
       {/* Progress Steps */}
       <div className="bg-[var(--background)] border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+        <div className="max-w-[1200px] mx-auto px-4 py-4">
           <div className="flex items-center justify-center gap-2">
             {steps.map((step, index) => (
               <div key={step.id} className="flex items-center">
@@ -626,19 +626,19 @@ export default function CheckoutPage() {
                     }
                   }}
                   disabled={index > currentStepIndex}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-colors ${
+                  className={`flex items-center gap-2 px-3 py-1.5 transition-colors ${
                     index <= currentStepIndex
                       ? "text-[var(--primary)] font-medium"
                       : "text-[var(--muted-foreground)]"
                   } ${index < currentStepIndex ? "cursor-pointer hover:bg-[var(--surface)]" : ""}`}
                 >
                   {index < currentStepIndex ? (
-                    <span className="w-5 h-5 rounded-full bg-[var(--success)] flex items-center justify-center">
+                    <span className="w-6 h-6 rounded-sm bg-[var(--success)] flex items-center justify-center">
                       <Check className="h-3 w-3 text-white" />
                     </span>
                   ) : (
                     <span
-                      className={`w-5 h-5 rounded-full border-2 flex items-center justify-center text-xs font-medium ${
+                      className={`w-6 h-6 rounded-sm border-2 flex items-center justify-center text-xs font-medium ${
                         index === currentStepIndex
                           ? "border-[var(--primary)] text-[var(--primary)]"
                           : "border-[var(--border)] text-[var(--muted-foreground)]"
@@ -647,10 +647,10 @@ export default function CheckoutPage() {
                       {index + 1}
                     </span>
                   )}
-                  <span className="hidden sm:inline">{step.label}</span>
+                  <span className="hidden sm:inline tracking-wider uppercase text-xs">{step.label}</span>
                 </button>
                 {index < steps.length - 1 && (
-                  <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] mx-2" />
+                  <span className="mx-3 w-8 h-px bg-[var(--border)]" />
                 )}
               </div>
             ))}

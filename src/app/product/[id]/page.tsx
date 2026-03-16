@@ -57,6 +57,7 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { toggleItem, isInWishlist } = useWishlist();
   const { addToCompare, isComparing, itemCount: compareCount } = useCompare();
   const openAssistantWithProduct = useShoppingAssistantStore((s) => s.openWithProduct);
+  const setAssistantProductContext = useShoppingAssistantStore((s) => s.setProductContext);
 
   const { data: productData, isLoading, error } = useProductByHandle(id);
   const { data: relatedData } = useProducts({ limit: 8 });
@@ -66,6 +67,18 @@ export default function ProductPage({ params }: ProductPageProps) {
     if (!productData?.product) return null;
     return transformProduct(productData.product);
   }, [productData]);
+
+  // Set AI assistant context when viewing a product (for proactive nudges)
+  useEffect(() => {
+    if (product) {
+      setAssistantProductContext({
+        id: product.id,
+        name: product.name,
+        brand: product.brand || undefined,
+        image: product.image,
+      });
+    }
+  }, [product, setAssistantProductContext]);
 
   const relatedProducts = useMemo(() => {
     if (!relatedData?.items) return [];
@@ -424,6 +437,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   name: product.name,
                   brand: product.brand || undefined,
                   price: formatPriceMajor(currentPrice, currency),
+                  image: product.image,
+                  variantId: selectedVariant?.id,
                 })
               }
               className="w-full mt-4 flex items-center justify-center gap-2 py-3 border border-neutral-200 text-sm text-neutral-600 hover:border-black hover:text-black transition-colors"
