@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Header } from "@/components/layout/Header";
@@ -10,7 +10,6 @@ import { useProducts, useCategories, useBrands } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { useCompare } from "@/context/CompareContext";
 import {
-  Star,
   ArrowRight,
   ChevronRight,
   ChevronLeft,
@@ -312,52 +311,6 @@ export default function Home() {
               {newArrivals.map((product, index) => (
                 <EnhancedProductCard key={product.id} product={product} index={index} />
               ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Reviews */}
-        <section className="py-20 lg:py-28 px-6 lg:px-20">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-10">
-              <p className="text-sm font-medium tracking-wide uppercase text-[var(--muted-foreground)] mb-2">What Our Customers Say</p>
-            </div>
-
-            {/* Testimonial */}
-            <div className="bg-transparent border border-[var(--border)] p-8 lg:p-10 text-center relative">
-              <div className="min-h-[120px] flex items-center justify-center">
-                <div key={currentTestimonial}>
-                  <p className="text-2xl lg:text-3xl font-light leading-relaxed mb-6 max-w-2xl mx-auto">
-                    "{TESTIMONIALS[currentTestimonial].text}"
-                  </p>
-                  <p className="text-sm">
-                    <span className="font-medium">{TESTIMONIALS[currentTestimonial].author}</span>
-                    <span className="text-[var(--muted-foreground)]"> — {TESTIMONIALS[currentTestimonial].location}</span>
-                  </p>
-                </div>
-              </div>
-
-              {/* Dots */}
-              <div className="flex justify-center gap-2 mt-8">
-                {TESTIMONIALS.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setCurrentTestimonial(index)}
-                    className={`w-2 h-2 rounded-full transition-colors ${
-                      index === currentTestimonial
-                        ? "bg-[var(--foreground)]"
-                        : "bg-[var(--border)]"
-                    }`}
-                    aria-label={`View testimonial ${index + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="text-center mt-6">
-              <Link href="/reviews" className="text-sm font-medium hover:underline">
-                Read All Reviews
-              </Link>
             </div>
           </div>
         </section>

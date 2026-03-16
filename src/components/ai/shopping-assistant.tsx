@@ -17,6 +17,8 @@ import {
   Headphones,
   XCircle,
   ShoppingBag,
+  GitCompareArrows,
+  Shuffle,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Markdown from "react-markdown";
@@ -59,6 +61,8 @@ const TOOL_META: Record<string, { icon: typeof Search; label: string; activeLabe
   cancel_return:        { icon: RotateCw,     label: "Cancelled return",         activeLabel: "Cancelling return..." },
   get_return_reasons:   { icon: RotateCw,     label: "Loaded return reasons",    activeLabel: "Loading return reasons..." },
   escalate_to_human:    { icon: Headphones,   label: "Escalated to support",     activeLabel: "Connecting to support..." },
+  compare_products:     { icon: GitCompareArrows, label: "Compared products",    activeLabel: "Comparing products..." },
+  find_similar_products: { icon: Shuffle,      label: "Found similar products",   activeLabel: "Finding similar products..." },
 };
 
 // ---------- Helpers ----------

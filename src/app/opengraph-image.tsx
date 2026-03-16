@@ -77,8 +77,8 @@ export default async function Image() {
             fontSize: 18,
           }}
         >
-          <span>1,200+ Frames</span>
-          <span>180+ Brands</span>
+          <span>Designer Frames</span>
+          <span>Premium Brands</span>
           <span>Free Shipping</span>
         </div>
       </div>

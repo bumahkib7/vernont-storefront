@@ -43,7 +43,7 @@ export const eyewearConfig: VerticalConfig = {
     ],
 
     catalogTitle: "All Eyewear",
-    catalogDescription: "1,200+ designer frames from 80+ luxury brands",
+    catalogDescription: "Designer frames from luxury and premium brands",
 
     comparisonSpecs: [
       {
@@ -82,7 +82,7 @@ export const eyewearConfig: VerticalConfig = {
       headline: "Find Your",
       headlineAccent: "Perfect Frame",
       description:
-        "Discover 1,200+ designer frames from 80+ luxury brands. Complimentary cleaning kit with every order.",
+        "Discover designer frames from luxury and premium brands. Complimentary cleaning kit with every order.",
       primaryCta: { label: "Shop Now", href: "/eyewear" },
       secondaryCta: { label: "Find Your Fit", href: "/face-shape-guide" },
       backgroundImage: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=1200&q=80",
@@ -142,7 +142,7 @@ export const eyewearConfig: VerticalConfig = {
     },
 
     footerDescription:
-      "1,200+ designer frames from 80+ luxury brands. Complimentary cleaning kit with every order.",
+      "Designer frames from luxury and premium brands. Complimentary cleaning kit with every order.",
 
     visualCategories: [
       {
@@ -196,7 +196,7 @@ export const eyewearConfig: VerticalConfig = {
       titleDefault: "Vernont | Designer & Luxury Eyewear",
       titleTemplate: "%s | Vernont",
       description:
-        "Shop 1,200+ designer frames from 80+ luxury brands. Free shipping over £75, 30-day returns, and complimentary cleaning kit with every order.",
+        "Shop designer frames from luxury and premium brands. Free shipping over £75, 30-day returns, and complimentary cleaning kit with every order.",
       keywords: [
         "sunglasses", "eyewear", "designer frames", "luxury sunglasses",
         "polarized", "optical frames",
