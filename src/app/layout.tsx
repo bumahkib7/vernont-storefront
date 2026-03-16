@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Manrope } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { CartDrawer } from "@/components/ui/CartDrawer";
@@ -12,10 +12,11 @@ import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 
-const inter = Inter({
+const manrope = Manrope({
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["200", "300", "400", "500", "600", "700"],
+  variable: "--font-manrope",
 });
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
@@ -75,7 +76,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={manrope.className}>
         <Providers>
           {children}
           <CartDrawer />

@@ -48,10 +48,9 @@ export function Footer() {
           <div className="col-span-2 lg:col-span-2">
             <Link href="/" className="inline-block mb-4">
               <span
-                className="text-2xl font-normal tracking-[0.2em]"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                className="text-2xl font-semibold tracking-[0.25em] uppercase"
               >
-                {(storeName || "Vernont").toUpperCase()}
+                {storeName || "Vernont"}
               </span>
             </Link>
             <p className="text-white/70 text-sm mb-4 max-w-xs">
@@ -60,7 +59,7 @@ export function Footer() {
 
             {/* Newsletter Signup */}
             <div className="mb-6">
-              <p className="font-semibold mb-2">{content.newsletterCta.headline}</p>
+              <p className="font-medium tracking-wide uppercase text-xs mb-2">{content.newsletterCta.headline}</p>
               {subscribed ? (
                 <div className="flex items-center gap-2 text-[var(--success)]">
                   <Check className="h-4 w-4" />
@@ -73,12 +72,12 @@ export function Footer() {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 px-3 py-2 text-sm bg-white/10 border border-white/20 rounded-md text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                    className="flex-1 px-3 py-2 text-sm bg-white/10 border border-white/20 rounded-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
                     required
                   />
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-[var(--primary)] text-white text-sm font-medium rounded-md hover:bg-[var(--primary-hover)] transition-colors"
+                    className="px-4 py-2 bg-[var(--secondary)] text-white text-sm font-medium rounded-sm hover:bg-[var(--primary-hover)] transition-colors"
                   >
                     <Mail className="h-4 w-4" />
                   </button>
@@ -92,7 +91,7 @@ export function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Instagram"
               >
                 <Instagram className="h-4 w-4" />
@@ -101,7 +100,7 @@ export function Footer() {
                 href="https://facebook.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Facebook"
               >
                 <Facebook className="h-4 w-4" />
@@ -110,7 +109,7 @@ export function Footer() {
                 href="https://twitter.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
                 aria-label="Twitter"
               >
                 <Twitter className="h-4 w-4" />
@@ -120,7 +119,7 @@ export function Footer() {
 
           {/* Shop Links - Dynamic from API */}
           <div>
-            <p className="font-semibold mb-4">Shop</p>
+            <p className="font-medium tracking-wide uppercase text-xs mb-4">Shop</p>
             <ul className="space-y-2">
               {footerShopLinks.map((link) => (
                 <li key={link.href}>
@@ -137,7 +136,7 @@ export function Footer() {
 
           {/* Brands Links - Dynamic from API */}
           <div>
-            <p className="font-semibold mb-4">Brands</p>
+            <p className="font-medium tracking-wide uppercase text-xs mb-4">Brands</p>
             <ul className="space-y-2">
               {footerBrandLinks.map((link) => (
                 <li key={link.href}>
@@ -154,7 +153,7 @@ export function Footer() {
 
           {/* Help Links */}
           <div>
-            <p className="font-semibold mb-4">Help</p>
+            <p className="font-medium tracking-wide uppercase text-xs mb-4">Help</p>
             <ul className="space-y-2">
               {HELP_LINKS.map((link) => (
                 <li key={link.href}>
@@ -171,7 +170,7 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <p className="font-semibold mb-4">Company</p>
+            <p className="font-medium tracking-wide uppercase text-xs mb-4">Company</p>
             <ul className="space-y-2">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
@@ -206,7 +205,7 @@ export function Footer() {
                 {["Visa", "MC", "Amex", "PayPal", "Klarna"].map((method) => (
                   <div
                     key={method}
-                    className="px-2 py-1 bg-white/10 rounded text-[10px] font-medium text-white/70"
+                    className="px-2 py-1 bg-white/10 rounded-sm text-[10px] font-medium text-white/70"
                   >
                     {method}
                   </div>

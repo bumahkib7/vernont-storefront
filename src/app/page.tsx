@@ -61,10 +61,10 @@ export default function Home() {
       <main>
         {/* Hero Section - Clean, Editorial Style */}
         <section className="relative bg-[#0a0a0a] text-white overflow-hidden">
-          <div className="max-w-7xl mx-auto">
+          <div className="max-w-[1500px] mx-auto">
             <div className="grid lg:grid-cols-2 min-h-[85vh]">
               {/* Left: Content */}
-              <div className="relative flex flex-col justify-center px-6 lg:px-12 py-16 lg:py-24">
+              <div className="relative flex flex-col justify-center px-6 lg:px-20 py-16 lg:py-24">
                 {content.hero.backgroundImage && (
                   <>
                     <Image
@@ -82,7 +82,7 @@ export default function Home() {
                   <p className="text-sm tracking-[0.2em] text-white/60 uppercase mb-6">
                     {content.hero.subtitle}
                   </p>
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-light tracking-tight mb-6 leading-[1.1]">
+                  <h1 className="text-5xl sm:text-6xl lg:text-7xl font-light tracking-tight mb-6 leading-[1.1]">
                     {content.hero.headline}
                     <span className="block font-medium">{content.hero.headlineAccent}</span>
                   </h1>
@@ -93,14 +93,14 @@ export default function Home() {
                   <div className="flex flex-wrap gap-4 mb-12">
                     <Link
                       href={content.hero.primaryCta.href}
-                      className="inline-flex items-center gap-2 px-8 py-4 bg-white text-black font-medium hover:bg-white/90 transition-colors"
+                      className="inline-flex items-center gap-2 px-10 py-4 bg-white text-black uppercase tracking-widest text-sm font-medium rounded-sm hover:bg-white/90 transition-colors"
                     >
                       {content.hero.primaryCta.label}
                       <ArrowRight className="h-4 w-4" />
                     </Link>
                     <Link
                       href={content.hero.secondaryCta.href}
-                      className="inline-flex items-center gap-2 px-8 py-4 border border-white/30 text-white font-medium hover:bg-white/10 transition-colors"
+                      className="inline-flex items-center gap-2 px-10 py-4 border border-white/30 text-white uppercase tracking-widest text-sm font-medium rounded-sm hover:bg-white/10 transition-colors"
                     >
                       {content.hero.secondaryCta.label}
                     </Link>
@@ -150,7 +150,7 @@ export default function Home() {
 
         {/* Trust Band */}
         <section className="py-4 bg-[var(--surface)] border-b border-[var(--border)]">
-          <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-[1500px] mx-auto px-6">
             <div className="flex justify-center lg:justify-between items-center gap-8 text-sm">
               {content.trustBand.map((item, i) => {
                 const visibility = i === 0 ? "" : i === 1 ? "hidden sm:flex" : i === 2 ? "hidden md:flex" : "hidden lg:flex";
@@ -161,18 +161,13 @@ export default function Home() {
                   </div>
                 );
               })}
-              <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-current text-yellow-500" />
-                <span className="font-medium">{content.reviewSummary.rating}</span>
-                <span className="text-[var(--muted-foreground)]">({content.reviewSummary.count} reviews)</span>
-              </div>
             </div>
           </div>
         </section>
 
         {/* Best Sellers */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12">
-          <div className="max-w-7xl mx-auto">
+        <section className="py-20 lg:py-28 px-6 lg:px-20">
+          <div className="max-w-[1500px] mx-auto">
             <div className="flex items-end justify-between mb-8">
               <div>
                 <h2 className="text-2xl lg:text-3xl font-medium">Best Sellers</h2>
@@ -221,8 +216,8 @@ export default function Home() {
         </section>
 
         {/* Shop by Category */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12 bg-[var(--surface)]">
-          <div className="max-w-7xl mx-auto">
+        <section className="py-20 lg:py-28 px-6 lg:px-20">
+          <div className="max-w-[1500px] mx-auto">
             <div className="text-center mb-10">
               <h2 className="text-2xl lg:text-3xl font-medium">Shop by Category</h2>
             </div>
@@ -241,7 +236,7 @@ export default function Home() {
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                     unoptimized
                   />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent group-hover:from-black/50 transition-colors" />
                   <div className="absolute inset-0 flex items-end p-4">
                     <span className="text-white font-medium">{category.label}</span>
                   </div>
@@ -252,7 +247,7 @@ export default function Home() {
         </section>
 
         {/* Shop by Frame Shape */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12">
+        <section className="py-20 lg:py-28 px-6 lg:px-20">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-2xl lg:text-3xl font-medium mb-3">{content.shopBySection.title}</h2>
             <p className="text-[var(--muted-foreground)] mb-8">
@@ -296,8 +291,8 @@ export default function Home() {
         </section>
 
         {/* New Arrivals */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12 bg-[var(--surface)]">
-          <div className="max-w-7xl mx-auto">
+        <section className="py-20 lg:py-28 px-6 lg:px-20 border-t border-[var(--border)]">
+          <div className="max-w-[1500px] mx-auto">
             <div className="flex items-end justify-between mb-8">
               <div>
                 <h2 className="text-2xl lg:text-3xl font-medium">New Arrivals</h2>
@@ -321,23 +316,17 @@ export default function Home() {
         </section>
 
         {/* Reviews */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12">
+        <section className="py-20 lg:py-28 px-6 lg:px-20">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <div className="flex justify-center gap-1 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-5 w-5 text-yellow-500 fill-current" />
-                ))}
-              </div>
-              <p className="text-3xl font-medium mb-1">{content.reviewSummary.rating} out of 5</p>
-              <p className="text-[var(--muted-foreground)]">Based on {content.reviewSummary.count} reviews</p>
+              <p className="text-sm font-medium tracking-wide uppercase text-[var(--muted-foreground)] mb-2">Rated {content.reviewSummary.rating}/5 · {content.reviewSummary.count} reviews</p>
             </div>
 
             {/* Testimonial */}
-            <div className="bg-[var(--surface)] p-8 lg:p-10 text-center relative">
+            <div className="bg-transparent border border-[var(--border)] p-8 lg:p-10 text-center relative">
               <div className="min-h-[120px] flex items-center justify-center">
                 <div key={currentTestimonial}>
-                  <p className="text-xl lg:text-2xl font-light leading-relaxed mb-6 max-w-2xl mx-auto">
+                  <p className="text-2xl lg:text-3xl font-light leading-relaxed mb-6 max-w-2xl mx-auto">
                     "{TESTIMONIALS[currentTestimonial].text}"
                   </p>
                   <p className="text-sm">
@@ -373,7 +362,7 @@ export default function Home() {
         </section>
 
         {/* Newsletter */}
-        <section className="py-16 lg:py-20 px-6 lg:px-12 bg-[#0a0a0a] text-white">
+        <section className="py-20 lg:py-28 px-6 lg:px-20 bg-[#0a0a0a] text-white">
           <div className="max-w-xl mx-auto text-center">
             <h2 className="text-2xl lg:text-3xl font-medium mb-3">
               {content.newsletterCta.headline}
@@ -386,11 +375,11 @@ export default function Home() {
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:border-white/40 rounded-sm"
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-white text-black font-medium hover:bg-white/90 transition-colors whitespace-nowrap"
+                className="px-6 py-3 bg-white text-black font-medium hover:bg-white/90 transition-colors whitespace-nowrap rounded-sm"
               >
                 Subscribe
               </button>

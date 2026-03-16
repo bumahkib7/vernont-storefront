@@ -122,10 +122,10 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <div className="relative container mx-auto px-4 py-8 max-w-4xl">
             {/* Search Header */}
             <div className="flex items-center justify-between mb-8">
-              <h2 className="font-display text-xl tracking-[0.2em] uppercase text-gold">Search</h2>
+              <h2 className="text-xl tracking-[0.2em] uppercase text-[var(--secondary)]">Search</h2>
               <button
                 onClick={onClose}
-                className="w-10 h-10 flex items-center justify-center hover:text-gold transition-colors"
+                className="w-10 h-10 flex items-center justify-center hover:text-[var(--secondary)] transition-colors"
               >
                 <X className="h-5 w-5" />
               </button>
@@ -133,23 +133,17 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
             {/* Search Input */}
             <form onSubmit={handleSubmit} className="relative mb-8">
-              {/* Decorative corners */}
-              <div className="absolute -top-2 -left-2 w-4 h-4 border-l-2 border-t-2 border-gold/40" />
-              <div className="absolute -top-2 -right-2 w-4 h-4 border-r-2 border-t-2 border-gold/40" />
-              <div className="absolute -bottom-2 -left-2 w-4 h-4 border-l-2 border-b-2 border-gold/40" />
-              <div className="absolute -bottom-2 -right-2 w-4 h-4 border-r-2 border-b-2 border-gold/40" />
-
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-gold/60" />
+              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--secondary)]/60" />
               <input
                 ref={inputRef}
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder={`Search for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
-                className="w-full pl-14 pr-12 py-5 bg-transparent border border-gold/20 font-serif text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-gold/60 transition-colors"
+                className="w-full pl-14 pr-12 py-5 bg-transparent border border-[var(--secondary)]/20 text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-[var(--secondary)]/60 transition-colors"
               />
               {loading && (
-                <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-gold/60" />
+                <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-[var(--secondary)]/60" />
               )}
             </form>
 
@@ -162,13 +156,13 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   {recentSearches.length > 0 && (
                     <div>
                       <div className="flex items-center justify-between mb-4">
-                        <h3 className="font-display text-sm tracking-[0.15em] uppercase text-muted-foreground flex items-center gap-2">
+                        <h3 className="text-sm tracking-[0.15em] uppercase text-muted-foreground flex items-center gap-2">
                           <Clock className="h-4 w-4" />
                           Recent Searches
                         </h3>
                         <button
                           onClick={clearRecentSearches}
-                          className="text-xs text-muted-foreground hover:text-gold transition-colors"
+                          className="text-xs text-muted-foreground hover:text-[var(--secondary)] transition-colors"
                         >
                           Clear all
                         </button>
@@ -178,7 +172,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                           <button
                             key={term}
                             onClick={() => handleSearch(term)}
-                            className="px-4 py-2 border border-gold/20 font-serif text-sm hover:border-gold hover:text-gold transition-all"
+                            className="px-4 py-2 border border-[var(--secondary)]/20 text-sm hover:border-[var(--secondary)] hover:text-[var(--secondary)] transition-all"
                           >
                             {term}
                           </button>
@@ -189,7 +183,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
                   {/* Popular Searches */}
                   <div>
-                    <h3 className="font-display text-sm tracking-[0.15em] uppercase text-muted-foreground flex items-center gap-2 mb-4">
+                    <h3 className="text-sm tracking-[0.15em] uppercase text-muted-foreground flex items-center gap-2 mb-4">
                       <TrendingUp className="h-4 w-4" />
                       Popular Searches
                     </h3>
@@ -198,7 +192,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                         <button
                           key={term}
                           onClick={() => handleSearch(term)}
-                          className="px-4 py-2 border border-gold/20 font-serif text-sm hover:border-gold hover:text-gold transition-all"
+                          className="px-4 py-2 border border-[var(--secondary)]/20 text-sm hover:border-[var(--secondary)] hover:text-[var(--secondary)] transition-all"
                         >
                           {term}
                         </button>
@@ -214,7 +208,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                     {/* Brand Suggestions */}
                     {suggestions.brands.length > 0 && (
                       <div>
-                        <h3 className="font-display text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                        <h3 className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
                           Brands
                         </h3>
                         <div className="space-y-1">
@@ -222,11 +216,11 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             <button
                               key={brand}
                               onClick={() => handleSearch(brand)}
-                              className="flex items-center gap-3 w-full px-3 py-2 text-left hover:bg-gold/5 transition-colors group"
+                              className="flex items-center gap-3 w-full px-3 py-2 text-left hover:bg-[var(--secondary)]/5 transition-colors group"
                             >
-                              <Tag className="h-4 w-4 text-gold/60" />
-                              <span className="font-serif">{brand}</span>
-                              <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 text-gold transition-opacity" />
+                              <Tag className="h-4 w-4 text-[var(--secondary)]/60" />
+                              <span>{brand}</span>
+                              <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 text-[var(--secondary)] transition-opacity" />
                             </button>
                           ))}
                         </div>
@@ -236,7 +230,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                     {/* Product Title Suggestions */}
                     {suggestions.products.length > 0 && (
                       <div>
-                        <h3 className="font-display text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                        <h3 className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
                           Suggestions
                         </h3>
                         <div className="space-y-1">
@@ -244,11 +238,11 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             <button
                               key={title}
                               onClick={() => handleSearch(title)}
-                              className="flex items-center gap-3 w-full px-3 py-2 text-left hover:bg-gold/5 transition-colors group"
+                              className="flex items-center gap-3 w-full px-3 py-2 text-left hover:bg-[var(--secondary)]/5 transition-colors group"
                             >
                               <Search className="h-4 w-4 text-muted-foreground" />
-                              <span className="font-serif">{title}</span>
-                              <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 text-gold transition-opacity" />
+                              <span>{title}</span>
+                              <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 text-[var(--secondary)] transition-opacity" />
                             </button>
                           ))}
                         </div>
@@ -259,7 +253,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   {/* Products Column */}
                   {products.length > 0 && (
                     <div>
-                      <h3 className="font-display text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
+                      <h3 className="text-xs tracking-[0.15em] uppercase text-muted-foreground mb-3">
                         Products
                       </h3>
                       <div className="space-y-3">
@@ -268,7 +262,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                             key={product.id}
                             href={`/product/${product.handle || product.id}`}
                             onClick={onClose}
-                            className="flex items-center gap-4 p-3 border border-transparent hover:border-gold/20 hover:bg-gold/5 transition-all group"
+                            className="flex items-center gap-4 p-3 border border-transparent hover:border-[var(--secondary)]/20 hover:bg-[var(--secondary)]/5 transition-all group"
                           >
                             {resolveImageUrl(product.thumbnail) ? (
                               <div className="relative w-16 h-16 bg-secondary flex-shrink-0">
@@ -281,20 +275,20 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                               </div>
                             ) : (
                               <div className="w-16 h-16 bg-secondary flex-shrink-0 flex items-center justify-center">
-                                <span className="text-2xl text-gold/40">V</span>
+                                <span className="text-2xl text-[var(--secondary)]/40">V</span>
                               </div>
                             )}
                             <div className="flex-1 min-w-0">
-                              <p className="font-display text-sm tracking-wide truncate group-hover:text-gold transition-colors">
+                              <p className="text-sm tracking-wide truncate group-hover:text-[var(--secondary)] transition-colors">
                                 {product.title}
                               </p>
                               {product.brand && (
-                                <p className="font-serif text-xs text-muted-foreground truncate">
+                                <p className="text-xs text-muted-foreground truncate">
                                   {product.brand}
                                 </p>
                               )}
                               {product.variants?.[0]?.priceMinor && (
-                                <p className="font-display text-sm text-gold mt-1">
+                                <p className="text-sm text-[var(--secondary)] mt-1">
                                   {product.variants[0].currency || "GBP"}{" "}
                                   {(product.variants[0].priceMinor / 100).toFixed(2)}
                                 </p>
@@ -307,7 +301,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                       {/* View All Results */}
                       <button
                         onClick={() => handleSearch(query)}
-                        className="flex items-center justify-center gap-2 w-full mt-4 py-3 border border-gold/30 font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all"
+                        className="flex items-center justify-center gap-2 w-full mt-4 py-3 border border-[var(--secondary)]/30 text-xs tracking-[0.15em] uppercase hover:bg-[var(--secondary)] hover:text-primary transition-all"
                       >
                         View All Results
                         <ArrowRight className="h-4 w-4" />
@@ -318,14 +312,14 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               ) : query.length >= 2 && !loading ? (
                 /* No Results */
                 <div className="text-center py-12">
-                  <Search className="h-12 w-12 mx-auto text-gold/20 mb-4" />
-                  <p className="font-display text-lg tracking-wide">No results found</p>
-                  <p className="font-serif text-muted-foreground mt-2">
+                  <Search className="h-12 w-12 mx-auto text-[var(--secondary)]/20 mb-4" />
+                  <p className="text-lg tracking-wide">No results found</p>
+                  <p className="text-muted-foreground mt-2">
                     Try different keywords or browse our collections
                   </p>
 
                   {/* AI assistant prompt */}
-                  <p className="font-serif text-sm text-muted-foreground mt-4 mb-2 flex items-center justify-center gap-1.5">
+                  <p className="text-sm text-muted-foreground mt-4 mb-2 flex items-center justify-center gap-1.5">
                     <Sparkles className="h-3.5 w-3.5" />
                     Try asking our AI:
                   </p>
@@ -337,7 +331,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                           onClose();
                           openAssistantWithMessage(s);
                         }}
-                        className="px-3 py-1.5 border border-gold/20 font-serif text-xs hover:border-gold hover:text-gold transition-all"
+                        className="px-3 py-1.5 border border-[var(--secondary)]/20 text-xs hover:border-[var(--secondary)] hover:text-[var(--secondary)] transition-all"
                       >
                         &ldquo;{s}&rdquo;
                       </button>
@@ -349,7 +343,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                       onClose();
                       openAssistantWithMessage(`I'm looking for: ${query}`);
                     }}
-                    className="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-foreground text-background font-display text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-all"
+                    className="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-foreground text-background text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-all"
                   >
                     <Sparkles className="h-4 w-4" />
                     Ask AI Assistant
@@ -358,7 +352,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   <Link
                     href="/collections"
                     onClick={onClose}
-                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 border border-gold font-display text-xs tracking-[0.15em] uppercase hover:bg-gold hover:text-primary transition-all ml-3"
+                    className="inline-flex items-center gap-2 mt-4 px-6 py-3 border border-[var(--secondary)] text-xs tracking-[0.15em] uppercase hover:bg-[var(--secondary)] hover:text-primary transition-all ml-3"
                   >
                     Browse Collections
                     <ArrowRight className="h-4 w-4" />

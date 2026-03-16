@@ -16,8 +16,7 @@ export function Logo({ variant = "default", className = "", showText = true }: L
     <Link href="/" className={`flex items-center ${className}`}>
       {showText ? (
         <span
-          className={`text-xl font-normal tracking-[0.2em] ${textColor}`}
-          style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+          className={`text-xl font-semibold tracking-[0.25em] uppercase ${textColor}`}
         >
           VERNONT
         </span>
@@ -41,7 +40,6 @@ export function LogoIcon({ size = 32, className = "" }: { size?: number; classNa
       style={{
         width: size,
         height: size,
-        fontFamily: "Georgia, 'Times New Roman', serif",
         fontSize: size * 0.625,
       }}
     >

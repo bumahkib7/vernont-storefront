@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   CLARITY COMMERCE DESIGN SYSTEM v2.1
-   Modern, product-forward retail aesthetic
+   VERNONT DESIGN SYSTEM v3
+   Premium minimalist · Manrope · Warm monochrome
    ============================================ */
 
 @theme inline {
@@ -39,7 +39,7 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
 
-  /* Discovery module (violet tint) */
+  /* Discovery module */
   --color-discovery: var(--discovery);
   --color-discovery-border: var(--discovery-border);
 
@@ -60,58 +60,58 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Radius */
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* Radius — sharper for premium feel */
+  --radius-sm: 4px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
   --radius-full: 9999px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-primary: 0 4px 14px 0 rgb(37 99 235 / 0.3);
+  /* Shadows — minimal */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+  --shadow-md: 0 2px 4px -1px rgb(0 0 0 / 0.04);
+  --shadow-lg: 0 4px 8px -2px rgb(0 0 0 / 0.06);
+  --shadow-primary: none;
 }
 
 /* ============================================
-   LIGHT MODE (Default)
+   LIGHT MODE — Warm Monochrome + Gold Accent
    ============================================ */
 :root {
   /* Backgrounds */
-  --background: #FFFFFF;
-  --surface: #F8F9FA;
+  --background: #FAFAF8;
+  --surface: #F3F2EF;
   --surface-raised: #FFFFFF;
 
   /* Card & Popover */
   --card: #FFFFFF;
-  --card-foreground: #111827;
+  --card-foreground: #0A0A0A;
   --popover: #FFFFFF;
-  --popover-foreground: #111827;
+  --popover-foreground: #0A0A0A;
 
   /* Text */
-  --foreground: #111827;
-  --muted: #F3F4F6;
-  --muted-foreground: #6B7280;
-  --subtle: #9CA3AF;
+  --foreground: #0A0A0A;
+  --muted: #F3F2EF;
+  --muted-foreground: #717168;
+  --subtle: #A3A299;
 
-  /* Primary - Blue (Actions, CTAs) */
-  --primary: #2563EB;
-  --primary-foreground: #FFFFFF;
-  --primary-hover: #1D4ED8;
-  --primary-subtle: #EFF6FF;
+  /* Primary — Rich Black */
+  --primary: #0A0A0A;
+  --primary-foreground: #FAFAF8;
+  --primary-hover: #262626;
+  --primary-subtle: #F3F2EF;
 
-  /* Secondary - Dark (Secondary buttons) */
-  --secondary: #111827;
+  /* Secondary — Warm Gold */
+  --secondary: #C4841D;
   --secondary-foreground: #FFFFFF;
-  --secondary-hover: #1F2937;
+  --secondary-hover: #A86E15;
 
-  /* Accent - Violet (Discovery, promos, NEW badges) */
-  --accent: #7C3AED;
+  /* Accent — Gold */
+  --accent: #C4841D;
   --accent-foreground: #FFFFFF;
 
-  /* Discovery Surface (for quiz, notes, compare modules) */
-  --discovery: #F5F3FF;
-  --discovery-border: #E9E5FF;
+  /* Discovery Surface */
+  --discovery: #FAF7F2;
+  --discovery-border: #EDE8DF;
 
   /* Feedback */
   --destructive: #DC2626;
@@ -125,56 +125,47 @@
   --warning-subtle: #FFFBEB;
 
   /* Borders */
-  --border: #E5E7EB;
-  --border-strong: #D1D5DB;
-  --input: #D1D5DB;
-  --ring: #2563EB;
+  --border: #E8E7E3;
+  --border-strong: #D4D3CE;
+  --input: #D4D3CE;
+  --ring: #0A0A0A;
 
-  /* Radius */
-  --radius: 8px;
+  --radius: 4px;
 }
 
 /* ============================================
-   DARK MODE
+   DARK MODE — Warm Inverted
    ============================================ */
 .dark {
-  /* Backgrounds */
-  --background: #09090B;
-  --surface: #18181B;
-  --surface-raised: #27272A;
+  --background: #0A0A0A;
+  --surface: #161614;
+  --surface-raised: #222220;
 
-  /* Card & Popover */
-  --card: #18181B;
-  --card-foreground: #FAFAFA;
-  --popover: #27272A;
-  --popover-foreground: #FAFAFA;
+  --card: #161614;
+  --card-foreground: #FAFAF8;
+  --popover: #222220;
+  --popover-foreground: #FAFAF8;
 
-  /* Text */
-  --foreground: #FAFAFA;
-  --muted: #27272A;
-  --muted-foreground: #A1A1AA;
-  --subtle: #71717A;
+  --foreground: #FAFAF8;
+  --muted: #222220;
+  --muted-foreground: #A3A299;
+  --subtle: #717168;
 
-  /* Primary - Blue */
-  --primary: #3B82F6;
-  --primary-foreground: #FFFFFF;
-  --primary-hover: #60A5FA;
-  --primary-subtle: #1E3A5F;
+  --primary: #FAFAF8;
+  --primary-foreground: #0A0A0A;
+  --primary-hover: #E8E7E3;
+  --primary-subtle: #1C1C1A;
 
-  /* Secondary - Light (inverted for dark mode) */
-  --secondary: #FAFAFA;
-  --secondary-foreground: #09090B;
-  --secondary-hover: #E4E4E7;
+  --secondary: #D4A23B;
+  --secondary-foreground: #0A0A0A;
+  --secondary-hover: #E8B94E;
 
-  /* Accent - Violet */
-  --accent: #8B5CF6;
-  --accent-foreground: #FFFFFF;
+  --accent: #D4A23B;
+  --accent-foreground: #0A0A0A;
 
-  /* Discovery Surface */
-  --discovery: #1B1530;
-  --discovery-border: #2D2548;
+  --discovery: #1A1812;
+  --discovery-border: #2D2B22;
 
-  /* Feedback */
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
   --destructive-subtle: #450A0A;
@@ -185,11 +176,10 @@
   --warning: #F59E0B;
   --warning-subtle: #451A03;
 
-  /* Borders */
-  --border: #27272A;
-  --border-strong: #3F3F46;
-  --input: #3F3F46;
-  --ring: #3B82F6;
+  --border: #2A2A27;
+  --border-strong: #3D3D38;
+  --input: #3D3D38;
+  --ring: #FAFAF8;
 }
 
 /* ============================================
@@ -206,25 +196,25 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.5;
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography - single font, strong hierarchy */
+/* Typography — Manrope, strong hierarchy */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
   font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.2;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
 
-h1 { font-size: 2.25rem; }
-h2 { font-size: 1.75rem; font-weight: 600; }
-h3 { font-size: 1.375rem; font-weight: 600; }
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2rem; font-weight: 600; }
+h3 { font-size: 1.5rem; font-weight: 600; }
 h4 { font-size: 1.125rem; font-weight: 600; }
 
 /* Tabular numbers for prices and ratings */
@@ -232,7 +222,6 @@ h4 { font-size: 1.125rem; font-weight: 600; }
   font-variant-numeric: tabular-nums;
 }
 
-/* Text width constraints */
 .prose-width {
   max-width: 68ch;
 }
@@ -241,8 +230,8 @@ h4 { font-size: 1.125rem; font-weight: 600; }
    SELECTION & FOCUS
    ============================================ */
 ::selection {
-  background-color: var(--primary);
-  color: var(--primary-foreground);
+  background-color: var(--secondary);
+  color: var(--secondary-foreground);
 }
 
 :focus-visible {
@@ -272,109 +261,112 @@ h4 { font-size: 1.125rem; font-weight: 600; }
 }
 
 /* ============================================
-   BUTTON STYLES
+   BUTTON STYLES — Uppercase, press-in hover
    ============================================ */
 button {
   cursor: pointer;
 }
 
-/* Primary Button - Blue with shadow */
 .btn-primary {
   background-color: var(--primary);
   color: var(--primary-foreground);
-  padding: 0.625rem 1rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-primary);
-  transition: background-color 150ms, transform 150ms;
+  transition: background-color 200ms, transform 200ms;
 }
 
 .btn-primary:hover {
   background-color: var(--primary-hover);
-  transform: translateY(-1px);
+  transform: scale(0.98);
 }
 
 .btn-primary:active {
-  transform: translateY(0);
+  transform: scale(0.96);
 }
 
-/* Secondary Button - Dark solid */
 .btn-secondary {
   background-color: var(--secondary);
   color: var(--secondary-foreground);
-  padding: 0.625rem 1rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-sm);
-  transition: background-color 150ms;
+  transition: background-color 200ms, transform 200ms;
 }
 
 .btn-secondary:hover {
   background-color: var(--secondary-hover);
+  transform: scale(0.98);
 }
 
-/* Outline Button */
 .btn-outline {
   background-color: transparent;
   color: var(--foreground);
   border: 1px solid var(--border-strong);
-  padding: 0.625rem 1rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
-  transition: background-color 150ms, border-color 150ms;
+  transition: background-color 200ms, border-color 200ms, transform 200ms;
 }
 
 .btn-outline:hover {
   background-color: var(--surface);
   border-color: var(--foreground);
+  transform: scale(0.98);
 }
 
-/* Ghost Button */
 .btn-ghost {
   background-color: transparent;
   color: var(--muted-foreground);
-  padding: 0.625rem 1rem;
-  font-size: 1rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.8125rem;
   font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
   border-radius: var(--radius-sm);
-  transition: background-color 150ms, color 150ms;
+  transition: background-color 200ms, color 200ms, transform 200ms;
 }
 
 .btn-ghost:hover {
   background-color: var(--surface);
   color: var(--foreground);
+  transform: scale(0.98);
 }
 
-/* Small Button */
 .btn-sm {
   padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
 }
 
-/* Large Button */
 .btn-lg {
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
+  padding: 0.875rem 2rem;
+  font-size: 0.8125rem;
   font-weight: 600;
 }
 
 /* ============================================
-   CHIP / PILL STYLES (Filters, Notes)
+   CHIP / PILL STYLES
    ============================================ */
 .chip {
   display: inline-flex;
   align-items: center;
   padding: 0.375rem 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   background-color: var(--surface);
   color: var(--foreground);
   border: 1px solid var(--border);
-  transition: background-color 150ms, border-color 150ms;
+  transition: background-color 200ms, border-color 200ms;
 }
 
 .chip:hover {
@@ -383,12 +375,11 @@ button {
 }
 
 .chip.active {
-  background-color: var(--primary-subtle);
-  color: var(--primary);
+  background-color: var(--primary);
+  color: var(--primary-foreground);
   border-color: var(--primary);
 }
 
-/* Discovery chip (for notes selection) */
 .chip-discovery {
   background-color: var(--discovery);
   border-color: var(--discovery-border);
@@ -401,40 +392,40 @@ button {
 }
 
 /* ============================================
-   CARD STYLES
+   CARD STYLES — Minimal shadows, border-driven
    ============================================ */
 .card {
   background-color: var(--card);
   border: 1px solid var(--border);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
 }
 
 .card-elevated {
   background-color: var(--background);
   border: none;
-  box-shadow: var(--shadow-md);
-  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-sm);
 }
 
 .card-elevated:hover {
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
 }
 
 .card-interactive {
   background-color: var(--background);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--radius-md);
-  transition: box-shadow 150ms, border-color 150ms;
+  box-shadow: none;
+  border-radius: var(--radius-sm);
+  transition: border-color 200ms, transform 200ms;
 }
 
 .card-interactive:hover {
-  box-shadow: var(--shadow-md);
-  border-color: var(--primary);
+  border-color: var(--foreground);
+  transform: translateY(-2px);
 }
 
 /* ============================================
-   DISCOVERY MODULE STYLES
+   DISCOVERY MODULE
    ============================================ */
 .discovery-module {
   background-color: var(--discovery);
@@ -443,17 +434,17 @@ button {
 }
 
 /* ============================================
-   BADGE STYLES
+   BADGE STYLES — Sharper, smaller, spaced
    ============================================ */
 .badge {
   display: inline-flex;
   align-items: center;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.025em;
-  border-radius: var(--radius-sm);
+  letter-spacing: 0.08em;
+  border-radius: 2px;
 }
 
 .badge-new {
@@ -467,8 +458,8 @@ button {
 }
 
 .badge-bestseller {
-  background-color: var(--secondary);
-  color: var(--secondary-foreground);
+  background-color: var(--foreground);
+  color: var(--background);
 }
 
 .badge-success {
@@ -490,13 +481,13 @@ button {
   background-color: var(--background);
   border: 1px solid var(--input);
   border-radius: var(--radius-sm);
-  font-size: 1rem;
-  transition: border-color 150ms, box-shadow 150ms;
+  font-size: 0.9375rem;
+  font-weight: 300;
+  transition: border-color 200ms;
 }
 
 .input:focus {
-  border-color: var(--ring);
-  box-shadow: 0 0 0 2px var(--primary-subtle);
+  border-color: var(--foreground);
   outline: none;
 }
 
@@ -505,7 +496,7 @@ button {
 }
 
 /* ============================================
-   TRUST BAND STYLES
+   TRUST BAND
    ============================================ */
 .trust-band {
   display: flex;
@@ -515,7 +506,8 @@ button {
   background-color: var(--surface);
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  font-weight: 400;
   color: var(--muted-foreground);
 }
 
@@ -526,7 +518,7 @@ button {
 }
 
 /* ============================================
-   RATING STYLES
+   RATING
    ============================================ */
 .star-rating {
   display: inline-flex;
@@ -536,30 +528,30 @@ button {
 }
 
 .rating-text {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 500;
   color: var(--foreground);
   font-variant-numeric: tabular-nums;
 }
 
 .rating-count {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--muted-foreground);
 }
 
 /* ============================================
-   PRICE STYLES
+   PRICE
    ============================================ */
 .price {
-  font-size: 1.125rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.01em;
 }
 
 .price-sm {
-  font-size: 0.875rem;
-  font-weight: 600;
+  font-size: 0.8125rem;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
 }
 
@@ -573,10 +565,10 @@ button {
 }
 
 /* ============================================
-   DECISION ROW (Stock + Delivery)
+   DECISION ROW
    ============================================ */
 .decision-row {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--subtle);
 }
 

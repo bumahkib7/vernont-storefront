@@ -179,7 +179,7 @@ function SortDropdown({
 
 function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () => void }) {
   return (
-    <span className="inline-flex items-center gap-1 px-3 py-1 bg-[var(--primary)] text-white text-sm rounded-full">
+    <span className="inline-flex items-center gap-1 px-3 py-1 bg-[var(--primary)] text-white text-sm rounded-sm">
       {label}
       <button onClick={onRemove} className="hover:bg-white/20 rounded-full p-0.5 transition-colors">
         <X className="w-3 h-3" />
@@ -409,7 +409,7 @@ export default function EyewearPage() {
                 <button
                   key={filter.value}
                   onClick={() => setQuickFilter(filter.value === quickFilter ? "" : filter.value)}
-                  className={`px-4 py-2 text-sm rounded-full border transition-all ${
+                  className={`px-4 py-2 text-sm rounded-sm border transition-all ${
                     quickFilter === filter.value
                       ? "bg-[var(--primary)] text-white border-[var(--primary)]"
                       : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]"
@@ -423,7 +423,7 @@ export default function EyewearPage() {
         </section>
 
         {/* Toolbar */}
-        <div className="sticky top-16 z-30 bg-[var(--background)] border-b border-[var(--border)]">
+        <div className="sticky top-[72px] z-30 bg-[var(--background)] border-b border-[var(--border)]">
           <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
@@ -532,7 +532,7 @@ export default function EyewearPage() {
 
           <section className="flex-1 px-4 lg:px-8 py-8">
             {isLoading ? (
-              <div className={`grid grid-cols-2 lg:grid-cols-${gridCols} gap-4 lg:gap-6`}>
+              <div className={`grid grid-cols-2 lg:grid-cols-${gridCols} gap-6 lg:gap-8`}>
                 {[...Array(12)].map((_, i) => (
                   <div key={i} className="animate-pulse">
                     <div className="aspect-square bg-[var(--surface)] rounded-lg mb-3" />
@@ -566,7 +566,7 @@ export default function EyewearPage() {
                 )}
               </div>
             ) : (
-              <div className={`grid grid-cols-2 ${gridCols === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-4 lg:gap-6`}>
+              <div className={`grid grid-cols-2 ${gridCols === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-6 lg:gap-8`}>
                 {displayProducts.map((product, index) => (
                   <EnhancedProductCard key={product.id} product={product} index={index} />
                 ))}

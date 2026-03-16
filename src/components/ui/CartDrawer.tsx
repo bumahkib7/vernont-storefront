@@ -41,7 +41,7 @@ export function CartDrawer() {
             <div className="flex items-center justify-between h-16 px-4 border-b border-[var(--border)]">
               <div className="flex items-center gap-2">
                 <ShoppingBag className="w-5 h-5" />
-                <span className="font-semibold">
+                <span className="font-medium tracking-wider text-sm uppercase">
                   BAG ({itemCount})
                 </span>
               </div>

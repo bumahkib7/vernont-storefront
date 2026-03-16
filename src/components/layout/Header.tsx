@@ -101,7 +101,7 @@ export function Header() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-[var(--secondary)] text-[var(--secondary-foreground)] text-center py-2 px-4 text-sm">
+      <div className="bg-[var(--foreground)] text-[var(--background)] text-center py-2 px-4 text-sm">
         <span>Free shipping over £75</span>
         <span className="mx-2">•</span>
         <span>30-day returns</span>
@@ -111,7 +111,7 @@ export function Header() {
 
       {/* Main Header */}
       <header className="sticky top-0 z-40 bg-[var(--background)] border-b border-[var(--border)]">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between h-16 px-4 lg:px-8">
+        <nav className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-4 lg:px-8">
           {/* Left: Logo + Nav */}
           <div className="flex items-center gap-8">
             {/* Mobile Menu Button */}
@@ -126,10 +126,9 @@ export function Header() {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <span
-                className="text-xl font-normal tracking-[0.2em]"
-                style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                className="text-xl font-semibold tracking-[0.25em] uppercase"
               >
-                {(storeName || "Vernont").toUpperCase()}
+                {storeName || "Vernont"}
               </span>
             </Link>
 
@@ -144,7 +143,7 @@ export function Header() {
                 >
                   <Link
                     href={item.href}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-[var(--foreground)] hover:text-[var(--primary)] transition-colors rounded-md"
+                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors rounded-md"
                   >
                     {item.label}
                     {item.hasDropdown && (
@@ -160,7 +159,7 @@ export function Header() {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 8 }}
                         transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-1 w-56 bg-[var(--background)] border border-[var(--border)] rounded-lg shadow-lg overflow-hidden z-50"
+                        className="absolute top-full left-0 mt-1 w-56 bg-[var(--background)] border border-[var(--border)] rounded-sm shadow-lg overflow-hidden z-50"
                         onMouseEnter={() => handleMouseEnter(item.label)}
                         onMouseLeave={handleMouseLeave}
                       >
@@ -196,7 +195,7 @@ export function Header() {
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setShowResults(true)}
-                  className="w-64 pl-10 pr-10 py-2 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-full focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
+                  className="w-64 pl-10 pr-10 py-2 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-sm focus:outline-none focus:border-[var(--foreground)] focus:ring-0 transition-all"
                 />
                 {searchLoading && (
                   <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-[var(--muted-foreground)]" />
@@ -334,10 +333,9 @@ export function Header() {
                 {/* Menu Header */}
                 <div className="flex items-center justify-between h-16 px-4 border-b border-[var(--border)]">
                   <span
-                    className="text-lg font-normal tracking-[0.2em]"
-                    style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}
+                    className="text-lg font-semibold tracking-[0.25em] uppercase"
                   >
-                    {(storeName || "Vernont").toUpperCase()}
+                    {storeName || "Vernont"}
                   </span>
                   <button
                     onClick={() => setMobileMenuOpen(false)}
