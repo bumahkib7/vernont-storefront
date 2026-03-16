@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  ChevronRight,
   Lock,
   Truck,
   CreditCard,
@@ -659,11 +658,11 @@ export default function CheckoutPage() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-[1200px] mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Form Section */}
           <div className="lg:col-span-7">
-            <div className="bg-[var(--background)] rounded-lg border border-[var(--border)] p-6">
+            <div className="bg-[var(--background)] rounded-sm border border-[var(--border)] p-8">
               <AnimatePresence mode="wait">
                 {/* Information Step */}
                 {currentStep === "information" && (
@@ -673,7 +672,7 @@ export default function CheckoutPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                   >
-                    <h2 className="text-lg font-semibold mb-6">Contact Information</h2>
+                    <h2 className="text-sm font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-8">Contact Information</h2>
 
                     <div className="space-y-4 mb-8">
                       <div>
@@ -683,7 +682,7 @@ export default function CheckoutPage() {
                           value={formData.email}
                           onChange={handleInputChange}
                           placeholder="Email address"
-                          className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all ${
+                          className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] transition-all ${
                             errors.email ? "border-[var(--destructive)]" : "border-[var(--border)]"
                           }`}
                         />
@@ -704,7 +703,7 @@ export default function CheckoutPage() {
                       </label>
                     </div>
 
-                    <h2 className="text-lg font-semibold mb-6">Shipping Address</h2>
+                    <h2 className="text-sm font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-8">Shipping Address</h2>
 
                     {loadingAddresses ? (
                       <div className="flex items-center justify-center py-8">
@@ -717,10 +716,10 @@ export default function CheckoutPage() {
                             {savedAddresses.map((addr) => (
                               <label
                                 key={addr.id}
-                                className={`flex items-start gap-4 p-4 border rounded-lg cursor-pointer transition-all ${
+                                className={`flex items-start gap-4 p-4 border rounded-sm cursor-pointer transition-all ${
                                   selectedAddressId === addr.id
-                                    ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                                    : "border-[var(--border)] hover:border-[var(--primary)]/50"
+                                    ? "border-[var(--foreground)] bg-transparent"
+                                    : "border-[var(--border)] hover:border-[var(--foreground)]/40"
                                 }`}
                               >
                                 <input
@@ -732,7 +731,7 @@ export default function CheckoutPage() {
                                 />
                                 <div className="flex-1">
                                   <div className="flex items-center gap-2">
-                                    <MapPin className="h-4 w-4 text-[var(--primary)]" />
+                                    <MapPin className="h-4 w-4 text-[var(--foreground)]" />
                                     <p className="font-medium text-sm">
                                       {addr.first_name} {addr.last_name}
                                     </p>
@@ -751,10 +750,10 @@ export default function CheckoutPage() {
 
                             <button
                               onClick={handleAddNewAddress}
-                              className={`w-full flex items-center gap-3 p-4 border rounded-lg transition-all ${
+                              className={`w-full flex items-center gap-3 p-4 border rounded-sm transition-all ${
                                 showAddressForm && !selectedAddressId
-                                  ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                                  : "border-[var(--border)] hover:border-[var(--primary)]/50"
+                                  ? "border-[var(--foreground)] bg-transparent"
+                                  : "border-[var(--border)] hover:border-[var(--foreground)]/40"
                               }`}
                             >
                               <Plus className="h-4 w-4 text-[var(--primary)]" />
@@ -769,7 +768,7 @@ export default function CheckoutPage() {
                               name="country"
                               value={formData.country}
                               onChange={handleInputChange}
-                              className="w-full px-4 py-3 border border-[var(--border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                              className="w-full px-4 py-3.5 border border-[var(--border)] rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)]"
                             >
                               {countries.map((country) => (
                                 <option key={country.code} value={country.code}>
@@ -786,7 +785,7 @@ export default function CheckoutPage() {
                                   value={formData.firstName}
                                   onChange={handleInputChange}
                                   placeholder="First name"
-                                  className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                  className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                     errors.firstName ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                   }`}
                                 />
@@ -801,7 +800,7 @@ export default function CheckoutPage() {
                                   value={formData.lastName}
                                   onChange={handleInputChange}
                                   placeholder="Last name"
-                                  className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                  className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                     errors.lastName ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                   }`}
                                 />
@@ -818,7 +817,7 @@ export default function CheckoutPage() {
                                 value={formData.address}
                                 onChange={handleInputChange}
                                 placeholder="Address"
-                                className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                   errors.address ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                 }`}
                               />
@@ -833,7 +832,7 @@ export default function CheckoutPage() {
                               value={formData.apartment}
                               onChange={handleInputChange}
                               placeholder="Apartment, suite, etc. (optional)"
-                              className="w-full px-4 py-3 border border-[var(--border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                              className="w-full px-4 py-3.5 border border-[var(--border)] rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)]"
                             />
 
                             <div className="grid grid-cols-2 gap-4">
@@ -844,7 +843,7 @@ export default function CheckoutPage() {
                                   value={formData.city}
                                   onChange={handleInputChange}
                                   placeholder="City"
-                                  className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                  className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                     errors.city ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                   }`}
                                 />
@@ -859,7 +858,7 @@ export default function CheckoutPage() {
                                   value={formData.postcode}
                                   onChange={handleInputChange}
                                   placeholder="Postcode"
-                                  className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                  className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                     errors.postcode ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                   }`}
                                 />
@@ -876,7 +875,7 @@ export default function CheckoutPage() {
                                 value={formData.phone}
                                 onChange={handleInputChange}
                                 placeholder="Phone number"
-                                className={`w-full px-4 py-3 border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent ${
+                                className={`w-full px-4 py-3.5 border rounded-sm text-sm font-light focus:outline-none focus:ring-0 focus:border-[var(--foreground)] ${
                                   errors.phone ? "border-[var(--destructive)]" : "border-[var(--border)]"
                                 }`}
                               />
@@ -905,7 +904,7 @@ export default function CheckoutPage() {
                     <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
                       <Link
                         href="/"
-                        className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                        className="flex items-center gap-2 text-xs tracking-wider uppercase text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                       >
                         <ArrowLeft className="h-4 w-4" />
                         Return to shop
@@ -925,7 +924,7 @@ export default function CheckoutPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                   >
-                    <div className="p-4 bg-[var(--surface)] rounded-lg mb-6 space-y-2 text-sm">
+                    <div className="p-4 bg-[var(--surface)] rounded-sm mb-6 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-[var(--muted-foreground)]">Contact</span>
                         <span>{formData.email}</span>
@@ -940,14 +939,14 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
-                    <h2 className="text-lg font-semibold mb-6">Delivery Method</h2>
+                    <h2 className="text-sm font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-8">Delivery Method</h2>
 
                     {loadingShipping ? (
                       <div className="flex items-center justify-center py-8">
                         <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
                       </div>
                     ) : shippingOptions.length === 0 ? (
-                      <div className="p-4 bg-[var(--surface)] rounded-lg text-center">
+                      <div className="p-4 bg-[var(--surface)] rounded-sm text-center">
                         <p className="text-sm text-[var(--muted-foreground)]">
                           No shipping options available for your region.
                         </p>
@@ -957,10 +956,10 @@ export default function CheckoutPage() {
                         {shippingOptions.map((option) => (
                           <label
                             key={option.id}
-                            className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-all ${
+                            className={`flex items-center justify-between p-4 border rounded-sm cursor-pointer transition-all ${
                               selectedShippingId === option.id
-                                ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                                : "border-[var(--border)] hover:border-[var(--primary)]/50"
+                                ? "border-[var(--foreground)] bg-transparent"
+                                : "border-[var(--border)] hover:border-[var(--foreground)]/40"
                             }`}
                           >
                             <div className="flex items-center gap-4">
@@ -998,10 +997,10 @@ export default function CheckoutPage() {
 
                     <div className="mt-6">
                       <label
-                        className={`flex items-center justify-between p-4 border rounded-lg cursor-pointer transition-all ${
+                        className={`flex items-center justify-between p-4 border rounded-sm cursor-pointer transition-all ${
                           giftWrap
-                            ? "border-[var(--primary)] bg-[var(--primary)]/5"
-                            : "border-[var(--border)] hover:border-[var(--primary)]/50"
+                            ? "border-[var(--foreground)] bg-transparent"
+                            : "border-[var(--border)] hover:border-[var(--foreground)]/40"
                         }`}
                       >
                         <div className="flex items-center gap-4">
@@ -1030,7 +1029,7 @@ export default function CheckoutPage() {
                     <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
                       <button
                         onClick={handleBack}
-                        className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                        className="flex items-center gap-2 text-xs tracking-wider uppercase text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                       >
                         <ArrowLeft className="h-4 w-4" />
                         Return to information
@@ -1054,7 +1053,7 @@ export default function CheckoutPage() {
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: 20 }}
                   >
-                    <div className="p-4 bg-[var(--surface)] rounded-lg mb-6 space-y-2 text-sm">
+                    <div className="p-4 bg-[var(--surface)] rounded-sm mb-6 space-y-2 text-sm">
                       <div className="flex justify-between">
                         <span className="text-[var(--muted-foreground)]">Contact</span>
                         <span>{formData.email}</span>
@@ -1073,7 +1072,7 @@ export default function CheckoutPage() {
                       </div>
                     </div>
 
-                    <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                    <h2 className="text-sm font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-8 flex items-center gap-2">
                       <CreditCard className="h-5 w-5" />
                       Payment
                     </h2>
@@ -1082,7 +1081,7 @@ export default function CheckoutPage() {
                       <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-lg flex items-start gap-3"
+                        className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-sm flex items-start gap-3"
                       >
                         <AlertCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
                         <div>
@@ -1121,7 +1120,7 @@ export default function CheckoutPage() {
                       <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
                         <button
                           onClick={handleBack}
-                          className="flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
+                          className="flex items-center gap-2 text-xs tracking-wider uppercase text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                         >
                           <ArrowLeft className="h-4 w-4" />
                           Return to shipping
@@ -1136,8 +1135,8 @@ export default function CheckoutPage() {
 
           {/* Order Summary */}
           <div className="lg:col-span-5">
-            <div className="bg-[var(--background)] rounded-lg border border-[var(--border)] p-6 sticky top-24">
-              <h3 className="font-semibold mb-6 flex items-center gap-2">
+            <div className="bg-[var(--background)] rounded-sm border border-[var(--border)] p-8 sticky top-[96px]">
+              <h3 className="text-xs font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-6 flex items-center gap-2">
                 <ShoppingBag className="h-5 w-5" />
                 Order Summary ({items.length})
               </h3>
@@ -1145,7 +1144,7 @@ export default function CheckoutPage() {
               <div className="space-y-4 mb-6">
                 {items.map((item) => (
                   <div key={item.id} className="flex gap-3">
-                    <div className="relative w-16 h-16 bg-[var(--surface)] rounded-lg flex-shrink-0 overflow-hidden">
+                    <div className="relative w-20 h-20 bg-[var(--surface)] rounded-sm flex-shrink-0 overflow-hidden">
                       {item.thumbnail && (
                         <Image
                           src={item.thumbnail}
@@ -1155,14 +1154,14 @@ export default function CheckoutPage() {
                           unoptimized
                         />
                       )}
-                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--primary)] text-white text-xs rounded-full flex items-center justify-center font-medium">
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-[var(--primary)] text-white text-xs rounded-sm flex items-center justify-center font-medium">
                         {item.quantity}
                       </span>
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="font-medium text-sm leading-tight">{item.title}</p>
                       {item.variant_title && (
-                        <span className="inline-flex items-center mt-1 px-2 py-0.5 bg-[var(--surface)] text-[var(--foreground)] text-xs font-medium rounded border border-[var(--border)]">
+                        <span className="inline-flex items-center mt-1 px-2 py-0.5 bg-[var(--surface)] text-[var(--foreground)] text-xs font-medium rounded-sm border border-[var(--border)]">
                           {item.variant_title}
                         </span>
                       )}
@@ -1187,13 +1186,13 @@ export default function CheckoutPage() {
                     onChange={(e) => setPromoCode(e.target.value)}
                     placeholder="Discount code"
                     disabled={promoApplied}
-                    className="w-full pl-10 pr-4 py-2.5 border border-[var(--border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent disabled:bg-[var(--surface)]"
+                    className="w-full pl-10 pr-4 py-2.5 border border-[var(--border)] rounded-sm text-sm focus:outline-none focus:ring-0 focus:border-[var(--foreground)] disabled:bg-[var(--surface)]"
                   />
                 </div>
                 <button
                   onClick={handleApplyPromo}
                   disabled={promoApplied || !promoCode || applyingPromo}
-                  className="btn-secondary px-4 disabled:opacity-50"
+                  className="btn-outline px-4 disabled:opacity-50"
                 >
                   {applyingPromo ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -1232,14 +1231,14 @@ export default function CheckoutPage() {
                       placeholder="Gift card code"
                       disabled={giftCardApplied || applyingGiftCard}
                       maxLength={19}
-                      className="w-full pl-10 pr-4 py-2.5 border border-[var(--border)] rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent disabled:bg-[var(--surface)] uppercase"
+                      className="w-full pl-10 pr-4 py-2.5 border border-[var(--border)] rounded-sm text-sm focus:outline-none focus:ring-0 focus:border-[var(--foreground)] disabled:bg-[var(--surface)] uppercase"
                     />
                   </div>
                   {giftCardApplied ? (
                     <button
                       onClick={handleRemoveGiftCard}
                       disabled={applyingGiftCard}
-                      className="btn-secondary px-4 text-[var(--destructive)] disabled:opacity-50"
+                      className="btn-outline px-4 text-[var(--destructive)] disabled:opacity-50"
                     >
                       {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Remove"}
                     </button>
@@ -1247,7 +1246,7 @@ export default function CheckoutPage() {
                     <button
                       onClick={handleApplyGiftCard}
                       disabled={!giftCardCode || giftCardCode.length < 19 || applyingGiftCard}
-                      className="btn-secondary px-4 disabled:opacity-50"
+                      className="btn-outline px-4 disabled:opacity-50"
                     >
                       {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Apply"}
                     </button>
@@ -1318,8 +1317,8 @@ export default function CheckoutPage() {
               <div className="mt-6 pt-4 border-t border-[var(--border)]">
                 <div className="grid grid-cols-2 gap-3">
                   {TRUST_FEATURES.map((feature) => (
-                    <div key={feature.label} className="flex items-center gap-2 text-xs text-[var(--muted-foreground)]">
-                      <feature.icon className="h-3.5 w-3.5 text-[var(--success)]" />
+                    <div key={feature.label} className="flex items-center gap-2 text-[11px] tracking-wide text-[var(--muted-foreground)]">
+                      <feature.icon className="h-3 w-3 text-[var(--success)]" />
                       <span>{feature.label}</span>
                     </div>
                   ))}
