@@ -625,6 +625,11 @@ export const ShippingOptionSchema = z.object({
   amount: z.number(),
   region_id: z.string().optional(),
   provider_id: z.string().optional(),
+  carrier: z.string().nullable().optional(),
+  estimated_days_min: z.number().nullable().optional(),
+  estimated_days_max: z.number().nullable().optional(),
+  estimated_delivery_date_min: z.string().nullable().optional(),
+  estimated_delivery_date_max: z.string().nullable().optional(),
   data: z.record(z.string(), z.any()).optional(),
 });
 

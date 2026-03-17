@@ -973,8 +973,25 @@ export default function CheckoutPage() {
                               />
                               <div>
                                 <p className="font-medium text-sm">{option.name}</p>
+                                <div className="flex items-center gap-2 mt-0.5">
+                                  {option.carrier && (
+                                    <span className="text-xs text-[var(--muted-foreground)]">
+                                      via {option.carrier}
+                                    </span>
+                                  )}
+                                  {option.estimated_delivery_date_min && option.estimated_delivery_date_max && (
+                                    <span className="text-xs text-[var(--muted-foreground)]">
+                                      {option.carrier ? "·" : ""} Est. {option.estimated_delivery_date_min} – {option.estimated_delivery_date_max}
+                                    </span>
+                                  )}
+                                  {!option.estimated_delivery_date_min && option.estimated_days_min && option.estimated_days_max && (
+                                    <span className="text-xs text-[var(--muted-foreground)]">
+                                      {option.carrier ? "·" : ""} {option.estimated_days_min}–{option.estimated_days_max} business days
+                                    </span>
+                                  )}
+                                </div>
                                 {option.data?.description && (
-                                  <p className="text-xs text-[var(--muted-foreground)]">
+                                  <p className="text-xs text-[var(--muted-foreground)] mt-0.5">
                                     {String(option.data.description)}
                                   </p>
                                 )}
