@@ -6,7 +6,10 @@ import Link from "next/link";
 import { ShoppingBag, Loader2, AlertCircle, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_BASE_URL =
+  typeof window !== "undefined" && process.env.NODE_ENV === "production"
+    ? "/api/proxy"
+    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 interface RecoveredCart {
   id: string;
