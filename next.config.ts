@@ -44,7 +44,7 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.runixcloud.dev",
-        pathname: "/files/**",
+        pathname: "/**",
       },
       {
         protocol: "https",

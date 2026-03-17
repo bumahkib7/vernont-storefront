@@ -93,18 +93,22 @@ import {
 // Re-export types and utilities
 export * from './schemas';
 
-// In production, route through Next.js rewrite proxy so cookies are same-origin
-// (required for mobile Safari which blocks third-party cookies via ITP).
+// Direct backend URL — used for images (public, no auth needed, must match Next.js remotePatterns)
+const DIRECT_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
+// In production, route API fetch calls through Next.js rewrite proxy so cookies
+// are same-origin (required for mobile Safari which blocks third-party cookies via ITP).
+// Images bypass the proxy since they don't need auth cookies.
 const API_BASE_URL =
   typeof window !== 'undefined' && process.env.NODE_ENV === 'production'
     ? '/api/proxy'
-    : process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+    : DIRECT_API_URL;
 
 /**
  * Resolve an image URL to a publicly accessible URL.
- * - Old MinIO URLs (vernont-minio*.runixcloud.dev) are rewritten to use the /files proxy
- * - Relative URLs (e.g. /files?key=...) are prefixed with API_BASE_URL
- * - Other absolute URLs are returned as-is
+ * Always uses the direct backend URL (not the proxy) because:
+ * 1. Images are public and don't need cookie auth
+ * 2. Next.js Image optimization needs URLs matching remotePatterns
  */
 export function resolveImageUrl(url: string | null | undefined): string | null {
   if (!url) return null;
@@ -116,7 +120,7 @@ export function resolveImageUrl(url: string | null | undefined): string | null {
       const parts = parsed.pathname.split("/").filter(Boolean);
       if (parts.length > 1) {
         const key = parts.slice(1).join("/");
-        return `${API_BASE_URL}/files?key=${encodeURIComponent(key)}`;
+        return `${DIRECT_API_URL}/files?key=${encodeURIComponent(key)}`;
       }
     } catch { /* fall through */ }
   }
@@ -125,7 +129,7 @@ export function resolveImageUrl(url: string | null | undefined): string | null {
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
 
   // Relative URL from backend (e.g. /files?key=...)
-  return `${API_BASE_URL}${url.startsWith("/") ? "" : "/"}${url}`;
+  return `${DIRECT_API_URL}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
 // API Error
