@@ -66,7 +66,7 @@ function ResetPasswordContent() {
   if (!token) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-gold" />
+        <Loader2 className="h-8 w-8 animate-spin text-[var(--secondary)]" />
       </div>
     );
   }
@@ -83,10 +83,10 @@ function ResetPasswordContent() {
           <>
             {/* Header */}
             <div className="text-center mb-8">
-              <h1 className="font-display text-3xl md:text-4xl tracking-wide mb-3">
+              <h1 className="text-3xl md:text-4xl tracking-wide mb-3">
                 Reset Password
               </h1>
-              <p className="font-serif text-muted-foreground">
+              <p className="text-muted-foreground">
                 Enter your new password below
               </p>
             </div>
@@ -98,7 +98,7 @@ function ResetPasswordContent() {
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-serif flex items-center gap-2"
+                  className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm flex items-center gap-2"
                 >
                   <AlertCircle className="h-4 w-4" />
                   {error}
@@ -109,7 +109,7 @@ function ResetPasswordContent() {
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* New Password */}
                 <div>
-                  <label className="block font-display text-sm tracking-wider uppercase mb-2">
+                  <label className="block text-sm tracking-wider uppercase mb-2">
                     New Password
                   </label>
                   <div className="relative">
@@ -119,7 +119,7 @@ function ResetPasswordContent() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Min. 8 characters"
-                      className="pl-11 pr-11 h-12 font-serif bg-background border-border focus:border-gold"
+                      className="pl-11 pr-11 h-12 bg-background border-border focus:border-[var(--secondary)]"
                       disabled={isLoading}
                     />
                     <button
@@ -151,7 +151,7 @@ function ResetPasswordContent() {
                           />
                         ))}
                       </div>
-                      <p className="text-xs font-serif text-muted-foreground">
+                      <p className="text-xs text-muted-foreground">
                         {passwordStrength === 1 && "Weak password"}
                         {passwordStrength === 2 && "Fair password"}
                         {passwordStrength === 3 && "Good password"}
@@ -163,7 +163,7 @@ function ResetPasswordContent() {
 
                 {/* Confirm Password */}
                 <div>
-                  <label className="block font-display text-sm tracking-wider uppercase mb-2">
+                  <label className="block text-sm tracking-wider uppercase mb-2">
                     Confirm Password
                   </label>
                   <div className="relative">
@@ -173,7 +173,7 @@ function ResetPasswordContent() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm your password"
-                      className="pl-11 pr-11 h-12 font-serif bg-background border-border focus:border-gold"
+                      className="pl-11 pr-11 h-12 bg-background border-border focus:border-[var(--secondary)]"
                       disabled={isLoading}
                     />
                     <button
@@ -189,7 +189,7 @@ function ResetPasswordContent() {
                     </button>
                   </div>
                   {confirmPassword && password !== confirmPassword && (
-                    <p className="mt-1 text-xs font-serif text-destructive">
+                    <p className="mt-1 text-xs text-destructive">
                       Passwords do not match
                     </p>
                   )}
@@ -198,7 +198,7 @@ function ResetPasswordContent() {
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full h-12 btn-luxury bg-gold text-primary hover:bg-gold/90"
+                  className="w-full h-12 btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90"
                 >
                   {isLoading ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
@@ -224,16 +224,16 @@ function ResetPasswordContent() {
               >
                 <Check className="h-10 w-10 text-green-500" />
               </motion.div>
-              <h1 className="font-display text-3xl md:text-4xl tracking-wide mb-3">
+              <h1 className="text-3xl md:text-4xl tracking-wide mb-3">
                 Password Reset!
               </h1>
-              <p className="font-serif text-muted-foreground mb-8">
+              <p className="text-muted-foreground mb-8">
                 Your password has been successfully reset. You can now sign in with your new
                 password.
               </p>
 
               <Link href="/login">
-                <Button className="btn-luxury bg-gold text-primary hover:bg-gold/90">
+                <Button className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90">
                   Sign In
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -252,7 +252,7 @@ export default function ResetPasswordPage() {
       <Suspense
         fallback={
           <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-gold" />
+            <Loader2 className="h-8 w-8 animate-spin text-[var(--secondary)]" />
           </div>
         }
       >

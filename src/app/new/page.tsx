@@ -25,7 +25,7 @@ function ProductsSkeleton() {
           className="animate-pulse"
         >
           <div className="aspect-[3/4] bg-secondary relative">
-            <div className="absolute inset-3 border border-gold/10" />
+            <div className="absolute inset-3 border border-[var(--secondary)]/10" />
           </div>
           <div className="pt-5 text-center space-y-2">
             <div className="h-3 w-16 bg-secondary mx-auto" />
@@ -66,42 +66,35 @@ export default function NewArrivalsPage() {
             className="object-cover"
             priority
           />
-          <div className="deco-hero-overlay" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/50" />
         </motion.div>
 
-        {/* Art Deco Frame */}
-        <div className="absolute inset-6 md:inset-8 border border-gold/20 pointer-events-none" />
-        <div className="absolute inset-10 md:inset-12 border border-gold/10 pointer-events-none hidden md:block" />
+        <div className="absolute inset-6 md:inset-8 border border-[var(--secondary)]/20 pointer-events-none" />
+        <div className="absolute inset-10 md:inset-12 border border-[var(--secondary)]/10 pointer-events-none hidden md:block" />
 
-        {/* Corner accents */}
-        <div className="absolute top-6 left-6 md:top-8 md:left-8 w-16 h-16 border-l-2 border-t-2 border-gold" />
-        <div className="absolute top-6 right-6 md:top-8 md:right-8 w-16 h-16 border-r-2 border-t-2 border-gold" />
-        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 w-16 h-16 border-l-2 border-b-2 border-gold" />
-        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 w-16 h-16 border-r-2 border-b-2 border-gold" />
 
         {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative container mx-auto px-4 text-center text-white">
+        <motion.div style={{ opacity: heroOpacity }} className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="flex items-center justify-center gap-4 mb-6"
           >
-            <span className="h-px w-12 bg-gold" />
-            <Star className="h-5 w-5 text-gold fill-gold" />
-            <span className="font-display text-gold tracking-[0.4em] uppercase text-xs">
+            <span className="h-px w-12 bg-[var(--secondary)]" />
+            <Star className="h-5 w-5 text-[var(--secondary)] fill-[var(--secondary)]" />
+            <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
               Just Arrived
             </span>
-            <Star className="h-5 w-5 text-gold fill-gold" />
-            <span className="h-px w-12 bg-gold" />
+            <Star className="h-5 w-5 text-[var(--secondary)] fill-[var(--secondary)]" />
+            <span className="h-px w-12 bg-[var(--secondary)]" />
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="font-display text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
           >
             New Arrivals
           </motion.h1>
@@ -110,7 +103,7 @@ export default function NewArrivalsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
             Be the first to experience our latest creations,
             each one a testament to our unwavering commitment to excellence
@@ -122,9 +115,9 @@ export default function NewArrivalsPage() {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="mt-8 flex items-center justify-center gap-3"
           >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
-            <Sparkles className="h-5 w-5 text-gold" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
+            <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
           </motion.div>
         </motion.div>
 
@@ -138,14 +131,14 @@ export default function NewArrivalsPage() {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="w-px h-12 bg-gradient-to-b from-gold to-transparent"
+            className="w-px h-12 bg-gradient-to-b from-[var(--secondary)] to-transparent"
           />
         </motion.div>
       </section>
 
       {/* Products Section */}
-      <section className="py-16 md:py-24 deco-section-light">
-        <div className="container mx-auto px-4">
+      <section className="py-16 md:py-24">
+        <div className="max-w-[1500px] mx-auto px-4">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -155,14 +148,14 @@ export default function NewArrivalsPage() {
             className="text-center mb-12"
           >
             <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-gold/50" />
-              <div className="w-2 h-2 rotate-45 bg-gold" />
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/50" />
+              <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--secondary)]/50" />
+              <div className="w-2 h-2 rotate-45 bg-[var(--secondary)]" />
+              <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--secondary)]/50" />
             </div>
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide">
+            <h2 className="text-3xl md:text-4xl tracking-wide">
               Latest Creations
             </h2>
-            <p className="font-serif text-muted-foreground mt-3">
+            <p className="text-muted-foreground mt-3">
               {isLoading ? "Loading..." : `${newProducts.length} New Arrivals`}
             </p>
           </motion.div>
@@ -176,7 +169,7 @@ export default function NewArrivalsPage() {
               animate={{ opacity: 1 }}
               className="text-center py-20"
             >
-              <p className="font-serif text-muted-foreground">
+              <p className="text-muted-foreground">
                 Unable to load products. Please try again later.
               </p>
             </motion.div>
@@ -186,12 +179,12 @@ export default function NewArrivalsPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-20"
             >
-              <div className="w-16 h-16 mx-auto mb-6 border border-gold/30 rotate-45" />
-              <h3 className="font-display text-2xl tracking-wide mb-3">Coming Soon</h3>
-              <p className="font-serif text-muted-foreground mb-6">
+              <div className="w-16 h-16 mx-auto mb-6 border border-[var(--secondary)]/30 rotate-45" />
+              <h3 className="text-2xl tracking-wide mb-3">Coming Soon</h3>
+              <p className="text-muted-foreground mb-6">
                 New arrivals are on their way. Check back soon.
               </p>
-              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+              <Link href="/eyewear" className="btn-primary inline-block">
                 Browse All Eyewear
               </Link>
             </motion.div>
@@ -223,10 +216,9 @@ export default function NewArrivalsPage() {
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div className="deco-sunburst w-full h-full" />
         </div>
 
-        <div className="container mx-auto px-4 relative">
+        <div className="max-w-[1500px] mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -234,23 +226,23 @@ export default function NewArrivalsPage() {
             className="text-center max-w-2xl mx-auto"
           >
             <div className="inline-flex items-center gap-2 mb-6">
-              <Sparkles className="h-5 w-5 text-gold" />
-              <span className="font-display text-gold tracking-[0.3em] uppercase text-xs">
+              <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+              <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
                 Stay Updated
               </span>
             </div>
 
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-4">
+            <h2 className="text-3xl md:text-4xl tracking-wide mb-4">
               Never Miss a Launch
             </h2>
-            <p className="font-serif text-muted-foreground mb-8">
+            <p className="text-muted-foreground mb-8">
               Subscribe to be the first to know about our newest
               creations and exclusive releases
             </p>
 
             <Link
               href="/eyewear"
-              className="btn-deco-ornate inline-block"
+              className="btn-primary inline-block"
             >
               View All Eyewear
             </Link>

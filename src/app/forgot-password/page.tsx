@@ -48,7 +48,7 @@ export default function ForgotPasswordPage() {
           {/* Back Link */}
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 font-serif text-muted-foreground hover:text-gold transition-colors mb-8"
+            className="inline-flex items-center gap-2 text-muted-foreground hover:text-[var(--foreground)] transition-colors mb-8"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to login
@@ -58,10 +58,10 @@ export default function ForgotPasswordPage() {
             <>
               {/* Header */}
               <div className="text-center mb-8">
-                <h1 className="font-display text-3xl md:text-4xl tracking-wide mb-3">
+                <h1 className="text-3xl md:text-4xl tracking-wide mb-3">
                   Forgot Password?
                 </h1>
-                <p className="font-serif text-muted-foreground">
+                <p className="text-muted-foreground">
                   Enter your email and we&apos;ll send you a reset link
                 </p>
               </div>
@@ -73,7 +73,7 @@ export default function ForgotPasswordPage() {
                   <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm font-serif"
+                    className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm"
                   >
                     {error}
                   </motion.div>
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label className="block font-display text-sm tracking-wider uppercase mb-2">
+                    <label className="block text-sm tracking-wider uppercase mb-2">
                       Email Address
                     </label>
                     <div className="relative">
@@ -92,7 +92,7 @@ export default function ForgotPasswordPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="your@email.com"
-                        className="pl-11 h-12 font-serif bg-background border-border focus:border-gold"
+                        className="pl-11 h-12 bg-background border-border focus:border-[var(--secondary)]"
                         disabled={isLoading}
                       />
                     </div>
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-12 btn-luxury bg-gold text-primary hover:bg-gold/90"
+                    className="w-full h-12 btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90"
                   >
                     {isLoading ? (
                       <Loader2 className="h-4 w-4 animate-spin" />
@@ -127,20 +127,20 @@ export default function ForgotPasswordPage() {
                 >
                   <Check className="h-10 w-10 text-green-500" />
                 </motion.div>
-                <h1 className="font-display text-3xl md:text-4xl tracking-wide mb-3">
+                <h1 className="text-3xl md:text-4xl tracking-wide mb-3">
                   Check Your Email
                 </h1>
-                <p className="font-serif text-muted-foreground mb-8">
+                <p className="text-muted-foreground mb-8">
                   If an account exists with <span className="text-foreground">{email}</span>,
                   you&apos;ll receive a password reset link shortly.
                 </p>
 
                 <div className="bg-card border border-border p-6 mb-8">
-                  <p className="font-serif text-sm text-muted-foreground">
+                  <p className="text-sm text-muted-foreground">
                     Didn&apos;t receive the email? Check your spam folder or{" "}
                     <button
                       onClick={() => setIsSuccess(false)}
-                      className="text-gold hover:underline"
+                      className="text-[var(--secondary)] hover:underline"
                     >
                       try again
                     </button>
@@ -148,7 +148,7 @@ export default function ForgotPasswordPage() {
                 </div>
 
                 <Link href="/login">
-                  <Button variant="outline" className="border-border hover:border-gold">
+                  <Button variant="outline" className="border-border hover:border-[var(--foreground)]">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Login
                   </Button>

@@ -21,14 +21,14 @@ export default function AboutPage() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        <div className="relative container mx-auto px-4 text-center text-white">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-4">
+        <div className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-4">
             Our Heritage
           </p>
-          <h1 className="font-display text-4xl md:text-6xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-6xl tracking-wide mb-4">
             The Vernont Story
           </h1>
-          <p className="font-serif text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             A legacy of excellence, crafted with passion since the beginning
           </p>
         </div>
@@ -36,16 +36,16 @@ export default function AboutPage() {
 
       {/* Story Section */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+              <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
                 The Beginning
               </p>
-              <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
+              <h2 className="text-3xl md:text-4xl tracking-wide mb-6">
                 A Passion for Perfection
               </h2>
-              <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Vernont was born from a deep appreciation for the art of eyewear curation and
                   a desire to create frames that transcend the ordinary. Our founder
@@ -73,35 +73,35 @@ export default function AboutPage() {
 
       {/* Values */}
       <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="text-center mb-16">
-            <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+            <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
               Our Philosophy
             </p>
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide">
+            <h2 className="text-3xl md:text-4xl tracking-wide">
               What We Stand For
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             <div className="text-center">
-              <h3 className="font-display text-xl tracking-wide mb-4">Craftsmanship</h3>
-              <p className="font-serif text-muted-foreground leading-relaxed">
+              <h3 className="text-xl tracking-wide mb-4">Craftsmanship</h3>
+              <p className="text-muted-foreground leading-relaxed">
                 Every frame is meticulously crafted by our master artisans,
                 combining traditional techniques with innovative approaches to create
                 eyewear of exceptional quality.
               </p>
             </div>
             <div className="text-center">
-              <h3 className="font-display text-xl tracking-wide mb-4">Quality</h3>
-              <p className="font-serif text-muted-foreground leading-relaxed">
+              <h3 className="text-xl tracking-wide mb-4">Quality</h3>
+              <p className="text-muted-foreground leading-relaxed">
                 We source only the finest materials from ethical suppliers around
                 the world, ensuring each frame meets our exacting standards of
                 excellence.
               </p>
             </div>
             <div className="text-center">
-              <h3 className="font-display text-xl tracking-wide mb-4">Sustainability</h3>
-              <p className="font-serif text-muted-foreground leading-relaxed">
+              <h3 className="text-xl tracking-wide mb-4">Sustainability</h3>
+              <p className="text-muted-foreground leading-relaxed">
                 We are committed to responsible practices, from sustainable sourcing
                 to eco-friendly packaging, ensuring our luxury leaves a positive
                 impact on the world.
@@ -113,7 +113,7 @@ export default function AboutPage() {
 
       {/* Craftsmanship */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-[4/5] order-2 lg:order-1">
               <Image
@@ -124,13 +124,13 @@ export default function AboutPage() {
               />
             </div>
             <div className="order-1 lg:order-2">
-              <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+              <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
                 The Process
               </p>
-              <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
+              <h2 className="text-3xl md:text-4xl tracking-wide mb-6">
                 The Art of Creation
               </h2>
-              <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Each Vernont frame begins with an inspiration--a silhouette, a material,
                   a vision. Our master artisans translate these inspirations into
@@ -154,14 +154,14 @@ export default function AboutPage() {
 
       {/* Team */}
       <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+        <div className="max-w-[1500px] mx-auto px-4 text-center">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
             Our Team
           </p>
-          <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
+          <h2 className="text-3xl md:text-4xl tracking-wide mb-6">
             The Artisans Behind Vernont
           </h2>
-          <p className="font-serif text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-primary-foreground/80 max-w-2xl mx-auto leading-relaxed">
             Our team of passionate designers, craftspeople, and eyewear enthusiasts
             work together to bring you exceptional frames. United by a shared love
             for the art of eyewear curation, we are dedicated to creating designs that inspire

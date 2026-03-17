@@ -8,14 +8,14 @@ export const metadata = {
 export default function ImprintPage() {
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-8">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
+        <h1 className="text-4xl md:text-5xl tracking-wide mb-8">
           Imprint
         </h1>
 
-        <div className="prose prose-lg max-w-none font-serif space-y-8">
+        <div className="prose prose-lg max-w-none space-y-8">
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Company Information</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Company Information</h2>
             <div className="text-muted-foreground leading-relaxed space-y-2">
               <p><strong>Vernont Luxury Eyewear GmbH</strong></p>
               <p>Parfümstraße 42</p>
@@ -25,7 +25,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Contact Details</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Contact Details</h2>
             <div className="text-muted-foreground leading-relaxed space-y-2">
               <p><strong>Phone:</strong> +49 (0) 89 123 456 789</p>
               <p><strong>Email:</strong> info@vernont.com</p>
@@ -34,7 +34,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Management</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Management</h2>
             <div className="text-muted-foreground leading-relaxed">
               <p><strong>Managing Directors:</strong></p>
               <p>Victoria Vernont (CEO)</p>
@@ -43,7 +43,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Registration</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Registration</h2>
             <div className="text-muted-foreground leading-relaxed space-y-2">
               <p><strong>Commercial Register:</strong> Munich District Court</p>
               <p><strong>Registration Number:</strong> HRB 123456</p>
@@ -52,7 +52,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Responsible for Content</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Responsible for Content</h2>
             <div className="text-muted-foreground leading-relaxed">
               <p>Victoria Vernont</p>
               <p>Parfümstraße 42</p>
@@ -61,7 +61,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Dispute Resolution</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Dispute Resolution</h2>
             <p className="text-muted-foreground leading-relaxed">
               The European Commission provides a platform for online dispute resolution (OS):
               https://ec.europa.eu/consumers/odr. We are not obliged or willing to participate
@@ -70,7 +70,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Liability for Content</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Liability for Content</h2>
             <p className="text-muted-foreground leading-relaxed">
               As a service provider, we are responsible for our own content on these pages
               in accordance with general laws. However, we are not obligated to monitor
@@ -80,7 +80,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Liability for Links</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Liability for Links</h2>
             <p className="text-muted-foreground leading-relaxed">
               Our website contains links to external third-party websites over whose content
               we have no influence. We cannot accept any liability for this external content.
@@ -90,7 +90,7 @@ export default function ImprintPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Copyright</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Copyright</h2>
             <p className="text-muted-foreground leading-relaxed">
               The content and works created by the site operators on these pages are subject
               to copyright law. Duplication, processing, distribution, and any kind of

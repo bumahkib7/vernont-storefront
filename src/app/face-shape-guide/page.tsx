@@ -14,13 +14,13 @@ export default function FaceShapeGuidePage() {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-5xl">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-5xl">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Face Shape Guide
           </h1>
-          <p className="font-serif text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             Finding the perfect frames starts with knowing your face shape.
             Select yours below to discover which styles will look best on you.
           </p>
@@ -47,21 +47,21 @@ export default function FaceShapeGuidePage() {
         {/* Selected Shape Details */}
         {activeShape && (
           <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-8 md:p-12 mb-16">
-            <h2 className="font-display text-2xl md:text-3xl tracking-wide mb-4">
+            <h2 className="text-2xl md:text-3xl tracking-wide mb-4">
               {activeShape.name} Face Shape
             </h2>
-            <p className="font-serif text-muted-foreground text-lg leading-relaxed mb-8">
+            <p className="text-muted-foreground text-lg leading-relaxed mb-8">
               {activeShape.description}
             </p>
 
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
-                <h3 className="font-display text-lg tracking-wide mb-3 text-[var(--success)]">
+                <h3 className="text-lg tracking-wide mb-3 text-[var(--success)]">
                   Recommended Frames
                 </h3>
                 <ul className="space-y-2">
                   {activeShape.recommended.map((frame) => (
-                    <li key={frame} className="flex items-center gap-2 font-serif">
+                    <li key={frame} className="flex items-center gap-2">
                       <Check className="h-4 w-4 text-[var(--success)]" />
                       {frame}
                     </li>
@@ -71,12 +71,12 @@ export default function FaceShapeGuidePage() {
 
               {activeShape.avoid.length > 0 && (
                 <div>
-                  <h3 className="font-display text-lg tracking-wide mb-3 text-[var(--destructive)]">
+                  <h3 className="text-lg tracking-wide mb-3 text-[var(--destructive)]">
                     Styles to Avoid
                   </h3>
                   <ul className="space-y-2">
                     {activeShape.avoid.map((frame) => (
-                      <li key={frame} className="flex items-center gap-2 font-serif text-muted-foreground">
+                      <li key={frame} className="flex items-center gap-2 text-muted-foreground">
                         <span className="w-4 h-4 flex items-center justify-center text-[var(--destructive)]">x</span>
                         {frame}
                       </li>
@@ -87,7 +87,7 @@ export default function FaceShapeGuidePage() {
             </div>
 
             <div className="bg-[var(--background)] border border-[var(--border)] rounded-lg p-6 mb-8">
-              <p className="font-serif text-muted-foreground italic">
+              <p className="text-muted-foreground italic">
                 {activeShape.tip}
               </p>
             </div>
@@ -104,10 +104,10 @@ export default function FaceShapeGuidePage() {
 
         {/* General Tips */}
         <div className="text-center">
-          <h2 className="font-display text-2xl tracking-wide mb-4">
+          <h2 className="text-2xl tracking-wide mb-4">
             Not Sure About Your Face Shape?
           </h2>
-          <p className="font-serif text-muted-foreground mb-6 max-w-xl mx-auto">
+          <p className="text-muted-foreground mb-6 max-w-xl mx-auto">
             Stand in front of a mirror, pull your hair back, and trace the outline of your face.
             The shape you see will match one of the five categories above.
           </p>

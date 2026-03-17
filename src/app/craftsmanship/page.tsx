@@ -21,14 +21,14 @@ export default function CraftsmanshipPage() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        <div className="relative container mx-auto px-4 text-center text-white">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-4">
+        <div className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-4">
             The Art
           </p>
-          <h1 className="font-display text-4xl md:text-6xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-6xl tracking-wide mb-4">
             Craftsmanship
           </h1>
-          <p className="font-serif text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Where tradition meets innovation in the pursuit of optical excellence
           </p>
         </div>
@@ -36,16 +36,16 @@ export default function CraftsmanshipPage() {
 
       {/* Master Artisans */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+              <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
                 Our Artisans
               </p>
-              <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
+              <h2 className="text-3xl md:text-4xl tracking-wide mb-6">
                 Master Artisans
               </h2>
-              <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Behind every Vernont frame is a team of master artisans, each bringing
                   decades of experience and an unparalleled eye for exceptional eyewear. Our
@@ -73,48 +73,48 @@ export default function CraftsmanshipPage() {
 
       {/* Process */}
       <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="text-center mb-16">
-            <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+            <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
               The Journey
             </p>
-            <h2 className="font-display text-3xl tracking-wide">From Concept to Creation</h2>
+            <h2 className="text-3xl tracking-wide">From Concept to Creation</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
-                <span className="font-display text-gold text-xl">01</span>
+              <div className="w-16 h-16 mx-auto mb-4 border border-[var(--secondary)] rounded-full flex items-center justify-center">
+                <span className="text-[var(--secondary)] text-xl">01</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Design</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg tracking-wide mb-3">Design</h3>
+              <p className="text-muted-foreground text-sm">
                 Every frame begins with a vision, a silhouette, or an aesthetic that our artisans wish to bring to life.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
-                <span className="font-display text-gold text-xl">02</span>
+              <div className="w-16 h-16 mx-auto mb-4 border border-[var(--secondary)] rounded-full flex items-center justify-center">
+                <span className="text-[var(--secondary)] text-xl">02</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Material Selection</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg tracking-wide mb-3">Material Selection</h3>
+              <p className="text-muted-foreground text-sm">
                 We source the finest materials from around the world, each chosen for its exceptional quality and durability.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
-                <span className="font-display text-gold text-xl">03</span>
+              <div className="w-16 h-16 mx-auto mb-4 border border-[var(--secondary)] rounded-full flex items-center justify-center">
+                <span className="text-[var(--secondary)] text-xl">03</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Hand-Finishing</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg tracking-wide mb-3">Hand-Finishing</h3>
+              <p className="text-muted-foreground text-sm">
                 Through countless iterations, our artisans craft the perfect balance of form, fit, and finish.
               </p>
             </div>
             <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 border border-gold rounded-full flex items-center justify-center">
-                <span className="font-display text-gold text-xl">04</span>
+              <div className="w-16 h-16 mx-auto mb-4 border border-[var(--secondary)] rounded-full flex items-center justify-center">
+                <span className="text-[var(--secondary)] text-xl">04</span>
               </div>
-              <h3 className="font-display text-lg tracking-wide mb-3">Quality Control</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg tracking-wide mb-3">Quality Control</h3>
+              <p className="text-muted-foreground text-sm">
                 Each frame undergoes rigorous inspection to ensure every detail meets our exacting standards.
               </p>
             </div>
@@ -124,7 +124,7 @@ export default function CraftsmanshipPage() {
 
       {/* Ingredients */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-[4/5] order-2 lg:order-1">
               <Image
@@ -135,13 +135,13 @@ export default function CraftsmanshipPage() {
               />
             </div>
             <div className="order-1 lg:order-2">
-              <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+              <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
                 Exceptional Materials
               </p>
-              <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-6">
+              <h2 className="text-3xl md:text-4xl tracking-wide mb-6">
                 The Finest Materials
               </h2>
-              <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   We travel the world to source the most precious and refined materials:
                   Italian acetate from Mazzucchelli, Japanese titanium from Fukui,
@@ -160,11 +160,11 @@ export default function CraftsmanshipPage() {
 
       {/* Quality */}
       <section className="py-20 bg-primary text-primary-foreground">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <h2 className="font-display text-3xl tracking-wide mb-6">
+        <div className="max-w-[1500px] mx-auto px-4 text-center max-w-3xl">
+          <h2 className="text-3xl tracking-wide mb-6">
             Our Promise of Quality
           </h2>
-          <p className="font-serif text-primary-foreground/80 leading-relaxed">
+          <p className="text-primary-foreground/80 leading-relaxed">
             Every Vernont frame undergoes rigorous quality testing to ensure it meets
             our exacting standards. From stress testing to optical evaluation by our
             panel of experts, we leave nothing to chance in our pursuit of perfection.

@@ -100,15 +100,15 @@ export default function FAQPage() {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
         <div className="text-center mb-12">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
             Help Center
           </p>
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Frequently Asked Questions
           </h1>
-          <p className="font-serif text-muted-foreground">
+          <p className="text-muted-foreground">
             Find answers to common questions about our eyewear, orders, shipping, returns, and more.
           </p>
         </div>
@@ -117,10 +117,10 @@ export default function FAQPage() {
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 font-serif text-sm border transition-colors ${
+            className={`px-4 py-2 text-sm border transition-colors ${
               selectedCategory === null
-                ? "border-gold text-gold"
-                : "border-border text-muted-foreground hover:border-gold"
+                ? "border-[var(--secondary)] text-[var(--secondary)]"
+                : "border-border text-muted-foreground hover:border-[var(--foreground)]"
             }`}
           >
             All
@@ -129,10 +129,10 @@ export default function FAQPage() {
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 font-serif text-sm border transition-colors ${
+              className={`px-4 py-2 text-sm border transition-colors ${
                 selectedCategory === category
-                  ? "border-gold text-gold"
-                  : "border-border text-muted-foreground hover:border-gold"
+                  ? "border-[var(--secondary)] text-[var(--secondary)]"
+                  : "border-border text-muted-foreground hover:border-[var(--foreground)]"
               }`}
             >
               {category}
@@ -151,7 +151,7 @@ export default function FAQPage() {
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-secondary/50 transition-colors"
               >
-                <span className="font-display text-base tracking-wide pr-4">
+                <span className="text-base tracking-wide pr-4">
                   {faq.question}
                 </span>
                 <ChevronDown
@@ -162,7 +162,7 @@ export default function FAQPage() {
               </button>
               {openIndex === index && (
                 <div className="px-6 pb-4">
-                  <p className="font-serif text-muted-foreground leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed">
                     {faq.answer}
                   </p>
                 </div>
@@ -173,10 +173,10 @@ export default function FAQPage() {
 
         {/* Contact CTA */}
         <div className="mt-16 text-center p-8 bg-secondary">
-          <h2 className="font-display text-2xl tracking-wide mb-4">
+          <h2 className="text-2xl tracking-wide mb-4">
             Still Have Questions?
           </h2>
-          <p className="font-serif text-muted-foreground mb-6">
+          <p className="text-muted-foreground mb-6">
             Our customer service team is here to help. Contact us anytime.
           </p>
           <a

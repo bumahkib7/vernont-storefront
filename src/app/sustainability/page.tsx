@@ -22,14 +22,14 @@ export default function SustainabilityPage() {
           />
           <div className="absolute inset-0 bg-black/50" />
         </div>
-        <div className="relative container mx-auto px-4 text-center text-white">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-4">
+        <div className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-4">
             Our Commitment
           </p>
-          <h1 className="font-display text-4xl md:text-6xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-6xl tracking-wide mb-4">
             Sustainability
           </h1>
-          <p className="font-serif text-lg text-white/80 max-w-2xl mx-auto">
+          <p className="text-lg text-white/80 max-w-2xl mx-auto">
             Luxury that respects our planet. Our commitment to sustainable practices.
           </p>
         </div>
@@ -37,33 +37,33 @@ export default function SustainabilityPage() {
 
       {/* Pillars */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center p-6">
-              <Leaf className="h-12 w-12 mx-auto mb-4 text-gold" />
-              <h3 className="font-display text-lg tracking-wide mb-3">Ethical Sourcing</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <Leaf className="h-12 w-12 mx-auto mb-4 text-[var(--secondary)]" />
+              <h3 className="text-lg tracking-wide mb-3">Ethical Sourcing</h3>
+              <p className="text-muted-foreground text-sm">
                 We source materials from certified sustainable producers and ethical suppliers worldwide.
               </p>
             </div>
             <div className="text-center p-6">
-              <Recycle className="h-12 w-12 mx-auto mb-4 text-gold" />
-              <h3 className="font-display text-lg tracking-wide mb-3">Eco Packaging</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <Recycle className="h-12 w-12 mx-auto mb-4 text-[var(--secondary)]" />
+              <h3 className="text-lg tracking-wide mb-3">Eco Packaging</h3>
+              <p className="text-muted-foreground text-sm">
                 Our packaging is made from recycled and recyclable materials with minimal plastic.
               </p>
             </div>
             <div className="text-center p-6">
-              <Heart className="h-12 w-12 mx-auto mb-4 text-gold" />
-              <h3 className="font-display text-lg tracking-wide mb-3">Cruelty-Free</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <Heart className="h-12 w-12 mx-auto mb-4 text-[var(--secondary)]" />
+              <h3 className="text-lg tracking-wide mb-3">Cruelty-Free</h3>
+              <p className="text-muted-foreground text-sm">
                 We never test on animals and are certified cruelty-free by Leaping Bunny.
               </p>
             </div>
             <div className="text-center p-6">
-              <Globe className="h-12 w-12 mx-auto mb-4 text-gold" />
-              <h3 className="font-display text-lg tracking-wide mb-3">Carbon Neutral</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <Globe className="h-12 w-12 mx-auto mb-4 text-[var(--secondary)]" />
+              <h3 className="text-lg tracking-wide mb-3">Carbon Neutral</h3>
+              <p className="text-muted-foreground text-sm">
                 We offset our carbon footprint through verified environmental projects.
               </p>
             </div>
@@ -73,44 +73,44 @@ export default function SustainabilityPage() {
 
       {/* Commitments */}
       <section className="py-20 bg-secondary">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="font-display text-3xl tracking-wide mb-4">Our 2025 Goals</h2>
-              <p className="font-serif text-muted-foreground">
+              <h2 className="text-3xl tracking-wide mb-4">Our 2025 Goals</h2>
+              <p className="text-muted-foreground">
                 We&apos;ve set ambitious targets to reduce our environmental impact.
               </p>
             </div>
             <div className="space-y-8">
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 flex items-center justify-center bg-gold text-primary font-display text-xl">
+                <div className="w-16 h-16 flex items-center justify-center bg-[var(--secondary)] text-primary text-xl">
                   100%
                 </div>
                 <div>
-                  <h3 className="font-display text-lg mb-2">Sustainable Packaging</h3>
-                  <p className="font-serif text-muted-foreground">
+                  <h3 className="text-lg mb-2">Sustainable Packaging</h3>
+                  <p className="text-muted-foreground">
                     All packaging will be recycled, recyclable, or biodegradable by 2025.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 flex items-center justify-center bg-gold text-primary font-display text-xl">
+                <div className="w-16 h-16 flex items-center justify-center bg-[var(--secondary)] text-primary text-xl">
                   50%
                 </div>
                 <div>
-                  <h3 className="font-display text-lg mb-2">Reduced Carbon Emissions</h3>
-                  <p className="font-serif text-muted-foreground">
+                  <h3 className="text-lg mb-2">Reduced Carbon Emissions</h3>
+                  <p className="text-muted-foreground">
                     Cut our operational carbon emissions by half through efficiency improvements.
                   </p>
                 </div>
               </div>
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 flex items-center justify-center bg-gold text-primary font-display text-xl">
+                <div className="w-16 h-16 flex items-center justify-center bg-[var(--secondary)] text-primary text-xl">
                   0%
                 </div>
                 <div>
-                  <h3 className="font-display text-lg mb-2">Zero Waste to Landfill</h3>
-                  <p className="font-serif text-muted-foreground">
+                  <h3 className="text-lg mb-2">Zero Waste to Landfill</h3>
+                  <p className="text-muted-foreground">
                     Eliminate all waste sent to landfill from our production facilities.
                   </p>
                 </div>
@@ -122,7 +122,7 @@ export default function SustainabilityPage() {
 
       {/* Materials */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
+        <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-square">
               <Image
@@ -133,13 +133,13 @@ export default function SustainabilityPage() {
               />
             </div>
             <div>
-              <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+              <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
                 Responsible Sourcing
               </p>
-              <h2 className="font-display text-3xl tracking-wide mb-6">
+              <h2 className="text-3xl tracking-wide mb-6">
                 Our Materials
               </h2>
-              <div className="space-y-4 font-serif text-muted-foreground leading-relaxed">
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
                 <p>
                   Every material we use is carefully selected not only for its quality
                   but also for its environmental and social impact. We work directly with

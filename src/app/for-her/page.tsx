@@ -35,7 +35,7 @@ function SortDropdown({
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 font-serif text-sm border border-border px-4 py-2 hover:border-gold transition-colors"
+        className="flex items-center gap-2 text-sm border border-border px-4 py-2 hover:border-[var(--foreground)] transition-colors"
       >
         <span>Sort: {currentLabel}</span>
         <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
@@ -56,8 +56,8 @@ function SortDropdown({
                   onChange(option.value);
                   setIsOpen(false);
                 }}
-                className={`block w-full text-left px-4 py-3 font-serif text-sm hover:bg-secondary transition-colors ${
-                  value === option.value ? "text-gold" : ""
+                className={`block w-full text-left px-4 py-3 text-sm hover:bg-secondary transition-colors ${
+                  value === option.value ? "text-[var(--secondary)]" : ""
                 }`}
               >
                 {option.label}
@@ -83,7 +83,7 @@ function ProductsSkeleton() {
           className="animate-pulse"
         >
           <div className="aspect-[3/4] bg-secondary relative">
-            <div className="absolute inset-3 border border-gold/10" />
+            <div className="absolute inset-3 border border-[var(--secondary)]/10" />
           </div>
           <div className="pt-5 text-center space-y-2">
             <div className="h-3 w-16 bg-secondary mx-auto" />
@@ -134,42 +134,35 @@ export default function ForHerPage() {
             className="object-cover"
             priority
           />
-          <div className="deco-hero-overlay" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/40" />
         </motion.div>
 
-        {/* Art Deco Frame */}
-        <div className="absolute inset-6 md:inset-8 border border-gold/20 pointer-events-none" />
-        <div className="absolute inset-10 md:inset-12 border border-gold/10 pointer-events-none hidden md:block" />
+        <div className="absolute inset-6 md:inset-8 border border-[var(--secondary)]/20 pointer-events-none" />
+        <div className="absolute inset-10 md:inset-12 border border-[var(--secondary)]/10 pointer-events-none hidden md:block" />
 
-        {/* Corner accents */}
-        <div className="absolute top-6 left-6 md:top-8 md:left-8 w-16 h-16 border-l-2 border-t-2 border-gold" />
-        <div className="absolute top-6 right-6 md:top-8 md:right-8 w-16 h-16 border-r-2 border-t-2 border-gold" />
-        <div className="absolute bottom-6 left-6 md:bottom-8 md:left-8 w-16 h-16 border-l-2 border-b-2 border-gold" />
-        <div className="absolute bottom-6 right-6 md:bottom-8 md:right-8 w-16 h-16 border-r-2 border-b-2 border-gold" />
 
         {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative container mx-auto px-4 text-center text-white">
+        <motion.div style={{ opacity: heroOpacity }} className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="flex items-center justify-center gap-4 mb-6"
           >
-            <span className="h-px w-12 bg-gold" />
-            <Heart className="h-4 w-4 text-gold fill-gold" />
-            <span className="font-display text-gold tracking-[0.4em] uppercase text-xs">
+            <span className="h-px w-12 bg-[var(--secondary)]" />
+            <Heart className="h-4 w-4 text-[var(--secondary)] fill-[var(--secondary)]" />
+            <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
               Timeless Femininity
             </span>
-            <Heart className="h-4 w-4 text-gold fill-gold" />
-            <span className="h-px w-12 bg-gold" />
+            <Heart className="h-4 w-4 text-[var(--secondary)] fill-[var(--secondary)]" />
+            <span className="h-px w-12 bg-[var(--secondary)]" />
           </motion.div>
 
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="font-display text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
+            className="text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
           >
             For Her
           </motion.h1>
@@ -178,7 +171,7 @@ export default function ForHerPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
-            className="font-serif text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
             Eyewear that celebrates timeless femininity,
             from chic cat-eyes to elegant oversized frames
@@ -190,9 +183,9 @@ export default function ForHerPage() {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="mt-8 flex items-center justify-center gap-3"
           >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold" />
-            <Sparkles className="h-5 w-5 text-gold" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold" />
+            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
+            <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
           </motion.div>
         </motion.div>
 
@@ -206,14 +199,14 @@ export default function ForHerPage() {
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="w-px h-12 bg-gradient-to-b from-gold to-transparent"
+            className="w-px h-12 bg-gradient-to-b from-[var(--secondary)] to-transparent"
           />
         </motion.div>
       </section>
 
       {/* Products Section */}
-      <section className="py-16 md:py-24 deco-section-light">
-        <div className="container mx-auto px-4">
+      <section className="py-16 md:py-24">
+        <div className="max-w-[1500px] mx-auto px-4">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -223,11 +216,11 @@ export default function ForHerPage() {
             className="text-center mb-12"
           >
             <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-gold/50" />
-              <div className="w-2 h-2 rotate-45 bg-gold" />
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold/50" />
+              <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--secondary)]/50" />
+              <div className="w-2 h-2 rotate-45 bg-[var(--secondary)]" />
+              <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--secondary)]/50" />
             </div>
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide">
+            <h2 className="text-3xl md:text-4xl tracking-wide">
               Women's Eyewear
             </h2>
           </motion.div>
@@ -238,7 +231,7 @@ export default function ForHerPage() {
             animate={{ opacity: 1, y: 0 }}
             className="flex flex-wrap items-center justify-between gap-4 mb-12 pb-6 border-b border-border"
           >
-            <p className="font-serif text-muted-foreground">
+            <p className="text-muted-foreground">
               {isLoading ? (
                 <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
               ) : (
@@ -258,7 +251,7 @@ export default function ForHerPage() {
               animate={{ opacity: 1 }}
               className="text-center py-20"
             >
-              <p className="font-serif text-muted-foreground">
+              <p className="text-muted-foreground">
                 Unable to load products. Please try again later.
               </p>
             </motion.div>
@@ -268,12 +261,12 @@ export default function ForHerPage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-center py-20"
             >
-              <div className="w-16 h-16 mx-auto mb-6 border border-gold/30 rotate-45" />
-              <h3 className="font-display text-2xl tracking-wide mb-3">Coming Soon</h3>
-              <p className="font-serif text-muted-foreground mb-6">
+              <div className="w-16 h-16 mx-auto mb-6 border border-[var(--secondary)]/30 rotate-45" />
+              <h3 className="text-2xl tracking-wide mb-3">Coming Soon</h3>
+              <p className="text-muted-foreground mb-6">
                 Our feminine collection is being curated.
               </p>
-              <Link href="/eyewear" className="btn-deco-ornate inline-block">
+              <Link href="/eyewear" className="btn-primary inline-block">
                 Browse All Eyewear
               </Link>
             </motion.div>
@@ -305,10 +298,9 @@ export default function ForHerPage() {
       {/* Bottom CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
         <div className="absolute inset-0 opacity-5">
-          <div className="deco-sunburst w-full h-full" />
         </div>
 
-        <div className="container mx-auto px-4 relative">
+        <div className="max-w-[1500px] mx-auto px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -316,23 +308,23 @@ export default function ForHerPage() {
             className="text-center max-w-2xl mx-auto"
           >
             <div className="inline-flex items-center gap-2 mb-6">
-              <Sparkles className="h-5 w-5 text-gold" />
-              <span className="font-display text-gold tracking-[0.3em] uppercase text-xs">
+              <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+              <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
                 Personalized
               </span>
             </div>
 
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide mb-4">
+            <h2 className="text-3xl md:text-4xl tracking-wide mb-4">
               Find Your Perfect Frame
             </h2>
-            <p className="font-serif text-muted-foreground mb-8">
+            <p className="text-muted-foreground mb-8">
               Use our face shape guide to discover the perfect frames
               that match your features and style
             </p>
 
             <Link
               href="/face-shape-guide"
-              className="btn-deco-ornate inline-block"
+              className="btn-primary inline-block"
             >
               Find Your Fit
             </Link>

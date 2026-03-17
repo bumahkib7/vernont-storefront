@@ -19,20 +19,20 @@ export default function TryOnPage() {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-4xl">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
         {/* Hero */}
         <div className="text-center mb-16">
           <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[var(--primary)]/10 flex items-center justify-center">
             <Camera className="h-10 w-10 text-[var(--primary)]" />
           </div>
 
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Virtual Try-On
           </h1>
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full text-sm font-medium mb-6">
             Coming Soon
           </div>
-          <p className="font-serif text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             Try on any frame from our collection using your phone or webcam.
             See how different styles look on your face before you buy — powered by augmented reality.
           </p>
@@ -58,8 +58,8 @@ export default function TryOnPage() {
               key={feature.title}
               className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-6 text-center"
             >
-              <h3 className="font-display text-lg tracking-wide mb-2">{feature.title}</h3>
-              <p className="font-serif text-sm text-muted-foreground leading-relaxed">
+              <h3 className="text-lg tracking-wide mb-2">{feature.title}</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
                 {feature.description}
               </p>
             </div>
@@ -68,10 +68,10 @@ export default function TryOnPage() {
 
         {/* Email Capture */}
         <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-8 md:p-12 text-center">
-          <h2 className="font-display text-2xl tracking-wide mb-3">
+          <h2 className="text-2xl tracking-wide mb-3">
             Be the First to Know
           </h2>
-          <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
             Sign up to get notified when Virtual Try-On launches. Early access members get exclusive features.
           </p>
 
@@ -103,7 +103,7 @@ export default function TryOnPage() {
 
         {/* Browse CTA */}
         <div className="text-center mt-12">
-          <p className="font-serif text-muted-foreground mb-4">
+          <p className="text-muted-foreground mb-4">
             In the meantime, use our face shape guide to find your perfect frames.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

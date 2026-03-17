@@ -8,13 +8,13 @@ const LENS_TYPES = guides.lensTypes;
 export default function LensGuidePage() {
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-5xl">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-5xl">
         {/* Header */}
         <div className="text-center mb-16">
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Lens Guide
           </h1>
-          <p className="font-serif text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
             Understanding lens types helps you choose the right eyewear for your lifestyle.
             Here is everything you need to know about modern lens technology.
           </p>
@@ -32,8 +32,8 @@ export default function LensGuidePage() {
                   <lens.icon className="h-6 w-6 text-[var(--primary)]" />
                 </div>
                 <div>
-                  <h2 className="font-display text-xl tracking-wide mb-2">{lens.name}</h2>
-                  <p className="font-serif text-muted-foreground leading-relaxed">
+                  <h2 className="text-xl tracking-wide mb-2">{lens.name}</h2>
+                  <p className="text-muted-foreground leading-relaxed">
                     {lens.description}
                   </p>
                 </div>
@@ -41,7 +41,7 @@ export default function LensGuidePage() {
 
               <div className="grid md:grid-cols-2 gap-6 mt-6">
                 <div>
-                  <h3 className="font-display text-sm tracking-wider uppercase text-muted-foreground mb-2">
+                  <h3 className="text-sm tracking-wider uppercase text-muted-foreground mb-2">
                     Best For
                   </h3>
                   <div className="flex flex-wrap gap-2">
@@ -56,10 +56,10 @@ export default function LensGuidePage() {
                   </div>
                 </div>
                 <div>
-                  <h3 className="font-display text-sm tracking-wider uppercase text-muted-foreground mb-2">
+                  <h3 className="text-sm tracking-wider uppercase text-muted-foreground mb-2">
                     How It Works
                   </h3>
-                  <p className="font-serif text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground leading-relaxed">
                     {lens.howItWorks}
                   </p>
                 </div>
@@ -70,10 +70,10 @@ export default function LensGuidePage() {
 
         {/* CTA */}
         <div className="text-center bg-[var(--surface)] border border-[var(--border)] rounded-xl p-12">
-          <h2 className="font-display text-2xl tracking-wide mb-4">
+          <h2 className="text-2xl tracking-wide mb-4">
             Ready to Find Your Perfect Pair?
           </h2>
-          <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
             Browse our collection of designer frames with premium lens options.
           </p>
           <div className="flex flex-wrap justify-center gap-4">

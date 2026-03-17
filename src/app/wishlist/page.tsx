@@ -48,19 +48,19 @@ export default function WishlistPage() {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16">
+      <div className="max-w-[1500px] mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="w-16 h-16 mx-auto mb-6 border-2 border-gold rounded-full flex items-center justify-center"
+            className="w-16 h-16 mx-auto mb-6 border-2 border-[var(--secondary)] rounded-full flex items-center justify-center"
           >
-            <Heart className="h-7 w-7 text-gold" />
+            <Heart className="h-7 w-7 text-[var(--secondary)]" />
           </motion.div>
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Your Wishlist
           </h1>
-          <p className="font-serif text-muted-foreground">
+          <p className="text-muted-foreground">
             {itemCount === 0
               ? "Your wishlist is empty"
               : `${itemCount} ${itemCount === 1 ? "item" : "items"} saved for later`}
@@ -73,12 +73,12 @@ export default function WishlistPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               Start building your collection by saving your favourite eyewear.
               Click the heart icon on any product to add it to your wishlist.
             </p>
             <Link href="/eyewear">
-              <Button className="btn-luxury bg-gold text-primary hover:bg-gold/90">
+              <Button className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90">
                 Explore Eyewear
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
@@ -92,11 +92,11 @@ export default function WishlistPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-12"
           >
-            <p className="font-serif text-muted-foreground mb-8 max-w-md mx-auto">
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
               We couldn&apos;t find your saved products. They may no longer be available.
             </p>
             <Link href="/eyewear">
-              <Button className="btn-luxury bg-gold text-primary hover:bg-gold/90">
+              <Button className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90">
                 Explore Eyewear
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Button>

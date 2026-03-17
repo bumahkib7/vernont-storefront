@@ -77,11 +77,11 @@ export default function CookiesPage() {
 
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
+        <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
           Cookie Settings
         </h1>
-        <p className="font-serif text-muted-foreground mb-8 text-lg">
+        <p className="text-muted-foreground mb-8 text-lg">
           Manage your cookie preferences. You can enable or disable different types of cookies below.
         </p>
 
@@ -90,14 +90,14 @@ export default function CookiesPage() {
             <Card key={cookie.id} className="border-border">
               <CardHeader className="pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="font-display text-xl tracking-wide">
+                  <CardTitle className="text-xl tracking-wide">
                     {cookie.name}
                   </CardTitle>
                   <button
                     onClick={() => toggleCookie(cookie.id)}
                     disabled={cookie.required}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      cookie.enabled ? "bg-gold" : "bg-muted"
+                      cookie.enabled ? "bg-[var(--secondary)]" : "bg-muted"
                     } ${cookie.required ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
                   >
                     <span
@@ -108,13 +108,13 @@ export default function CookiesPage() {
                   </button>
                 </div>
                 {cookie.required && (
-                  <span className="text-xs font-serif text-gold uppercase tracking-wider">
+                  <span className="text-xs text-[var(--secondary)] uppercase tracking-wider">
                     Always Active
                   </span>
                 )}
               </CardHeader>
               <CardContent>
-                <CardDescription className="font-serif text-muted-foreground leading-relaxed">
+                <CardDescription className="text-muted-foreground leading-relaxed">
                   {cookie.description}
                 </CardDescription>
               </CardContent>
@@ -123,7 +123,7 @@ export default function CookiesPage() {
         </div>
 
         <div className="flex flex-wrap gap-4 mb-8">
-          <Button onClick={acceptAll} className="btn-luxury bg-gold text-primary hover:bg-gold/90">
+          <Button onClick={acceptAll} className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90">
             Accept All
           </Button>
           <Button onClick={rejectAll} variant="outline" className="btn-outline-luxury">
@@ -135,14 +135,14 @@ export default function CookiesPage() {
         </div>
 
         {saved && (
-          <p className="font-serif text-gold mb-8">
+          <p className="text-[var(--secondary)] mb-8">
             Your cookie preferences have been saved.
           </p>
         )}
 
-        <div className="prose prose-lg max-w-none font-serif space-y-8 border-t border-border pt-8">
+        <div className="prose prose-lg max-w-none space-y-8 border-t border-border pt-8">
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">What Are Cookies?</h2>
+            <h2 className="text-2xl tracking-wide mb-4">What Are Cookies?</h2>
             <p className="text-muted-foreground leading-relaxed">
               Cookies are small text files that are placed on your device when you visit a website.
               They are widely used to make websites work more efficiently and provide information
@@ -151,7 +151,7 @@ export default function CookiesPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">How We Use Cookies</h2>
+            <h2 className="text-2xl tracking-wide mb-4">How We Use Cookies</h2>
             <p className="text-muted-foreground leading-relaxed">
               We use cookies to enhance your browsing experience, remember your preferences,
               analyze site traffic, and personalize content. Some cookies are essential for
@@ -160,7 +160,7 @@ export default function CookiesPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Managing Cookies</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Managing Cookies</h2>
             <p className="text-muted-foreground leading-relaxed">
               You can control and manage cookies in various ways. Most web browsers allow you
               to manage your cookie preferences. You can set your browser to refuse cookies,
@@ -170,7 +170,7 @@ export default function CookiesPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Third-Party Cookies</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Third-Party Cookies</h2>
             <p className="text-muted-foreground leading-relaxed">
               In addition to our own cookies, we may also use various third-party cookies to
               report usage statistics, deliver advertisements, and so on. These cookies may
@@ -179,7 +179,7 @@ export default function CookiesPage() {
           </section>
 
           <section>
-            <h2 className="font-display text-2xl tracking-wide mb-4">Contact Us</h2>
+            <h2 className="text-2xl tracking-wide mb-4">Contact Us</h2>
             <p className="text-muted-foreground leading-relaxed">
               If you have any questions about our use of cookies, please contact us at
               privacy@vernont.com.

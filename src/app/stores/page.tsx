@@ -54,15 +54,15 @@ const stores = [
 export default function StoresPage() {
   return (
     <PageLayout>
-      <div className="container mx-auto px-4 py-16">
+      <div className="max-w-[1500px] mx-auto px-4 py-16">
         <div className="text-center mb-12">
-          <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
+          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
             Find Us
           </p>
-          <h1 className="font-display text-4xl md:text-5xl tracking-wide mb-4">
+          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
             Store Locator
           </h1>
-          <p className="font-serif text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-muted-foreground max-w-2xl mx-auto">
             Visit one of our boutiques to experience the world of Vernont in person.
             Our eyewear stylists are ready to help you find your perfect frame.
           </p>
@@ -71,13 +71,13 @@ export default function StoresPage() {
         {/* Store List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {stores.map((store, index) => (
-            <div key={index} className="p-6 border border-border hover:border-gold transition-colors">
-              <span className="font-serif text-xs text-gold uppercase tracking-wider">
+            <div key={index} className="p-6 border border-border hover:border-[var(--foreground)] transition-colors">
+              <span className="text-xs text-[var(--secondary)] uppercase tracking-wider">
                 {store.type}
               </span>
-              <h3 className="font-display text-xl tracking-wide mt-2 mb-4">{store.name}</h3>
+              <h3 className="text-xl tracking-wide mt-2 mb-4">{store.name}</h3>
 
-              <div className="space-y-3 text-sm font-serif text-muted-foreground">
+              <div className="space-y-3 text-sm text-muted-foreground">
                 <div className="flex items-start gap-3">
                   <MapPin className="h-4 w-4 mt-1 flex-shrink-0" />
                   <span>{store.address}</span>
@@ -98,25 +98,25 @@ export default function StoresPage() {
         {/* Services */}
         <div className="bg-secondary p-8 md:p-12">
           <div className="text-center mb-8">
-            <h2 className="font-display text-2xl tracking-wide">In-Store Services</h2>
+            <h2 className="text-2xl tracking-wide">In-Store Services</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div>
-              <h3 className="font-display text-lg mb-2">Frame Fitting</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg mb-2">Frame Fitting</h3>
+              <p className="text-muted-foreground text-sm">
                 Our expert stylists will help you discover your perfect frame through
                 a personalized fitting session.
               </p>
             </div>
             <div>
-              <h3 className="font-display text-lg mb-2">Gift Wrapping</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg mb-2">Gift Wrapping</h3>
+              <p className="text-muted-foreground text-sm">
                 Complimentary gift wrapping and personalized messages available for all purchases.
               </p>
             </div>
             <div>
-              <h3 className="font-display text-lg mb-2">Custom Adjustments</h3>
-              <p className="font-serif text-muted-foreground text-sm">
+              <h3 className="text-lg mb-2">Custom Adjustments</h3>
+              <p className="text-muted-foreground text-sm">
                 Add a personal touch with complimentary adjustments and nose pad fitting on select frames.
               </p>
             </div>
