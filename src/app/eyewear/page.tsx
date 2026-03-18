@@ -200,11 +200,58 @@ export default function EyewearPage() {
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
-  const { data: productsData, isLoading, error } = useProducts({ limit: 100 });
+  // Build API query params from active filters
+  const apiParams = useMemo(() => {
+    const params: Parameters<typeof useProducts>[0] = { limit: 100 };
+
+    // Quick filter → map to API params
+    if (quickFilter === "under-150") {
+      params.maxPrice = 15000; // cents
+    } else if (quickFilter === "sunglasses" || quickFilter === "optical") {
+      params.query = quickFilter;
+    } else if (quickFilter === "polarized") {
+      params.query = "polarized";
+    } else if (quickFilter) {
+      // Frame shape filters (aviator, cat-eye, round, etc.)
+      params.query = quickFilter;
+    }
+
+    // Sidebar filters → API params
+    if (selectedCategories.length > 0) {
+      params.categoryIds = selectedCategories;
+    }
+    if (selectedBrands.length > 0) {
+      params.brandIds = selectedBrands;
+    }
+    if (selectedPriceRange !== null) {
+      const range = priceRanges[selectedPriceRange];
+      if (range) {
+        params.minPrice = range.min * 100; // convert to cents
+        if (range.max) params.maxPrice = range.max * 100;
+      }
+    }
+
+    // Sort
+    if (sortBy === "price-low") {
+      params.sortBy = "price";
+      params.sortDirection = "asc";
+    } else if (sortBy === "price-high") {
+      params.sortBy = "price";
+      params.sortDirection = "desc";
+    } else if (sortBy === "newest") {
+      params.sortBy = "created_at";
+      params.sortDirection = "desc";
+    }
+
+    return params;
+  }, [quickFilter, selectedCategories, selectedBrands, selectedPriceRange, sortBy]);
+
+  const { data: productsData, isLoading, error } = useProducts(apiParams);
   const { data: brandsData } = useBrands();
 
-  // Extract filter options from API response
-  const filters = productsData?.filters;
+  // Also fetch unfiltered data for filter options (categories, brands, price range)
+  const { data: unfilteredData } = useProducts({ limit: 1 });
+  const filters = unfilteredData?.filters || productsData?.filters;
   const categories = filters?.categories || [];
   const brands = filters?.brands || [];
   const sizes = filters?.sizes || [];
@@ -248,44 +295,7 @@ export default function EyewearPage() {
     if (!productsData?.items) return [];
     let products = transformProducts(productsData.items);
 
-    // Quick filter
-    if (quickFilter === "under-150") {
-      products = products.filter((p) => p.price < 15000);
-    } else if (quickFilter) {
-      products = products.filter((p) =>
-        p.category?.toLowerCase().includes(quickFilter.toLowerCase()) ||
-        p.frameShape?.toLowerCase().includes(quickFilter.toLowerCase())
-      );
-    }
-
-    // Category filter
-    if (selectedCategories.length > 0) {
-      products = products.filter((p) =>
-        selectedCategories.some((catId) =>
-          p.category?.toLowerCase().includes(catId.toLowerCase())
-        )
-      );
-    }
-
-    // Brand filter
-    if (selectedBrands.length > 0) {
-      products = products.filter((p) =>
-        selectedBrands.some((brandId) => {
-          const brand = brands.find(b => b.id === brandId);
-          return brand && p.brand?.toLowerCase() === brand.name.toLowerCase();
-        })
-      );
-    }
-
-    // Price filter
-    if (selectedPriceRange !== null && priceRanges[selectedPriceRange]) {
-      const range = priceRanges[selectedPriceRange];
-      const minMajor = priceFromMinor(range.min);
-      const maxMajor = range.max ? priceFromMinor(range.max) : Infinity;
-      products = products.filter((p) => p.price >= minMajor && p.price < maxMajor);
-    }
-
-    // Size filter
+    // Size filter (client-side — API doesn't support it)
     if (selectedSizes.length > 0) {
       products = products.filter((p) =>
         p.variants.some((v) =>
@@ -294,18 +304,8 @@ export default function EyewearPage() {
       );
     }
 
-    // Apply sorting
-    switch (sortBy) {
-      case "price-low":
-        return [...products].sort((a, b) => a.price - b.price);
-      case "price-high":
-        return [...products].sort((a, b) => b.price - a.price);
-      case "newest":
-        return [...products].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-      default:
-        return products;
-    }
-  }, [productsData, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy, brands, priceRanges, quickFilter]);
+    return products;
+  }, [productsData, selectedSizes]);
 
   const FilterContent = () => (
     <>
