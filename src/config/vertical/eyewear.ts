@@ -144,38 +144,7 @@ export const eyewearConfig: VerticalConfig = {
     footerDescription:
       "Designer frames from luxury and premium brands. Complimentary cleaning kit with every order.",
 
-    visualCategories: [
-      {
-        label: "Sunglasses",
-        href: "/eyewear?category=sunglasses",
-        image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400",
-      },
-      {
-        label: "Optical",
-        href: "/eyewear?category=optical",
-        image: "https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=400",
-      },
-      {
-        label: "For Her",
-        href: "/eyewear?category=women",
-        image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=400",
-      },
-      {
-        label: "For Him",
-        href: "/eyewear?category=men",
-        image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400",
-      },
-      {
-        label: "New In",
-        href: "/eyewear?sort=newest",
-        image: "https://images.unsplash.com/photo-1577803645773-f96470509666?w=400",
-      },
-      {
-        label: "Accessories",
-        href: "/eyewear?category=accessories",
-        image: "https://images.unsplash.com/photo-1556015048-4d3aa10df74c?w=400",
-      },
-    ],
+    visualCategories: [],
 
     shopBySection: {
       title: "Shop by Frame Shape",

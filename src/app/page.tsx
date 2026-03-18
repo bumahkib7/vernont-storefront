@@ -16,6 +16,7 @@ import {
 } from "lucide-react";
 import { content } from "@/config/vertical";
 import { AiProductFinder } from "@/components/ai/ai-product-finder";
+import { getCollectionImage } from "@/lib/collection-images";
 
 const FRAME_SHAPES = content.shopBySection.items;
 
@@ -229,15 +230,26 @@ export default function Home() {
               </div>
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 lg:gap-4">
-                {topCategories.map((category) => (
+                {topCategories.map((category, index) => (
                   <Link
                     key={category.id}
                     href={`/category/${category.handle}`}
                     className="group relative aspect-[3/4] overflow-hidden bg-neutral-100"
                   >
+                    <Image
+                      src={getCollectionImage(category.handle, index, category.image)}
+                      alt={category.name}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/5 group-hover:from-black/50 transition-colors z-10" />
                     <div className="absolute inset-0 flex items-end p-4 z-20">
-                      <span className="text-white font-medium">{category.name}</span>
+                      <div>
+                        <span className="text-white font-medium block">{category.name}</span>
+                        {category.product_count != null && category.product_count > 0 && (
+                          <span className="text-white/60 text-xs">{category.product_count} items</span>
+                        )}
+                      </div>
                     </div>
                   </Link>
                 ))}
