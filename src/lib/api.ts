@@ -686,7 +686,13 @@ export const cartApi = {
 export const shippingApi = {
   async getOptions(cartId?: string): Promise<ShippingOptionsResponse> {
     const params = cartId ? `?cart_id=${cartId}` : '';
-    return apiRequest(`/store/shipping-options${params}`, {}, ShippingOptionsResponseSchema);
+    try {
+      return await apiRequest(`/store/shipping-options${params}`, {}, ShippingOptionsResponseSchema);
+    } catch (err) {
+      // If schema validation fails, try without schema validation
+      console.warn('[Shipping] Schema validation failed, falling back to raw response:', err);
+      return apiRequest(`/store/shipping-options${params}`);
+    }
   },
 
   async getByRegion(regionId: string): Promise<ShippingOptionsResponse> {

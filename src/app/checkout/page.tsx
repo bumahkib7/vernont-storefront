@@ -73,8 +73,6 @@ export default function CheckoutPage() {
   const [promoApplied, setPromoApplied] = useState(false);
   const [promoError, setPromoError] = useState<string | null>(null);
   const [applyingPromo, setApplyingPromo] = useState(false);
-  const [giftWrap, setGiftWrap] = useState(false);
-
   // Gift card state
   const [giftCardCode, setGiftCardCode] = useState("");
   const [giftCardError, setGiftCardError] = useState<string | null>(null);
@@ -199,11 +197,10 @@ export default function CheckoutPage() {
   const selectedShipping = shippingOptions.find((opt) => opt.id === selectedShippingId);
 
   const shippingPriceMinor = selectedShipping?.amount ?? 0;
-  const giftWrapPriceMinor = giftWrap ? 500 : 0;
   const discountMinor = cart?.discount_total ?? 0;
   const giftCardAmount = cart?.gift_card_total ?? 0;
   const giftCardApplied = !!cart?.gift_card_code;
-  const totalMinor = subtotal + shippingPriceMinor + giftWrapPriceMinor - discountMinor - giftCardAmount;
+  const totalMinor = subtotal + shippingPriceMinor - discountMinor - giftCardAmount;
 
   const getSelectedAddress = useCallback((): {
     first_name: string;
@@ -493,7 +490,6 @@ export default function CheckoutPage() {
           })),
           subtotal: subtotal,
           deliveryPrice: shippingPriceMinor,
-          giftWrap: giftWrapPriceMinor,
           discount: discountMinor,
           total: order.total,
           shipping: address,
@@ -948,7 +944,7 @@ export default function CheckoutPage() {
                     ) : shippingOptions.length === 0 ? (
                       <div className="p-4 bg-[var(--surface)] rounded-sm text-center">
                         <p className="text-sm text-[var(--muted-foreground)]">
-                          No shipping options available for your region.
+                          No shipping options available for your region. Please check your shipping address or contact support.
                         </p>
                       </div>
                     ) : (
@@ -1012,37 +1008,6 @@ export default function CheckoutPage() {
                       </div>
                     )}
 
-                    <div className="mt-6">
-                      <label
-                        className={`flex items-center justify-between p-4 border rounded-sm cursor-pointer transition-all ${
-                          giftWrap
-                            ? "border-[var(--foreground)] bg-transparent"
-                            : "border-[var(--border)] hover:border-[var(--foreground)]/40"
-                        }`}
-                      >
-                        <div className="flex items-center gap-4">
-                          <input
-                            type="checkbox"
-                            checked={giftWrap}
-                            onChange={(e) => setGiftWrap(e.target.checked)}
-                            className="text-[var(--primary)] focus:ring-[var(--primary)]"
-                          />
-                          <div className="flex items-center gap-2">
-                            <Gift className="h-4 w-4 text-[var(--accent)]" />
-                            <div>
-                              <p className="font-medium text-sm">Gift Wrapping</p>
-                              <p className="text-xs text-[var(--muted-foreground)]">
-                                Premium packaging with handwritten note
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                        <span className="font-semibold text-sm">
-                          {formatPrice(500, currency)}
-                        </span>
-                      </label>
-                    </div>
-
                     <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
                       <button
                         onClick={handleBack}
@@ -1053,7 +1018,7 @@ export default function CheckoutPage() {
                       </button>
                       <button
                         onClick={handleContinue}
-                        disabled={!selectedShippingId && shippingOptions.length > 0}
+                        disabled={!selectedShippingId}
                         className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Continue to Payment
@@ -1313,13 +1278,6 @@ export default function CheckoutPage() {
                     )}
                   </span>
                 </div>
-
-                {giftWrap && (
-                  <div className="flex justify-between text-sm">
-                    <span className="text-[var(--muted-foreground)]">Gift Wrap</span>
-                    <span className="tabular-nums">{formatPrice(giftWrapPriceMinor, currency)}</span>
-                  </div>
-                )}
 
                 <div className="flex justify-between pt-3 border-t border-[var(--border)]">
                   <span className="font-semibold">Total</span>
