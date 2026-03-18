@@ -322,6 +322,8 @@ export const productsApi = {
     brandIds?: string[];
     handle?: string;
     query?: string;
+    sizes?: string[];
+    colors?: string[];
     minPrice?: number;
     maxPrice?: number;
     onSale?: boolean;
@@ -339,6 +341,8 @@ export const productsApi = {
       if (params.brandIds) params.brandIds.forEach(id => searchParams.append('brandIds', id));
       if (params.handle) searchParams.append('handle', params.handle);
       if (params.query) searchParams.append('query', params.query);
+      if (params.sizes) params.sizes.forEach(s => searchParams.append('sizes', s));
+      if (params.colors) params.colors.forEach(c => searchParams.append('colors', c));
       if (params.minPrice) searchParams.append('minPrice', String(params.minPrice));
       if (params.maxPrice) searchParams.append('maxPrice', String(params.maxPrice));
       if (params.onSale !== undefined) searchParams.append('onSale', String(params.onSale));

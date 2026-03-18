@@ -231,6 +231,11 @@ export default function EyewearPage() {
       }
     }
 
+    // Sizes filter
+    if (selectedSizes.length > 0) {
+      params.sizes = selectedSizes;
+    }
+
     // Sort
     if (sortBy === "price-low") {
       params.sortBy = "price";
@@ -244,7 +249,7 @@ export default function EyewearPage() {
     }
 
     return params;
-  }, [quickFilter, selectedCategories, selectedBrands, selectedPriceRange, sortBy]);
+  }, [quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy]);
 
   const { data: productsData, isLoading, error } = useProducts(apiParams);
   const { data: brandsData } = useBrands();
@@ -293,19 +298,8 @@ export default function EyewearPage() {
 
   const displayProducts = useMemo(() => {
     if (!productsData?.items) return [];
-    let products = transformProducts(productsData.items);
-
-    // Size filter (client-side — API doesn't support it)
-    if (selectedSizes.length > 0) {
-      products = products.filter((p) =>
-        p.variants.some((v) =>
-          selectedSizes.some((size) => v.title?.toLowerCase().includes(size.toLowerCase()))
-        )
-      );
-    }
-
-    return products;
-  }, [productsData, selectedSizes]);
+    return transformProducts(productsData.items);
+  }, [productsData]);
 
   const FilterContent = () => (
     <>
