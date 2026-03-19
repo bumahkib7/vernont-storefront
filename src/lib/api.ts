@@ -110,16 +110,21 @@ const API_BASE_URL =
  * 1. Images are public and don't need cookie auth
  * 2. Next.js Image optimization needs URLs matching remotePatterns
  */
+const IMAGE_CDN_URL = process.env.NEXT_PUBLIC_IMAGE_CDN_URL || '';
+
 export function resolveImageUrl(url: string | null | undefined): string | null {
   if (!url) return null;
 
-  // Old format: https://vernont-minio*.runixcloud.dev/BUCKET/key
+  // MinIO URLs: https://vernont-minio*.runixcloud.dev/BUCKET/key → CDN
   if (url.includes("vernont-minio") && url.includes("runixcloud.dev")) {
     try {
       const parsed = new URL(url);
       const parts = parsed.pathname.split("/").filter(Boolean);
       if (parts.length > 1) {
-        const key = parts.slice(1).join("/");
+        const key = parts.slice(1).join("/"); // strip bucket name
+        if (IMAGE_CDN_URL) {
+          return `${IMAGE_CDN_URL}/${key}`;
+        }
         return `${DIRECT_API_URL}/files?key=${encodeURIComponent(key)}`;
       }
     } catch { /* fall through */ }
@@ -129,6 +134,11 @@ export function resolveImageUrl(url: string | null | undefined): string | null {
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
 
   // Relative URL from backend (e.g. /files?key=...)
+  if (url.startsWith("/files?key=") && IMAGE_CDN_URL) {
+    const key = decodeURIComponent(url.replace("/files?key=", ""));
+    return `${IMAGE_CDN_URL}/${key}`;
+  }
+
   return `${DIRECT_API_URL}${url.startsWith("/") ? "" : "/"}${url}`;
 }
 
