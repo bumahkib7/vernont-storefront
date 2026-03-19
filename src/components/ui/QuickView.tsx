@@ -11,6 +11,7 @@ import { useWishlist } from "@/context/WishlistContext";
 
 interface Product {
   id: string;
+  handle?: string;
   variantId?: string;
   name: string;
   brand: string;
@@ -187,7 +188,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
 
                   {/* View Full Details */}
                   <Link
-                    href={`/product/${product.id}`}
+                    href={`/product/${product.handle || product.id}`}
                     onClick={onClose}
                     className="font-serif text-sm text-center mt-6 underline hover:text-gold transition-colors"
                   >

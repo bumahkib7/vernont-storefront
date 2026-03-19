@@ -124,7 +124,7 @@ export function transformProduct(product: Product): DisplayProduct {
   const resolvedThumbnail = resolveImageUrl(product.thumbnail);
 
   return {
-    id: product.handle, // Use handle as ID for URL routing
+    id: product.id,
     handle: product.handle,
     name: product.title,
     brand: product.brand ?? 'Vernont',
