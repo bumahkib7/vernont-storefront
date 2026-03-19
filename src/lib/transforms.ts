@@ -71,7 +71,8 @@ export interface DisplayCollection {
  */
 export function transformProduct(product: Product): DisplayProduct {
   // Get first variant for default pricing
-  const firstVariant = product.variants[0];
+  const variants = product.variants ?? [];
+  const firstVariant = variants[0];
 
   // Get price from first variant or lowestPriceMinor (prices are in minor units - pence/cents)
   const priceMinor = firstVariant?.priceMinor ?? product.lowestPriceMinor ?? 0;
@@ -151,7 +152,7 @@ export function transformProduct(product: Product): DisplayProduct {
     faceShapes: eyewearMetadata?.faceShapes ?? undefined,
     currency: product.currency ?? firstVariant?.currency ?? 'GBP',
     variantId: firstVariant?.id,
-    variants: product.variants.map((v: StorefrontVariant) => {
+    variants: variants.map((v: StorefrontVariant) => {
       const vPrice = v.priceMinor ?? 0;
       const vCompareAt = v.compareAtPriceMinor;
       return {
