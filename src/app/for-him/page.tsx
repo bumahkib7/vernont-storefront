@@ -323,7 +323,7 @@ export default function ForHimPage() {
             </p>
 
             <Link
-              href="/face-shape-guide"
+              href="/eyewear"
               className="btn-primary inline-block"
             >
               Find Your Fit

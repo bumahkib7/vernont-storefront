@@ -32,7 +32,6 @@ const NavigationContext = createContext<NavigationContextType | undefined>(undef
 
 // Static fallback items from vertical config
 const STATIC_SHOP_ITEMS = navigation.shopDropdownItems;
-const STATIC_DISCOVER_ITEMS = navigation.discoverItems;
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
   const { data: collectionsData, isLoading: collectionsLoading, error: collectionsError } = useCollections();
@@ -149,12 +148,6 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
         href: "/brands",
         hasDropdown: true,
         dropdownItems: brandsDropdownItems,
-      },
-      {
-        label: "Discover",
-        href: "/discover",
-        hasDropdown: true,
-        dropdownItems: STATIC_DISCOVER_ITEMS,
       },
     ];
   }, [collections, genderCategories, topBrands]);

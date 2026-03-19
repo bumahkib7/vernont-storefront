@@ -72,12 +72,32 @@ const nextConfig: NextConfig = {
       },
       {
         source: "/fragrance-quiz",
-        destination: "/face-shape-guide",
+        destination: "/eyewear",
         permanent: true,
       },
       {
         source: "/quiz",
-        destination: "/face-shape-guide",
+        destination: "/eyewear",
+        permanent: true,
+      },
+      {
+        source: "/face-shape-guide",
+        destination: "/eyewear",
+        permanent: true,
+      },
+      {
+        source: "/lens-guide",
+        destination: "/eyewear",
+        permanent: true,
+      },
+      {
+        source: "/compare",
+        destination: "/eyewear",
+        permanent: true,
+      },
+      {
+        source: "/discover",
+        destination: "/eyewear",
         permanent: true,
       },
     ];

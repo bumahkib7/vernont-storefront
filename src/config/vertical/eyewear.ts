@@ -1,6 +1,5 @@
 import {
   Check, Truck, RotateCcw, Gift, Star,
-  Sun, Shield, Eye, Zap, Palette, Monitor,
   Sparkles,
 } from "lucide-react";
 import type { VerticalConfig } from "./types";
@@ -80,7 +79,7 @@ export const eyewearConfig: VerticalConfig = {
       description:
         "Discover designer frames from luxury and premium brands. Complimentary cleaning kit with every order.",
       primaryCta: { label: "Shop Now", href: "/eyewear" },
-      secondaryCta: { label: "Find Your Fit", href: "/face-shape-guide" },
+      secondaryCta: { label: "View Brands", href: "/brands" },
       backgroundImage: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=1200&q=80",
     },
 
@@ -179,10 +178,7 @@ export const eyewearConfig: VerticalConfig = {
       { label: "New Arrivals", href: "/eyewear?sort=newest" },
     ],
 
-    discoverItems: [
-      { label: "Face Shape Guide", href: "/face-shape-guide" },
-      { label: "Lens Guide", href: "/lens-guide" },
-    ],
+    discoverItems: [],
 
     footerBrandLinks: [
       { label: "All Brands", href: "/brands" },
@@ -200,110 +196,9 @@ export const eyewearConfig: VerticalConfig = {
   // Guides
   // ==================
   guides: {
-    faceShapes: [
-      {
-        id: "oval",
-        name: "Oval",
-        description:
-          "Balanced proportions with a gently rounded forehead and jaw. The most versatile face shape \u2014 most frame styles will suit you.",
-        recommended: ["Aviator", "Wayfarer", "Cat-eye", "Round", "Square"],
-        avoid: [],
-        tip: "Lucky you \u2014 almost any frame shape works. Experiment freely!",
-      },
-      {
-        id: "round",
-        name: "Round",
-        description:
-          "Equal width and length with soft, curved lines. Full cheeks and a rounded chin.",
-        recommended: ["Rectangular", "Square", "Wayfarer", "Geometric"],
-        avoid: ["Round", "Oversized circular"],
-        tip: "Angular frames add definition and make your face appear longer and slimmer.",
-      },
-      {
-        id: "square",
-        name: "Square",
-        description:
-          "Strong jawline with a broad forehead. Width and length are roughly equal with angular features.",
-        recommended: ["Round", "Aviator", "Cat-eye", "Oval", "Butterfly"],
-        avoid: ["Square", "Rectangular", "Geometric"],
-        tip: "Curved and rounded frames soften your strong angular features beautifully.",
-      },
-      {
-        id: "heart",
-        name: "Heart",
-        description:
-          "Wider forehead tapering to a narrow chin. Often with prominent cheekbones.",
-        recommended: ["Aviator", "Round", "Wayfarer", "Rimless", "Cat-eye"],
-        avoid: ["Oversized", "Top-heavy"],
-        tip: "Frames that are wider at the bottom help balance your forehead and narrow chin.",
-      },
-      {
-        id: "oblong",
-        name: "Oblong",
-        description:
-          "Longer than it is wide with a long, straight cheek line. Forehead, cheekbones, and jaw are similar in width.",
-        recommended: ["Oversized", "Round", "Square", "Aviator", "Wrap"],
-        avoid: ["Small", "Narrow"],
-        tip: "Larger, wider frames help add width and break up the length of your face.",
-      },
-    ],
+    faceShapes: [],
 
-    lensTypes: [
-      {
-        name: "Polarized",
-        icon: Sun,
-        description:
-          "Reduces glare from reflective surfaces like water, snow, and roads. Ideal for driving and outdoor activities.",
-        bestFor: ["Driving", "Water sports", "Snow sports", "Fishing"],
-        howItWorks:
-          "A special filter blocks intense horizontal light waves that cause glare, allowing only useful vertical light through.",
-      },
-      {
-        name: "UV400",
-        icon: Shield,
-        description:
-          "Blocks 100% of harmful UVA and UVB rays up to 400 nanometers. The minimum standard for quality sunglasses.",
-        bestFor: ["Everyday wear", "All outdoor activities", "UV-sensitive eyes"],
-        howItWorks:
-          "A UV-absorbing coating on the lens filters out all ultraviolet radiation, protecting your eyes from sun damage.",
-      },
-      {
-        name: "Photochromic",
-        icon: Eye,
-        description:
-          "Automatically adjusts from clear indoors to dark outdoors. Transitions lenses are the most well-known brand.",
-        bestFor: ["Prescription wearers", "Variable light conditions", "Convenience"],
-        howItWorks:
-          "Special molecules in the lens react to UV light, darkening when exposed to sunlight and clearing when indoors.",
-      },
-      {
-        name: "Gradient",
-        icon: Palette,
-        description:
-          "Tinted from dark at the top to lighter at the bottom. Great for driving as they block overhead sunlight while allowing dashboard visibility.",
-        bestFor: ["Driving", "Fashion", "Reading outdoors"],
-        howItWorks:
-          "The lens has a gradual transition in tint density, darker at top for sky glare and lighter at bottom for clear near vision.",
-      },
-      {
-        name: "Mirror",
-        icon: Zap,
-        description:
-          "A reflective coating on the outer surface that reduces light entering the eye. Also provides a stylish, bold look.",
-        bestFor: ["High-altitude activities", "Bright environments", "Fashion statement"],
-        howItWorks:
-          "A thin metallic coating on the lens surface reflects light away before it enters your eye, reducing overall brightness.",
-      },
-      {
-        name: "Blue-Light Filtering",
-        icon: Monitor,
-        description:
-          "Filters high-energy blue light emitted by screens and digital devices. Reduces eye strain during extended screen time.",
-        bestFor: ["Office workers", "Gamers", "Heavy screen users"],
-        howItWorks:
-          "A special coating or lens material absorbs or reflects blue light wavelengths (400-450nm) that contribute to digital eye strain.",
-      },
-    ],
+    lensTypes: [],
 
     frameSizes: [
       { size: "XS (Extra Small)", lensWidth: "44-46 mm", bridgeWidth: "16-17 mm", templeLength: "130-135 mm" },

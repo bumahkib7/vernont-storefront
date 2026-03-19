@@ -108,7 +108,7 @@ export default function TryOnPage() {
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
-              href="/face-shape-guide"
+              href="/eyewear"
               className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
             >
               Face Shape Guide

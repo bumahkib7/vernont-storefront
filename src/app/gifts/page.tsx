@@ -370,7 +370,7 @@ export default function GiftsPage() {
             </p>
 
             <Link
-              href="/face-shape-guide"
+              href="/eyewear"
               className="btn-primary inline-block"
             >
               Find Your Frame Shape
