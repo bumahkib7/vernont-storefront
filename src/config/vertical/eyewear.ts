@@ -19,18 +19,14 @@ export const eyewearConfig: VerticalConfig = {
     defaultCategory: "Sunglasses",
 
     searchPlaceholder: "Search frames, brands...",
-    popularSearches: ["Aviator", "Cat-eye", "Wayfarer", "Tom Ford", "Polarized", "Round"],
-    suggestedSearches: ["Aviator", "Round", "Ray-Ban", "Gucci", "Gift Sets"],
+    popularSearches: ["Jacques Marie Mage", "Sunglasses", "Acetate", "Luxury", "Polarized", "Round"],
+    suggestedSearches: ["Jacques Marie Mage", "Sunglasses", "Luxury Eyewear", "New Arrivals"],
 
     quickFilters: [
       { label: "All", value: "" },
       { label: "Sunglasses", value: "sunglasses" },
-      { label: "Optical", value: "optical" },
-      { label: "Polarized", value: "polarized" },
-      { label: "Under £150", value: "under-150" },
-      { label: "Aviator", value: "aviator" },
-      { label: "Cat-eye", value: "cat-eye" },
-      { label: "Round", value: "round" },
+      { label: "New Arrivals", value: "newest" },
+      { label: "Luxury", value: "luxury" },
     ],
 
     sortOptions: [
@@ -180,35 +176,23 @@ export const eyewearConfig: VerticalConfig = {
     shopDropdownItems: [
       { label: "All Eyewear", href: "/eyewear" },
       { label: "Sunglasses", href: "/eyewear?category=sunglasses" },
-      { label: "Optical", href: "/eyewear?category=optical" },
-      { label: "Sports", href: "/eyewear?category=sports" },
       { label: "New Arrivals", href: "/eyewear?sort=newest" },
-      { label: "Best Sellers", href: "/eyewear?sort=bestselling" },
     ],
 
     discoverItems: [
       { label: "Face Shape Guide", href: "/face-shape-guide" },
-      { label: "Shop by Frame Shape", href: "/eyewear?view=shapes" },
       { label: "Lens Guide", href: "/lens-guide" },
-      { label: "Compare Frames", href: "/compare" },
     ],
 
     footerBrandLinks: [
       { label: "All Brands", href: "/brands" },
-      { label: "Tom Ford", href: "/brands/tom-ford" },
-      { label: "Ray-Ban", href: "/brands/ray-ban" },
-      { label: "Gucci", href: "/brands/gucci" },
-      { label: "Prada", href: "/brands/prada" },
-      { label: "Persol", href: "/brands/persol" },
-      { label: "Oliver Peoples", href: "/brands/oliver-peoples" },
+      { label: "Jacques Marie Mage", href: "/brands/jacques-marie-mage" },
     ],
 
     footerShopLinks: [
       { label: "All Eyewear", href: "/eyewear" },
       { label: "Sunglasses", href: "/eyewear?category=sunglasses" },
-      { label: "Optical", href: "/eyewear?category=optical" },
       { label: "New Arrivals", href: "/eyewear?sort=newest" },
-      { label: "Best Sellers", href: "/eyewear?sort=bestselling" },
     ],
   },
 
