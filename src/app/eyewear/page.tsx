@@ -236,16 +236,27 @@ export default function EyewearPage() {
       params.sizes = selectedSizes;
     }
 
-    // Sort
-    if (sortBy === "price-low") {
-      params.sortBy = "price";
-      params.sortDirection = "asc";
-    } else if (sortBy === "price-high") {
-      params.sortBy = "price";
-      params.sortDirection = "desc";
-    } else if (sortBy === "newest") {
-      params.sortBy = "created_at";
-      params.sortDirection = "desc";
+    // Sort — all options are API-backed
+    switch (sortBy) {
+      case "price-low":
+        params.sortBy = "price";
+        params.sortDirection = "asc";
+        break;
+      case "price-high":
+        params.sortBy = "price";
+        params.sortDirection = "desc";
+        break;
+      case "newest":
+        params.sortBy = "newest";
+        params.sortDirection = "desc";
+        break;
+      case "bestselling":
+        params.sortBy = "bestselling";
+        break;
+      case "rating":
+        params.sortBy = "rating";
+        break;
+      // "featured" = default, no sortBy param needed
     }
 
     return params;
