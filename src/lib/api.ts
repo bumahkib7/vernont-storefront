@@ -139,6 +139,42 @@ export interface ProductSpecificationsResponse {
 // Direct backend URL — used for images (public, no auth needed, must match Next.js remotePatterns)
 const DIRECT_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
+/**
+ * Normalize a StoreProductDto (from /store/ endpoints) into the flat
+ * StorefrontProduct shape that the frontend schemas and transforms expect.
+ * The /store/ endpoint nests pricing under calculated_price while
+ * /storefront/ flattens it to priceMinor/compareAtPriceMinor.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function normalizeStoreProduct(p: any) {
+  const firstVariant = p.variants?.[0];
+  const calcPrice = firstVariant?.calculated_price;
+  return {
+    id: p.id,
+    handle: p.handle,
+    title: p.title,
+    description: p.description ?? null,
+    thumbnail: p.thumbnail ?? null,
+    imageUrls: p.images?.map((img: any) => img.url) ?? p.imageUrls ?? [],
+    brand: p.brand ?? null,
+    lowestPriceMinor: calcPrice?.calculated_amount ?? firstVariant?.priceMinor ?? p.lowestPriceMinor ?? null,
+    currency: calcPrice?.currency_code ?? firstVariant?.currency ?? p.currency ?? 'GBP',
+    variants: (p.variants ?? []).map((v: any) => {
+      const cp = v.calculated_price;
+      return {
+        id: v.id,
+        title: v.title ?? null,
+        sku: v.sku ?? null,
+        priceMinor: cp?.calculated_amount ?? v.priceMinor ?? null,
+        compareAtPriceMinor: cp?.original_amount !== cp?.calculated_amount ? cp?.original_amount : (v.compareAtPriceMinor ?? null),
+        currency: cp?.currency_code ?? v.currency ?? 'GBP',
+        inventoryQuantity: v.inventory_quantity ?? v.inventoryQuantity ?? null,
+      };
+    }),
+    metadata: p.metadata ?? null,
+  };
+}
+
 // In production, route API fetch calls through Next.js rewrite proxy so cookies
 // are same-origin (required for mobile Safari which blocks third-party cookies via ITP).
 // Images bypass the proxy since they don't need auth cookies.
@@ -510,11 +546,19 @@ export const collectionsApi = {
       });
     }
     const query = searchParams.toString();
-    return apiRequest(
+    const raw = await apiRequest<any>(
       `/store/collections/${handle}/products${query ? `?${query}` : ''}`,
-      {},
-      ProductsListResponseSchema
+      {}
     );
+    // Normalize /store/ response (StoreProductDto) to match StorefrontProductSchema
+    const items = (raw.items ?? []).map(normalizeStoreProduct);
+    return ProductsListResponseSchema.parse({
+      items,
+      page: raw.page ?? 0,
+      size: raw.size ?? items.length,
+      total: raw.total ?? items.length,
+      filters: raw.filters ?? null,
+    });
   },
 };
 
@@ -580,11 +624,18 @@ export const categoriesApi = {
         if (value !== undefined) searchParams.append(key, String(value));
       });
     }
-    return apiRequest(
+    const raw = await apiRequest<any>(
       `/store/products?${searchParams.toString()}`,
-      {},
-      ProductsListResponseSchema
+      {}
     );
+    const items = (raw.products ?? raw.items ?? []).map(normalizeStoreProduct);
+    return ProductsListResponseSchema.parse({
+      items,
+      page: raw.page ?? 0,
+      size: raw.size ?? items.length,
+      total: raw.total ?? items.length,
+      filters: raw.filters ?? null,
+    });
   },
 };
 
