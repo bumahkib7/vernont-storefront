@@ -242,6 +242,7 @@ async function apiRequest<T>(
     ...options,
     headers: {
       'Content-Type': 'application/json',
+      'X-Requested-With': 'XMLHttpRequest',
       ...options.headers,
     },
     credentials: 'include', // Send HTTP-only cookies with requests
