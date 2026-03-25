@@ -11,6 +11,7 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
+import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -77,6 +78,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={manrope.className}>
+        <OrganizationJsonLd
+          name="Vernont"
+          url={siteUrl}
+          logo={`${siteUrl}/favicon.svg`}
+          description={siteMetadata.description}
+        />
+        <WebsiteJsonLd
+          name="Vernont"
+          url={siteUrl}
+          searchUrl={`${siteUrl}/eyewear`}
+        />
         <Providers>
           {children}
           <CartDrawer />

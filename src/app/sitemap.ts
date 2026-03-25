@@ -3,7 +3,6 @@ import { MetadataRoute } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9000";
 
-// Static pages that don't change often
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
   { url: "/eyewear", priority: 0.9, changeFrequency: "daily" as const },
@@ -16,6 +15,14 @@ const staticPages = [
   { url: "/about", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/contact", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/faq", priority: 0.5, changeFrequency: "monthly" as const },
+  { url: "/careers", priority: 0.5, changeFrequency: "monthly" as const },
+  { url: "/craftsmanship", priority: 0.5, changeFrequency: "monthly" as const },
+  { url: "/imprint", priority: 0.3, changeFrequency: "yearly" as const },
+  { url: "/press", priority: 0.5, changeFrequency: "monthly" as const },
+  { url: "/size-guide", priority: 0.6, changeFrequency: "monthly" as const },
+  { url: "/stores", priority: 0.6, changeFrequency: "monthly" as const },
+  { url: "/sustainability", priority: 0.5, changeFrequency: "monthly" as const },
+  { url: "/try-on", priority: 0.7, changeFrequency: "monthly" as const },
   { url: "/shipping", priority: 0.4, changeFrequency: "monthly" as const },
   { url: "/returns", priority: 0.4, changeFrequency: "monthly" as const },
   { url: "/privacy", priority: 0.3, changeFrequency: "yearly" as const },
@@ -23,29 +30,40 @@ const staticPages = [
   { url: "/cookies", priority: 0.3, changeFrequency: "yearly" as const },
 ];
 
-// Fetch all products for sitemap
-async function fetchProducts(): Promise<
+async function fetchAllProducts(): Promise<
   Array<{ handle: string; updatedAt: string }>
 > {
+  const allProducts: Array<{ handle: string; updatedAt: string }> = [];
+  const pageSize = 500;
+  let page = 0;
+  let hasMore = true;
+
   try {
-    const response = await fetch(`${BACKEND_URL}/store/products?limit=1000`, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
-    if (!response.ok) return [];
-    const data = await response.json();
-    return (
-      data.products?.map((product: any) => ({
-        handle: product.handle || product.id,
-        updatedAt: product.updated_at || new Date().toISOString(),
-      })) || []
-    );
+    while (hasMore) {
+      const response = await fetch(
+        `${BACKEND_URL}/storefront/products?size=${pageSize}&page=${page}`,
+        { next: { revalidate: 3600 } },
+      );
+      if (!response.ok) break;
+      const data = await response.json();
+      const items = data.items || [];
+      for (const product of items) {
+        allProducts.push({
+          handle: product.handle || product.id,
+          updatedAt: product.updated_at || new Date().toISOString(),
+        });
+      }
+      const total = data.total || 0;
+      page++;
+      hasMore = allProducts.length < total && items.length === pageSize;
+    }
+    return allProducts;
   } catch (error) {
     console.error("Failed to fetch products for sitemap:", error);
-    return [];
+    return allProducts;
   }
 }
 
-// Fetch all collections/categories for sitemap
 async function fetchCollections(): Promise<
   Array<{ handle: string; updatedAt: string }>
 > {
@@ -67,7 +85,27 @@ async function fetchCollections(): Promise<
   }
 }
 
-// Fetch all brands for sitemap
+async function fetchCategories(): Promise<
+  Array<{ handle: string; updatedAt: string }>
+> {
+  try {
+    const response = await fetch(`${BACKEND_URL}/store/product-categories`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) return [];
+    const data = await response.json();
+    return (
+      data.product_categories?.map((category: any) => ({
+        handle: category.handle || category.id,
+        updatedAt: category.updated_at || new Date().toISOString(),
+      })) || []
+    );
+  } catch (error) {
+    console.error("Failed to fetch categories for sitemap:", error);
+    return [];
+  }
+}
+
 async function fetchBrands(): Promise<
   Array<{ handle: string; updatedAt: string }>
 > {
@@ -92,17 +130,15 @@ async function fetchBrands(): Promise<
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
-  // Fetch dynamic content in parallel
-  const [products, collections, brands] = await Promise.all([
-    fetchProducts(),
+  const [products, collections, categories, brands] = await Promise.all([
+    fetchAllProducts(),
     fetchCollections(),
+    fetchCategories(),
     fetchBrands(),
   ]);
 
-  // Build sitemap entries
   const entries: MetadataRoute.Sitemap = [];
 
-  // Add static pages
   for (const page of staticPages) {
     entries.push({
       url: `${BASE_URL}${page.url}`,
@@ -112,7 +148,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // Add product pages
   for (const product of products) {
     entries.push({
       url: `${BASE_URL}/product/${product.handle}`,
@@ -122,7 +157,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // Add collection pages
   for (const collection of collections) {
     entries.push({
       url: `${BASE_URL}/collections/${collection.handle}`,
@@ -132,7 +166,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
   }
 
-  // Add brand pages
+  for (const category of categories) {
+    entries.push({
+      url: `${BASE_URL}/categories/${category.handle}`,
+      lastModified: category.updatedAt,
+      changeFrequency: "weekly",
+      priority: 0.6,
+    });
+  }
+
   for (const brand of brands) {
     entries.push({
       url: `${BASE_URL}/brands/${brand.handle}`,
