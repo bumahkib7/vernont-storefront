@@ -1,7 +1,9 @@
 import { MetadataRoute } from "next";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:9000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
+export const revalidate = 3600;
 
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
@@ -30,158 +32,59 @@ const staticPages = [
   { url: "/cookies", priority: 0.3, changeFrequency: "yearly" as const },
 ];
 
-async function fetchAllProducts(): Promise<
-  Array<{ handle: string; updatedAt: string }>
-> {
-  const allProducts: Array<{ handle: string; updatedAt: string }> = [];
-  const pageSize = 500;
-  let page = 0;
-  let hasMore = true;
-
-  try {
-    while (hasMore) {
-      const response = await fetch(
-        `${BACKEND_URL}/storefront/products?size=${pageSize}&page=${page}`,
-        { next: { revalidate: 3600 } },
-      );
-      if (!response.ok) break;
-      const data = await response.json();
-      const items = data.items || [];
-      for (const product of items) {
-        allProducts.push({
-          handle: product.handle || product.id,
-          updatedAt: product.updated_at || new Date().toISOString(),
-        });
-      }
-      const total = data.total || 0;
-      page++;
-      hasMore = allProducts.length < total && items.length === pageSize;
-    }
-    return allProducts;
-  } catch (error) {
-    console.error("Failed to fetch products for sitemap:", error);
-    return allProducts;
-  }
+interface SitemapEntry {
+  path: string;
+  lastModified: string | null;
+  priority: number;
+  changeFrequency: string;
 }
 
-async function fetchCollections(): Promise<
-  Array<{ handle: string; updatedAt: string }>
-> {
-  try {
-    const response = await fetch(`${BACKEND_URL}/store/collections?limit=100`, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return [];
-    const data = await response.json();
-    return (
-      data.collections?.map((collection: any) => ({
-        handle: collection.handle || collection.id,
-        updatedAt: collection.updated_at || new Date().toISOString(),
-      })) || []
-    );
-  } catch (error) {
-    console.error("Failed to fetch collections for sitemap:", error);
-    return [];
-  }
-}
-
-async function fetchCategories(): Promise<
-  Array<{ handle: string; updatedAt: string }>
-> {
-  try {
-    const response = await fetch(`${BACKEND_URL}/store/product-categories`, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return [];
-    const data = await response.json();
-    return (
-      data.product_categories?.map((category: any) => ({
-        handle: category.handle || category.id,
-        updatedAt: category.updated_at || new Date().toISOString(),
-      })) || []
-    );
-  } catch (error) {
-    console.error("Failed to fetch categories for sitemap:", error);
-    return [];
-  }
-}
-
-async function fetchBrands(): Promise<
-  Array<{ handle: string; updatedAt: string }>
-> {
-  try {
-    const response = await fetch(`${BACKEND_URL}/store/brands?limit=200`, {
-      next: { revalidate: 3600 },
-    });
-    if (!response.ok) return [];
-    const data = await response.json();
-    return (
-      data.brands?.map((brand: any) => ({
-        handle: brand.slug || brand.id,
-        updatedAt: new Date().toISOString(),
-      })) || []
-    );
-  } catch (error) {
-    console.error("Failed to fetch brands for sitemap:", error);
-    return [];
-  }
+interface SitemapData {
+  products: SitemapEntry[];
+  collections: SitemapEntry[];
+  categories: SitemapEntry[];
+  brands: SitemapEntry[];
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
-  const [products, collections, categories, brands] = await Promise.all([
-    fetchAllProducts(),
-    fetchCollections(),
-    fetchCategories(),
-    fetchBrands(),
-  ]);
+  const entries: MetadataRoute.Sitemap = staticPages.map((page) => ({
+    url: `${BASE_URL}${page.url}`,
+    lastModified: now,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
 
-  const entries: MetadataRoute.Sitemap = [];
-
-  for (const page of staticPages) {
-    entries.push({
-      url: `${BASE_URL}${page.url}`,
-      lastModified: now,
-      changeFrequency: page.changeFrequency,
-      priority: page.priority,
+  try {
+    const response = await fetch(`${API_URL}/store/seo/sitemap`, {
+      next: { revalidate: 3600 },
     });
-  }
 
-  for (const product of products) {
-    entries.push({
-      url: `${BASE_URL}/product/${product.handle}`,
-      lastModified: product.updatedAt,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    });
-  }
+    if (!response.ok) {
+      console.error("Failed to fetch sitemap data:", response.status);
+      return entries;
+    }
 
-  for (const collection of collections) {
-    entries.push({
-      url: `${BASE_URL}/collections/${collection.handle}`,
-      lastModified: collection.updatedAt,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    });
-  }
+    const data: SitemapData = await response.json();
 
-  for (const category of categories) {
-    entries.push({
-      url: `${BASE_URL}/categories/${category.handle}`,
-      lastModified: category.updatedAt,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    });
-  }
+    const allEntries = [
+      ...data.products,
+      ...data.collections,
+      ...data.categories,
+      ...data.brands,
+    ];
 
-  for (const brand of brands) {
-    entries.push({
-      url: `${BASE_URL}/brands/${brand.handle}`,
-      lastModified: brand.updatedAt,
-      changeFrequency: "weekly",
-      priority: 0.6,
-    });
+    for (const entry of allEntries) {
+      entries.push({
+        url: `${BASE_URL}${entry.path}`,
+        lastModified: entry.lastModified || now,
+        changeFrequency: entry.changeFrequency as any,
+        priority: entry.priority,
+      });
+    }
+  } catch (error) {
+    console.error("Failed to fetch sitemap data from backend:", error);
   }
 
   return entries;

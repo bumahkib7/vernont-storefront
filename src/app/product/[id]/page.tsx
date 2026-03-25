@@ -8,18 +8,31 @@ interface Props {
   params: Promise<{ id: string }>;
 }
 
-async function fetchProduct(handle: string) {
+interface ProductSeoData {
+  title: string;
+  description: string | null;
+  handle: string;
+  thumbnail: string | null;
+  images: string[];
+  brandName: string | null;
+  price: number | null;
+  currency: string;
+  availability: string;
+  sku: string | null;
+  condition: string;
+  reviewCount: number;
+  averageRating: number | null;
+  updatedAt: string | null;
+}
+
+async function fetchProductSeo(handle: string): Promise<ProductSeoData | null> {
   try {
     const response = await fetch(
-      `${BACKEND_URL}/storefront/products?size=100`,
+      `${BACKEND_URL}/store/seo/products/${encodeURIComponent(handle)}`,
       { next: { revalidate: 300 } },
     );
     if (!response.ok) return null;
-    const data = await response.json();
-    const product = data.items?.find(
-      (p: any) => p.handle === handle || p.id === handle,
-    );
-    return product || null;
+    return await response.json();
   } catch {
     return null;
   }
@@ -27,7 +40,7 @@ async function fetchProduct(handle: string) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
-  const product = await fetchProduct(id);
+  const product = await fetchProductSeo(id);
 
   if (!product) {
     return {
@@ -35,16 +48,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const title = product.title;
-  const description = product.description?.substring(0, 160) || `Shop ${title} at Vernont`;
-  const thumbnail = product.thumbnail || product.imageUrls?.[0];
+  const pageTitle = product.brandName
+    ? `${product.title} by ${product.brandName} | Vernont`
+    : `${product.title} | Vernont`;
+  const description = product.description?.substring(0, 160) || `Shop ${product.title} at Vernont`;
+  const thumbnail = product.thumbnail || product.images?.[0];
   const canonicalPath = `/product/${product.handle || id}`;
 
   return {
-    title,
+    title: pageTitle,
     description,
     openGraph: {
-      title,
+      title: pageTitle,
       description,
       type: "article",
       images: thumbnail ? [{ url: thumbnail, width: 1200, height: 630 }] : [],
@@ -52,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: pageTitle,
       description,
       images: thumbnail ? [thumbnail] : [],
     },
