@@ -7,114 +7,125 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { useCollections } from "@/lib/hooks";
 import { getCollectionImage } from "@/lib/collection-images";
 
-function CollectionsSkeleton() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-[4/3] bg-neutral-100" />
-          <div className="mt-4 space-y-2">
-            <div className="h-5 w-32 bg-neutral-100" />
-            <div className="h-4 w-48 bg-neutral-100" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function CollectionCard({
-  collection,
-  index,
-}: {
-  collection: {
-    id: string;
-    handle: string;
-    title: string;
-    description?: string | null;
-    thumbnail?: string | null;
-  };
-  index: number;
-}) {
-  const imageUrl = getCollectionImage(collection.handle, index, collection.thumbnail);
-
-  return (
-    <Link
-      href={`/collections/${collection.handle}`}
-      className="group block"
-    >
-      <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
-        <Image
-          src={imageUrl}
-          alt={collection.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-      </div>
-
-      <div className="mt-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-lg font-medium tracking-tight group-hover:text-neutral-600 transition-colors">
-            {collection.title}
-          </h3>
-          <ArrowRight className="h-4 w-4 text-neutral-400 group-hover:text-neutral-900 group-hover:translate-x-1 transition-all" />
-        </div>
-        {collection.description && (
-          <p className="mt-1 text-sm text-neutral-500 line-clamp-2">
-            {collection.description}
-          </p>
-        )}
-      </div>
-    </Link>
-  );
-}
-
 export default function CollectionsPage() {
   const { data: collectionsData, isLoading, error } = useCollections();
   const collections = collectionsData?.collections ?? [];
+  const featured = collections[0];
+  const rest = collections.slice(1);
 
   return (
     <PageLayout>
-      {/* Hero Section */}
-      <section className="pt-12 pb-16 md:pt-16 md:pb-24">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-sm text-neutral-500 uppercase tracking-wide mb-3">
+      {/* Featured Collection Hero */}
+      {featured && !isLoading && (
+        <Link
+          href={`/collections/${featured.handle}`}
+          className="group block relative h-[50vh] min-h-[400px] max-h-[600px] overflow-hidden"
+        >
+          <Image
+            src={getCollectionImage(featured.handle, 0, featured.thumbnail)}
+            alt={featured.title}
+            fill
+            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+          <div className="absolute inset-0 flex items-end">
+            <div className="max-w-[1500px] w-full mx-auto px-6 lg:px-20 pb-12 lg:pb-16">
+              <p className="text-xs text-white/60 uppercase tracking-widest mb-2">Featured Collection</p>
+              <h1 className="text-4xl sm:text-5xl text-white font-light tracking-tight mb-2">
+                {featured.title}
+              </h1>
+              {featured.description && (
+                <p className="text-white/70 text-lg max-w-md mb-4">{featured.description}</p>
+              )}
+              <span className="inline-flex items-center gap-2 text-white text-sm font-medium uppercase tracking-wider border-b border-white/50 pb-0.5 group-hover:border-white transition-colors">
+                Explore Collection <ArrowRight className="h-4 w-4" />
+              </span>
+            </div>
+          </div>
+        </Link>
+      )}
+
+      {/* Page Header (shown when no featured or loading) */}
+      {(!featured || isLoading) && (
+        <section className="pt-12 pb-8 md:pt-16 md:pb-12">
+          <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+            <p className="text-xs text-[var(--muted-foreground)] uppercase tracking-widest mb-3">
               Our Collections
             </p>
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
+            <h1 className="text-4xl md:text-5xl font-light tracking-tight">
               Curated Eyewear
             </h1>
-            <p className="text-lg text-neutral-600">
-              Explore our carefully curated collections, each telling a unique story
-              through the art of eyewear design.
-            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Collections Grid */}
-      <section className="pb-20 md:pb-32">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      <section className="py-16 lg:py-24">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+          {/* Section header when featured exists */}
+          {featured && !isLoading && (
+            <div className="mb-10">
+              <h2 className="text-2xl lg:text-3xl font-medium tracking-tight">All Collections</h2>
+              <p className="text-[var(--muted-foreground)] mt-1">
+                {collections.length} {collections.length === 1 ? "collection" : "collections"}
+              </p>
+            </div>
+          )}
+
           {isLoading ? (
-            <CollectionsSkeleton />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {[...Array(6)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                  <div className="aspect-[4/3] bg-[var(--surface)]" />
+                  <div className="mt-4 space-y-2">
+                    <div className="h-5 w-32 bg-[var(--surface)]" />
+                    <div className="h-4 w-48 bg-[var(--surface)]" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : error ? (
             <div className="text-center py-20">
-              <p className="text-neutral-500">
-                Unable to load collections. Please try again later.
-              </p>
+              <p className="text-[var(--muted-foreground)]">Unable to load collections.</p>
             </div>
           ) : collections.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-neutral-500">
-                No collections available at this time.
-              </p>
+              <p className="text-[var(--muted-foreground)] mb-6">No collections available yet.</p>
+              <Link href="/eyewear" className="inline-flex items-center gap-2 px-8 py-3 bg-[var(--foreground)] text-[var(--background)] text-sm font-medium">
+                Shop All Eyewear <ArrowRight className="h-4 w-4" />
+              </Link>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-              {collections.map((collection, index) => (
-                <CollectionCard key={collection.id} collection={collection} index={index} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+              {(featured ? rest : collections).map((collection, index) => (
+                <Link
+                  key={collection.id}
+                  href={`/collections/${collection.handle}`}
+                  className="group block"
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[var(--surface)]">
+                    <Image
+                      src={getCollectionImage(collection.handle, index + 1, collection.thumbnail)}
+                      alt={collection.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute bottom-0 left-0 right-0 p-5 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                      <h3 className="text-white text-lg font-medium tracking-tight drop-shadow-lg">
+                        {collection.title}
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <h3 className="text-base font-medium tracking-tight">{collection.title}</h3>
+                    <ArrowRight className="h-4 w-4 text-[var(--muted-foreground)] group-hover:text-[var(--foreground)] group-hover:translate-x-1 transition-all" />
+                  </div>
+                  {collection.description && (
+                    <p className="mt-1 text-sm text-[var(--muted-foreground)] line-clamp-1">{collection.description}</p>
+                  )}
+                </Link>
               ))}
             </div>
           )}
@@ -122,17 +133,17 @@ export default function CollectionsPage() {
       </section>
 
       {/* Bottom CTA */}
-      <section className="py-16 md:py-24 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-light tracking-tight mb-4">
+      <section className="py-16 lg:py-20 bg-[var(--surface)]">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20 text-center">
+          <h2 className="text-2xl lg:text-3xl font-light tracking-tight mb-3">
             Not sure where to start?
           </h2>
-          <p className="text-neutral-600 mb-8 max-w-md mx-auto">
+          <p className="text-[var(--muted-foreground)] mb-8 max-w-md mx-auto">
             Browse all our eyewear or use our filters to find your perfect frame.
           </p>
           <Link
             href="/eyewear"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-[var(--foreground)] text-[var(--background)] text-sm font-medium uppercase tracking-wider hover:opacity-90 transition-opacity"
           >
             Shop All Eyewear
             <ArrowRight className="h-4 w-4" />
