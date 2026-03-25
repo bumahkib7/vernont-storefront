@@ -22,8 +22,10 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { ProductReviews } from "@/components/ProductReviews";
 import { WriteReviewForm } from "@/components/WriteReviewForm";
+import { ProductSpecifications } from "@/components/product/ProductSpecifications";
 import { useProductByHandle, useProducts, useProductReviewStats } from "@/lib/hooks";
 import { transformProduct, transformProducts } from "@/lib/transforms";
+import { productsApi, type ProductSpecificationsResponse } from "@/lib/api";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCompare } from "@/context/CompareContext";
@@ -51,6 +53,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("specs");
   const [showWriteReview, setShowWriteReview] = useState(false);
+  const [specsData, setSpecsData] = useState<ProductSpecificationsResponse | null>(null);
 
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
@@ -77,6 +80,16 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       });
     }
   }, [product, setAssistantProductContext]);
+
+  // Fetch rich specifications from the backend
+  useEffect(() => {
+    if (!product?.id) return;
+    let cancelled = false;
+    productsApi.getSpecifications(product.id).then((data) => {
+      if (!cancelled) setSpecsData(data);
+    });
+    return () => { cancelled = true; };
+  }, [product?.id]);
 
   const relatedProducts = useMemo(() => {
     if (!relatedData?.items) return [];
@@ -467,72 +480,9 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
         </div>
 
         {/* Tab Content */}
-        <div className="max-w-2xl">
+        <div className="max-w-3xl">
           {activeTab === "specs" && (
-            <div className="space-y-6">
-              {product.frameShape || product.frameMaterial || product.lensType ? (
-                <>
-                  <div className="grid md:grid-cols-3 gap-6">
-                    {product.frameShape && (
-                      <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Frame Shape</p>
-                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.frameShape}</span>
-                      </div>
-                    )}
-                    {product.frameMaterial && (
-                      <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Frame Material</p>
-                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.frameMaterial}</span>
-                      </div>
-                    )}
-                    {product.lensType && (
-                      <div className="p-4 bg-neutral-50">
-                        <p className="text-xs uppercase tracking-wide text-neutral-500 mb-3">Lens Type</p>
-                        <span className="px-2 py-1 bg-white text-sm border border-neutral-200">{product.lensType}</span>
-                      </div>
-                    )}
-                  </div>
-                  <div className="border border-neutral-200">
-                    <table className="w-full text-sm">
-                      <tbody>
-                        {product.measurements && (
-                          <tr className="border-b border-neutral-200">
-                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Measurements</td>
-                            <td className="px-4 py-3">
-                              {[
-                                product.measurements.lensWidth && `Lens: ${product.measurements.lensWidth}mm`,
-                                product.measurements.bridgeWidth && `Bridge: ${product.measurements.bridgeWidth}mm`,
-                                product.measurements.templeLength && `Temple: ${product.measurements.templeLength}mm`,
-                              ].filter(Boolean).join(" / ") || "—"}
-                            </td>
-                          </tr>
-                        )}
-                        {product.uvProtection && (
-                          <tr className="border-b border-neutral-200">
-                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">UV Protection</td>
-                            <td className="px-4 py-3">{product.uvProtection}</td>
-                          </tr>
-                        )}
-                        {product.weight && (
-                          <tr className="border-b border-neutral-200">
-                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Weight</td>
-                            <td className="px-4 py-3">{product.weight}</td>
-                          </tr>
-                        )}
-                        {product.faceShapes && product.faceShapes.length > 0 && (
-                          <tr>
-                            <td className="px-4 py-3 text-neutral-500 bg-neutral-50 w-1/3">Recommended Face Shapes</td>
-                            <td className="px-4 py-3">{product.faceShapes.join(", ")}</td>
-                          </tr>
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                </>
-              ) : (
-                <p className="text-neutral-500">Specifications not available for this product.</p>
-              )}
-            </div>
+            <ProductSpecifications specs={specsData} product={product} />
           )}
 
           {activeTab === "details" && (

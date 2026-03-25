@@ -93,6 +93,49 @@ import {
 // Re-export types and utilities
 export * from './schemas';
 
+// ==================
+// PRODUCT SPECIFICATIONS TYPES
+// ==================
+export interface ProductSpecificationsResponse {
+  productId: string;
+  styleCode?: string | null;
+  modelCode?: string | null;
+  description?: string | null;
+  frame?: {
+    color?: string | null;
+    material?: string | null;
+    shape?: string | null;
+    type?: string | null;
+  } | null;
+  lens?: {
+    color?: string | null;
+    material?: string | null;
+    technology?: string | null;
+    coating?: string | null;
+    category?: string | null;
+    uvProtection?: string | null;
+    polarized?: boolean | null;
+  } | null;
+  measurements?: {
+    size?: string | null;
+    totalWidth?: number | null;
+    templeLength?: number | null;
+    bridgeWidth?: number | null;
+    lensWidth?: number | null;
+    lensHeight?: number | null;
+  } | null;
+  fit?: {
+    type?: string | null;
+    description?: string | null;
+    faceShapes?: string[] | null;
+    nosepadType?: string | null;
+  } | null;
+  included?: string[] | null;
+  careInstructions?: string[] | null;
+  features?: string[] | null;
+  madeIn?: string | null;
+}
+
 // Direct backend URL — used for images (public, no auth needed, must match Next.js remotePatterns)
 const DIRECT_API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
@@ -424,6 +467,17 @@ export const productsApi = {
     return apiRequest(
       `/storefront/products/suggestions?query=${encodeURIComponent(query)}&limit=${limit}`
     );
+  },
+
+  async getSpecifications(productId: string): Promise<ProductSpecificationsResponse | null> {
+    try {
+      return await apiRequest<ProductSpecificationsResponse>(
+        `/store/products/${productId}/specifications`
+      );
+    } catch {
+      // Specifications endpoint may not exist yet — gracefully return null
+      return null;
+    }
   },
 };
 
