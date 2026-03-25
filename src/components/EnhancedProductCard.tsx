@@ -106,6 +106,11 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
             {product.originalPrice && product.originalPrice > product.price && (
               <span className="badge badge-sale">Sale</span>
             )}
+            {product.isPreOwned && product.conditionGrade && (
+              <span className="inline-block px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase bg-[var(--foreground)] text-[var(--background)] rounded-sm">
+                Grade {product.conditionGrade}
+              </span>
+            )}
           </div>
         </div>
 

@@ -43,6 +43,9 @@ export interface DisplayProduct {
   weight?: number;
   madeIn?: string;
   faceShapes?: string[];
+  condition?: string;
+  isPreOwned: boolean;
+  conditionGrade?: 'A' | 'B' | 'C';
   variantId?: string;
   currency?: string;
   variants: Array<{
@@ -82,32 +85,31 @@ export function transformProduct(product: Product): DisplayProduct {
   const compareAtPriceMinor = firstVariant?.compareAtPriceMinor;
   const originalPrice = compareAtPriceMinor ? priceFromMinor(compareAtPriceMinor) : undefined;
 
-  // Since StorefrontProductDto doesn't have tags/categories, we determine gender from title/description
-  const titleLower = product.title.toLowerCase();
-  const descLower = (product.description ?? '').toLowerCase();
-  const combined = `${titleLower} ${descLower}`;
-
+  // Gender from backend field, with fallback to title parsing
   let gender: 'women' | 'men' | 'unisex' = 'unisex';
-  if (combined.includes('women') || combined.includes('her') || combined.includes('feminine') || combined.includes('pour femme')) {
-    gender = 'women';
-  } else if (combined.includes(' men') || combined.includes(' him') || combined.includes('masculine') || combined.includes('pour homme')) {
-    gender = 'men';
+  if (product.gender) {
+    const g = product.gender.toLowerCase();
+    if (g === 'female' || g === 'women') gender = 'women';
+    else if (g === 'male' || g === 'men') gender = 'men';
+    else gender = 'unisex';
+  } else {
+    const titleLower = product.title.toLowerCase();
+    const descLower = (product.description ?? '').toLowerCase();
+    const combined = `${titleLower} ${descLower}`;
+    if (combined.includes('women') || combined.includes('her') || combined.includes('feminine') || combined.includes('pour femme')) {
+      gender = 'women';
+    } else if (combined.includes(' men') || combined.includes(' him') || combined.includes('masculine') || combined.includes('pour homme')) {
+      gender = 'men';
+    }
   }
 
   // Check for new/bestseller in title/description (since we don't have tags)
-  const isNew = combined.includes('new arrival') || combined.includes('new release');
-  const isBestseller = combined.includes('bestseller') || combined.includes('best seller');
+  const textLower = `${product.title.toLowerCase()} ${(product.description ?? '').toLowerCase()}`;
+  const isNew = textLower.includes('new arrival') || textLower.includes('new release');
+  const isBestseller = textLower.includes('bestseller') || textLower.includes('best seller');
 
   // Extract vertical-specific metadata using configured namespace
   const eyewearMetadata = product.metadata?.[productConfig.metadataNamespace] as VerticalMetadata | undefined;
-
-  // Override gender from metadata if available
-  if (eyewearMetadata?.gender) {
-    const metadataGender = eyewearMetadata.gender!.toLowerCase();
-    if (metadataGender === 'feminine' || metadataGender === 'women') gender = 'women';
-    else if (metadataGender === 'masculine' || metadataGender === 'men') gender = 'men';
-    else if (metadataGender === 'unisex') gender = 'unisex';
-  }
 
   // Collect all images from imageUrls array, resolving through the /files proxy
   const rawImages: string[] = [];
@@ -139,7 +141,7 @@ export function transformProduct(product: Product): DisplayProduct {
     isBestseller,
     description: product.description ?? undefined,
     frameShape: eyewearMetadata?.frameShape ?? undefined,
-    frameMaterial: eyewearMetadata?.frameMaterial ?? undefined,
+    frameMaterial: eyewearMetadata?.frameMaterial ?? product.material ?? undefined,
     lensType: eyewearMetadata?.lensType ?? undefined,
     frameColor: eyewearMetadata?.frameColor ?? undefined,
     lensColor: eyewearMetadata?.lensColor ?? undefined,
@@ -148,8 +150,13 @@ export function transformProduct(product: Product): DisplayProduct {
     frameSize: eyewearMetadata?.frameSize ?? undefined,
     uvProtection: eyewearMetadata?.uvProtection ?? undefined,
     weight: eyewearMetadata?.weight ?? undefined,
-    madeIn: eyewearMetadata?.madeIn ?? undefined,
+    madeIn: eyewearMetadata?.madeIn ?? product.originCountry ?? undefined,
     faceShapes: eyewearMetadata?.faceShapes ?? undefined,
+    condition: product.condition ?? 'new',
+    isPreOwned: product.condition?.startsWith('pre_owned') ?? false,
+    conditionGrade: product.condition?.startsWith('pre_owned')
+      ? (product.condition.slice(-1).toUpperCase() as 'A' | 'B' | 'C')
+      : undefined,
     currency: product.currency ?? firstVariant?.currency ?? 'GBP',
     variantId: firstVariant?.id,
     variants: variants.map((v: StorefrontVariant) => {
@@ -223,4 +230,18 @@ export function getBestsellers(products: DisplayProduct[]): DisplayProduct[] {
  */
 export function filterByCollection(products: DisplayProduct[], collection: string): DisplayProduct[] {
   return products.filter(p => p.collection?.toLowerCase() === collection.toLowerCase());
+}
+
+/**
+ * Get pre-owned products
+ */
+export function getPreOwnedProducts(products: DisplayProduct[]): DisplayProduct[] {
+  return products.filter(p => p.isPreOwned);
+}
+
+/**
+ * Filter pre-owned by grade
+ */
+export function filterByGrade(products: DisplayProduct[], grade: 'A' | 'B' | 'C'): DisplayProduct[] {
+  return products.filter(p => p.conditionGrade === grade);
 }

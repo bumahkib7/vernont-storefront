@@ -9,6 +9,7 @@ const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
   { url: "/eyewear", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/new", priority: 0.9, changeFrequency: "daily" as const },
+  { url: "/pre-owned", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/gifts", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/for-him", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/for-her", priority: 0.8, changeFrequency: "weekly" as const },

@@ -172,6 +172,10 @@ function normalizeStoreProduct(p: any) {
       };
     }),
     metadata: p.metadata ?? null,
+    condition: p.condition ?? null,
+    gender: p.gender ?? null,
+    material: p.material ?? null,
+    originCountry: p.origin_country ?? p.originCountry ?? null,
   };
 }
 
@@ -417,6 +421,8 @@ export const productsApi = {
     minPrice?: number;
     maxPrice?: number;
     onSale?: boolean;
+    condition?: string;
+    gender?: string;
     sortBy?: string;
     sortDirection?: string;
     limit?: number;
@@ -436,6 +442,8 @@ export const productsApi = {
       if (params.minPrice) searchParams.append('minPrice', String(params.minPrice));
       if (params.maxPrice) searchParams.append('maxPrice', String(params.maxPrice));
       if (params.onSale !== undefined) searchParams.append('onSale', String(params.onSale));
+      if (params.condition) searchParams.append('condition', params.condition);
+      if (params.gender) searchParams.append('gender', params.gender);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortDirection) searchParams.append('sortDirection', params.sortDirection);
       if (params.limit) searchParams.append('size', String(params.limit));

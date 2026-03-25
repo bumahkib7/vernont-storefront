@@ -176,6 +176,7 @@ export const eyewearConfig: VerticalConfig = {
       { label: "All Eyewear", href: "/eyewear" },
       { label: "Sunglasses", href: "/eyewear?category=sunglasses" },
       { label: "New Arrivals", href: "/eyewear?sort=newest" },
+      { label: "Pre-Owned", href: "/pre-owned" },
     ],
 
     discoverItems: [],
@@ -189,6 +190,7 @@ export const eyewearConfig: VerticalConfig = {
       { label: "All Eyewear", href: "/eyewear" },
       { label: "Sunglasses", href: "/eyewear?category=sunglasses" },
       { label: "New Arrivals", href: "/eyewear?sort=newest" },
+      { label: "Pre-Owned", href: "/pre-owned" },
     ],
   },
 
