@@ -3,63 +3,26 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Shield, CheckCircle, Award, Star } from "lucide-react";
+import { Shield, CheckCircle, Award } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
+import { ProductCarousel } from "@/components/ProductCarousel";
+import { ServicesGrid } from "@/components/ServicesGrid";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
-import { useHeroScroll } from "@/lib/useHeroScroll";
 import type { DisplayProduct } from "@/lib/transforms";
 
 type GradeFilter = "all" | "A" | "B" | "C";
 
-const GRADE_INFO: Record<Exclude<GradeFilter, "all">, { label: string; description: string }> = {
-  A: {
-    label: "Grade A",
-    description: "Like new condition. Minimal signs of wear. Pristine lenses and frame.",
-  },
-  B: {
-    label: "Grade B",
-    description: "Good condition. Minor cosmetic marks that don't affect functionality.",
-  },
-  C: {
-    label: "Grade C",
-    description: "Fair condition. Visible wear signs. Fully functional with character.",
-  },
-};
-
-function ProductsSkeleton() {
-  return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.05 }}
-          className="animate-pulse"
-        >
-          <div className="aspect-[3/4] bg-secondary relative">
-            <div className="absolute inset-3 border border-[var(--secondary)]/10" />
-          </div>
-          <div className="pt-5 text-center space-y-2">
-            <div className="h-3 w-16 bg-secondary mx-auto" />
-            <div className="h-5 w-32 bg-secondary mx-auto" />
-            <div className="h-3 w-24 bg-secondary mx-auto" />
-            <div className="h-5 w-20 bg-secondary mx-auto" />
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
+const GRADES: { key: GradeFilter; label: string; description: string }[] = [
+  { key: "A", label: "Grade A", description: "Like new. Minimal wear. Pristine lenses and frame." },
+  { key: "B", label: "Grade B", description: "Good condition. Minor cosmetic marks. Fully functional." },
+  { key: "C", label: "Grade C", description: "Fair condition. Visible wear. Full character and function." },
+];
 
 export default function PreOwnedPage() {
-  const { heroRef, heroY, heroOpacity, heroScale } = useHeroScroll();
   const [gradeFilter, setGradeFilter] = useState<GradeFilter>("all");
-
-  const { data: productsData, isLoading, error } = useProducts({ limit: 100, condition: 'pre_owned' });
+  const { data: productsData, isLoading, error } = useProducts({ limit: 100, condition: "pre_owned" });
 
   const preOwnedProducts = useMemo(() => {
     if (!productsData?.items) return [];
@@ -73,260 +36,215 @@ export default function PreOwnedPage() {
 
   return (
     <PageLayout>
-      {/* Hero */}
-      <section ref={heroRef} className="relative h-[70vh] min-h-[500px] flex items-center overflow-hidden">
-        <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1577803645773-f96470509666?w=1920&q=80"
-            alt="Pre-Owned Luxury Eyewear"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/50" />
-        </motion.div>
+      {/* Hero — Clean, shorter, strong CTA */}
+      <section className="relative h-[55vh] min-h-[420px] max-h-[600px] flex items-end overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1577803645773-f96470509666?w=1920&q=80"
+          alt="Pre-Owned Luxury Eyewear"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
 
-        <div className="absolute inset-6 md:inset-8 border border-[var(--secondary)]/20 pointer-events-none" />
-
-        <motion.div style={{ opacity: heroOpacity }} className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center justify-center gap-4 mb-6"
-          >
-            <span className="h-px w-12 bg-[var(--secondary)]" />
-            <Shield className="h-5 w-5 text-[var(--secondary)]" />
-            <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
-              Authenticated & Inspected
-            </span>
-            <Shield className="h-5 w-5 text-[var(--secondary)]" />
-            <span className="h-px w-12 bg-[var(--secondary)]" />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
-          >
+        <div className="relative max-w-[1500px] w-full mx-auto px-6 lg:px-20 pb-12 lg:pb-16">
+          <p className="text-xs text-white/60 uppercase tracking-widest mb-3 flex items-center gap-2">
+            <Shield className="h-3.5 w-3.5" />
+            Authenticated &amp; Inspected
+          </p>
+          <h1 className="text-4xl sm:text-5xl lg:text-6xl text-white font-light tracking-tight mb-3">
             Pre-Owned
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Authenticated luxury eyewear at exceptional value.
-            Every piece inspected, graded, and guaranteed.
-          </motion.p>
-
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="mt-8 flex items-center justify-center gap-3"
-          >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
-            <Award className="h-5 w-5 text-[var(--secondary)]" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="w-px h-12 bg-gradient-to-b from-[var(--secondary)] to-transparent"
-          />
-        </motion.div>
+          </h1>
+          <p className="text-white/70 text-lg max-w-md mb-6">
+            Authenticated luxury eyewear at exceptional value. Every piece inspected, graded, and guaranteed.
+          </p>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              href="#collection"
+              className="inline-flex items-center px-8 py-3 bg-white text-black text-sm font-medium uppercase tracking-wider hover:bg-white/90 transition-colors"
+            >
+              Shop All
+            </Link>
+            <Link
+              href="#grades"
+              className="inline-flex items-center px-8 py-3 border border-white/50 text-white text-sm font-medium uppercase tracking-wider hover:bg-white/10 transition-colors"
+            >
+              Grading Guide
+            </Link>
+          </div>
+        </div>
       </section>
 
-      {/* Trust Signals */}
-      <section className="py-12 border-b border-[var(--border)]">
-        <div className="max-w-[1500px] mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+      {/* Trust Signals — Clean horizontal row */}
+      <section className="py-8 border-b border-[var(--border)]">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
             {[
-              { icon: Shield, title: "Expert Authenticated", desc: "Every piece verified by our specialists" },
-              { icon: CheckCircle, title: "Quality Inspected", desc: "Thorough inspection and professional cleaning" },
-              { icon: Award, title: "30-Day Guarantee", desc: "Full satisfaction guarantee on every purchase" },
-            ].map(({ icon: Icon, title, desc }, i) => (
-              <motion.div
-                key={title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
-                className="flex flex-col items-center gap-3"
-              >
-                <Icon className="h-8 w-8 text-[var(--secondary)]" strokeWidth={1.5} />
-                <h3 className="text-sm tracking-wider uppercase font-medium">{title}</h3>
-                <p className="text-sm text-[var(--muted-foreground)]">{desc}</p>
-              </motion.div>
+              { icon: Shield, title: "Expert Authenticated", desc: "Verified by our specialists" },
+              { icon: CheckCircle, title: "Quality Inspected", desc: "Professional cleaning included" },
+              { icon: Award, title: "30-Day Guarantee", desc: "Full satisfaction guarantee" },
+            ].map(({ icon: Icon, title, desc }) => (
+              <div key={title} className="flex items-center justify-center gap-3">
+                <div className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center flex-shrink-0">
+                  <Icon className="h-4 w-4" strokeWidth={1.5} />
+                </div>
+                <div className="text-left">
+                  <p className="text-sm font-medium">{title}</p>
+                  <p className="text-xs text-[var(--muted-foreground)]">{desc}</p>
+                </div>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Products Section */}
-      <section className="py-16 md:py-24">
-        <div className="max-w-[1500px] mx-auto px-4">
-          {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--secondary)]/50" />
-              <div className="w-2 h-2 rotate-45 bg-[var(--secondary)]" />
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--secondary)]/50" />
+      {/* Collection — Grade Filter + Product Grid */}
+      <section id="collection" className="py-16 lg:py-24">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
+            <div>
+              <h2 className="text-2xl lg:text-3xl font-medium tracking-tight">Pre-Owned Collection</h2>
+              <p className="text-[var(--muted-foreground)] mt-1">
+                {isLoading ? "Loading..." : `${filteredProducts.length} pieces available`}
+              </p>
             </div>
-            <h2 className="text-3xl md:text-4xl tracking-wide">
-              Pre-Owned Collection
-            </h2>
-            <p className="text-muted-foreground mt-3">
-              {isLoading ? "Loading..." : `${filteredProducts.length} pieces available`}
-            </p>
-          </motion.div>
 
-          {/* Grade Filter Buttons */}
-          <div className="flex justify-center gap-3 mb-10 flex-wrap">
-            {(["all", "A", "B", "C"] as GradeFilter[]).map((grade) => (
-              <button
-                key={grade}
-                onClick={() => setGradeFilter(grade)}
-                className={`px-5 py-2 text-xs tracking-wider uppercase border transition-all ${
-                  gradeFilter === grade
-                    ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)]"
-                    : "bg-transparent text-[var(--foreground)] border-[var(--border)] hover:border-[var(--foreground)]"
-                }`}
-              >
-                {grade === "all" ? "All Grades" : `Grade ${grade}`}
-              </button>
-            ))}
+            {/* Grade Filter Pills */}
+            <div className="flex gap-2">
+              {(["all", "A", "B", "C"] as GradeFilter[]).map((grade) => (
+                <button
+                  key={grade}
+                  onClick={() => setGradeFilter(grade)}
+                  className={`px-4 py-2 text-xs font-medium uppercase tracking-wider border transition-all ${
+                    gradeFilter === grade
+                      ? "bg-[var(--foreground)] text-[var(--background)] border-[var(--foreground)]"
+                      : "border-[var(--border)] hover:border-[var(--foreground)]"
+                  }`}
+                >
+                  {grade === "all" ? "All" : `Grade ${grade}`}
+                </button>
+              ))}
+            </div>
           </div>
 
-          {/* Products Grid */}
+          {/* Products */}
           {isLoading ? (
-            <ProductsSkeleton />
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {[...Array(8)].map((_, i) => (
+                <div key={i}>
+                  <div className="aspect-[3/4] bg-[var(--surface)] animate-pulse" />
+                  <div className="pt-4 space-y-2">
+                    <div className="h-3 w-16 bg-[var(--surface)] animate-pulse" />
+                    <div className="h-4 w-28 bg-[var(--surface)] animate-pulse" />
+                    <div className="h-3 w-20 bg-[var(--surface)] animate-pulse" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : error ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-20">
-              <p className="text-muted-foreground">Unable to load products. Please try again later.</p>
-            </motion.div>
+            <div className="text-center py-20">
+              <p className="text-[var(--muted-foreground)]">Unable to load products. Please try again later.</p>
+            </div>
           ) : filteredProducts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20"
-            >
-              <div className="w-16 h-16 mx-auto mb-6 border border-[var(--secondary)]/30 rotate-45" />
-              <h3 className="text-2xl tracking-wide mb-3">Coming Soon</h3>
-              <p className="text-muted-foreground mb-6">
+            <div className="text-center py-20">
+              <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-[var(--border)] flex items-center justify-center">
+                <Shield className="h-6 w-6 text-[var(--muted-foreground)]" strokeWidth={1.5} />
+              </div>
+              <h3 className="text-xl font-light tracking-tight mb-2">Coming Soon</h3>
+              <p className="text-[var(--muted-foreground)] mb-8 max-w-sm mx-auto">
                 {gradeFilter === "all"
                   ? "Pre-owned pieces are being curated. Check back soon."
                   : `No Grade ${gradeFilter} pieces available right now.`}
               </p>
-              <Link href="/eyewear" className="btn-primary inline-block">
-                Browse All Eyewear
-              </Link>
-            </motion.div>
-          ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-              {filteredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.05,
-                    ease: [0.165, 0.84, 0.44, 1],
-                  }}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+                {gradeFilter !== "all" && (
+                  <button
+                    onClick={() => setGradeFilter("all")}
+                    className="px-8 py-3 bg-[var(--foreground)] text-[var(--background)] text-sm font-medium uppercase tracking-wider"
+                  >
+                    View All Grades
+                  </button>
+                )}
+                <Link
+                  href="/eyewear"
+                  className="px-8 py-3 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                 >
-                  <EnhancedProductCard product={product} />
-                </motion.div>
+                  Browse All Eyewear
+                </Link>
+              </div>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {filteredProducts.map((product, index) => (
+                <EnhancedProductCard key={product.id} product={product} index={index} />
               ))}
             </div>
           )}
         </div>
       </section>
 
-      {/* Grade Guide */}
-      <section className="py-16 bg-secondary">
-        <div className="max-w-[1500px] mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl tracking-wide mb-3">Our Grading System</h2>
-            <p className="text-muted-foreground">
+      {/* Grading System */}
+      <section id="grades" className="py-16 lg:py-24 bg-[var(--surface)]">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl lg:text-3xl font-medium tracking-tight mb-2">Our Grading System</h2>
+            <p className="text-[var(--muted-foreground)]">
               Every piece is carefully assessed and assigned a condition grade
             </p>
-          </motion.div>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            {(Object.entries(GRADE_INFO) as [string, { label: string; description: string }][]).map(
-              ([grade, info], i) => (
-                <motion.div
-                  key={grade}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 }}
-                  className="border border-[var(--border)] p-8 text-center"
-                >
-                  <div className="inline-flex items-center justify-center w-12 h-12 border border-[var(--foreground)] mb-4">
-                    <span className="text-lg font-medium">{grade}</span>
-                  </div>
-                  <h3 className="text-sm tracking-wider uppercase font-medium mb-3">{info.label}</h3>
-                  <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{info.description}</p>
-                </motion.div>
-              )
-            )}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+            {GRADES.map((grade) => (
+              <button
+                key={grade.key}
+                onClick={() => { setGradeFilter(grade.key); document.getElementById("collection")?.scrollIntoView({ behavior: "smooth" }); }}
+                className="group border border-[var(--border)] p-8 text-center hover:border-[var(--foreground)] transition-colors bg-[var(--background)]"
+              >
+                <div className="inline-flex items-center justify-center w-14 h-14 rounded-full border-2 border-[var(--foreground)] mb-4 group-hover:bg-[var(--foreground)] group-hover:text-[var(--background)] transition-colors">
+                  <span className="text-xl font-medium">{grade.key}</span>
+                </div>
+                <h3 className="text-sm font-medium uppercase tracking-wider mb-2">{grade.label}</h3>
+                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{grade.description}</p>
+              </button>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Bottom CTA */}
-      <section className="py-20 relative overflow-hidden">
-        <div className="max-w-[1500px] mx-auto px-4 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 mb-6">
-              <Star className="h-5 w-5 text-[var(--secondary)]" />
-              <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
-                Luxury for Less
-              </span>
+      {/* Sustainability Editorial — Split layout */}
+      <section className="py-16 lg:py-24">
+        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
+            <div className="relative aspect-[4/3] lg:aspect-auto">
+              <Image
+                src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=1200&q=80"
+                alt="Sustainable luxury eyewear"
+                fill
+                className="object-cover"
+              />
             </div>
-            <h2 className="text-3xl md:text-4xl tracking-wide mb-4">
-              Sustainable Luxury
-            </h2>
-            <p className="text-muted-foreground mb-8">
-              Give exceptional eyewear a second life. Same craftsmanship, remarkable value.
-            </p>
-            <Link href="/eyewear" className="btn-primary inline-block">
-              View All Eyewear
-            </Link>
-          </motion.div>
+            <div className="flex flex-col justify-center p-8 lg:p-16 bg-[#0a0a0a] text-white">
+              <p className="text-xs uppercase tracking-widest text-white/50 mb-4">Sustainable Luxury</p>
+              <h2 className="text-3xl lg:text-4xl font-light tracking-tight mb-4">
+                Give Exceptional Eyewear a Second Life
+              </h2>
+              <p className="text-white/60 leading-relaxed mb-8">
+                Every pre-owned piece we sell extends the lifecycle of premium craftsmanship.
+                Same designer quality, remarkable value, and a more sustainable choice.
+              </p>
+              <Link
+                href="/eyewear"
+                className="inline-flex items-center px-8 py-3 bg-white text-black text-sm font-medium uppercase tracking-wider hover:bg-white/90 transition-colors w-fit"
+              >
+                View All Eyewear
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
+
+      {/* Services */}
+      <ServicesGrid />
     </PageLayout>
   );
 }
