@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { useCategories, useCategoryProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 
@@ -113,7 +113,7 @@ export default function CategoryPage() {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
-        <div className="relative max-w-[1500px] mx-auto w-full px-6 lg:px-20 pb-12 lg:pb-16">
+        <div className="relative w-full w-full px-6 lg:px-20 pb-12 lg:pb-16">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs tracking-wider uppercase text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
@@ -134,7 +134,7 @@ export default function CategoryPage() {
 
       {/* Products */}
       <section className="py-20 lg:py-28 px-6 lg:px-20">
-        <div className="max-w-[1500px] mx-auto">
+        <div className="w-full">
           {/* Toolbar */}
           <div className="flex items-center justify-between mb-10 pb-6 border-b border-[var(--border)]">
             <p className="text-sm text-[var(--muted-foreground)]">
@@ -220,9 +220,9 @@ export default function CategoryPage() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
-              {displayProducts.map((product) => (
-                <EnhancedProductCard key={product.id} product={product} />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+              {displayProducts.map((product, index) => (
+                <ListingProductCard key={product.id} product={product} index={index} />
               ))}
             </div>
           )}
@@ -232,7 +232,7 @@ export default function CategoryPage() {
       {/* Related Categories */}
       {categoriesData?.product_categories && categoriesData.product_categories.length > 1 && (
         <section className="py-16 lg:py-20 px-6 lg:px-20 border-t border-[var(--border)]">
-          <div className="max-w-[1500px] mx-auto">
+          <div className="w-full">
             <h2 className="text-sm font-medium tracking-wider uppercase text-[var(--muted-foreground)] mb-8">
               More Categories
             </h2>

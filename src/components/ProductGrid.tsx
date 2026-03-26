@@ -1,6 +1,6 @@
 "use client";
 
-import { EnhancedProductCard } from "./EnhancedProductCard";
+import { ListingProductCard } from "./ListingProductCard";
 import type { DisplayProduct } from "@/lib/transforms";
 
 interface ProductGridProps {
@@ -13,22 +13,23 @@ export function ProductGrid({ products, title, subtitle }: ProductGridProps) {
   return (
     <div>
       {(title || subtitle) && (
-        <div className="text-center mb-12">
-          {subtitle && (
-            <p className="font-serif text-gold tracking-[0.3em] uppercase text-sm mb-3">
-              {subtitle}
-            </p>
-          )}
+        <div className="mb-8">
           {title && (
-            <h2 className="font-display text-3xl md:text-4xl tracking-wide">
+            <h2
+              className="text-2xl lg:text-3xl"
+              style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+            >
               {title}
             </h2>
           )}
+          {subtitle && (
+            <p className="text-sm text-[#666] mt-1">{subtitle}</p>
+          )}
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {products.map((product, index) => (
-          <EnhancedProductCard key={product.id} product={product} index={index} />
+          <ListingProductCard key={product.id} product={product} index={index} />
         ))}
       </div>
     </div>

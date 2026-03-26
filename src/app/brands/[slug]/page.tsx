@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown, ArrowRight, ExternalLink, Crown, Star, Package } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { useBrandBySlug, useProducts } from "@/lib/hooks";
 import { resolveImageUrl } from "@/lib/api";
 import { transformProducts } from "@/lib/transforms";
@@ -190,7 +190,7 @@ export default function BrandDetailPage() {
 
         {/* Product Grid */}
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="animate-pulse">
                 <div className="aspect-[3/4] bg-neutral-100" />
@@ -203,9 +203,9 @@ export default function BrandDetailPage() {
             ))}
           </div>
         ) : displayProducts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-            {displayProducts.map((product) => (
-              <EnhancedProductCard key={product.id} product={product} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {displayProducts.map((product, index) => (
+              <ListingProductCard key={product.id} product={product} index={index} />
             ))}
           </div>
         ) : (

@@ -5,7 +5,7 @@ import { ChevronDown, X, SlidersHorizontal, Grid3X3, LayoutGrid, Check } from "l
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { useProducts, useBrands } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { priceFromMinor } from "@/lib/schemas";
@@ -191,7 +191,7 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
 export default function EyewearPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [gridCols, setGridCols] = useState<3 | 4>(4);
+  const [gridCols, setGridCols] = useState<3 | 4>(3);
   const [quickFilter, setQuickFilter] = useState("");
 
   // Filters state
@@ -402,9 +402,12 @@ export default function EyewearPage() {
 
       <main>
         {/* Page Header */}
-        <section className="bg-[var(--surface)] border-b border-[var(--border)]">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 py-8">
-            <h1 className="text-3xl font-bold mb-2">{productConfig.catalogTitle}</h1>
+        <section className="border-b border-[#E5E5E5]">
+          <div className="px-4 lg:px-6 py-8">
+            <h1
+              className="text-3xl"
+              style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+            >{productConfig.catalogTitle}</h1>
             <p className="text-[var(--muted-foreground)]">
               {productsData?.total && brandsData?.brands?.length
                 ? `${productsData.total} products across ${brandsData.brands.length} brands`
@@ -431,8 +434,8 @@ export default function EyewearPage() {
         </section>
 
         {/* Toolbar */}
-        <div className="sticky top-[72px] z-30 bg-[var(--background)] border-b border-[var(--border)]">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 py-3">
+        <div className="sticky top-[60px] z-30 bg-white border-b border-[#E5E5E5]">
+          <div className="px-4 lg:px-6 py-3">
             <div className="flex items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 {hasFiltersToShow && (
@@ -531,7 +534,7 @@ export default function EyewearPage() {
         </div>
 
         {/* Main Content */}
-        <div className="max-w-7xl mx-auto flex">
+        <div className="flex">
           {hasFiltersToShow && (
             <aside className="hidden lg:block w-64 flex-shrink-0 px-4 lg:px-8 py-8 border-r border-[var(--border)]">
               <FilterContent />
@@ -576,7 +579,7 @@ export default function EyewearPage() {
             ) : (
               <div className={`grid grid-cols-2 ${gridCols === 3 ? "lg:grid-cols-3" : "lg:grid-cols-4"} gap-6 lg:gap-8`}>
                 {displayProducts.map((product, index) => (
-                  <EnhancedProductCard key={product.id} product={product} index={index} />
+                  <ListingProductCard key={product.id} product={product} index={index} />
                 ))}
               </div>
             )}
@@ -589,20 +592,6 @@ export default function EyewearPage() {
               </div>
             )}
           </section>
-        </div>
-
-        {/* Trust Band */}
-        <div className="border-t border-[var(--border)] bg-[var(--surface)]">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              {content.trustBandCatalog.map((item) => (
-                <div key={item.label} className="flex items-center gap-2">
-                  <item.icon className="h-4 w-4 text-[var(--success)]" />
-                  <span>{item.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
 
         {/* Mobile Filters Drawer */}

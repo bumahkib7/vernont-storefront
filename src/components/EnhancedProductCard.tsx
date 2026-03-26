@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Heart, Plus } from "lucide-react";
+import { Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -15,9 +15,7 @@ interface EnhancedProductCardProps {
 }
 
 export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
   const router = useRouter();
@@ -25,27 +23,7 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
   const isWishlisted = isInWishlist(product.id);
   const productUrl = `/product/${product.handle || product.id}`;
 
-  const handleCardClick = () => {
-    router.push(productUrl);
-  };
-
-  const handleAddToCart = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const variantId = product.variantId || product.variants[0]?.id;
-    if (!variantId) {
-      console.error("No variant ID available for product:", product.id);
-      return;
-    }
-    setIsAddingToCart(true);
-    try {
-      await addItem(variantId, 1);
-    } catch (err) {
-      console.error("Failed to add to cart:", err);
-    } finally {
-      setIsAddingToCart(false);
-    }
-  };
+  const handleCardClick = () => router.push(productUrl);
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -55,98 +33,48 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.15, delay: index * 0.05 }}
+      transition={{ duration: 0.15, delay: index * 0.03 }}
     >
       <div
-        className="group relative cursor-pointer card-interactive p-0 overflow-hidden"
+        className="group cursor-pointer text-center"
         onClick={handleCardClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Image Container */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-[var(--surface)]">
-          {/* Skeleton loader */}
+        {/* Image — SGH style: completely frameless, product floating on white */}
+        <div className="relative aspect-[3/2] overflow-hidden mb-3">
           {!isImageLoaded && (
-            <div className="absolute inset-0 bg-[var(--surface)] animate-pulse" />
+            <div className="absolute inset-0 bg-[#FAFAFA] animate-pulse" />
           )}
-
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className={`object-cover transition-transform duration-300 ${
-              isHovered ? "scale-105" : "scale-100"
-            } ${isImageLoaded ? "opacity-100" : "opacity-0"}`}
+            className={`object-contain p-2 transition-transform duration-300 group-hover:scale-105 ${
+              isImageLoaded ? "opacity-100" : "opacity-0"
+            }`}
             onLoad={() => setIsImageLoaded(true)}
           />
 
-          {/* Wishlist Button */}
-          <button
-            onClick={handleToggleWishlist}
-            className="absolute top-3 left-3 w-8 h-8 rounded-sm bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-white transition-colors duration-150"
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart
-              className={`h-4 w-4 transition-colors ${
-                isWishlisted ? "fill-[var(--destructive)] text-[var(--destructive)]" : "text-[var(--muted-foreground)]"
-              }`}
-            />
-          </button>
-
-          {/* Badges */}
-          <div className="absolute top-3 right-3 flex flex-col gap-1.5">
-            {product.isNew && (
-              <span className="badge badge-new">New</span>
-            )}
-            {product.isBestseller && (
-              <span className="badge badge-bestseller">Bestseller</span>
-            )}
-            {product.originalPrice && product.originalPrice > product.price && (
-              <span className="badge badge-sale">Sale</span>
-            )}
-            {product.isPreOwned && product.conditionGrade && (
-              <span className="inline-block px-2 py-0.5 text-[10px] font-medium tracking-wider uppercase bg-[var(--foreground)] text-[var(--background)] rounded-sm">
-                Grade {product.conditionGrade}
-              </span>
-            )}
-          </div>
+          {/* No overlays — SGH keeps product images completely clean */}
         </div>
 
-        {/* Product Info */}
-        <div className="p-4 space-y-1.5">
-          {/* Brand */}
-          <p className="text-[11px] tracking-[0.1em] font-medium text-[var(--muted-foreground)] uppercase">
+        {/* Product info — SGH style: brand, price, SHOP NOW */}
+        <div className="space-y-0.5">
+          <p className="text-[12px] font-medium uppercase tracking-[0.05em] text-[#1A1A1A]">
             {product.brand}
           </p>
-
-          {/* Name */}
-          <h3 className="font-medium text-[var(--foreground)] line-clamp-2 leading-snug">
-            {product.name}
-          </h3>
-
-          {/* Price */}
-          <div className="flex items-center gap-2">
-            <span className={`price tabular-nums ${product.originalPrice && product.originalPrice > product.price ? "price-sale" : ""}`}>
-              {formatPriceMajor(product.price, currency)}
-            </span>
-            {product.originalPrice && product.originalPrice > product.price && (
-              <span className="price-sm price-original tabular-nums">
-                {formatPriceMajor(product.originalPrice, currency)}
-              </span>
-            )}
-          </div>
-
-          {/* Add to Bag Button */}
-          <button
-            onClick={handleAddToCart}
-            disabled={isAddingToCart}
-            className="w-full btn-primary btn-sm flex items-center justify-center gap-2 mt-2"
-          >
-            <Plus className="h-4 w-4" />
-            {isAddingToCart ? "Adding..." : "Add to Bag"}
-          </button>
+          <p className="text-[13px] font-medium tabular-nums text-[#1A1A1A]">
+            {formatPriceMajor(product.price, currency)}
+          </p>
+          {product.originalPrice && product.originalPrice > product.price && (
+            <p className="text-[12px] text-[#999] line-through tabular-nums">
+              {formatPriceMajor(product.originalPrice, currency)}
+            </p>
+          )}
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] underline underline-offset-4 text-[#1A1A1A] pt-1 hover:opacity-60 transition-opacity">
+            Shop Now
+          </p>
         </div>
       </div>
     </motion.div>

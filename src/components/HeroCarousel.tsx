@@ -42,7 +42,7 @@ export function HeroCarousel({ slides, className }: HeroCarouselProps) {
         <CarouselContent className="ml-0">
           {slides.map((slide, i) => (
             <CarouselItem key={i} className="pl-0 relative">
-              <div className="relative h-[70vh] min-h-[500px] max-h-[800px] w-full">
+              <div className="relative h-[60vh] sm:h-[65vh] lg:h-[75vh] min-h-[400px] max-h-[800px] w-full">
                 <Image
                   src={slide.image}
                   alt={slide.headline}
@@ -50,27 +50,29 @@ export function HeroCarousel({ slides, className }: HeroCarouselProps) {
                   className="object-cover"
                   priority={i === 0}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+                {/* Subtle gradient at bottom-left for text legibility */}
+                <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
 
-                <div className="absolute inset-0 flex items-end">
-                  <div className="max-w-[1500px] w-full mx-auto px-6 lg:px-20 pb-16 lg:pb-24">
-                    <h2 className="text-4xl sm:text-5xl lg:text-6xl text-white font-light tracking-tight mb-3 max-w-xl">
+                {/* Text — bottom LEFT, SGH style */}
+                <div className="absolute bottom-0 left-0 right-0">
+                  <div className="max-w-[1280px] mx-auto px-6 lg:px-8 pb-12 lg:pb-16">
+                    <h2
+                      className="text-3xl sm:text-4xl lg:text-5xl text-white mb-2"
+                      style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                    >
                       {slide.headline}
                     </h2>
-                    <p className="text-lg text-white/80 mb-8 max-w-md">
+                    <p className="text-sm text-white/80 mb-4 max-w-md">
                       {slide.subtext}
                     </p>
-                    <div className="flex flex-wrap gap-3">
+                    {/* CTA links — underlined, uppercase, SGH style */}
+                    <div className="flex items-center gap-4">
                       {slide.ctas.map((cta) => (
                         <Link
                           key={cta.label}
                           href={cta.href}
-                          className={cn(
-                            "inline-flex items-center px-8 py-3 text-sm font-medium uppercase tracking-wider transition-colors",
-                            cta.variant === "primary"
-                              ? "bg-white text-black hover:bg-white/90"
-                              : "border border-white/50 text-white hover:bg-white/10"
-                          )}
+                          className="text-sm text-white font-medium uppercase tracking-wider underline underline-offset-4 decoration-white/60 hover:decoration-white transition-colors"
                         >
                           {cta.label}
                         </Link>
@@ -83,22 +85,7 @@ export function HeroCarousel({ slides, className }: HeroCarouselProps) {
           ))}
         </CarouselContent>
 
-        {/* Dot indicators */}
-        {slides.length > 1 && (
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-10">
-            {slides.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => api?.scrollTo(i)}
-                className={cn(
-                  "h-1.5 rounded-full transition-all duration-300",
-                  i === current ? "w-8 bg-white" : "w-1.5 bg-white/50 hover:bg-white/70"
-                )}
-                aria-label={`Go to slide ${i + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        {/* No dot indicators — SGH doesn't show them */}
       </Carousel>
     </section>
   );

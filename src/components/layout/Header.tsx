@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, ShoppingBag, Heart, Menu, X, ChevronDown, User, Loader2 } from "lucide-react";
+import { Search, Heart, Menu, X, ChevronLeft, ChevronRight, User, Loader2, ShoppingBag } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -27,7 +27,7 @@ export function Header() {
   const { itemCount, openCart } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
   const { storeName } = useStoreBranding();
-  const { mainNav, isLoading: navLoading } = useNavigation();
+  const { mainNav } = useNavigation();
 
   // Debounced search
   useEffect(() => {
@@ -35,7 +35,6 @@ export function Header() {
       setSearchResults([]);
       return;
     }
-
     const timer = setTimeout(async () => {
       setSearchLoading(true);
       try {
@@ -47,11 +46,9 @@ export function Header() {
         setSearchLoading(false);
       }
     }, 300);
-
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Close search results when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -68,6 +65,7 @@ export function Header() {
       router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
       setShowResults(false);
       setSearchQuery("");
+      setSearchOpen(false);
     }
   };
 
@@ -75,298 +73,227 @@ export function Header() {
     router.push(`/product/${handle}`);
     setShowResults(false);
     setSearchQuery("");
+    setSearchOpen(false);
   };
 
   const handleMouseEnter = (label: string) => {
-    if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current);
-    }
+    if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current);
     setActiveDropdown(label);
   };
 
   const handleMouseLeave = () => {
-    dropdownTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null);
-    }, 150);
+    dropdownTimeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
   };
 
   useEffect(() => {
-    return () => {
-      if (dropdownTimeoutRef.current) {
-        clearTimeout(dropdownTimeoutRef.current);
-      }
-    };
+    return () => { if (dropdownTimeoutRef.current) clearTimeout(dropdownTimeoutRef.current); };
   }, []);
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="bg-[var(--foreground)] text-[var(--background)] text-center py-2 px-4 text-sm">
-        <span>Free shipping over £75</span>
-        <span className="mx-2">•</span>
-        <span>30-day returns</span>
-        <span className="mx-2">•</span>
-        <span>100% authentic</span>
+      {/* === Row 1: Promo banner with arrows — SGH style === */}
+      <div className="bg-[#F5F5F5] border-b border-[#E5E5E5]">
+        <div className="max-w-[1280px] mx-auto flex items-center justify-between px-4 py-2">
+          <button className="p-1 text-[#1A1A1A] hover:opacity-60" aria-label="Previous promo">
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <p className="text-xs text-[#1A1A1A] tracking-wide">
+            30% off second pair. Applied at checkout on full priced styles | T&Cs apply
+          </p>
+          <button className="p-1 text-[#1A1A1A] hover:opacity-60" aria-label="Next promo">
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
       </div>
 
-      {/* Main Header */}
-      <header className="sticky top-0 z-40 bg-[var(--background)] border-b border-[var(--border)]">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-4 lg:px-8">
-          {/* Left: Logo + Nav */}
-          <div className="flex items-center gap-8">
-            {/* Mobile Menu Button */}
+      {/* === Row 2: Utility links — SGH style === */}
+      <div className="hidden lg:block bg-white border-b border-[#E5E5E5]">
+        <div className="max-w-[1280px] mx-auto flex items-center justify-end gap-6 px-4 py-1.5">
+          {[
+            { label: "Get support", href: "/contact" },
+            { label: "Order status", href: "/account/orders" },
+            { label: "Our services", href: "/faq" },
+            { label: "UK", href: "#" },
+          ].map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              className="text-[11px] text-[#1A1A1A] hover:underline"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* === Row 3: Main header — logo left, nav center, icons right === */}
+      <header className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5]">
+        <div className="max-w-[1280px] mx-auto flex items-center justify-between h-[60px] px-4 lg:px-6">
+          {/* Left: Mobile menu + Logo */}
+          <div className="flex items-center gap-4 min-w-[180px]">
             <button
               onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-2 -ml-2 hover:bg-[var(--surface)] rounded-md transition-colors"
+              className="lg:hidden p-1"
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5" />
             </button>
-
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <span
-                className="text-xl font-semibold tracking-[0.25em] uppercase"
-              >
-                {storeName || "Vernont"}
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#1A1A1A]" />
+              <span className="text-base font-normal tracking-wide" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                {storeName?.toLowerCase() || "vernont"}
               </span>
             </Link>
-
-            {/* Desktop Nav */}
-            <div className="hidden lg:flex items-center gap-1">
-              {mainNav.map((item) => (
-                <div
-                  key={item.label}
-                  className="relative"
-                  onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.label)}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors rounded-md"
-                  >
-                    {item.label}
-                    {item.hasDropdown && (
-                      <ChevronDown className={`w-4 h-4 transition-transform ${activeDropdown === item.label ? "rotate-180" : ""}`} />
-                    )}
-                  </Link>
-
-                  {/* Dropdown */}
-                  <AnimatePresence>
-                    {item.hasDropdown && activeDropdown === item.label && item.dropdownItems && (
-                      <motion.div
-                        initial={{ opacity: 0, y: 8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 8 }}
-                        transition={{ duration: 0.15 }}
-                        className="absolute top-full left-0 mt-1 w-56 bg-[var(--background)] border border-[var(--border)] rounded-sm shadow-lg overflow-hidden z-50"
-                        onMouseEnter={() => handleMouseEnter(item.label)}
-                        onMouseLeave={handleMouseLeave}
-                      >
-                        <div className="py-2">
-                          {item.dropdownItems.map((dropdownItem) => (
-                            <Link
-                              key={dropdownItem.href}
-                              href={dropdownItem.href}
-                              className="block px-4 py-2 text-sm text-[var(--foreground)] hover:bg-[var(--surface)] hover:text-[var(--primary)] transition-colors"
-                              onClick={() => setActiveDropdown(null)}
-                            >
-                              {dropdownItem.label}
-                            </Link>
-                          ))}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </div>
           </div>
 
-          {/* Right: Search + Icons */}
-          <div className="flex items-center gap-2">
-            {/* Search Bar (Desktop) */}
-            <div className="hidden md:flex items-center" ref={searchRef}>
-              <form onSubmit={handleSearchSubmit} className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--muted-foreground)]" />
-                <input
-                  type="text"
-                  placeholder={productConfig.searchPlaceholder}
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onFocus={() => setShowResults(true)}
-                  className="w-64 pl-10 pr-10 py-2 text-sm bg-[var(--surface)] border border-[var(--border)] rounded-sm focus:outline-none focus:border-[var(--foreground)] focus:ring-0 transition-all"
-                />
-                {searchLoading && (
-                  <Loader2 className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 animate-spin text-[var(--muted-foreground)]" />
-                )}
+          {/* Center: Desktop Nav — SGH style uppercase, spaced */}
+          <nav className="hidden lg:flex items-center gap-1">
+            {mainNav.map((item) => (
+              <div
+                key={item.label}
+                className="relative"
+                onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.label)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Link
+                  href={item.href}
+                  className="px-4 py-2 text-[13px] font-medium uppercase tracking-[0.12em] text-[#1A1A1A] hover:opacity-60 transition-opacity whitespace-nowrap"
+                  style={{ fontFamily: "'Manrope', sans-serif" }}
+                >
+                  {item.label}
+                </Link>
 
-                {/* Search Results Dropdown */}
                 <AnimatePresence>
-                  {showResults && searchQuery.length >= 2 && (
+                  {item.hasDropdown && activeDropdown === item.label && item.dropdownItems && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8 }}
+                      initial={{ opacity: 0, y: 4 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 8 }}
-                      transition={{ duration: 0.15 }}
-                      className="absolute top-full left-0 right-0 mt-2 bg-[var(--background)] border border-[var(--border)] rounded-lg shadow-lg overflow-hidden z-50"
+                      exit={{ opacity: 0, y: 4 }}
+                      transition={{ duration: 0.12 }}
+                      className="absolute top-full left-0 mt-0 w-52 bg-white border border-[#E5E5E5] shadow-lg z-50"
+                      onMouseEnter={() => handleMouseEnter(item.label)}
+                      onMouseLeave={handleMouseLeave}
                     >
-                      {searchResults.length > 0 ? (
-                        <div className="py-2">
-                          {searchResults.map((product) => (
-                            <button
-                              key={product.id}
-                              type="button"
-                              onClick={() => handleProductClick(product.handle || product.id)}
-                              className="flex items-center gap-3 w-full px-4 py-2 text-left hover:bg-[var(--surface)] transition-colors"
-                            >
-                              {product.thumbnail ? (
-                                <img
-                                  src={product.thumbnail}
-                                  alt=""
-                                  className="w-10 h-10 object-cover rounded"
-                                />
-                              ) : (
-                                <div className="w-10 h-10 bg-[var(--surface)] rounded flex items-center justify-center text-xs text-[var(--muted-foreground)]">
-                                  No img
-                                </div>
-                              )}
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{product.title}</p>
-                                {product.brand && (
-                                  <p className="text-xs text-[var(--muted-foreground)]">{product.brand}</p>
-                                )}
-                              </div>
-                            </button>
-                          ))}
-                          <div className="border-t border-[var(--border)] mt-2 pt-2 px-4 pb-2">
-                            <button
-                              type="submit"
-                              className="text-sm text-[var(--primary)] hover:underline"
-                            >
-                              View all results for "{searchQuery}"
-                            </button>
-                          </div>
-                        </div>
-                      ) : !searchLoading ? (
-                        <div className="px-4 py-6 text-center text-sm text-[var(--muted-foreground)]">
-                          No products found for "{searchQuery}"
-                        </div>
-                      ) : null}
+                      <div className="py-1">
+                        {item.dropdownItems.map((dropdownItem) => (
+                          <Link
+                            key={dropdownItem.href}
+                            href={dropdownItem.href}
+                            className="block px-5 py-2.5 text-[13px] text-[#1A1A1A] hover:bg-[#F5F5F5] transition-colors"
+                            onClick={() => setActiveDropdown(null)}
+                          >
+                            {dropdownItem.label}
+                          </Link>
+                        ))}
+                      </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </form>
-            </div>
+              </div>
+            ))}
+          </nav>
 
-            {/* Search Button (Mobile) */}
+          {/* Right: Icons only — SGH style */}
+          <div className="flex items-center gap-4 min-w-[180px] justify-end">
+            {/* Search icon */}
             <button
               onClick={() => setSearchOpen(true)}
-              className="md:hidden p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
+              className="p-1 hover:opacity-60 transition-opacity"
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Account */}
-            <Link
-              href="/account"
-              className="hidden sm:flex p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
-              aria-label="Account"
-            >
-              <User className="w-5 h-5" />
-            </Link>
-
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="relative p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
+              className="relative p-1 hover:opacity-60 transition-opacity hidden sm:block"
               aria-label="Wishlist"
             >
               <Heart className="w-5 h-5" />
               {wishlistCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[var(--primary)] text-white text-[10px] font-medium flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1A1A1A] text-white text-[9px] font-medium flex items-center justify-center rounded-full">
                   {wishlistCount > 9 ? "9+" : wishlistCount}
                 </span>
               )}
             </Link>
 
-            {/* Cart */}
+            {/* Account */}
+            <Link
+              href="/account"
+              className="p-1 hover:opacity-60 transition-opacity hidden sm:block"
+              aria-label="Account"
+            >
+              <User className="w-5 h-5" />
+            </Link>
+
+            {/* Bag */}
             <button
               onClick={openCart}
-              className="relative p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
+              className="relative p-1 hover:opacity-60 transition-opacity"
               aria-label="Shopping bag"
             >
               <ShoppingBag className="w-5 h-5" />
               {itemCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[var(--primary)] text-white text-[10px] font-medium flex items-center justify-center rounded-full">
+                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1A1A1A] text-white text-[9px] font-medium flex items-center justify-center rounded-full">
                   {itemCount > 9 ? "9+" : itemCount}
                 </span>
               )}
             </button>
           </div>
-        </nav>
+        </div>
       </header>
 
-      {/* Mobile Menu */}
+      {/* === Mobile Menu === */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
-            {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 bg-black/50"
+              className="fixed inset-0 z-50 bg-black/40"
               onClick={() => setMobileMenuOpen(false)}
             />
-
-            {/* Menu Panel */}
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.25 }}
-              className="fixed top-0 left-0 bottom-0 z-50 w-80 max-w-[85vw] bg-[var(--background)] shadow-xl"
+              className="fixed top-0 left-0 bottom-0 z-50 w-80 max-w-[85vw] bg-white"
             >
               <div className="flex flex-col h-full">
-                {/* Menu Header */}
-                <div className="flex items-center justify-between h-16 px-4 border-b border-[var(--border)]">
-                  <span
-                    className="text-lg font-semibold tracking-[0.25em] uppercase"
-                  >
-                    {storeName || "Vernont"}
-                  </span>
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
-                    aria-label="Close menu"
-                  >
+                <div className="flex items-center justify-between h-14 px-4 border-b border-[#E5E5E5]">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2.5 h-2.5 rounded-full bg-[#1A1A1A]" />
+                    <span className="text-sm tracking-wide" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                      {storeName?.toLowerCase() || "vernont"}
+                    </span>
+                  </div>
+                  <button onClick={() => setMobileMenuOpen(false)} className="p-1" aria-label="Close menu">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
-
-                {/* Menu Content */}
-                <div className="flex-1 overflow-y-auto py-4">
+                <div className="flex-1 overflow-y-auto">
                   {mainNav.map((item) => (
-                    <div key={item.label} className="mb-2">
+                    <div key={item.label} className="border-b border-[#F0F0F0]">
                       <Link
                         href={item.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block px-4 py-3 text-lg font-medium hover:bg-[var(--surface)] transition-colors"
+                        className="block px-5 py-4 text-[13px] font-medium uppercase tracking-[0.12em] hover:bg-[#F5F5F5]"
                       >
                         {item.label}
                       </Link>
                       {item.dropdownItems && (
-                        <div className="ml-4 border-l border-[var(--border)]">
-                          {item.dropdownItems.map((subItem) => (
+                        <div className="bg-[#FAFAFA]">
+                          {item.dropdownItems.map((sub) => (
                             <Link
-                              key={subItem.href}
-                              href={subItem.href}
+                              key={sub.href}
+                              href={sub.href}
                               onClick={() => setMobileMenuOpen(false)}
-                              className="block px-4 py-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] hover:bg-[var(--surface)] transition-colors"
+                              className="block px-8 py-3 text-[12px] text-[#666] hover:text-[#1A1A1A] hover:bg-[#F0F0F0]"
                             >
-                              {subItem.label}
+                              {sub.label}
                             </Link>
                           ))}
                         </div>
@@ -374,31 +301,10 @@ export function Header() {
                     </div>
                   ))}
                 </div>
-
-                {/* Menu Footer */}
-                <div className="border-t border-[var(--border)] p-4 space-y-2">
-                  <Link
-                    href="/account"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center gap-3 px-4 py-2 text-sm hover:bg-[var(--surface)] rounded-md transition-colors"
-                  >
-                    <User className="w-4 h-4" />
-                    Account
-                  </Link>
-                  <Link
-                    href="/contact"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                  >
-                    Contact Us
-                  </Link>
-                  <Link
-                    href="/faq"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="block px-4 py-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
-                  >
-                    Help & FAQ
-                  </Link>
+                <div className="border-t border-[#E5E5E5] p-4 space-y-3 text-[12px] text-[#666]">
+                  <Link href="/contact" onClick={() => setMobileMenuOpen(false)} className="block hover:text-[#1A1A1A]">Get support</Link>
+                  <Link href="/account/orders" onClick={() => setMobileMenuOpen(false)} className="block hover:text-[#1A1A1A]">Order status</Link>
+                  <Link href="/account" onClick={() => setMobileMenuOpen(false)} className="block hover:text-[#1A1A1A]">My Account</Link>
                 </div>
               </div>
             </motion.div>
@@ -406,7 +312,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* Mobile Search Overlay */}
+      {/* === Search Overlay — full screen === */}
       <AnimatePresence>
         {searchOpen && (
           <motion.div
@@ -414,118 +320,68 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="fixed inset-0 z-50 bg-[var(--background)]"
+            className="fixed inset-0 z-50 bg-white"
           >
             <div className="flex flex-col h-full">
               <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (searchQuery.trim()) {
-                    router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-                    setSearchOpen(false);
-                    setSearchQuery("");
-                  }
-                }}
-                className="flex items-center h-16 px-4 border-b border-[var(--border)] gap-3"
+                onSubmit={handleSearchSubmit}
+                className="flex items-center h-14 px-4 border-b border-[#E5E5E5] gap-3"
               >
-                <Search className="w-5 h-5 text-[var(--muted-foreground)]" />
+                <Search className="w-5 h-5 text-[#999]" />
                 <input
                   type="text"
                   placeholder={productConfig.searchPlaceholder}
                   autoFocus
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 bg-transparent text-lg outline-none placeholder:text-[var(--muted-foreground)]"
+                  className="flex-1 bg-transparent text-base outline-none placeholder:text-[#999]"
                 />
-                {searchLoading && (
-                  <Loader2 className="w-5 h-5 animate-spin text-[var(--muted-foreground)]" />
-                )}
+                {searchLoading && <Loader2 className="w-5 h-5 animate-spin text-[#999]" />}
                 <button
                   type="button"
-                  onClick={() => {
-                    setSearchOpen(false);
-                    setSearchQuery("");
-                    setSearchResults([]);
-                  }}
-                  className="p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
+                  onClick={() => { setSearchOpen(false); setSearchQuery(""); setSearchResults([]); }}
+                  className="p-1"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </form>
-
-              <div className="flex-1 overflow-y-auto p-4">
+              <div className="flex-1 overflow-y-auto p-4" ref={searchRef}>
                 {searchQuery.length >= 2 ? (
                   searchResults.length > 0 ? (
-                    <div className="space-y-2">
-                      <p className="text-sm text-[var(--muted-foreground)] mb-4">
-                        {searchResults.length} results for "{searchQuery}"
-                      </p>
+                    <div className="space-y-1">
+                      <p className="text-xs text-[#999] mb-4">{searchResults.length} results</p>
                       {searchResults.map((product) => (
                         <button
                           key={product.id}
-                          onClick={() => {
-                            router.push(`/product/${product.handle || product.id}`);
-                            setSearchOpen(false);
-                            setSearchQuery("");
-                            setSearchResults([]);
-                          }}
-                          className="flex items-center gap-3 w-full p-3 text-left bg-[var(--surface)] rounded-lg hover:bg-[var(--border)] transition-colors"
+                          onClick={() => handleProductClick(product.handle || product.id)}
+                          className="flex items-center gap-3 w-full p-3 text-left hover:bg-[#F5F5F5] transition-colors"
                         >
                           {product.thumbnail ? (
-                            <img
-                              src={product.thumbnail}
-                              alt=""
-                              className="w-12 h-12 object-cover rounded"
-                            />
+                            <img src={product.thumbnail} alt="" className="w-12 h-12 object-contain" />
                           ) : (
-                            <div className="w-12 h-12 bg-[var(--border)] rounded flex items-center justify-center text-xs text-[var(--muted-foreground)]">
-                              No img
-                            </div>
+                            <div className="w-12 h-12 bg-[#F5F5F5] flex items-center justify-center text-[10px] text-[#999]">No img</div>
                           )}
                           <div className="flex-1 min-w-0">
-                            <p className="font-medium truncate">{product.title}</p>
-                            {product.brand && (
-                              <p className="text-sm text-[var(--muted-foreground)]">{product.brand}</p>
-                            )}
+                            <p className="text-sm truncate">{product.title}</p>
+                            {product.brand && <p className="text-xs text-[#999]">{product.brand}</p>}
                           </div>
                         </button>
                       ))}
-                      <button
-                        onClick={() => {
-                          router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-                          setSearchOpen(false);
-                          setSearchQuery("");
-                          setSearchResults([]);
-                        }}
-                        className="w-full py-3 text-center text-[var(--primary)] font-medium hover:underline"
-                      >
-                        View all results
-                      </button>
                     </div>
                   ) : !searchLoading ? (
-                    <div className="text-center text-[var(--muted-foreground)] mt-12">
-                      No products found for "{searchQuery}"
-                    </div>
+                    <div className="text-center text-[#999] mt-12 text-sm">No results found</div>
                   ) : (
-                    <div className="text-center text-[var(--muted-foreground)] mt-12">
-                      Searching...
-                    </div>
+                    <div className="text-center text-[#999] mt-12 text-sm">Searching...</div>
                   )
                 ) : (
-                  <div className="space-y-6">
-                    <div>
-                      <h3 className="text-sm font-medium text-[var(--muted-foreground)] mb-3">Popular Searches</h3>
-                      <div className="flex flex-wrap gap-2">
-                        {productConfig.popularSearches.slice(0, 5).map((term) => (
-                          <button
-                            key={term}
-                            onClick={() => setSearchQuery(term)}
-                            className="px-4 py-2 bg-[var(--surface)] rounded-full text-sm hover:bg-[var(--border)] transition-colors"
-                          >
-                            {term}
-                          </button>
-                        ))}
-                      </div>
+                  <div>
+                    <h3 className="text-xs font-medium uppercase tracking-wider text-[#999] mb-3">Popular Searches</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {productConfig.popularSearches.slice(0, 5).map((term) => (
+                        <button key={term} onClick={() => setSearchQuery(term)} className="px-4 py-2 bg-[#F5F5F5] text-sm hover:bg-[#E5E5E5] transition-colors">
+                          {term}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 )}

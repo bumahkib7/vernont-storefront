@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Heart, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { Button } from "@/components/ui/button";
 import { useWishlist } from "@/context/WishlistContext";
 import { useProducts } from "@/lib/hooks";
@@ -14,7 +14,7 @@ import { transformProducts } from "@/lib/transforms";
 // Loading skeleton
 function ProductsSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {[...Array(4)].map((_, i) => (
         <div key={i} className="animate-pulse">
           <div className="aspect-[3/4] bg-secondary" />
@@ -48,7 +48,7 @@ export default function WishlistPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-[1500px] mx-auto px-4 py-16">
+      <div className="px-4 py-16">
         <div className="text-center mb-12">
           <motion.div
             initial={{ scale: 0 }}
@@ -104,9 +104,9 @@ export default function WishlistPage() {
           </motion.div>
         ) : (
           <>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
               {wishlistProducts.map((product, index) => (
-                <EnhancedProductCard key={product.id} product={product} index={index} />
+                <ListingProductCard key={product.id} product={product} index={index} />
               ))}
             </div>
 

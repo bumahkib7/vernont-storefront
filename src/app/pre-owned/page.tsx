@@ -7,7 +7,7 @@ import { Shield, CheckCircle, Award } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { ServicesGrid } from "@/components/ServicesGrid";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import type { DisplayProduct } from "@/lib/transforms";
@@ -77,7 +77,7 @@ export default function PreOwnedPage() {
 
       {/* Trust Signals — Clean horizontal row */}
       <section className="py-8 border-b border-[var(--border)]">
-        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+        <div className="px-6 lg:px-20">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
             {[
               { icon: Shield, title: "Expert Authenticated", desc: "Verified by our specialists" },
@@ -100,7 +100,7 @@ export default function PreOwnedPage() {
 
       {/* Collection — Grade Filter + Product Grid */}
       <section id="collection" className="py-16 lg:py-24">
-        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+        <div className="px-6 lg:px-20">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
             <div>
               <h2 className="text-2xl lg:text-3xl font-medium tracking-tight">Pre-Owned Collection</h2>
@@ -129,7 +129,7 @@ export default function PreOwnedPage() {
 
           {/* Products */}
           {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {[...Array(8)].map((_, i) => (
                 <div key={i}>
                   <div className="aspect-[3/4] bg-[var(--surface)] animate-pulse" />
@@ -174,9 +174,9 @@ export default function PreOwnedPage() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
               {filteredProducts.map((product, index) => (
-                <EnhancedProductCard key={product.id} product={product} index={index} />
+                <ListingProductCard key={product.id} product={product} index={index} />
               ))}
             </div>
           )}
@@ -185,7 +185,7 @@ export default function PreOwnedPage() {
 
       {/* Grading System */}
       <section id="grades" className="py-16 lg:py-24 bg-[var(--surface)]">
-        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+        <div className="px-6 lg:px-20">
           <div className="text-center mb-10">
             <h2 className="text-2xl lg:text-3xl font-medium tracking-tight mb-2">Our Grading System</h2>
             <p className="text-[var(--muted-foreground)]">
@@ -213,11 +213,11 @@ export default function PreOwnedPage() {
 
       {/* Sustainability Editorial — Split layout */}
       <section className="py-16 lg:py-24">
-        <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
+        <div className="px-6 lg:px-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
             <div className="relative aspect-[4/3] lg:aspect-auto">
               <Image
-                src="https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=1200&q=80"
+                src="https://images.unsplash.com/photo-1574258495973-f010dfbb5371?w=1200&q=80"
                 alt="Sustainable luxury eyewear"
                 fill
                 className="object-cover"

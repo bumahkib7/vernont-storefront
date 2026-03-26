@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { Gift, Package, Heart, Sparkles, ArrowRight } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts, getBestsellers } from "@/lib/transforms";
 import { useHeroScroll } from "@/lib/useHeroScroll";
@@ -41,7 +41,7 @@ const giftCategories = [
 // Loading skeleton
 function ProductsSkeleton() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
       {[...Array(4)].map((_, i) => (
         <motion.div
           key={i}
@@ -99,7 +99,7 @@ export default function GiftsPage() {
 
 
         {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
+        <motion.div style={{ opacity: heroOpacity }} className="relative px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ export default function GiftsPage() {
         <div className="absolute inset-0 opacity-5">
         </div>
 
-        <div className="max-w-[1500px] mx-auto px-4 relative">
+        <div className="px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -222,7 +222,7 @@ export default function GiftsPage() {
 
       {/* Gift Categories */}
       <section className="py-16 md:py-24">
-        <div className="max-w-[1500px] mx-auto px-4">
+        <div className="px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -277,7 +277,7 @@ export default function GiftsPage() {
 
       {/* Bestsellers as Gift Ideas */}
       <section className="py-16 md:py-24 bg-secondary">
-        <div className="max-w-[1500px] mx-auto px-4">
+        <div className="px-4">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -311,7 +311,7 @@ export default function GiftsPage() {
             </motion.div>
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 {bestsellers.map((product, index) => (
                   <motion.div
                     key={product.id}
@@ -324,7 +324,7 @@ export default function GiftsPage() {
                       ease: [0.165, 0.84, 0.44, 1]
                     }}
                   >
-                    <EnhancedProductCard product={product} />
+                    <ListingProductCard product={product} index={index} />
                   </motion.div>
                 ))}
               </div>
@@ -347,7 +347,7 @@ export default function GiftsPage() {
 
       {/* Bottom CTA */}
       <section className="py-20 relative overflow-hidden">
-        <div className="max-w-[1500px] mx-auto px-4 relative">
+        <div className="px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}

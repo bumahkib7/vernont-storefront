@@ -4,8 +4,8 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================
-   VERNONT DESIGN SYSTEM v3
-   Premium minimalist · Manrope · Warm monochrome
+   VERNONT DESIGN SYSTEM v4
+   Sunglass Hut inspired · Bold retail · Clean white
    ============================================ */
 
 @theme inline {
@@ -60,10 +60,10 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  /* Radius — sharper for premium feel */
-  --radius-sm: 4px;
-  --radius-md: 4px;
-  --radius-lg: 6px;
+  /* Radius — sharp for retail feel */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
   --radius-full: 9999px;
 
   /* Shadows — minimal */
@@ -74,44 +74,44 @@
 }
 
 /* ============================================
-   LIGHT MODE — Warm Monochrome + Gold Accent
+   LIGHT MODE — Clean White + Red Accent (SGH-inspired)
    ============================================ */
 :root {
   /* Backgrounds */
-  --background: #FAFAF8;
-  --surface: #F3F2EF;
+  --background: #FFFFFF;
+  --surface: #F5F5F5;
   --surface-raised: #FFFFFF;
 
   /* Card & Popover */
   --card: #FFFFFF;
-  --card-foreground: #0A0A0A;
+  --card-foreground: #1A1A1A;
   --popover: #FFFFFF;
-  --popover-foreground: #0A0A0A;
+  --popover-foreground: #1A1A1A;
 
   /* Text */
-  --foreground: #0A0A0A;
-  --muted: #F3F2EF;
-  --muted-foreground: #717168;
-  --subtle: #A3A299;
+  --foreground: #1A1A1A;
+  --muted: #F5F5F5;
+  --muted-foreground: #6B6B6B;
+  --subtle: #999999;
 
-  /* Primary — Rich Black */
-  --primary: #0A0A0A;
-  --primary-foreground: #FAFAF8;
-  --primary-hover: #262626;
-  --primary-subtle: #F3F2EF;
+  /* Primary — Deep Black */
+  --primary: #1A1A1A;
+  --primary-foreground: #FFFFFF;
+  --primary-hover: #333333;
+  --primary-subtle: #F5F5F5;
 
-  /* Secondary — Warm Gold */
-  --secondary: #C4841D;
+  /* Secondary — SGH Red */
+  --secondary: #E31837;
   --secondary-foreground: #FFFFFF;
-  --secondary-hover: #A86E15;
+  --secondary-hover: #C8102E;
 
-  /* Accent — Gold */
-  --accent: #C4841D;
+  /* Accent — Red */
+  --accent: #E31837;
   --accent-foreground: #FFFFFF;
 
   /* Discovery Surface */
-  --discovery: #FAF7F2;
-  --discovery-border: #EDE8DF;
+  --discovery: #FFF5F5;
+  --discovery-border: #FFE0E0;
 
   /* Feedback */
   --destructive: #DC2626;
@@ -125,46 +125,46 @@
   --warning-subtle: #FFFBEB;
 
   /* Borders */
-  --border: #E8E7E3;
-  --border-strong: #D4D3CE;
-  --input: #D4D3CE;
-  --ring: #0A0A0A;
+  --border: #E5E5E5;
+  --border-strong: #D4D4D4;
+  --input: #D4D4D4;
+  --ring: #1A1A1A;
 
-  --radius: 4px;
+  --radius: 2px;
 }
 
 /* ============================================
-   DARK MODE — Warm Inverted
+   DARK MODE — Clean Inverted + Red Accent
    ============================================ */
 .dark {
-  --background: #0A0A0A;
-  --surface: #161614;
-  --surface-raised: #222220;
+  --background: #111111;
+  --surface: #1A1A1A;
+  --surface-raised: #222222;
 
-  --card: #161614;
-  --card-foreground: #FAFAF8;
-  --popover: #222220;
-  --popover-foreground: #FAFAF8;
+  --card: #1A1A1A;
+  --card-foreground: #F5F5F5;
+  --popover: #222222;
+  --popover-foreground: #F5F5F5;
 
-  --foreground: #FAFAF8;
-  --muted: #222220;
-  --muted-foreground: #A3A299;
-  --subtle: #717168;
+  --foreground: #F5F5F5;
+  --muted: #222222;
+  --muted-foreground: #999999;
+  --subtle: #6B6B6B;
 
-  --primary: #FAFAF8;
-  --primary-foreground: #0A0A0A;
-  --primary-hover: #E8E7E3;
-  --primary-subtle: #1C1C1A;
+  --primary: #F5F5F5;
+  --primary-foreground: #111111;
+  --primary-hover: #E5E5E5;
+  --primary-subtle: #1A1A1A;
 
-  --secondary: #D4A23B;
-  --secondary-foreground: #0A0A0A;
-  --secondary-hover: #E8B94E;
+  --secondary: #FF2D4B;
+  --secondary-foreground: #FFFFFF;
+  --secondary-hover: #E31837;
 
-  --accent: #D4A23B;
-  --accent-foreground: #0A0A0A;
+  --accent: #FF2D4B;
+  --accent-foreground: #FFFFFF;
 
-  --discovery: #1A1812;
-  --discovery-border: #2D2B22;
+  --discovery: #1A1215;
+  --discovery-border: #2D1D22;
 
   --destructive: #EF4444;
   --destructive-foreground: #FFFFFF;
@@ -176,10 +176,10 @@
   --warning: #F59E0B;
   --warning-subtle: #451A03;
 
-  --border: #2A2A27;
-  --border-strong: #3D3D38;
-  --input: #3D3D38;
-  --ring: #FAFAF8;
+  --border: #2A2A2A;
+  --border-strong: #3D3D3D;
+  --input: #3D3D3D;
+  --ring: #F5F5F5;
 }
 
 /* ============================================
@@ -197,25 +197,25 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: 'Manrope', system-ui, -apple-system, sans-serif;
-  font-weight: 300;
-  letter-spacing: -0.01em;
+  font-weight: 400;
+  letter-spacing: 0;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Typography — Manrope, strong hierarchy */
+/* Typography — SGH-style: serif headings, clean sans body */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
+  font-family: 'Crimson Pro', 'Playfair Display', 'Georgia', serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 
-h1 { font-size: 2.75rem; }
-h2 { font-size: 2rem; font-weight: 600; }
-h3 { font-size: 1.5rem; font-weight: 600; }
-h4 { font-size: 1.125rem; font-weight: 600; }
+h1 { font-size: 2.5rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.375rem; }
+h4 { font-size: 1.125rem; }
 
 /* Tabular numbers for prices and ratings */
 .tabular-nums {

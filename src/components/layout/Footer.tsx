@@ -26,15 +26,15 @@ export function Footer() {
   };
 
   return (
-    <footer className="bg-[var(--foreground)] text-white">
+    <footer className="bg-[#1A1A1A] text-white">
       {/* Trust Band */}
       <div className="border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
+        <div className="max-w-[1280px] mx-auto px-4 lg:px-6 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {TRUST_FEATURES.map((feature) => (
-              <div key={feature.label} className="flex items-center gap-2 text-sm">
-                <feature.icon className="h-4 w-4 text-[var(--success)]" />
-                <span className="text-white/90">{feature.label}</span>
+              <div key={feature.label} className="flex items-center gap-2 text-[12px]">
+                <feature.icon className="h-4 w-4 text-white/60" />
+                <span className="text-white/80">{feature.label}</span>
               </div>
             ))}
           </div>
@@ -42,28 +42,26 @@ export function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-12">
+      <div className="max-w-[1280px] mx-auto px-4 lg:px-6 py-10 lg:py-14">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 lg:gap-10">
           {/* Newsletter Column */}
           <div className="col-span-2 lg:col-span-2">
-            <Link href="/" className="inline-block mb-4">
-              <span
-                className="text-2xl font-semibold tracking-[0.25em] uppercase"
-              >
-                {storeName || "Vernont"}
+            <Link href="/" className="inline-flex items-center gap-2 mb-4">
+              <div className="w-2.5 h-2.5 rounded-full bg-white" />
+              <span className="text-base tracking-wide" style={{ fontFamily: "'Manrope', sans-serif" }}>
+                {storeName?.toLowerCase() || "vernont"}
               </span>
             </Link>
-            <p className="text-white/70 text-sm mb-4 max-w-xs">
+            <p className="text-white/60 text-[13px] mb-4 max-w-xs leading-relaxed">
               {content.footerDescription}
             </p>
 
-            {/* Newsletter Signup */}
-            <div className="mb-6">
-              <p className="font-medium tracking-wide uppercase text-xs mb-2">{content.newsletterCta.headline}</p>
+            <div className="mb-5">
+              <p className="text-[11px] font-medium uppercase tracking-wider text-white/80 mb-2">Newsletter</p>
               {subscribed ? (
-                <div className="flex items-center gap-2 text-[var(--success)]">
+                <div className="flex items-center gap-2 text-green-400 text-sm">
                   <Check className="h-4 w-4" />
-                  <span className="text-sm">Thanks! Check your inbox.</span>
+                  <span>Thanks! Check your inbox.</span>
                 </div>
               ) : (
                 <form onSubmit={handleSubscribe} className="flex gap-2">
@@ -72,80 +70,55 @@ export function Footer() {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="flex-1 px-3 py-2 text-sm bg-white/10 border border-white/20 rounded-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                    className="flex-1 px-3 py-2 text-[13px] bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:outline-none focus:border-white/40"
                     required
                   />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-[var(--secondary)] text-white text-sm font-medium rounded-sm hover:bg-[var(--primary-hover)] transition-colors"
-                  >
+                  <button type="submit" className="px-3 py-2 bg-white text-[#1A1A1A] hover:bg-white/90 transition-colors">
                     <Mail className="h-4 w-4" />
                   </button>
                 </form>
               )}
             </div>
 
-            {/* Social Links */}
-            <div className="flex gap-4">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Instagram"
-              >
-                <Instagram className="h-4 w-4" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Facebook"
-              >
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2 rounded-sm bg-white/10 hover:bg-white/20 transition-colors"
-                aria-label="Twitter"
-              >
-                <Twitter className="h-4 w-4" />
-              </a>
+            <div className="flex gap-3">
+              {[
+                { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
+                { icon: Facebook, label: "Facebook", href: "https://facebook.com" },
+                { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+              ].map(({ icon: Icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-2 bg-white/10 hover:bg-white/20 transition-colors"
+                  aria-label={label}
+                >
+                  <Icon className="h-4 w-4" />
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Shop Links - Dynamic from API */}
+          {/* Shop Links */}
           <div>
-            <p className="font-medium tracking-wide uppercase text-xs mb-4">Shop</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-white/80 mb-3">Shop</p>
             <ul className="space-y-2">
               {footerShopLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-[13px] text-white/60 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Brands Links - Dynamic from API */}
+          {/* Brands Links */}
           <div>
-            <p className="font-medium tracking-wide uppercase text-xs mb-4">Brands</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-white/80 mb-3">Brands</p>
             <ul className="space-y-2">
               {footerBrandLinks.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-[13px] text-white/60 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -153,16 +126,11 @@ export function Footer() {
 
           {/* Help Links */}
           <div>
-            <p className="font-medium tracking-wide uppercase text-xs mb-4">Help</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-white/80 mb-3">Help</p>
             <ul className="space-y-2">
               {HELP_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-[13px] text-white/60 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -170,16 +138,11 @@ export function Footer() {
 
           {/* Company Links */}
           <div>
-            <p className="font-medium tracking-wide uppercase text-xs mb-4">Company</p>
+            <p className="text-[11px] font-medium uppercase tracking-wider text-white/80 mb-3">Company</p>
             <ul className="space-y-2">
               {COMPANY_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/70 hover:text-white transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+                  <Link href={link.href} className="text-[13px] text-white/60 hover:text-white transition-colors">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -189,28 +152,19 @@ export function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-sm text-white/60">
-              <span>© {new Date().getFullYear()} {storeName || "Vernont"}. All rights reserved.</span>
+        <div className="max-w-[1280px] mx-auto px-4 lg:px-6 py-5">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-3">
+            <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-[11px] text-white/50">
+              <span>&copy; {new Date().getFullYear()} {storeName || "Vernont"}. All rights reserved.</span>
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
               <Link href="/cookies" className="hover:text-white transition-colors">Cookies</Link>
             </div>
-
-            {/* Payment Methods */}
             <div className="flex items-center gap-2">
-              <span className="text-xs text-white/40 mr-2">Pay securely with</span>
-              <div className="flex gap-1">
-                {["Visa", "MC", "Amex", "PayPal", "Klarna"].map((method) => (
-                  <div
-                    key={method}
-                    className="px-2 py-1 bg-white/10 rounded-sm text-[10px] font-medium text-white/70"
-                  >
-                    {method}
-                  </div>
-                ))}
-              </div>
+              <span className="text-[10px] text-white/30 mr-1">Pay securely with</span>
+              {["Visa", "MC", "Amex", "PayPal", "Klarna"].map((m) => (
+                <div key={m} className="px-2 py-0.5 bg-white/10 text-[9px] font-medium text-white/60">{m}</div>
+              ))}
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, Sparkles, Circle } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { EnhancedProductCard } from "@/components/EnhancedProductCard";
+import { ListingProductCard } from "@/components/ListingProductCard";
 import { CategoryButtons } from "@/components/CategoryButtons";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts, filterByGender } from "@/lib/transforms";
@@ -73,7 +73,7 @@ function SortDropdown({
 // Loading skeleton
 function ProductsSkeleton() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
       {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
@@ -142,7 +142,7 @@ export default function UnisexPage() {
 
 
         {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative max-w-[1500px] mx-auto px-4 text-center text-white">
+        <motion.div style={{ opacity: heroOpacity }} className="relative px-4 text-center text-white">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -206,7 +206,7 @@ export default function UnisexPage() {
 
       {/* Products Section */}
       <section className="py-16 md:py-24">
-        <div className="max-w-[1500px] mx-auto px-4">
+        <div className="px-4">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -271,7 +271,7 @@ export default function UnisexPage() {
               </Link>
             </motion.div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {displayProducts.map((product, index) => (
                 <motion.div
                   key={product.id}
@@ -284,7 +284,7 @@ export default function UnisexPage() {
                     ease: [0.165, 0.84, 0.44, 1]
                   }}
                 >
-                  <EnhancedProductCard product={product} />
+                  <ListingProductCard product={product} index={index} />
                 </motion.div>
               ))}
             </div>
@@ -300,7 +300,7 @@ export default function UnisexPage() {
         <div className="absolute inset-0 opacity-5">
         </div>
 
-        <div className="max-w-[1500px] mx-auto px-4 relative">
+        <div className="px-4 relative">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}

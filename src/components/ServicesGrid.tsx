@@ -1,47 +1,26 @@
 "use client";
 
 import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 const SERVICES = [
-  {
-    icon: Truck,
-    title: "Free Shipping",
-    description: "Complimentary delivery on orders over £75.",
-  },
-  {
-    icon: RotateCcw,
-    title: "Easy Returns",
-    description: "30-day hassle-free returns on all orders.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "100% Authentic",
-    description: "Every piece verified and guaranteed genuine.",
-  },
-  {
-    icon: Lock,
-    title: "Secure Payment",
-    description: "SSL encrypted checkout. Visa, MC, PayPal, Klarna.",
-  },
+  { icon: Truck, title: "Free Delivery", description: "On orders over £75" },
+  { icon: RotateCcw, title: "Free Returns", description: "Within 30 days" },
+  { icon: ShieldCheck, title: "100% Authentic", description: "Verified genuine" },
+  { icon: Lock, title: "Secure Checkout", description: "SSL encrypted" },
 ];
 
 export function ServicesGrid() {
   return (
-    <section className="py-16 lg:py-20 border-y border-[var(--border)]">
-      <div className="max-w-[1500px] mx-auto px-6 lg:px-20">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {SERVICES.map((service, i) => (
+    <section className="py-10 lg:py-12 border-y border-[#E5E5E5]">
+      <div className="max-w-[1280px] mx-auto px-4 lg:px-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+          {SERVICES.map((service) => (
             <div key={service.title} className="flex flex-col items-center text-center">
-              <div className="w-12 h-12 rounded-full border border-[var(--border)] flex items-center justify-center mb-4">
-                <service.icon className="h-5 w-5" strokeWidth={1.5} />
-              </div>
-              <h3 className="text-sm font-medium uppercase tracking-wider mb-1.5">
+              <service.icon className="h-5 w-5 text-[#1A1A1A] mb-2" strokeWidth={1.5} />
+              <p className="text-[12px] font-medium uppercase tracking-[0.06em] text-[#1A1A1A] mb-0.5">
                 {service.title}
-              </h3>
-              <p className="text-xs text-[var(--muted-foreground)] leading-relaxed max-w-[200px]">
-                {service.description}
               </p>
+              <p className="text-[11px] text-[#999]">{service.description}</p>
             </div>
           ))}
         </div>
