@@ -79,7 +79,7 @@ export default async function Image() {
         >
           <span>Designer Frames</span>
           <span>Premium Brands</span>
-          <span>Free Shipping</span>
+          <span>100% Authentic</span>
         </div>
       </div>
     ),

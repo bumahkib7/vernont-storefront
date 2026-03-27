@@ -23,8 +23,8 @@ export default function ShippingPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
           <div className="text-center p-4">
             <Truck className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
-            <p className="text-sm tracking-wide">Free Shipping</p>
-            <p className="text-xs text-muted-foreground">Orders over €150</p>
+            <p className="text-sm tracking-wide">UK Delivery</p>
+            <p className="text-xs text-muted-foreground">Fast & reliable</p>
           </div>
           <div className="text-center p-4">
             <Package className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />

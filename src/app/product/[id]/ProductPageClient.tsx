@@ -317,11 +317,11 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                 </ul>
               </AccordionSection>
 
-              <AccordionSection title="Free shipping and returns">
+              <AccordionSection title="Shipping and returns">
                 <ul className="space-y-1.5">
-                  <li>Free standard shipping on orders over £75</li>
                   <li>Standard delivery: 2-4 business days</li>
-                  <li>Express delivery: 1-2 business days (£5.99)</li>
+                  <li>Express delivery: 1-2 business days</li>
+                  <li>International shipping available</li>
                   <li>30-day free returns</li>
                 </ul>
               </AccordionSection>

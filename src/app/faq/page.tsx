@@ -18,8 +18,8 @@ const faqs: FAQItem[] = [
   },
   {
     category: "Orders & Shipping",
-    question: "Do you offer free shipping?",
-    answer: "Yes! We offer complimentary shipping on all orders over €150. For orders under this amount, shipping costs are calculated at checkout based on your location.",
+    question: "How much is shipping?",
+    answer: "Shipping costs are calculated at checkout based on your location. We offer standard and express delivery options for UK and international orders.",
   },
   {
     category: "Orders & Shipping",

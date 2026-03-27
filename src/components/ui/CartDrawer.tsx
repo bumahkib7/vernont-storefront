@@ -5,16 +5,24 @@ import Link from "next/link";
 import { X, Minus, Plus, Loader2, ShoppingBag, Truck, Gift } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
+import { useStoreConfig } from "@/context/StoreConfigContext";
 import { resolveImageUrl } from "@/lib/api";
 import { toast } from "sonner";
 
-const FREE_SHIPPING_THRESHOLD = 7500; // £75 in pence
-
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, subtotal, currency, itemCount, loading, error } = useCart();
+  const { shippingInfo } = useStoreConfig();
 
-  const freeShippingProgress = Math.min((subtotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
-  const amountToFreeShipping = FREE_SHIPPING_THRESHOLD - subtotal;
+  // Free shipping progress — only shown when backend has a threshold configured
+  const freeShippingThreshold = shippingInfo?.free_shipping_threshold
+    ? Number(shippingInfo.free_shipping_threshold) * 100 // convert pounds to pence
+    : null;
+  const freeShippingProgress = freeShippingThreshold
+    ? Math.min((subtotal / freeShippingThreshold) * 100, 100)
+    : 0;
+  const amountToFreeShipping = freeShippingThreshold
+    ? freeShippingThreshold - subtotal
+    : 0;
 
   return (
     <AnimatePresence>
@@ -53,8 +61,8 @@ export function CartDrawer() {
               </button>
             </div>
 
-            {/* Free Shipping Progress */}
-            {items.length > 0 && (
+            {/* Free Shipping Progress — only when backend has threshold configured */}
+            {items.length > 0 && freeShippingThreshold && (
               <div className="px-4 py-3 bg-[var(--surface)] border-b border-[var(--border)]">
                 {amountToFreeShipping > 0 ? (
                   <>
@@ -74,7 +82,7 @@ export function CartDrawer() {
                 ) : (
                   <div className="flex items-center gap-2 text-sm text-[var(--success)]">
                     <Truck className="w-4 h-4" />
-                    <span className="font-medium">You've unlocked free shipping!</span>
+                    <span className="font-medium">You&apos;ve unlocked free shipping!</span>
                   </div>
                 )}
               </div>

@@ -87,14 +87,14 @@ export const eyewearConfig: VerticalConfig = {
 
     trustBand: [
       { icon: Check, label: "Authentic Products" },
-      { icon: Truck, label: "Free Shipping £75+" },
+      { icon: Truck, label: "Fast UK Delivery" },
       { icon: RotateCcw, label: "30-Day Returns" },
       { icon: Gift, label: "Free Case & Cloth" },
     ],
 
     trustBandCatalog: [
       { icon: Check, label: "100% Authentic" },
-      { icon: Truck, label: "Free shipping £75+" },
+      { icon: Truck, label: "UK & International Shipping" },
       { icon: Check, label: "30-day returns" },
       { icon: Check, label: "Free case & cleaning kit" },
     ],
@@ -102,7 +102,7 @@ export const eyewearConfig: VerticalConfig = {
     shippingFeatures: DEFAULT_SHIPPING_FEATURES,
 
     announcements: [
-      { icon: Truck, text: "Free UK Delivery on orders over £75" },
+      { icon: Gift, text: "Complimentary case & cleaning kit with every order" },
       { icon: Gift, text: "Complimentary gift wrapping on all orders" },
       { icon: Sparkles, text: "Free samples with every purchase" },
     ],
@@ -160,7 +160,7 @@ export const eyewearConfig: VerticalConfig = {
       titleDefault: "Vernont | Designer & Luxury Eyewear",
       titleTemplate: "%s | Vernont",
       description:
-        "Shop designer frames from luxury and premium brands. Free shipping over £75, 30-day returns, and complimentary cleaning kit with every order.",
+        "Shop designer frames from luxury and premium brands. 30-day returns and complimentary cleaning kit with every order.",
       keywords: [
         "sunglasses", "eyewear", "designer frames", "luxury sunglasses",
         "polarized", "optical frames",

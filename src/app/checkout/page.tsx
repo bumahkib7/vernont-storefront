@@ -58,7 +58,7 @@ const countries = [
 const TRUST_FEATURES = [
   { icon: Check, label: "100% Authentic" },
   { icon: Shield, label: "Secure checkout" },
-  { icon: Truck, label: "Free shipping £75+" },
+  { icon: Truck, label: "Fast UK delivery" },
   { icon: RotateCcw, label: "30-day returns" },
 ];
 
