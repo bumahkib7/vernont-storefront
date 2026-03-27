@@ -276,7 +276,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             </p>
 
             {/* Delivery info — SGH style */}
-            <div className="space-y-4 mb-6">
+            <div className="space-y-4 mb-6 py-4 border-t border-[#E5E5E5]">
               <div className="flex items-start gap-3">
                 <Truck className="w-5 h-5 text-[#1A1A1A] mt-0.5 flex-shrink-0" />
                 <div>
@@ -291,43 +291,43 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                 </div>
               </div>
             </div>
+
+            {/* Accordion sections — inside info column for mobile flow */}
+            <div className="border-t border-[#E5E5E5]">
+              <AccordionSection title="Product details" defaultOpen>
+                <ProductSpecifications specs={specsData} product={product} />
+                {product.description && <p className="mt-3">{product.description}</p>}
+              </AccordionSection>
+
+              <AccordionSection title="Size and fit">
+                <div className="space-y-2">
+                  {product.variants.length > 0 && (
+                    <p>Available sizes: {product.variants.map(v => v.title).join(", ")}</p>
+                  )}
+                  {product.frameShape && <p>Frame shape: {product.frameShape}</p>}
+                  <p>Refer to our <Link href="/size-guide" className="underline">size guide</Link> for detailed measurements.</p>
+                </div>
+              </AccordionSection>
+
+              <AccordionSection title="Included with your order">
+                <ul className="space-y-1.5">
+                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Original brand case</li>
+                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Cleaning cloth</li>
+                  <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Certificate of authenticity</li>
+                </ul>
+              </AccordionSection>
+
+              <AccordionSection title="Free shipping and returns">
+                <ul className="space-y-1.5">
+                  <li>Free standard shipping on orders over £75</li>
+                  <li>Standard delivery: 2-4 business days</li>
+                  <li>Express delivery: 1-2 business days (£5.99)</li>
+                  <li>30-day free returns</li>
+                </ul>
+              </AccordionSection>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* Accordion sections below image — SGH style */}
-      <section className="px-4 lg:px-6 lg:max-w-[calc(100%-400px)] pb-8">
-        <AccordionSection title="Product details" defaultOpen>
-          <ProductSpecifications specs={specsData} product={product} />
-          {product.description && <p className="mt-3">{product.description}</p>}
-        </AccordionSection>
-
-        <AccordionSection title="Size and fit">
-          <div className="space-y-2">
-            {product.variants.length > 0 && (
-              <p>Available sizes: {product.variants.map(v => v.title).join(", ")}</p>
-            )}
-            {product.frameShape && <p>Frame shape: {product.frameShape}</p>}
-            <p>Refer to our <Link href="/size-guide" className="underline">size guide</Link> for detailed measurements.</p>
-          </div>
-        </AccordionSection>
-
-        <AccordionSection title="Included with your order">
-          <ul className="space-y-1.5">
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Original brand case</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Cleaning cloth</li>
-            <li className="flex items-center gap-2"><Check className="w-4 h-4 text-green-600" /> Certificate of authenticity</li>
-          </ul>
-        </AccordionSection>
-
-        <AccordionSection title="Free shipping and returns">
-          <ul className="space-y-1.5">
-            <li>Free standard shipping on orders over £75</li>
-            <li>Standard delivery: 2-4 business days</li>
-            <li>Express delivery: 1-2 business days (£5.99)</li>
-            <li>30-day free returns</li>
-          </ul>
-        </AccordionSection>
       </section>
 
       {/* You might also like — SGH style, 3 per row */}
