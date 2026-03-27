@@ -45,8 +45,14 @@ export function ProductCarousel({
             ))}
           </div>
         ) : (
-          /* SGH-style 6-column product grid */
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-4 gap-y-8">
+          /* SGH-style product grid — adapts columns to product count */
+          <div className={`grid gap-x-4 gap-y-8 ${
+            products.length <= 3
+              ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+              : products.length <= 4
+              ? "grid-cols-2 lg:grid-cols-4"
+              : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+          }`}>
             {products.slice(0, 12).map((product, index) => (
               <EnhancedProductCard key={product.id} product={product} index={index} />
             ))}

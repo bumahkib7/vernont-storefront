@@ -19,25 +19,28 @@ export function BrandsGrid({ brands }: BrandsGridProps) {
           Shop by brands
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 border-t border-l border-[#E5E5E5]">
-          {brands.slice(0, 18).map((brand) => (
+        <div className={`grid border-t border-l border-[#E5E5E5] ${
+          brands.length <= 3
+            ? "grid-cols-2 sm:grid-cols-" + Math.min(brands.length + 1, 4)
+            : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-6"
+        }`}>
+          {brands.slice(0, 17).map((brand) => (
             <Link
               key={brand.slug}
               href={`/brands/${brand.slug}`}
-              className="flex items-center justify-center py-5 px-3 border-r border-b border-[#E5E5E5] hover:bg-[#F9F9F9] transition-colors"
+              className="flex items-center justify-center py-6 px-4 border-r border-b border-[#E5E5E5] hover:bg-[#F9F9F9] transition-colors"
             >
               <span
-                className="text-[13px] sm:text-sm font-medium tracking-wide text-[#1A1A1A] text-center uppercase"
+                className="text-sm font-medium tracking-wide text-[#1A1A1A] text-center uppercase"
                 style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 {brand.name}
               </span>
             </Link>
           ))}
-          {/* View All cell */}
           <Link
             href="/brands"
-            className="flex items-center justify-center py-5 px-3 border-r border-b border-[#E5E5E5] hover:bg-[#F9F9F9] transition-colors"
+            className="flex items-center justify-center py-6 px-4 border-r border-b border-[#E5E5E5] hover:bg-[#F9F9F9] transition-colors"
           >
             <span className="text-[12px] font-medium uppercase tracking-[0.08em] underline underline-offset-4 text-[#1A1A1A]">
               View All
