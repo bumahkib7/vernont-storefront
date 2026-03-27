@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface CookieCategory {
   id: string;
@@ -17,29 +16,33 @@ export default function CookiesPage() {
   const [cookies, setCookies] = useState<CookieCategory[]>([
     {
       id: "essential",
-      name: "Essential Cookies",
-      description: "These cookies are necessary for the website to function and cannot be switched off. They are usually only set in response to actions made by you such as setting your privacy preferences, logging in, or filling in forms.",
+      name: "Essential",
+      description:
+        "Required for the site to function. Handles sessions, authentication, shopping cart, and security. These cannot be disabled.",
       required: true,
       enabled: true,
     },
     {
       id: "analytics",
-      name: "Analytics Cookies",
-      description: "These cookies allow us to count visits and traffic sources so we can measure and improve the performance of our site. They help us know which pages are the most and least popular and see how visitors move around the site.",
+      name: "Analytics",
+      description:
+        "Help us understand how visitors use the site so we can improve it. We use privacy-respecting analytics with no cross-site tracking.",
       required: false,
       enabled: false,
     },
     {
       id: "marketing",
-      name: "Marketing Cookies",
-      description: "These cookies may be set through our site by our advertising partners. They may be used by those companies to build a profile of your interests and show you relevant advertisements on other sites.",
+      name: "Marketing",
+      description:
+        "Used by advertising partners to show you relevant ads on other sites based on your browsing activity.",
       required: false,
       enabled: false,
     },
     {
       id: "preferences",
-      name: "Preference Cookies",
-      description: "These cookies enable the website to provide enhanced functionality and personalization. They may be set by us or by third-party providers whose services we have added to our pages.",
+      name: "Preferences",
+      description:
+        "Remember your settings like language, currency, and display preferences across visits.",
       required: false,
       enabled: false,
     },
@@ -48,143 +51,170 @@ export default function CookiesPage() {
   const [saved, setSaved] = useState(false);
 
   const toggleCookie = (id: string) => {
-    setCookies(prev =>
-      prev.map(cookie =>
-        cookie.id === id && !cookie.required
-          ? { ...cookie, enabled: !cookie.enabled }
-          : cookie
+    setCookies((prev) =>
+      prev.map((c) =>
+        c.id === id && !c.required ? { ...c, enabled: !c.enabled } : c
       )
     );
     setSaved(false);
   };
 
   const acceptAll = () => {
-    setCookies(prev => prev.map(cookie => ({ ...cookie, enabled: true })));
+    setCookies((prev) => prev.map((c) => ({ ...c, enabled: true })));
     setSaved(true);
   };
 
   const rejectAll = () => {
-    setCookies(prev =>
-      prev.map(cookie => ({ ...cookie, enabled: cookie.required }))
+    setCookies((prev) =>
+      prev.map((c) => ({ ...c, enabled: c.required }))
     );
     setSaved(true);
   };
 
   const savePreferences = () => {
-    // In a real app, save to localStorage or send to server
     setSaved(true);
   };
 
   return (
     <PageLayout>
-      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
-        <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
-          Cookie Settings
+      <div className="mx-auto max-w-2xl px-4 py-20 md:py-28">
+        {/* Header */}
+        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
+          Privacy
+        </p>
+        <h1 className="text-3xl md:text-4xl tracking-tight font-light mb-3">
+          Cookie Preferences
         </h1>
-        <p className="text-muted-foreground mb-8 text-lg">
-          Manage your cookie preferences. You can enable or disable different types of cookies below.
+        <p className="text-muted-foreground leading-relaxed mb-12">
+          We use cookies to keep the site working, remember your choices, and
+          understand how people use Vernont. You decide which you&apos;re
+          comfortable with.
         </p>
 
-        <div className="space-y-6 mb-8">
-          {cookies.map((cookie) => (
-            <Card key={cookie.id} className="border-border">
-              <CardHeader className="pb-3">
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-xl tracking-wide">
-                    {cookie.name}
-                  </CardTitle>
-                  <button
-                    onClick={() => toggleCookie(cookie.id)}
-                    disabled={cookie.required}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                      cookie.enabled ? "bg-[var(--secondary)]" : "bg-muted"
-                    } ${cookie.required ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
-                  >
-                    <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                        cookie.enabled ? "translate-x-6" : "translate-x-1"
-                      }`}
-                    />
-                  </button>
+        {/* Toggles */}
+        <div className="mb-10">
+          {cookies.map((cookie, i) => (
+            <div
+              key={cookie.id}
+              className={`flex items-start justify-between gap-8 py-5 ${
+                i < cookies.length - 1 ? "border-b border-border" : ""
+              }`}
+            >
+              <div className="min-w-0">
+                <div className="flex items-center gap-3 mb-1">
+                  <span className="text-sm font-medium">{cookie.name}</span>
+                  {cookie.required && (
+                    <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                      Always on
+                    </span>
+                  )}
                 </div>
-                {cookie.required && (
-                  <span className="text-xs text-[var(--secondary)] uppercase tracking-wider">
-                    Always Active
-                  </span>
-                )}
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-muted-foreground leading-relaxed">
+                <p className="text-sm text-muted-foreground leading-relaxed">
                   {cookie.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
+                </p>
+              </div>
+              <button
+                onClick={() => toggleCookie(cookie.id)}
+                disabled={cookie.required}
+                aria-label={`Toggle ${cookie.name} cookies`}
+                className={`mt-1 relative shrink-0 inline-flex h-5 w-9 items-center rounded-full transition-colors ${
+                  cookie.enabled
+                    ? "bg-foreground"
+                    : "bg-muted-foreground/25"
+                } ${cookie.required ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 rounded-full bg-background transition-transform ${
+                    cookie.enabled ? "translate-x-[18px]" : "translate-x-[3px]"
+                  }`}
+                />
+              </button>
+            </div>
           ))}
         </div>
 
-        <div className="flex flex-wrap gap-4 mb-8">
-          <Button onClick={acceptAll} className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90">
-            Accept All
+        {/* Actions */}
+        <div className="flex items-center gap-3 mb-4">
+          <Button
+            onClick={acceptAll}
+            size="sm"
+            className="bg-foreground text-background hover:bg-foreground/90 rounded-none px-6 text-xs uppercase tracking-wider"
+          >
+            Accept all
           </Button>
-          <Button onClick={rejectAll} variant="outline" className="btn-outline-luxury">
-            Reject All
+          <Button
+            onClick={rejectAll}
+            variant="outline"
+            size="sm"
+            className="rounded-none px-6 text-xs uppercase tracking-wider"
+          >
+            Essential only
           </Button>
-          <Button onClick={savePreferences} variant="outline" className="btn-outline-luxury">
-            Save Preferences
+          <Button
+            onClick={savePreferences}
+            variant="ghost"
+            size="sm"
+            className="text-xs uppercase tracking-wider text-muted-foreground"
+          >
+            Save choices
           </Button>
         </div>
 
         {saved && (
-          <p className="text-[var(--secondary)] mb-8">
-            Your cookie preferences have been saved.
+          <p className="text-sm text-muted-foreground mb-4">
+            Preferences saved.
           </p>
         )}
 
-        <div className="prose prose-lg max-w-none space-y-8 border-t border-border pt-8">
-          <section>
-            <h2 className="text-2xl tracking-wide mb-4">What Are Cookies?</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Cookies are small text files that are placed on your device when you visit a website.
-              They are widely used to make websites work more efficiently and provide information
-              to the website owners.
+        {/* Policy text */}
+        <div className="mt-16 pt-10 border-t border-border space-y-8 text-sm text-muted-foreground leading-relaxed">
+          <div>
+            <h2 className="text-foreground font-medium mb-2">
+              What are cookies?
+            </h2>
+            <p>
+              Cookies are small text files stored on your device when you visit
+              a website. They help the site remember your actions and
+              preferences over time.
             </p>
-          </section>
+          </div>
 
-          <section>
-            <h2 className="text-2xl tracking-wide mb-4">How We Use Cookies</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              We use cookies to enhance your browsing experience, remember your preferences,
-              analyze site traffic, and personalize content. Some cookies are essential for
-              the website to function, while others help us improve your experience.
+          <div>
+            <h2 className="text-foreground font-medium mb-2">
+              How we use them
+            </h2>
+            <p>
+              Essential cookies keep things like your shopping cart and login
+              session working. Analytics cookies help us see which pages are
+              popular and where people get stuck, so we can improve the
+              experience. We don&apos;t sell your data.
             </p>
-          </section>
+          </div>
 
-          <section>
-            <h2 className="text-2xl tracking-wide mb-4">Managing Cookies</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              You can control and manage cookies in various ways. Most web browsers allow you
-              to manage your cookie preferences. You can set your browser to refuse cookies,
-              or delete certain cookies. Please note that disabling cookies may affect the
-              functionality of this and many other websites.
+          <div>
+            <h2 className="text-foreground font-medium mb-2">
+              Browser controls
+            </h2>
+            <p>
+              Most browsers let you block or delete cookies through their
+              settings. Be aware that blocking essential cookies will prevent
+              parts of the site from working properly.
             </p>
-          </section>
+          </div>
 
-          <section>
-            <h2 className="text-2xl tracking-wide mb-4">Third-Party Cookies</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              In addition to our own cookies, we may also use various third-party cookies to
-              report usage statistics, deliver advertisements, and so on. These cookies may
-              track your browsing activity across different websites.
+          <div>
+            <h2 className="text-foreground font-medium mb-2">Questions</h2>
+            <p>
+              Reach us at{" "}
+              <a
+                href="mailto:privacy@vernont.com"
+                className="text-foreground underline underline-offset-4 decoration-muted-foreground/40 hover:decoration-foreground transition-colors"
+              >
+                privacy@vernont.com
+              </a>{" "}
+              with any questions about how we handle cookies or your data.
             </p>
-          </section>
-
-          <section>
-            <h2 className="text-2xl tracking-wide mb-4">Contact Us</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              If you have any questions about our use of cookies, please contact us at
-              privacy@vernont.com.
-            </p>
-          </section>
+          </div>
         </div>
       </div>
     </PageLayout>
