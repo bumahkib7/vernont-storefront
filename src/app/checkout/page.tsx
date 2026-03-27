@@ -354,13 +354,19 @@ export default function CheckoutPage() {
   }, [cart, formData, selectedShippingId, refreshCart, getSelectedAddress]);
 
   const handleContinue = async () => {
+    if (isProcessing) return;
     if (!validateStep(currentStep)) return;
 
     if (currentStep === "information") {
       setCurrentStep("shipping");
     } else if (currentStep === "shipping") {
-      setCurrentStep("payment");
-      await initializePayment();
+      setIsProcessing(true);
+      try {
+        setCurrentStep("payment");
+        await initializePayment();
+      } finally {
+        setIsProcessing(false);
+      }
     }
   };
 
@@ -394,6 +400,22 @@ export default function CheckoutPage() {
       } else {
         setPromoError("Invalid promo code");
       }
+    } finally {
+      setApplyingPromo(false);
+    }
+  };
+
+  const handleRemovePromo = async () => {
+    if (!cart) return;
+    setApplyingPromo(true);
+    try {
+      await cartApi.update(cart.id, { promo_codes: [] });
+      await refreshCart();
+      setPromoApplied(false);
+      setPromoCode("");
+      setPromoError(null);
+    } catch (err) {
+      console.error("Failed to remove promo code:", err);
     } finally {
       setApplyingPromo(false);
     }
@@ -493,6 +515,8 @@ export default function CheckoutPage() {
           discount: discountMinor,
           total: order.total,
           shipping: address,
+          shippingMethod: selectedShipping?.name || "Standard Delivery",
+          estimatedDeliveryDays: selectedShipping?.estimated_days_max || selectedShipping?.estimated_days_min || 5,
           email: formData.email,
           currency: order.currency_code?.toUpperCase() || currency,
         })
@@ -905,7 +929,7 @@ export default function CheckoutPage() {
                         <ArrowLeft className="h-4 w-4" />
                         Return to shop
                       </Link>
-                      <button onClick={handleContinue} className="btn-primary">
+                      <button onClick={handleContinue} disabled={isProcessing} className="btn-primary disabled:opacity-50">
                         Continue to Shipping
                       </button>
                     </div>
@@ -1018,10 +1042,17 @@ export default function CheckoutPage() {
                       </button>
                       <button
                         onClick={handleContinue}
-                        disabled={!selectedShippingId}
-                        className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={!selectedShippingId || isProcessing}
+                        className="btn-primary disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center gap-2"
                       >
-                        Continue to Payment
+                        {isProcessing ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Processing...
+                          </>
+                        ) : (
+                          "Continue to Payment"
+                        )}
                       </button>
                     </div>
                   </motion.div>
@@ -1190,10 +1221,19 @@ export default function CheckoutPage() {
               )}
 
               {promoApplied && (
-                <p className="text-sm text-[var(--success)] mb-4 flex items-center gap-2">
-                  <Check className="h-3 w-3" />
-                  Code {promoCode.toUpperCase()} applied!
-                </p>
+                <div className="flex items-center justify-between text-sm text-[var(--success)] mb-4">
+                  <span className="flex items-center gap-2">
+                    <Check className="h-3 w-3" />
+                    Code {promoCode.toUpperCase()} applied!
+                  </span>
+                  <button
+                    onClick={handleRemovePromo}
+                    disabled={applyingPromo}
+                    className="text-xs text-[var(--muted-foreground)] hover:text-[var(--destructive)] transition-colors underline"
+                  >
+                    {applyingPromo ? "Removing..." : "Remove"}
+                  </button>
+                </div>
               )}
 
               {/* Gift Card */}

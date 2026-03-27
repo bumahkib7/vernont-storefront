@@ -37,6 +37,8 @@ interface OrderData {
   total: number;
   currency: string;
   email: string;
+  shippingMethod?: string;
+  estimatedDeliveryDays?: number;
   shipping?: {
     first_name?: string;
     last_name?: string;
@@ -165,8 +167,9 @@ function ConfirmationContent() {
   }
 
   const estimatedDelivery = () => {
+    const days = order.estimatedDeliveryDays || 5;
     const today = new Date();
-    const delivery = new Date(today.setDate(today.getDate() + 5));
+    const delivery = new Date(today.setDate(today.getDate() + days));
     return delivery.toLocaleDateString("en-GB", {
       weekday: "long",
       day: "numeric",
@@ -211,7 +214,7 @@ function ConfirmationContent() {
                 <Truck className="h-5 w-5 text-neutral-400 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium mb-1">Shipping method</p>
-                  <p className="text-sm text-neutral-500">Standard Delivery</p>
+                  <p className="text-sm text-neutral-500">{order.shippingMethod || "Standard Delivery"}</p>
                 </div>
               </div>
             </div>
