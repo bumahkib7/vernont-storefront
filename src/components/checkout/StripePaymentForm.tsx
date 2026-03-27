@@ -12,39 +12,39 @@ import { Lock, AlertCircle, ArrowLeft, Loader2, Shield } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatPrice } from "@/context/CartContext";
 
-// Stripe appearance matching Clarity Commerce design system
+// Stripe appearance matching SGH-inspired design system
 const stripeAppearance = {
   theme: "stripe" as const,
   variables: {
     fontFamily: '"Manrope", system-ui, -apple-system, sans-serif',
     fontSizeBase: "14px",
-    colorPrimary: "#0A0A0A",
-    colorBackground: "#FAFAF8",
-    colorText: "#0A0A0A",
+    colorPrimary: "#1A1A1A",
+    colorBackground: "#FFFFFF",
+    colorText: "#1A1A1A",
     colorDanger: "#dc2626",
-    borderRadius: "4px",
+    borderRadius: "2px",
     spacingUnit: "4px",
   },
   rules: {
     ".Input": {
-      border: "1px solid #E8E7E3",
+      border: "1px solid #E5E5E5",
       padding: "12px 14px",
-      borderRadius: "4px",
+      borderRadius: "2px",
       fontSize: "14px",
-      transition: "border-color 0.15s ease, box-shadow 0.15s ease",
+      transition: "border-color 0.15s ease",
     },
     ".Input:hover": {
-      borderColor: "#D4D3CE",
+      borderColor: "#D4D4D4",
     },
     ".Input:focus": {
-      borderColor: "#0A0A0A",
+      borderColor: "#1A1A1A",
       boxShadow: "none",
     },
     ".Label": {
       fontSize: "11px",
       fontWeight: "500",
       marginBottom: "6px",
-      color: "#717168",
+      color: "#666",
       letterSpacing: "0.05em",
       textTransform: "uppercase" as const,
     },
@@ -54,16 +54,16 @@ const stripeAppearance = {
       marginTop: "4px",
     },
     ".Tab": {
-      borderRadius: "4px",
-      border: "1px solid #E8E7E3",
+      borderRadius: "2px",
+      border: "1px solid #E5E5E5",
       padding: "12px 16px",
     },
     ".Tab:hover": {
-      borderColor: "#D4D3CE",
+      borderColor: "#D4D4D4",
     },
     ".Tab--selected": {
-      borderColor: "#0A0A0A",
-      backgroundColor: "#FAFAF8",
+      borderColor: "#1A1A1A",
+      backgroundColor: "#FFFFFF",
     },
   },
 };
@@ -149,12 +149,17 @@ function PaymentForm({
         </div>
       </div>
 
-      {/* Payment Element */}
+      {/* Payment Element — shows all Stripe-enabled methods including Apple Pay, Google Pay */}
       <div className="mb-6">
         <PaymentElement
           onReady={() => setIsReady(true)}
           options={{
             layout: "tabs",
+            wallets: {
+              applePay: "auto",
+              googlePay: "auto",
+            },
+            paymentMethodOrder: ["apple_pay", "google_pay", "card"],
           }}
         />
       </div>

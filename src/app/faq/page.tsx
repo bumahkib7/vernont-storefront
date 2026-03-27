@@ -74,7 +74,7 @@ const faqs: FAQItem[] = [
   {
     category: "Account & Payments",
     question: "What payment methods do you accept?",
-    answer: "We accept all major credit cards (Visa, Mastercard, American Express), PayPal, Apple Pay, and Google Pay. All transactions are securely processed.",
+    answer: "We accept all major credit cards (Visa, Mastercard, American Express), Apple Pay, Google Pay, and other Stripe-supported payment methods. All transactions are securely processed.",
   },
   {
     category: "Account & Payments",

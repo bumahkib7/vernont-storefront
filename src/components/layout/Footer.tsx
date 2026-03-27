@@ -162,7 +162,7 @@ export function Footer() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-[10px] text-white/30 mr-1">Pay securely with</span>
-              {["Visa", "MC", "Amex", "PayPal", "Klarna"].map((m) => (
+              {["Visa", "MC", "Amex", "Apple Pay", "Google Pay"].map((m) => (
                 <div key={m} className="px-2 py-0.5 bg-white/10 text-[9px] font-medium text-white/60">{m}</div>
               ))}
             </div>

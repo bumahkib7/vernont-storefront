@@ -270,9 +270,9 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               )}
             </button>
 
-            {/* Pay later */}
+            {/* Payment methods */}
             <p className="text-center text-[12px] text-[#999] mb-6">
-              Pay over time with <span className="font-medium text-[#1A1A1A]">PayPal</span> or <span className="font-medium text-[#1A1A1A]">Klarna</span>.
+              <span className="font-medium text-[#1A1A1A]">Apple Pay</span>, <span className="font-medium text-[#1A1A1A]">Google Pay</span> and all major cards accepted.
             </p>
 
             {/* Delivery info — SGH style */}
