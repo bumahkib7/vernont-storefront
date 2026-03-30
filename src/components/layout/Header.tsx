@@ -146,7 +146,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Center: Desktop Nav — SGH style uppercase, spaced */}
+          {/* Center: Desktop Nav — mega-menu style */}
           <nav className="hidden lg:flex items-center gap-1">
             {mainNav.map((item) => (
               <div
@@ -157,7 +157,7 @@ export function Header() {
               >
                 <Link
                   href={item.href}
-                  className="px-4 py-2 text-[13px] font-medium uppercase tracking-[0.12em] text-[#1A1A1A] hover:opacity-60 transition-opacity whitespace-nowrap"
+                  className={`px-4 py-2 text-[13px] font-medium uppercase tracking-[0.12em] text-[#1A1A1A] hover:opacity-60 transition-opacity whitespace-nowrap ${activeDropdown === item.label ? "opacity-60" : ""}`}
                   style={{ fontFamily: "'Manrope', sans-serif" }}
                 >
                   {item.label}
@@ -166,25 +166,36 @@ export function Header() {
                 <AnimatePresence>
                   {item.hasDropdown && activeDropdown === item.label && item.dropdownItems && (
                     <motion.div
-                      initial={{ opacity: 0, y: 4 }}
+                      initial={{ opacity: 0, y: 0 }}
                       animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 4 }}
-                      transition={{ duration: 0.12 }}
-                      className="absolute top-full left-0 mt-0 w-52 bg-white border border-[#E5E5E5] shadow-lg z-50"
+                      exit={{ opacity: 0, y: 0 }}
+                      transition={{ duration: 0.15 }}
+                      className="fixed left-0 right-0 top-[60px] z-50 bg-white border-b border-[#E5E5E5] shadow-sm"
                       onMouseEnter={() => handleMouseEnter(item.label)}
                       onMouseLeave={handleMouseLeave}
                     >
-                      <div className="py-1">
-                        {item.dropdownItems.map((dropdownItem) => (
+                      <div className="max-w-[1280px] mx-auto px-6 py-8">
+                        <div className="grid grid-cols-4 gap-x-12 gap-y-4">
+                          {item.dropdownItems.map((dropdownItem) => (
+                            <Link
+                              key={dropdownItem.href}
+                              href={dropdownItem.href}
+                              className="block text-[12px] text-[#1A1A1A] hover:opacity-60 transition-opacity uppercase tracking-[0.08em]"
+                              onClick={() => setActiveDropdown(null)}
+                            >
+                              {dropdownItem.label}
+                            </Link>
+                          ))}
+                        </div>
+                        <div className="mt-6 pt-4 border-t border-[#F0F0F0]">
                           <Link
-                            key={dropdownItem.href}
-                            href={dropdownItem.href}
-                            className="block px-5 py-2.5 text-[13px] text-[#1A1A1A] hover:bg-[#F5F5F5] transition-colors"
+                            href={item.href}
+                            className="text-[11px] font-medium uppercase tracking-[0.15em] text-[#999] hover:text-[#1A1A1A] transition-colors"
                             onClick={() => setActiveDropdown(null)}
                           >
-                            {dropdownItem.label}
+                            View All {item.label} →
                           </Link>
-                        ))}
+                        </div>
                       </div>
                     </motion.div>
                   )}
