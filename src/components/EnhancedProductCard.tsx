@@ -50,7 +50,7 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
             src={product.image}
             alt={product.name}
             fill
-            className={`object-contain p-2 transition-transform duration-300 group-hover:scale-105 ${
+            className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
               isImageLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setIsImageLoaded(true)}

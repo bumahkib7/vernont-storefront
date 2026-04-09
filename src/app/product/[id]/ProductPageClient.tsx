@@ -51,6 +51,8 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
   const [selectedImage, setSelectedImage] = useState(0);
+  const [isZoomed, setIsZoomed] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
   const [specsData, setSpecsData] = useState<ProductSpecificationsResponse | null>(null);
 
   const { addItem, currency } = useCart();
@@ -133,6 +135,14 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
     }
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isZoomed) return;
+    const { left, top, width, height } = e.currentTarget.getBoundingClientRect();
+    const x = ((e.clientX - left) / width) * 100;
+    const y = ((e.clientY - top) / height) * 100;
+    setMousePos({ x, y });
+  };
+
   const productUrl = typeof window !== "undefined" ? window.location.href : `https://vernont.com/product/${id}`;
 
   return (
@@ -158,20 +168,47 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
         <div className="grid lg:grid-cols-[1fr_420px] gap-8 lg:gap-16">
           {/* LEFT: Image gallery with vertical dot navigation */}
           <div className="relative">
-            <div className="relative aspect-[4/3] bg-white overflow-hidden">
-              <Image
-                src={productImages[selectedImage]}
-                alt={product.name}
-                fill
-                sizes="(max-width: 1024px) 100vw, 60vw"
-                className="object-contain p-6 lg:p-16"
-                priority
-              />
+            <div 
+              className="relative aspect-[4/3] bg-white overflow-hidden cursor-zoom-in group"
+              onMouseEnter={() => setIsZoomed(true)}
+              onMouseLeave={() => setIsZoomed(false)}
+              onMouseMove={handleMouseMove}
+            >
+              {productImages.map((src, idx) => (
+                <div
+                  key={src}
+                  className={`absolute inset-0 transition-opacity duration-150 ${
+                    idx === selectedImage ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                  }`}
+                >
+                  <div
+                    className="relative w-full h-full"
+                    style={{
+                      transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
+                      transform: isZoomed ? "scale(2.5)" : "scale(1)",
+                      transition: isZoomed ? "none" : "transform 0.3s ease-out"
+                    }}
+                  >
+                    <Image
+                      src={src}
+                      alt={`${product.name} ${idx + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 60vw"
+                      className="object-contain p-4 lg:p-6"
+                      priority={idx === 0 || idx === 1}
+                    />
+                  </div>
+                </div>
+              ))}
 
-              {/* Magnifying glass icon */}
-              <button className="absolute bottom-4 left-4 p-2 text-[#999] hover:text-[#1A1A1A] transition-colors">
+              {/* Magnifying glass icon - fade out to hide when zoomed in */}
+              <div 
+                className={`absolute bottom-4 left-4 p-2 text-[#999] pointer-events-none z-20 transition-opacity duration-300 ${
+                  isZoomed ? "opacity-0" : "opacity-100"
+                }`}
+              >
                 <MagnifyingGlass className="w-5 h-5" />
-              </button>
+              </div>
             </div>
 
             {/* Vertical dot navigation */}

@@ -39,75 +39,55 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
       transition={{ duration: 0.15, delay: index * 0.02 }}
     >
       <div
-        className="group cursor-pointer"
+        className="group cursor-pointer flex flex-col items-center text-center"
         onClick={handleCardClick}
       >
-        {/* Image — SGH listing style: gray background, large, frameless */}
-        <div className="relative aspect-[4/3] overflow-hidden bg-[#F0F0F0] mb-3">
+        {/* Image — Pret a Voir style: pure white background, frameless */}
+        <div className="relative w-full aspect-[4/3] bg-white mb-4">
           {!isImageLoaded && (
-            <div className="absolute inset-0 bg-[#EBEBEB] animate-pulse" />
+            <div className="absolute inset-0 bg-transparent animate-pulse delay-150" />
           )}
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className={`object-contain p-6 lg:p-8 transition-transform duration-300 group-hover:scale-105 ${
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            quality={90}
+            className={`object-cover transition-transform duration-[400ms] group-hover:scale-[1.03] ${
               isImageLoaded ? "opacity-100" : "opacity-0"
             }`}
             onLoad={() => setIsImageLoaded(true)}
           />
-
-          {/* Discount badge — top right, SGH style */}
-          {hasDiscount && (
-            <span className="absolute top-3 right-3 px-2.5 py-1 bg-[#1A1A1A] text-white text-[10px] font-medium tracking-wider rounded-sm">
-              {Math.round((1 - product.price / product.originalPrice!) * 100)}% off
-            </span>
-          )}
-
-          {/* Wishlist — bottom right, appears on hover */}
-          <button
-            onClick={handleToggleWishlist}
-            className="absolute bottom-3 right-3 p-2 opacity-0 group-hover:opacity-100 transition-opacity"
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart
-              className={`h-5 w-5 ${
-                isWishlisted ? "fill-[#1A1A1A] text-[#1A1A1A]" : "text-[#666]"
-              }`}
-            />
-          </button>
         </div>
 
-        {/* Product info — SGH listing style: brand LEFT, price RIGHT */}
-        <div className="flex items-start justify-between gap-2">
-          <div className="min-w-0">
-            <p className="text-[13px] font-bold uppercase tracking-[0.03em] text-[#1A1A1A]">
-              {product.brand}
-            </p>
-            <p className="text-[12px] text-[#666] truncate">
-              {product.name}
-            </p>
-            {product.variants && product.variants.length > 1 && (
-              <p className="text-[11px] text-[#999]">
-                {product.variants.length} colors
-              </p>
-            )}
-          </div>
-          <div className="text-right flex-shrink-0">
-            {hasDiscount && (
-              <p className="text-[12px] text-[#999] line-through tabular-nums">
-                {formatPriceMajor(product.originalPrice!, currency)}
-              </p>
-            )}
-            <p className={`text-[13px] font-medium tabular-nums ${hasDiscount ? "text-[#E31837]" : "text-[#1A1A1A]"}`}>
-              {formatPriceMajor(product.price, currency)}
-            </p>
-            {hasDiscount && (
-              <p className="text-[10px] font-bold uppercase tracking-wider text-[#1A1A1A] mt-0.5">
-                Last Chance
-              </p>
-            )}
-          </div>
+        {/* Product info — Pret a Voir style: Centered */}
+        <div className="flex flex-col items-center justify-center gap-1 w-full px-2">
+           <h3 className="text-[11px] lg:text-[12px] font-bold uppercase tracking-[0.1em] text-[#1A1A1A]">
+             {product.name}
+           </h3>
+           <p className="text-[10px] font-medium uppercase tracking-widest text-[#666] mb-1">
+             {product.variants?.length ? product.variants.length : 1} COLOURS
+           </p>
+           
+           <div className="flex items-end gap-2 justify-center">
+             <p className={`text-[12px] font-bold tracking-widest uppercase tabular-nums ${hasDiscount ? "text-[#E31837]" : "text-[#1A1A1A]"}`}>
+               {hasDiscount && "FROM "}£ {Number(product.price).toFixed(2)} GBP
+             </p>
+           </div>
+           
+           {/* Wishlist Heart — bottom centered static outline */}
+           <button
+             onClick={handleToggleWishlist}
+             className="mt-1 p-1.5 hover:scale-110 transition-transform"
+             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+           >
+             <Heart
+               weight={isWishlisted ? "fill" : "regular"}
+               className={`h-4 w-4 ${
+                 isWishlisted ? "text-[#1A1A1A]" : "text-[#1A1A1A]"
+               }`}
+             />
+           </button>
         </div>
       </div>
     </motion.div>
