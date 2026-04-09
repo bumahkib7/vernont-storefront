@@ -49,6 +49,7 @@ export function Header() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
+  // Search results dropdown handling
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -91,169 +92,150 @@ export function Header() {
 
   return (
     <>
-      {/* === Row 1: Promo banner with arrows — SGH style === */}
-      <div className="bg-[#F5F5F5] border-b border-[#E5E5E5]">
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between px-4 py-2">
-          <button className="p-1 text-[#1A1A1A] hover:opacity-60" aria-label="Previous promo">
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <p className="text-xs text-[#1A1A1A] tracking-wide">
-            30% off second pair. Applied at checkout on full priced styles | T&Cs apply
-          </p>
-          <button className="p-1 text-[#1A1A1A] hover:opacity-60" aria-label="Next promo">
-            <ChevronRight className="w-4 h-4" />
-          </button>
+      <div className="flex flex-col w-full border-b border-[#E5E5E5]">
+        {/* === Layer 1: Trustpilot === */}
+        <div className="bg-[#f2fcf6] py-1.5 flex items-center justify-center text-[11px] font-semibold text-[#1A1A1A] tracking-wide">
+          Excellent 
+          <span className="flex items-center mx-2 text-white bg-[#00b67a] px-1 py-0.5 gap-0.5 text-xs">
+            ★ ★ ★ ★ ★
+          </span> 
+          <span className="underline cursor-pointer hover:opacity-70">33,470 reviews on</span> 
+          <span className="ml-1 text-[#00b67a] font-bold flex items-center gap-1">
+             <span className="text-sm">★</span> Trustpilot
+          </span>
         </div>
-      </div>
 
-      {/* === Row 2: Utility links — SGH style === */}
-      <div className="hidden lg:block bg-white border-b border-[#E5E5E5]">
-        <div className="max-w-[1280px] mx-auto flex items-center justify-end gap-6 px-4 py-1.5">
-          {[
-            { label: "Get support", href: "/contact" },
-            { label: "Order status", href: "/account/orders" },
-            { label: "Our services", href: "/faq" },
-            { label: "UK", href: "#" },
-          ].map((link) => (
-            <Link
-              key={link.label}
-              href={link.href}
-              className="text-[11px] text-[#1A1A1A] hover:underline"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
-      </div>
-
-      {/* === Row 3: Main header — logo left, nav center, icons right === */}
-      <header className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5]">
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between h-[60px] px-4 lg:px-6">
-          {/* Left: Mobile menu + Logo */}
-          <div className="flex items-center gap-4 min-w-[180px]">
-            <button
-              onClick={() => setMobileMenuOpen(true)}
-              className="lg:hidden p-1"
-              aria-label="Open menu"
-            >
-              <Menu className="w-5 h-5" />
+        {/* === Layer 2: Main Utility === */}
+        <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
+          {/* Mobile Menu & Logo */}
+          <div className="flex items-center gap-4 min-w-[200px]">
+            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-1">
+              <Menu className="w-6 h-6" />
             </button>
-            <Link href="/" className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-[#1A1A1A]" />
-              <span className="text-base font-normal tracking-wide" style={{ fontFamily: "'Manrope', sans-serif" }}>
-                {storeName?.toLowerCase() || "vernont"}
-              </span>
+            <Link href="/" className="font-bold text-xl lg:text-3xl tracking-[0.35em] text-[#1A1A1A] whitespace-nowrap">
+              {storeName?.toUpperCase() || "VERNONT"}
             </Link>
           </div>
 
-          {/* Center: Desktop Nav — mega-menu style */}
-          <nav className="hidden lg:flex items-center gap-1">
-            {mainNav.map((item) => (
-              <div
-                key={item.label}
-                className="relative"
-                onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.label)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <Link
-                  href={item.href}
-                  className={`px-4 py-2 text-[13px] font-medium uppercase tracking-[0.12em] text-[#1A1A1A] hover:opacity-60 transition-opacity whitespace-nowrap ${activeDropdown === item.label ? "opacity-60" : ""}`}
-                  style={{ fontFamily: "'Manrope', sans-serif" }}
-                >
-                  {item.label}
-                </Link>
+          {/* Center: Search Bar */}
+          <div className="hidden lg:flex flex-1 max-w-[550px] mx-8 relative" ref={searchRef}>
+             <form onSubmit={handleSearchSubmit} className="w-full relative">
+                <input 
+                   type="text" 
+                   placeholder="Search..." 
+                   value={searchQuery}
+                   onChange={(e) => {
+                     setSearchQuery(e.target.value);
+                     setShowResults(true);
+                   }}
+                   onFocus={() => setShowResults(true)}
+                   className="w-full bg-[#f4f4f4] text-sm py-2.5 px-4 outline-none placeholder:text-[#666]"
+                />
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A]">
+                   {searchLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                </button>
+             </form>
 
-                <AnimatePresence>
-                  {item.hasDropdown && activeDropdown === item.label && item.dropdownItems && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 0 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 0 }}
-                      transition={{ duration: 0.15 }}
-                      className="fixed left-0 right-0 top-[60px] z-50 bg-white border-b border-[#E5E5E5] shadow-sm"
-                      onMouseEnter={() => handleMouseEnter(item.label)}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <div className="max-w-[1280px] mx-auto px-6 py-8">
-                        <div className="grid grid-cols-4 gap-x-12 gap-y-4">
-                          {item.dropdownItems.map((dropdownItem) => (
-                            <Link
-                              key={dropdownItem.href}
-                              href={dropdownItem.href}
-                              className="block text-[12px] text-[#1A1A1A] hover:opacity-60 transition-opacity uppercase tracking-[0.08em]"
-                              onClick={() => setActiveDropdown(null)}
-                            >
-                              {dropdownItem.label}
-                            </Link>
-                          ))}
-                        </div>
-                        <div className="mt-6 pt-4 border-t border-[#F0F0F0]">
-                          <Link
-                            href={item.href}
-                            className="text-[11px] font-medium uppercase tracking-[0.15em] text-[#999] hover:text-[#1A1A1A] transition-colors"
-                            onClick={() => setActiveDropdown(null)}
-                          >
-                            View All {item.label} →
-                          </Link>
-                        </div>
+             {/* Search Dropdown Desktop */}
+             <AnimatePresence>
+               {showResults && searchQuery.length >= 2 && (
+                 <motion.div 
+                   initial={{ opacity: 0, y: 5 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   exit={{ opacity: 0, y: 5 }}
+                   className="absolute top-full mt-2 left-0 w-full bg-white border border-[#E5E5E5] shadow-lg z-50 max-h-[400px] overflow-y-auto"
+                 >
+                   {searchResults.length > 0 ? (
+                      <div className="p-2">
+                        {searchResults.map((product) => (
+                           <button
+                             key={product.id}
+                             onClick={() => handleProductClick(product.handle || product.id)}
+                             className="flex items-center gap-3 w-full p-2 text-left hover:bg-[#F5F5F5] transition-colors"
+                           >
+                             <div className="w-10 h-10 bg-[#F5F5F5]">
+                                {product.thumbnail && <img src={product.thumbnail} alt="" className="w-full h-full object-contain" />}
+                             </div>
+                             <div className="flex-1 min-w-0">
+                               <p className="text-xs truncate text-[#1A1A1A]">{product.title}</p>
+                               {product.brand && <p className="text-[10px] text-[#999]">{product.brand}</p>}
+                             </div>
+                           </button>
+                        ))}
                       </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                   ) : !searchLoading ? (
+                      <div className="p-4 text-center text-xs text-[#999]">No results found</div>
+                   ) : null}
+                 </motion.div>
+               )}
+             </AnimatePresence>
+          </div>
+
+          {/* Right: Icons */}
+          <div className="flex items-center gap-5 min-w-[200px] justify-end">
+            <div className="hidden lg:flex items-center text-[13px] font-medium text-[#1A1A1A] cursor-pointer hover:opacity-70 gap-1 border border-[#E5E5E5] rounded-full px-3 py-1">
+               GBP £ <ChevronRight className="w-3 h-3 rotate-90" />
+            </div>
+            
+            <Link href="/account" className="p-1 hover:opacity-60 transition-opacity hidden sm:block">
+              <User className="w-5 h-5 text-[#1A1A1A]" />
+            </Link>
+
+            <button onClick={openCart} className="relative p-1 hover:opacity-60 transition-opacity text-[#1A1A1A]">
+              <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-[18px] h-[18px] bg-black text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                {itemCount}
               </div>
-            ))}
-          </nav>
-
-          {/* Right: Icons only — SGH style */}
-          <div className="flex items-center gap-4 min-w-[180px] justify-end">
-            {/* Search icon */}
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="p-1 hover:opacity-60 transition-opacity"
-              aria-label="Search"
-            >
-              <Search className="w-5 h-5" />
-            </button>
-
-            {/* Wishlist */}
-            <Link
-              href="/wishlist"
-              className="relative p-1 hover:opacity-60 transition-opacity hidden sm:block"
-              aria-label="Wishlist"
-            >
-              <Heart className="w-5 h-5" />
-              {wishlistCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1A1A1A] text-white text-[9px] font-medium flex items-center justify-center rounded-full">
-                  {wishlistCount > 9 ? "9+" : wishlistCount}
-                </span>
-              )}
-            </Link>
-
-            {/* Account */}
-            <Link
-              href="/account"
-              className="p-1 hover:opacity-60 transition-opacity hidden sm:block"
-              aria-label="Account"
-            >
-              <User className="w-5 h-5" />
-            </Link>
-
-            {/* Bag */}
-            <button
-              onClick={openCart}
-              className="relative p-1 hover:opacity-60 transition-opacity"
-              aria-label="Shopping bag"
-            >
               <ShoppingBag className="w-5 h-5" />
-              {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-[#1A1A1A] text-white text-[9px] font-medium flex items-center justify-center rounded-full">
-                  {itemCount > 9 ? "9+" : itemCount}
-                </span>
-              )}
             </button>
+
+            <Link href="/wishlist" className="p-1 hover:opacity-60 transition-opacity text-[#1A1A1A] hidden sm:block">
+              <Heart className="w-5 h-5" />
+            </Link>
           </div>
         </div>
-      </header>
+
+        {/* === Layer 3: Nav Center === */}
+        <nav className="hidden lg:flex items-center justify-center gap-8 py-3 pb-4">
+           {['GLASSES', 'SUNGLASSES', 'CELEBRITY', 'RE-LENS', 'NEW IN', 'ACCESSORIES'].map((label) => (
+              <div key={label} className="group relative cursor-pointer flex items-center gap-1.5">
+                 <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
+                    {label}
+                 </span>
+                 <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+              </div>
+           ))}
+           <div className="cursor-pointer flex items-center gap-1.5">
+              <span className="text-2xl text-red-600 italic font-serif leading-none hover:opacity-70 transition-opacity pr-1" style={{ fontFamily: 'Georgia, serif' }}>
+                 Sale
+              </span>
+              <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+           </div>
+           <div className="cursor-pointer flex items-center gap-1.5 group">
+              <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
+                 CONTACT US
+              </span>
+              <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+           </div>
+        </nav>
+
+        {/* === Layer 4: Brand Strip === */}
+        <div className="w-full bg-black py-2.5 overflow-x-auto no-scrollbar">
+           <div className="flex items-center justify-center gap-12 lg:gap-16 min-w-max px-6">
+              {['CHANEL', 'Cartier', 'GUCCI', 'PRADA', 'Meta', 'Maui Jim', 'TOM FORD'].map((brand) => (
+                 <span key={brand} className="text-white text-sm lg:text-[15px] font-bold tracking-widest uppercase hover:opacity-70 transition-opacity cursor-pointer">
+                    {brand}
+                 </span>
+              ))}
+           </div>
+        </div>
+
+        {/* === Layer 5: Policy === */}
+        <div className="w-full bg-white py-3 border-b border-[#E5E5E5]">
+           <p className="text-center text-[11px] font-medium text-[#1A1A1A] tracking-wide">
+              Owned and Operated by a Qualified Optometrist. You can trust our prescription lens quality. Guaranteed.
+           </p>
+        </div>
+      </div>
 
       {/* === Mobile Menu === */}
       <AnimatePresence>
