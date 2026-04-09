@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Heart, Star } from "lucide-react";
+import { Heart, Star } from "@phosphor-icons/react";
 import { useState } from "react";
 import { useWishlist } from "@/context/WishlistContext";
 import { toast } from "sonner";

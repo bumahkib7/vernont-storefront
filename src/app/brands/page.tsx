@@ -5,7 +5,7 @@ import { useBrands } from "@/lib/hooks";
 import { resolveImageUrl } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
-import { Loader2, ChevronRight, Crown, Star, Package } from "lucide-react";
+import { SpinnerGap, CaretRight, Crown, Star, Package } from "@phosphor-icons/react";
 
 const TIER_CONFIG: Record<string, { label: string; icon: typeof Crown; color: string }> = {
   LUXURY: { label: "Luxury", icon: Crown, color: "text-amber-600" },
@@ -35,7 +35,7 @@ export default function BrandsPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-neutral-400" />
+        <SpinnerGap className="w-8 h-8 animate-spin text-neutral-400" />
       </div>
     );
   }
@@ -160,7 +160,7 @@ function BrandGrid({ brands }: { brands: Array<{ id: string; name: string; slug:
             </p>
           </div>
           <div className="flex justify-center mt-2 opacity-0 group-hover:opacity-100 transition-opacity">
-            <ChevronRight className="w-4 h-4 text-neutral-400" />
+            <CaretRight className="w-4 h-4 text-neutral-400" />
           </div>
         </Link>
       ))}

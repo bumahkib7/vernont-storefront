@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Camera, ArrowRight, Check, Mail } from "lucide-react";
+import { Camera, ArrowRight, Check, EnvelopeSimple } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 export default function TryOnPage() {
@@ -50,7 +50,7 @@ export default function TryOnPage() {
               description: "Our AR technology uses facial measurements to show frames at their actual proportions on your face.",
             },
             {
-              title: "Save & Compare",
+              title: "FloppyDisk & Compare",
               description: "Capture screenshots of your favourite looks and compare different styles side by side.",
             },
           ].map((feature) => (
@@ -94,7 +94,7 @@ export default function TryOnPage() {
                 type="submit"
                 className="px-6 py-3 bg-[var(--foreground)] text-[var(--background)] font-medium rounded-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
               >
-                <Mail className="h-4 w-4" />
+                <EnvelopeSimple className="h-4 w-4" />
                 Notify Me
               </button>
             </form>

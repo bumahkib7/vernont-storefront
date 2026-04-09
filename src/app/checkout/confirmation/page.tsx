@@ -8,12 +8,12 @@ import {
   Check,
   Package,
   Truck,
-  Mail,
+  EnvelopeSimple,
   MapPin,
   CreditCard,
   ArrowRight,
-  Download,
-} from "lucide-react";
+  DownloadSimple,
+} from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PrintableReceipt } from "@/components/checkout/PrintableReceipt";
 import { formatPrice } from "@/context/CartContext";
@@ -325,7 +325,7 @@ function ConfirmationContent() {
 
             <div>
               <div className="flex items-center gap-2 mb-3">
-                <Mail className="h-4 w-4 text-neutral-400" />
+                <EnvelopeSimple className="h-4 w-4 text-neutral-400" />
                 <h3 className="text-sm font-medium uppercase tracking-wide">
                   Contact
                 </h3>
@@ -354,8 +354,8 @@ function ConfirmationContent() {
               onClick={() => window.print()}
               className="inline-flex items-center justify-center gap-2 px-8 py-3 border border-neutral-200 text-sm font-medium hover:bg-neutral-50 transition-colors w-full sm:w-auto"
             >
-              <Download className="h-4 w-4" />
-              Download Receipt
+              <DownloadSimple className="h-4 w-4" />
+              DownloadSimple Receipt
             </button>
           </div>
 

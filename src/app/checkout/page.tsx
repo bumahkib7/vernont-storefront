@@ -13,13 +13,13 @@ import {
   ArrowLeft,
   Gift,
   Tag,
-  AlertCircle,
-  Loader2,
+  WarningCircle,
+  SpinnerGap,
   Plus,
   MapPin,
   Shield,
-  RotateCcw,
-} from "lucide-react";
+  ArrowCounterClockwise,
+} from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
@@ -59,7 +59,7 @@ const TRUST_FEATURES = [
   { icon: Check, label: "100% Authentic" },
   { icon: Shield, label: "Secure checkout" },
   { icon: Truck, label: "Fast UK delivery" },
-  { icon: RotateCcw, label: "30-day returns" },
+  { icon: ArrowCounterClockwise, label: "30-day returns" },
 ];
 
 export default function CheckoutPage() {
@@ -550,7 +550,7 @@ export default function CheckoutPage() {
   if ((cartLoading && items.length === 0) || authLoading) {
     return (
       <div className="min-h-screen bg-[var(--background)] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+        <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
       </div>
     );
   }
@@ -727,7 +727,7 @@ export default function CheckoutPage() {
 
                     {loadingAddresses ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
+                        <SpinnerGap className="h-6 w-6 animate-spin text-[var(--primary)]" />
                       </div>
                     ) : (
                       <>
@@ -913,7 +913,7 @@ export default function CheckoutPage() {
                                   onChange={handleInputChange}
                                   className="rounded border-[var(--border)] text-[var(--primary)] focus:ring-[var(--primary)]"
                                 />
-                                Save this address for future orders
+                                FloppyDisk this address for future orders
                               </label>
                             )}
                           </div>
@@ -963,7 +963,7 @@ export default function CheckoutPage() {
 
                     {loadingShipping ? (
                       <div className="flex items-center justify-center py-8">
-                        <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
+                        <SpinnerGap className="h-6 w-6 animate-spin text-[var(--primary)]" />
                       </div>
                     ) : shippingOptions.length === 0 ? (
                       <div className="p-4 bg-[var(--surface)] rounded-sm text-center">
@@ -1047,7 +1047,7 @@ export default function CheckoutPage() {
                       >
                         {isProcessing ? (
                           <>
-                            <Loader2 className="h-4 w-4 animate-spin" />
+                            <SpinnerGap className="h-4 w-4 animate-spin" />
                             Processing...
                           </>
                         ) : (
@@ -1096,7 +1096,7 @@ export default function CheckoutPage() {
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-sm flex items-start gap-3"
                       >
-                        <AlertCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
+                        <WarningCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
                         <div>
                           <p className="text-sm text-[var(--destructive)]">{paymentError}</p>
                           <button
@@ -1111,7 +1111,7 @@ export default function CheckoutPage() {
 
                     {isLoadingPayment && (
                       <div className="flex flex-col items-center justify-center py-12">
-                        <Loader2 className="w-8 h-8 animate-spin text-[var(--primary)] mb-4" />
+                        <SpinnerGap className="w-8 h-8 animate-spin text-[var(--primary)] mb-4" />
                         <p className="text-sm text-[var(--muted-foreground)]">
                           Preparing secure payment...
                         </p>
@@ -1207,7 +1207,7 @@ export default function CheckoutPage() {
                   className="btn-outline px-4 disabled:opacity-50"
                 >
                   {applyingPromo ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                   ) : promoApplied ? (
                     <Check className="h-4 w-4" />
                   ) : (
@@ -1261,7 +1261,7 @@ export default function CheckoutPage() {
                       disabled={applyingGiftCard}
                       className="btn-outline px-4 text-[var(--destructive)] disabled:opacity-50"
                     >
-                      {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Remove"}
+                      {applyingGiftCard ? <SpinnerGap className="h-4 w-4 animate-spin" /> : "Remove"}
                     </button>
                   ) : (
                     <button
@@ -1269,7 +1269,7 @@ export default function CheckoutPage() {
                       disabled={!giftCardCode || giftCardCode.length < 19 || applyingGiftCard}
                       className="btn-outline px-4 disabled:opacity-50"
                     >
-                      {applyingGiftCard ? <Loader2 className="h-4 w-4 animate-spin" /> : "Apply"}
+                      {applyingGiftCard ? <SpinnerGap className="h-4 w-4 animate-spin" /> : "Apply"}
                     </button>
                   )}
                 </div>

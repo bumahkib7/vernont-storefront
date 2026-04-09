@@ -1,7 +1,11 @@
 import {
-  Check, Truck, RotateCcw, Gift, Star,
-  Sparkles,
-} from "lucide-react";
+  Check,
+  Truck,
+  ArrowCounterClockwise,
+  Gift,
+  Star,
+  Sparkle,
+} from "@phosphor-icons/react/ssr";
 import type { VerticalConfig } from "./types";
 import { DEFAULT_TRUST_BADGES, DEFAULT_SHIPPING_FEATURES } from "./_defaults";
 
@@ -17,7 +21,7 @@ export const eyewearConfig: VerticalConfig = {
     metadataNamespace: "eyewear",
     defaultCategory: "Sunglasses",
 
-    searchPlaceholder: "Search frames, brands...",
+    searchPlaceholder: "MagnifyingGlass frames, brands...",
     popularSearches: ["Jacques Marie Mage", "Sunglasses", "Acetate", "Luxury", "Polarized", "Round"],
     suggestedSearches: ["Jacques Marie Mage", "Sunglasses", "Luxury Eyewear", "New Arrivals"],
 
@@ -88,7 +92,7 @@ export const eyewearConfig: VerticalConfig = {
     trustBand: [
       { icon: Check, label: "Authentic Products" },
       { icon: Truck, label: "Fast UK Delivery" },
-      { icon: RotateCcw, label: "30-Day Returns" },
+      { icon: ArrowCounterClockwise, label: "30-Day Returns" },
       { icon: Gift, label: "Free Case & Cloth" },
     ],
 
@@ -104,7 +108,7 @@ export const eyewearConfig: VerticalConfig = {
     announcements: [
       { icon: Gift, text: "Complimentary case & cleaning kit with every order" },
       { icon: Gift, text: "Complimentary gift wrapping on all orders" },
-      { icon: Sparkles, text: "Free samples with every purchase" },
+      { icon: Sparkle, text: "Free samples with every purchase" },
     ],
 
     testimonials: [

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { MapPin, Briefcase } from "lucide-react";
+import { MapPin, Briefcase } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 
@@ -151,7 +151,7 @@ export default function CareersPage() {
               Don&apos;t see the right role? We&apos;re always looking for talented individuals.
             </p>
             <Button className="btn-outline-luxury">
-              Send Your CV
+              PaperPlaneRight Your CV
             </Button>
           </div>
         </div>

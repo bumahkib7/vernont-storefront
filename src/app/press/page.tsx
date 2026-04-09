@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Download, Mail } from "lucide-react";
+import { DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 
@@ -62,7 +62,7 @@ export default function PressPage() {
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-[var(--secondary)]" />
+                  <EnvelopeSimple className="h-5 w-5 text-[var(--secondary)]" />
                   <span >press@vernont.com</span>
                 </div>
               </div>
@@ -70,11 +70,11 @@ export default function PressPage() {
             <div>
               <h2 className="text-2xl tracking-wide mb-6">Media Kit</h2>
               <p className="text-muted-foreground mb-6">
-                Download our media kit including logos, product images, and brand guidelines.
+                DownloadSimple our media kit including logos, product images, and brand guidelines.
               </p>
               <Button className="btn-outline-luxury">
-                <Download className="h-4 w-4 mr-2" />
-                Download Media Kit
+                <DownloadSimple className="h-4 w-4 mr-2" />
+                DownloadSimple Media Kit
               </Button>
             </div>
           </div>

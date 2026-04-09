@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ArrowRight, ExternalLink, Crown, Star, Package } from "lucide-react";
+import { CaretDown, ArrowRight, ArrowSquareOut, Crown, Star, Package } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { useBrandBySlug, useProducts } from "@/lib/hooks";
@@ -34,7 +34,7 @@ function SortDropdown({ value, onChange }: { value: string; onChange: (v: string
         className="flex items-center gap-2 text-sm border border-neutral-200 px-4 py-2 hover:border-neutral-400 transition-colors"
       >
         <span>Sort: {currentLabel}</span>
-        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <CaretDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
         <div className="absolute right-0 top-full mt-2 bg-white border border-neutral-200 shadow-lg z-20 min-w-[200px]">
@@ -167,7 +167,7 @@ export default function BrandDetailPage() {
                         className="inline-flex items-center gap-1 hover:text-black transition-colors"
                       >
                         Official Website
-                        <ExternalLink className="w-3 h-3" />
+                        <ArrowSquareOut className="w-3 h-3" />
                       </a>
                     )}
                   </div>

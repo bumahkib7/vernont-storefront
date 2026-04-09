@@ -10,16 +10,16 @@ import {
   Package,
   Truck,
   CreditCard,
-  Loader2,
+  SpinnerGap,
   ShoppingBag,
   CheckCircle,
   Clock,
   XCircle,
-  RotateCcw,
+  ArrowCounterClockwise,
   X,
-  AlertCircle,
+  WarningCircle,
   MapPin,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { ordersApi, returnsApi, type Order, type ReturnReason } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -167,7 +167,7 @@ export default function OrderDetailsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+        <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
       </div>
     );
   }
@@ -403,7 +403,7 @@ export default function OrderDetailsPage() {
                   </span>
                 ) : order.payment_status === "refunded" ? (
                   <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-500/10 text-orange-600">
-                    <RotateCcw className="h-3 w-3" />
+                    <ArrowCounterClockwise className="h-3 w-3" />
                     Refunded
                   </span>
                 ) : (
@@ -461,12 +461,12 @@ export default function OrderDetailsPage() {
               >
                 {checkingEligibility ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                     Checking...
                   </>
                 ) : (
                   <>
-                    <RotateCcw className="h-4 w-4" />
+                    <ArrowCounterClockwise className="h-4 w-4" />
                     Request Return
                   </>
                 )}
@@ -476,14 +476,14 @@ export default function OrderDetailsPage() {
             {/* Not eligible message */}
             {returnEligibility && !returnEligibility.eligible && (
               <div className="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg text-sm text-amber-600 flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <WarningCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                 <span>{returnEligibility.reason || "This order is not eligible for returns"}</span>
               </div>
             )}
 
             {returnError && (
               <div className="p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-sm text-[var(--destructive)] flex items-start gap-2">
-                <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                <WarningCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                 <span>{returnError}</span>
               </div>
             )}
@@ -633,7 +633,7 @@ export default function OrderDetailsPage() {
                 {/* Error */}
                 {returnError && (
                   <div className="p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-sm text-[var(--destructive)] flex items-start gap-2">
-                    <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                    <WarningCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
                     <span>{returnError}</span>
                   </div>
                 )}
@@ -654,7 +654,7 @@ export default function OrderDetailsPage() {
                 >
                   {submittingReturn ? (
                     <>
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <SpinnerGap className="h-4 w-4 animate-spin" />
                       Submitting...
                     </>
                   ) : (

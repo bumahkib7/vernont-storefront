@@ -9,15 +9,15 @@ import {
   MapPin,
   Heart,
   ArrowRight,
-  Loader2,
+  SpinnerGap,
   ShoppingBag,
   Truck,
   CheckCircle,
   Clock,
-  ChevronRight,
+  CaretRight,
   CreditCard,
-  Settings,
-} from "lucide-react";
+  Gear,
+} from "@phosphor-icons/react";
 import { useAuth } from "@/context/AuthContext";
 import { ordersApi, customerApi } from "@/lib/api";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -200,7 +200,7 @@ export default function AccountDashboard() {
 
             {isLoadingOrders ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="h-6 w-6 animate-spin text-[var(--primary)]" />
+                <SpinnerGap className="h-6 w-6 animate-spin text-[var(--primary)]" />
               </div>
             ) : recentOrders.length > 0 ? (
               <div className="divide-y divide-[var(--border)]">
@@ -259,7 +259,7 @@ export default function AccountDashboard() {
                       <p className="font-semibold tabular-nums">
                         {formatPriceMajor(order.total / 100, order.currency_code?.toUpperCase() || "GBP")}
                       </p>
-                      <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)]" />
+                      <CaretRight className="h-4 w-4 text-[var(--muted-foreground)]" />
                     </div>
                   </Link>
                 ))}
@@ -297,7 +297,7 @@ export default function AccountDashboard() {
 
             {isLoadingAddresses ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="h-5 w-5 animate-spin text-[var(--primary)]" />
+                <SpinnerGap className="h-5 w-5 animate-spin text-[var(--primary)]" />
               </div>
             ) : defaultAddress ? (
               <div className="p-4">
@@ -345,7 +345,7 @@ export default function AccountDashboard() {
               >
                 <Package className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span className="text-sm">Track an order</span>
-                <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
+                <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
               </Link>
               <Link
                 href="/account/returns"
@@ -353,15 +353,15 @@ export default function AccountDashboard() {
               >
                 <Package className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span className="text-sm">Start a return</span>
-                <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
+                <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
               </Link>
               <Link
                 href="/account/profile"
                 className="flex items-center gap-3 p-4 hover:bg-[var(--background)] transition-colors"
               >
-                <Settings className="h-4 w-4 text-[var(--muted-foreground)]" />
+                <Gear className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span className="text-sm">Edit profile</span>
-                <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
+                <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
               </Link>
               <Link
                 href="/wishlist"
@@ -369,7 +369,7 @@ export default function AccountDashboard() {
               >
                 <Heart className="h-4 w-4 text-[var(--muted-foreground)]" />
                 <span className="text-sm">View wishlist</span>
-                <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
+                <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] ml-auto" />
               </Link>
             </div>
           </div>

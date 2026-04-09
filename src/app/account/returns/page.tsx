@@ -5,15 +5,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  RotateCcw,
-  Loader2,
+  ArrowCounterClockwise,
+  SpinnerGap,
   Package,
-  ChevronRight,
+  CaretRight,
   Clock,
   CheckCircle,
   XCircle,
   Truck,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { returnsApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -98,7 +98,7 @@ export default function ReturnsPage() {
       {/* Returns List */}
       {isLoading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
       ) : returns.length > 0 ? (
         <div className="space-y-4">
@@ -122,7 +122,7 @@ export default function ReturnsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className={`h-10 w-10 rounded-lg ${status.bg} flex items-center justify-center`}>
-                          <RotateCcw className={`h-5 w-5 ${status.color}`} />
+                          <ArrowCounterClockwise className={`h-5 w-5 ${status.color}`} />
                         </div>
                         <div>
                           <p className="font-semibold text-sm">
@@ -142,7 +142,7 @@ export default function ReturnsPage() {
                           <StatusIcon className="h-3.5 w-3.5" />
                           {status.label}
                         </span>
-                        <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] hidden sm:block" />
+                        <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] hidden sm:block" />
                       </div>
                     </div>
                   </div>
@@ -205,7 +205,7 @@ export default function ReturnsPage() {
       ) : (
         <div className="text-center py-16 bg-[var(--surface)] border border-[var(--border)] rounded-lg">
           <div className="w-16 h-16 rounded-full bg-[var(--background)] flex items-center justify-center mx-auto mb-4">
-            <RotateCcw className="h-8 w-8 text-[var(--muted-foreground)]" />
+            <ArrowCounterClockwise className="h-8 w-8 text-[var(--muted-foreground)]" />
           </div>
           <h3 className="font-semibold text-lg mb-2">No returns yet</h3>
           <p className="text-[var(--muted-foreground)] mb-6">

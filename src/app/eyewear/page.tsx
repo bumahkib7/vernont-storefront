@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ChevronDown, X, SlidersHorizontal, Grid3X3, LayoutGrid, Check } from "lucide-react";
+import { CaretDown, X, SlidersHorizontal, GridFour, SquaresFour, Check } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -69,7 +69,7 @@ function FilterSection({
         className="flex items-center justify-between w-full text-left py-2"
       >
         <span className="font-medium text-sm">{title}</span>
-        <ChevronDown
+        <CaretDown
           className={`w-4 h-4 text-[var(--muted-foreground)] transition-transform ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
@@ -141,7 +141,7 @@ function SortDropdown({
         className="flex items-center gap-2 px-3 py-2 text-sm border border-[var(--border)] rounded-md hover:border-[var(--primary)] transition-colors"
       >
         <span>Sort: {currentLabel}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <CaretDown className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       <AnimatePresence>
@@ -464,14 +464,14 @@ export default function EyewearPage() {
                     className={`p-1.5 rounded transition-colors ${gridCols === 3 ? "bg-[var(--surface)]" : "hover:bg-[var(--surface)]"}`}
                     aria-label="3 columns"
                   >
-                    <LayoutGrid className="w-4 h-4" />
+                    <SquaresFour className="w-4 h-4" />
                   </button>
                   <button
                     onClick={() => setGridCols(4)}
                     className={`p-1.5 rounded transition-colors ${gridCols === 4 ? "bg-[var(--surface)]" : "hover:bg-[var(--surface)]"}`}
                     aria-label="4 columns"
                   >
-                    <Grid3X3 className="w-4 h-4" />
+                    <GridFour className="w-4 h-4" />
                   </button>
                 </div>
 

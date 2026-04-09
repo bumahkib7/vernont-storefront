@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, ArrowLeft, SlidersHorizontal, X, Loader2, Heart, Sparkles } from "lucide-react";
+import { MagnifyingGlass, ArrowLeft, SlidersHorizontal, X, SpinnerGap, Heart, Sparkle } from "@phosphor-icons/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { productsApi, aiApi, resolveImageUrl, type Product } from "@/lib/api";
@@ -138,9 +138,9 @@ function SearchContent() {
         const response = await productsApi.list({ query, limit: 50 });
         setProducts(response.items);
       } catch (err) {
-        console.error("Search error:", err);
+        console.error("MagnifyingGlass error:", err);
         setError("Unable to search products. Please try again.");
-        toast.error("Search failed");
+        toast.error("MagnifyingGlass failed");
       } finally {
         setLoading(false);
       }
@@ -210,7 +210,7 @@ function SearchContent() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* Search Header */}
+        {/* MagnifyingGlass Header */}
         <div className="mb-8">
           {/* Back link */}
           <Link
@@ -221,14 +221,14 @@ function SearchContent() {
             <span className="text-sm">Back to all {verticalConfig.label.toLowerCase()}</span>
           </Link>
 
-          {/* Search input */}
+          {/* MagnifyingGlass input */}
           <form onSubmit={handleSearch} className="relative max-w-2xl">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-foreground)]" />
+            <MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-foreground)]" />
             <input
               type="search"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="Search by name, brand, SKU, or product ID..."
+              placeholder="MagnifyingGlass by name, brand, SKU, or product ID..."
               className="w-full pl-12 pr-12 py-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
             />
             {searchInput && (
@@ -242,11 +242,11 @@ function SearchContent() {
             )}
           </form>
 
-          {/* Search info */}
+          {/* MagnifyingGlass info */}
           {query && (
             <div className="mt-6">
               <h1 className="text-2xl lg:text-3xl font-bold">
-                Search results for &ldquo;{query}&rdquo;
+                MagnifyingGlass results for &ldquo;{query}&rdquo;
               </h1>
               {!loading && (
                 <p className="text-[var(--muted-foreground)] mt-2">
@@ -289,13 +289,13 @@ function SearchContent() {
           /* No query - show prompt */
           <div className="text-center py-16">
             <div className="w-20 h-20 rounded-full bg-[var(--surface)] flex items-center justify-center mx-auto mb-6">
-              <Search className="h-10 w-10 text-[var(--muted-foreground)]" />
+              <MagnifyingGlass className="h-10 w-10 text-[var(--muted-foreground)]" />
             </div>
             <h2 className="text-2xl font-bold mb-4">
-              Search our collection
+              MagnifyingGlass our collection
             </h2>
             <p className="text-[var(--muted-foreground)] max-w-md mx-auto mb-8">
-              Search by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
+              MagnifyingGlass by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {productConfig.suggestedSearches.map((term) => (
@@ -325,7 +325,7 @@ function SearchContent() {
           /* No results */
           <div className="text-center py-16">
             <div className="w-20 h-20 rounded-full bg-[var(--surface)] flex items-center justify-center mx-auto mb-6">
-              <Search className="h-10 w-10 text-[var(--muted-foreground)]" />
+              <MagnifyingGlass className="h-10 w-10 text-[var(--muted-foreground)]" />
             </div>
             <h2 className="text-xl font-bold mb-4">
               No products found
@@ -339,7 +339,7 @@ function SearchContent() {
             {aiSuggestions.length > 0 && (
               <div className="mb-8 max-w-md mx-auto">
                 <p className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center justify-center gap-1.5">
-                  <Sparkles className="w-4 h-4" />
+                  <Sparkle className="w-4 h-4" />
                   Try asking:
                 </p>
                 <div className="flex flex-wrap justify-center gap-2">
@@ -361,7 +361,7 @@ function SearchContent() {
               onClick={() => openAssistantWithMessage(`I'm looking for: ${query}`)}
               className="mb-6 inline-flex items-center gap-2 px-5 py-3 bg-black text-white rounded-lg text-sm font-medium hover:bg-neutral-800 transition-colors"
             >
-              <Sparkles className="w-4 h-4" />
+              <Sparkle className="w-4 h-4" />
               Ask our AI Assistant
             </button>
 
@@ -386,7 +386,7 @@ function SearchContent() {
             {sortedProducts.length > 0 && sortedProducts.length <= 5 && aiSuggestions.length > 0 && (
               <div className="mt-10 pt-8 border-t border-[var(--border)] text-center">
                 <p className="text-sm font-medium text-[var(--muted-foreground)] mb-3 flex items-center justify-center gap-1.5">
-                  <Sparkles className="w-4 h-4" />
+                  <Sparkle className="w-4 h-4" />
                   Did you mean...
                 </p>
                 <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -404,7 +404,7 @@ function SearchContent() {
                   onClick={() => openAssistantWithMessage(`I'm looking for: ${query}`)}
                   className="inline-flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--primary)] transition-colors"
                 >
-                  <Sparkles className="w-3.5 h-3.5" />
+                  <Sparkle className="w-3.5 h-3.5" />
                   Need more help? Ask our AI assistant
                 </button>
               </div>
@@ -427,7 +427,7 @@ export default function SearchPage() {
           <Header />
           <main className="max-w-7xl mx-auto px-4 py-8">
             <div className="flex items-center justify-center py-16">
-              <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+              <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
             </div>
           </main>
           <Footer />

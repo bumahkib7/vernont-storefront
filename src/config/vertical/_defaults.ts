@@ -1,11 +1,11 @@
-import { Check, Truck, RotateCcw, Shield, Globe, ShieldCheck } from "lucide-react";
+import { Check, Truck, ArrowCounterClockwise, Shield, Globe, ShieldCheck } from "@phosphor-icons/react/ssr";
 import type { IconBadge, ShippingFeature, NavLink } from "./types";
 
 // Trust badges used in footer and product pages
 export const DEFAULT_TRUST_BADGES: IconBadge[] = [
   { icon: Check, label: "100% Authentic" },
   { icon: Truck, label: "UK & International Shipping" },
-  { icon: RotateCcw, label: "30-day returns" },
+  { icon: ArrowCounterClockwise, label: "30-day returns" },
   { icon: Shield, label: "Secure checkout" },
 ];
 
@@ -13,7 +13,7 @@ export const DEFAULT_TRUST_BADGES: IconBadge[] = [
 export const DEFAULT_SHIPPING_FEATURES: ShippingFeature[] = [
   { icon: Truck, title: "UK Delivery", description: "Fast & reliable shipping" },
   { icon: Globe, title: "International Shipping", description: "EU & Worldwide delivery" },
-  { icon: RotateCcw, title: "30-Day Returns", description: "Hassle-free returns" },
+  { icon: ArrowCounterClockwise, title: "30-Day Returns", description: "Hassle-free returns" },
   { icon: ShieldCheck, title: "Secure Checkout", description: "100% secure payment" },
 ];
 

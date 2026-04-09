@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { CaretDown, CaretRight } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { useCategories, useCategoryProducts } from "@/lib/hooks";
@@ -117,9 +117,9 @@ export default function CategoryPage() {
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs tracking-wider uppercase text-white/50 mb-6">
             <Link href="/" className="hover:text-white transition-colors">Home</Link>
-            <ChevronRight className="w-3 h-3" />
+            <CaretRight className="w-3 h-3" />
             <Link href="/eyewear" className="hover:text-white transition-colors">Eyewear</Link>
-            <ChevronRight className="w-3 h-3" />
+            <CaretRight className="w-3 h-3" />
             <span className="text-white/80">{categoryName}</span>
           </nav>
 
@@ -152,7 +152,7 @@ export default function CategoryPage() {
                 className="flex items-center gap-2 text-sm px-4 py-2 border border-[var(--border)] rounded-sm hover:border-[var(--foreground)] transition-colors"
               >
                 <span>Sort: {currentSort}</span>
-                <ChevronDown className={`h-4 w-4 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+                <CaretDown className={`h-4 w-4 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
               </button>
 
               {sortOpen && (

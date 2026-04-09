@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X, Minus, Plus, Loader2, ShoppingBag, Truck, Gift } from "lucide-react";
+import { X, Minus, Plus, SpinnerGap, ShoppingBag, Truck, Gift } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { useStoreConfig } from "@/context/StoreConfigContext";
@@ -98,7 +98,7 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto relative">
               {loading && (
                 <div className="absolute inset-0 bg-[var(--background)]/50 flex items-center justify-center z-10">
-                  <Loader2 className="w-6 h-6 animate-spin text-[var(--primary)]" />
+                  <SpinnerGap className="w-6 h-6 animate-spin text-[var(--primary)]" />
                 </div>
               )}
 
@@ -236,7 +236,7 @@ export function CartDrawer() {
                     disabled={loading}
                   >
                     {loading ? (
-                      <Loader2 className="w-5 h-5 animate-spin mx-auto" />
+                      <SpinnerGap className="w-5 h-5 animate-spin mx-auto" />
                     ) : (
                       "CHECKOUT"
                     )}

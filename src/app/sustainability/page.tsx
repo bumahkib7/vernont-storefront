@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Leaf, Recycle, Heart, Globe } from "lucide-react";
+import { Leaf, Recycle, Heart, Globe } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {

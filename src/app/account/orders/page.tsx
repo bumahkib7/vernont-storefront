@@ -6,15 +6,15 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   Package,
-  Loader2,
+  SpinnerGap,
   ShoppingBag,
-  ChevronRight,
-  Search,
+  CaretRight,
+  MagnifyingGlass,
   Truck,
   CheckCircle,
   Clock,
   XCircle,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { ordersApi, type Order } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -64,13 +64,13 @@ export default function OrdersPage() {
 
     const query = searchQuery.toLowerCase().trim().replace(/^#/, "");
 
-    // Search by display_id
+    // MagnifyingGlass by display_id
     const matchesDisplayId = order.display_id?.toString().includes(query);
 
-    // Search by order id (last 8 characters or full id)
+    // MagnifyingGlass by order id (last 8 characters or full id)
     const matchesOrderId = order.id.toLowerCase().includes(query);
 
-    // Search by item titles (if items are loaded)
+    // MagnifyingGlass by item titles (if items are loaded)
     const matchesItemTitle = order.items?.some(
       (item) => item.title?.toLowerCase().includes(query)
     );
@@ -86,10 +86,10 @@ export default function OrdersPage() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
           <input
             type="search"
-            placeholder="Search by order number..."
+            placeholder="MagnifyingGlass by order number..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-sm"
@@ -112,7 +112,7 @@ export default function OrdersPage() {
       {/* Orders List */}
       {isLoading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
       ) : filteredOrders.length > 0 ? (
         <div className="space-y-4">
@@ -157,7 +157,7 @@ export default function OrdersPage() {
                         >
                           {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
                         </span>
-                        <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)] hidden sm:block" />
+                        <CaretRight className="h-4 w-4 text-[var(--muted-foreground)] hidden sm:block" />
                       </div>
                     </div>
                   </div>

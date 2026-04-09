@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronUp } from "lucide-react";
+import { CaretUp } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function BackToTop() {
@@ -36,7 +36,7 @@ export function BackToTop() {
           className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gold text-primary rounded-full shadow-lg flex items-center justify-center hover:bg-gold/90 transition-colors"
           aria-label="Back to top"
         >
-          <ChevronUp className="h-5 w-5" />
+          <CaretUp className="h-5 w-5" />
         </motion.button>
       )}
     </AnimatePresence>

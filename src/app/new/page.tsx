@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkles, Star } from "lucide-react";
+import { Sparkle, Star } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { CategoryButtons } from "@/components/CategoryButtons";
@@ -116,7 +116,7 @@ export default function NewArrivalsPage() {
             className="mt-8 flex items-center justify-center gap-3"
           >
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
-            <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+            <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
           </motion.div>
         </motion.div>
@@ -226,7 +226,7 @@ export default function NewArrivalsPage() {
             className="text-center max-w-2xl mx-auto"
           >
             <div className="inline-flex items-center gap-2 mb-6">
-              <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+              <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
               <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
                 Stay Updated
               </span>

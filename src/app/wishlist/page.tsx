@@ -2,7 +2,7 @@
 
 import { useMemo } from "react";
 import Link from "next/link";
-import { Heart, ArrowRight } from "lucide-react";
+import { Heart, ArrowRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
@@ -40,7 +40,7 @@ export default function WishlistPage() {
   const wishlistProducts = useMemo(() => {
     if (!productsData?.items || items.length === 0) return [];
     const allProducts = transformProducts(productsData.items);
-    // Filter products that are in wishlist (match by id or handle)
+    // Funnel products that are in wishlist (match by id or handle)
     return allProducts.filter((product) =>
       items.includes(product.id) || items.includes(product.handle)
     );

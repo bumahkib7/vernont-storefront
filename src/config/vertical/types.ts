@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { Icon } from "@phosphor-icons/react";
 
 // ==================
 // Shared primitives
@@ -10,7 +10,7 @@ export interface NavLink {
 }
 
 export interface IconBadge {
-  icon: LucideIcon;
+  icon: Icon;
   label: string;
 }
 
@@ -68,13 +68,13 @@ export interface HeroConfig {
 }
 
 export interface ShippingFeature {
-  icon: LucideIcon;
+  icon: Icon;
   title: string;
   description: string;
 }
 
 export interface Announcement {
-  icon: LucideIcon;
+  icon: Icon;
   text: string;
 }
 
@@ -153,7 +153,7 @@ export interface FaceShapeData {
 
 export interface LensTypeData {
   name: string;
-  icon: LucideIcon;
+  icon: Icon;
   description: string;
   bestFor: string[];
   howItWorks: string;

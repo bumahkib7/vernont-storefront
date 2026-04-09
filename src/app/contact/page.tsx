@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { EnvelopeSimple, Phone, MapPin, Clock } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 
@@ -67,7 +67,7 @@ export default function ContactPage() {
               </div>
 
               <div className="flex items-start gap-4">
-                <Mail className="h-6 w-6 text-[var(--secondary)] flex-shrink-0 mt-1" />
+                <EnvelopeSimple className="h-6 w-6 text-[var(--secondary)] flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="text-lg mb-1">Email Us</h3>
                   <p className="text-muted-foreground">
@@ -102,7 +102,7 @@ export default function ContactPage() {
           {/* Contact Form */}
           <div>
             <h2 className="text-2xl tracking-wide mb-8">
-              Send a Message
+              PaperPlaneRight a Message
             </h2>
 
             {submitted ? (
@@ -169,7 +169,7 @@ export default function ContactPage() {
                 </div>
 
                 <Button type="submit" className="btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90 w-full">
-                  Send Message
+                  PaperPlaneRight Message
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">

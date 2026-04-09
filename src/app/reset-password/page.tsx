@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeOff, ArrowRight, Loader2, Check, AlertCircle } from "lucide-react";
+import { Lock, Eye, EyeSlash, ArrowRight, SpinnerGap, Check, WarningCircle } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,7 +66,7 @@ function ResetPasswordContent() {
   if (!token) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--secondary)]" />
+        <SpinnerGap className="h-8 w-8 animate-spin text-[var(--secondary)]" />
       </div>
     );
   }
@@ -100,7 +100,7 @@ function ResetPasswordContent() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mb-6 p-4 bg-destructive/10 border border-destructive/20 text-destructive text-sm flex items-center gap-2"
                 >
-                  <AlertCircle className="h-4 w-4" />
+                  <WarningCircle className="h-4 w-4" />
                   {error}
                 </motion.div>
               )}
@@ -127,7 +127,7 @@ function ResetPasswordContent() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   {/* Password Strength */}
@@ -182,7 +182,7 @@ function ResetPasswordContent() {
                       className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-4" />
+                        <EyeSlash className="h-4 w-4" />
                       ) : (
                         <Eye className="h-4 w-4" />
                       )}
@@ -201,7 +201,7 @@ function ResetPasswordContent() {
                   className="w-full h-12 btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90"
                 >
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
                       Reset Password
@@ -252,7 +252,7 @@ export default function ResetPasswordPage() {
       <Suspense
         fallback={
           <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[var(--secondary)]" />
+            <SpinnerGap className="h-8 w-8 animate-spin text-[var(--secondary)]" />
           </div>
         }
       >

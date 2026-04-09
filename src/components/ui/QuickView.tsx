@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { X, Minus, Plus, Heart, ShoppingBag } from "lucide-react";
+import { X, Minus, Plus, Heart, ShoppingBag } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { useCart, formatPriceMajor } from "@/context/CartContext";

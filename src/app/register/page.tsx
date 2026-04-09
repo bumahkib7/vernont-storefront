@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Loader2, Check } from "lucide-react";
+import { Eye, EyeSlash, EnvelopeSimple, Lock, User, ArrowRight, SpinnerGap, Check } from "@phosphor-icons/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -145,7 +145,7 @@ function RegisterContent() {
       <div className="min-h-screen bg-[var(--background)]">
         <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
         <Footer />
       </div>
@@ -247,7 +247,7 @@ function RegisterContent() {
                     Email Address *
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+                    <EnvelopeSimple className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                     <input
                       type="email"
                       name="email"
@@ -281,7 +281,7 @@ function RegisterContent() {
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                     >
-                      {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   {/* Password Strength */}
@@ -336,7 +336,7 @@ function RegisterContent() {
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                     >
-                      {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      {showConfirmPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                     </button>
                   </div>
                   {formData.confirmPassword && formData.password !== formData.confirmPassword && (
@@ -376,7 +376,7 @@ function RegisterContent() {
                   className="w-full btn-primary btn-lg flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
                       Create Account
@@ -425,7 +425,7 @@ export default function RegisterPage() {
         <div className="min-h-screen bg-[var(--background)]">
           <Header />
           <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+            <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
           </div>
           <Footer />
         </div>

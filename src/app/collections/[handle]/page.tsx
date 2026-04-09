@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ArrowRight } from "lucide-react";
+import { CaretDown, ArrowRight } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { useCollectionByHandle, useCollectionProducts } from "@/lib/hooks";
@@ -36,7 +36,7 @@ function SortDropdown({
         className="flex items-center gap-2 text-sm border border-neutral-200 px-4 py-2 hover:border-neutral-400 transition-colors"
       >
         <span>Sort: {currentLabel}</span>
-        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <CaretDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       {isOpen && (

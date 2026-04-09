@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Heart, Menu, X, ChevronLeft, ChevronRight, User, Loader2, ShoppingBag } from "lucide-react";
+import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGap, ShoppingBag } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -41,7 +41,7 @@ export function Header() {
         const response = await productsApi.search(searchQuery, 5);
         setSearchResults(response.products);
       } catch (err) {
-        console.error("Search error:", err);
+        console.error("MagnifyingGlass error:", err);
       } finally {
         setSearchLoading(false);
       }
@@ -49,7 +49,7 @@ export function Header() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Search results dropdown handling
+  // MagnifyingGlass results dropdown handling
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -107,17 +107,17 @@ export function Header() {
 
         {/* === Layer 2: Main Utility === */}
         <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
-          {/* Mobile Menu & Logo */}
+          {/* Mobile List & Logo */}
           <div className="flex items-center gap-4 min-w-[200px]">
             <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-1">
-              <Menu className="w-6 h-6" />
+              <List className="w-6 h-6" />
             </button>
             <Link href="/" className="font-bold text-xl lg:text-3xl tracking-[0.35em] text-[#1A1A1A] whitespace-nowrap">
               {storeName?.toUpperCase() || "VERNONT"}
             </Link>
           </div>
 
-          {/* Center: Search Bar */}
+          {/* Center: MagnifyingGlass Bar */}
           <div className="hidden lg:flex flex-1 max-w-[550px] mx-8 relative" ref={searchRef}>
              <form onSubmit={handleSearchSubmit} className="w-full relative">
                 <input 
@@ -132,11 +132,11 @@ export function Header() {
                    className="w-full bg-[#f4f4f4] text-sm py-2.5 px-4 outline-none placeholder:text-[#666]"
                 />
                 <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A]">
-                   {searchLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
+                   {searchLoading ? <SpinnerGap className="w-4 h-4 animate-spin" /> : <MagnifyingGlass className="w-4 h-4" />}
                 </button>
              </form>
 
-             {/* Search Dropdown Desktop */}
+             {/* MagnifyingGlass Dropdown Desktop */}
              <AnimatePresence>
                {showResults && searchQuery.length >= 2 && (
                  <motion.div 
@@ -174,7 +174,7 @@ export function Header() {
           {/* Right: Icons */}
           <div className="flex items-center gap-5 min-w-[200px] justify-end">
             <div className="hidden lg:flex items-center text-[13px] font-medium text-[#1A1A1A] cursor-pointer hover:opacity-70 gap-1 border border-[#E5E5E5] rounded-full px-3 py-1">
-               GBP £ <ChevronRight className="w-3 h-3 rotate-90" />
+               GBP £ <CaretRight className="w-3 h-3 rotate-90" />
             </div>
             
             <Link href="/account" className="p-1 hover:opacity-60 transition-opacity hidden sm:block">
@@ -201,20 +201,20 @@ export function Header() {
                  <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
                     {label}
                  </span>
-                 <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+                 <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
               </div>
            ))}
            <div className="cursor-pointer flex items-center gap-1.5">
               <span className="text-2xl text-red-600 italic font-serif leading-none hover:opacity-70 transition-opacity pr-1" style={{ fontFamily: 'Georgia, serif' }}>
                  Sale
               </span>
-              <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+              <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
            </div>
            <div className="cursor-pointer flex items-center gap-1.5 group">
               <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
                  CONTACT US
               </span>
-              <ChevronRight className="w-3 h-3 rotate-90 text-[#999]" />
+              <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
            </div>
         </nav>
 
@@ -237,7 +237,7 @@ export function Header() {
         </div>
       </div>
 
-      {/* === Mobile Menu === */}
+      {/* === Mobile List === */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -305,7 +305,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* === Search Overlay — full screen === */}
+      {/* === MagnifyingGlass Overlay — full screen === */}
       <AnimatePresence>
         {searchOpen && (
           <motion.div
@@ -320,7 +320,7 @@ export function Header() {
                 onSubmit={handleSearchSubmit}
                 className="flex items-center h-14 px-4 border-b border-[#E5E5E5] gap-3"
               >
-                <Search className="w-5 h-5 text-[#999]" />
+                <MagnifyingGlass className="w-5 h-5 text-[#999]" />
                 <input
                   type="text"
                   placeholder={productConfig.searchPlaceholder}
@@ -329,7 +329,7 @@ export function Header() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="flex-1 bg-transparent text-base outline-none placeholder:text-[#999]"
                 />
-                {searchLoading && <Loader2 className="w-5 h-5 animate-spin text-[#999]" />}
+                {searchLoading && <SpinnerGap className="w-5 h-5 animate-spin text-[#999]" />}
                 <button
                   type="button"
                   onClick={() => { setSearchOpen(false); setSearchQuery(""); setSearchResults([]); }}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Sparkles, Gift, Mail } from "lucide-react";
+import { X, Sparkle, Gift, EnvelopeSimple } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 
@@ -107,7 +107,7 @@ export function NewsletterPopup() {
                     {/* Benefits */}
                     <div className="flex justify-center gap-6 mb-8">
                       <div className="flex items-center gap-2 text-sm font-serif text-muted-foreground">
-                        <Sparkles className="h-4 w-4 text-gold" />
+                        <Sparkle className="h-4 w-4 text-gold" />
                         <span>Early Access</span>
                       </div>
                       <div className="flex items-center gap-2 text-sm font-serif text-muted-foreground">
@@ -118,7 +118,7 @@ export function NewsletterPopup() {
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                       <div className="relative">
-                        <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <EnvelopeSimple className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                         <input
                           type="email"
                           value={email}
@@ -152,7 +152,7 @@ export function NewsletterPopup() {
                       transition={{ type: "spring" }}
                       className="w-20 h-20 mx-auto mb-6 bg-gold rounded-full flex items-center justify-center"
                     >
-                      <Sparkles className="h-8 w-8 text-primary" />
+                      <Sparkle className="h-8 w-8 text-primary" />
                     </motion.div>
                     <h3 className="font-display text-2xl tracking-wide mb-3">
                       Welcome to the Family

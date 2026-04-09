@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShoppingBag, Loader2, AlertCircle, ArrowRight } from "lucide-react";
+import { ShoppingBag, SpinnerGap, WarningCircle, ArrowRight } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 
 const API_BASE_URL =
@@ -65,7 +65,7 @@ export default function CartRecoverPage() {
       >
         {status === "loading" && (
           <>
-            <Loader2 className="h-10 w-10 animate-spin text-neutral-400 mx-auto mb-4" />
+            <SpinnerGap className="h-10 w-10 animate-spin text-neutral-400 mx-auto mb-4" />
             <h1 className="text-xl font-semibold text-neutral-900">
               Restoring your cart...
             </h1>
@@ -111,7 +111,7 @@ export default function CartRecoverPage() {
         {status === "error" && (
           <>
             <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="h-8 w-8 text-red-500" />
+              <WarningCircle className="h-8 w-8 text-red-500" />
             </div>
             <h1 className="text-xl font-semibold text-neutral-900">
               Unable to restore cart

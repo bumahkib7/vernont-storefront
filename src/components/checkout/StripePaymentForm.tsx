@@ -8,7 +8,7 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { loadStripe, Stripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { Lock, AlertCircle, ArrowLeft, Loader2, Shield } from "lucide-react";
+import { Lock, WarningCircle, ArrowLeft, SpinnerGap, Shield } from "@phosphor-icons/react";
 import { motion } from "framer-motion";
 import { formatPrice } from "@/context/CartContext";
 
@@ -171,7 +171,7 @@ function PaymentForm({
           animate={{ opacity: 1, y: 0 }}
           className="mb-6 p-4 bg-[var(--destructive)]/10 border border-[var(--destructive)]/30 rounded-sm flex items-start gap-3"
         >
-          <AlertCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
+          <WarningCircle className="h-5 w-5 text-[var(--destructive)] flex-shrink-0 mt-0.5" />
           <p className="text-sm text-[var(--destructive)]">{error}</p>
         </motion.div>
       )}
@@ -194,7 +194,7 @@ function PaymentForm({
           className="btn-primary min-w-[200px] flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {isProcessing ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
+            <SpinnerGap className="h-4 w-4 animate-spin" />
           ) : (
             <>
               <Lock className="h-4 w-4" />
@@ -227,7 +227,7 @@ export function StripePaymentForm({
   if (!stripePromise || !clientSecret) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)] mb-4" />
+        <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)] mb-4" />
         <p className="text-sm text-[var(--muted-foreground)]">
           Loading payment options...
         </p>

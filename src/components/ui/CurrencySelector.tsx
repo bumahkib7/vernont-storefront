@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Globe, ChevronDown, Check } from "lucide-react";
+import { Globe, CaretDown, Check } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, currencySymbols } from "@/context/CartContext";
 
@@ -28,7 +28,7 @@ export function CurrencySelector() {
         <Globe className="h-4 w-4" />
         <span>{currentCurrency?.flag}</span>
         <span>{currencySymbols[currency]}</span>
-        <ChevronDown className={`h-3 w-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <CaretDown className={`h-3 w-3 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       <AnimatePresence>

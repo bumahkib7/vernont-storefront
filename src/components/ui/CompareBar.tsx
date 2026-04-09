@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { X, GitCompare } from "lucide-react";
+import { X, GitDiff } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 
@@ -34,7 +34,7 @@ export function CompareBar() {
                 />
               ) : (
                 <div className="absolute inset-0 flex items-center justify-center bg-[var(--surface)] text-[var(--muted-foreground)]">
-                  <GitCompare className="w-4 h-4" />
+                  <GitDiff className="w-4 h-4" />
                 </div>
               )}
               <button
@@ -64,7 +64,7 @@ export function CompareBar() {
           onClick={openDrawer}
           className="flex items-center gap-2 bg-white text-[var(--foreground)] px-4 py-2 rounded-full text-sm font-semibold hover:bg-white/90 transition-colors"
         >
-          <GitCompare className="w-4 h-4" />
+          <GitDiff className="w-4 h-4" />
           Compare ({itemCount})
         </button>
       </motion.div>

@@ -9,14 +9,14 @@ import {
   Package,
   MapPin,
   Heart,
-  Settings,
-  LogOut,
-  Loader2,
-  RotateCcw,
-  ChevronRight,
-  Menu,
+  Gear,
+  SignOut,
+  SpinnerGap,
+  ArrowCounterClockwise,
+  CaretRight,
+  List,
   X,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -24,10 +24,10 @@ import { useAuth } from "@/context/AuthContext";
 const accountNavigation = [
   { name: "Overview", href: "/account", icon: User },
   { name: "Orders", href: "/account/orders", icon: Package },
-  { name: "Returns", href: "/account/returns", icon: RotateCcw },
+  { name: "Returns", href: "/account/returns", icon: ArrowCounterClockwise },
   { name: "Addresses", href: "/account/addresses", icon: MapPin },
   { name: "Wishlist", href: "/wishlist", icon: Heart },
-  { name: "Profile", href: "/account/profile", icon: Settings },
+  { name: "Profile", href: "/account/profile", icon: Gear },
 ];
 
 export default function AccountLayout({
@@ -61,7 +61,7 @@ export default function AccountLayout({
       <div className="min-h-screen bg-[var(--background)]">
         <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
         <Footer />
       </div>
@@ -74,7 +74,7 @@ export default function AccountLayout({
       <div className="min-h-screen bg-[var(--background)]">
         <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
         <Footer />
       </div>
@@ -109,7 +109,7 @@ export default function AccountLayout({
               onClick={() => setMobileNavOpen(!mobileNavOpen)}
               className="lg:hidden p-2 rounded-lg hover:bg-[var(--background)] transition-colors"
             >
-              {mobileNavOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+              {mobileNavOpen ? <X className="h-5 w-5" /> : <List className="h-5 w-5" />}
             </button>
 
             {/* Desktop logout */}
@@ -117,7 +117,7 @@ export default function AccountLayout({
               onClick={handleLogout}
               className="hidden lg:flex items-center gap-2 text-sm text-[var(--muted-foreground)] hover:text-[var(--destructive)] transition-colors"
             >
-              <LogOut className="h-4 w-4" />
+              <SignOut className="h-4 w-4" />
               Sign Out
             </button>
           </div>
@@ -170,7 +170,7 @@ export default function AccountLayout({
                       <item.icon className="h-4 w-4" />
                       <span className="text-sm font-medium">{item.name}</span>
                     </div>
-                    <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)]" />
+                    <CaretRight className="h-4 w-4 text-[var(--muted-foreground)]" />
                   </Link>
                 );
               })}
@@ -178,7 +178,7 @@ export default function AccountLayout({
                 onClick={handleLogout}
                 className="flex items-center gap-3 py-3 w-full text-[var(--destructive)]"
               >
-                <LogOut className="h-4 w-4" />
+                <SignOut className="h-4 w-4" />
                 <span className="text-sm font-medium">Sign Out</span>
               </button>
             </nav>
@@ -193,7 +193,7 @@ export default function AccountLayout({
             <Link href="/account" className="text-[var(--muted-foreground)] hover:text-[var(--foreground)]">
               Account
             </Link>
-            <ChevronRight className="h-4 w-4 text-[var(--muted-foreground)]" />
+            <CaretRight className="h-4 w-4 text-[var(--muted-foreground)]" />
             <span className="text-[var(--foreground)] font-medium">
               {currentPage?.name || "Page"}
             </span>

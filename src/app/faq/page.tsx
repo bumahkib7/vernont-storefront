@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { CaretDown } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 interface FAQItem {
@@ -113,7 +113,7 @@ export default function FAQPage() {
           </p>
         </div>
 
-        {/* Category Filter */}
+        {/* Category Funnel */}
         <div className="flex flex-wrap justify-center gap-4 mb-12">
           <button
             onClick={() => setSelectedCategory(null)}
@@ -154,7 +154,7 @@ export default function FAQPage() {
                 <span className="text-base tracking-wide pr-4">
                   {faq.question}
                 </span>
-                <ChevronDown
+                <CaretDown
                   className={`h-5 w-5 text-muted-foreground flex-shrink-0 transition-transform ${
                     openIndex === index ? "rotate-180" : ""
                   }`}

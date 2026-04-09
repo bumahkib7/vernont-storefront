@@ -9,12 +9,12 @@ import {
   ThumbsDown,
   Flag,
   Check,
-  ChevronDown,
-  Filter,
-  ImageIcon,
+  CaretDown,
+  Funnel,
+  Image as ImageIcon,
   User,
-  Loader2,
-} from "lucide-react";
+  SpinnerGap,
+} from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   useProductReviews,
@@ -82,7 +82,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
             onClick={() => setShowFilters(!showFilters)}
             className="flex items-center gap-2 px-3 py-2 text-sm border border-[var(--border)] rounded-lg hover:bg-[var(--surface)] transition-colors"
           >
-            <Filter className="w-4 h-4" />
+            <Funnel className="w-4 h-4" />
             Filters
             {(verifiedOnly || withImagesOnly || filterRating) && (
               <span className="w-2 h-2 rounded-full bg-[var(--primary)]" />
@@ -170,7 +170,7 @@ export function ProductReviews({ productId }: ProductReviewsProps) {
       {/* Reviews List */}
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
-          <Loader2 className="w-8 h-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="w-8 h-8 animate-spin text-[var(--primary)]" />
         </div>
       ) : reviews.length === 0 ? (
         <div className="text-center py-12">

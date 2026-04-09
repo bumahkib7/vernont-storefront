@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Sparkles, Search, Loader2, ArrowRight } from "lucide-react";
+import { Sparkle, MagnifyingGlass, SpinnerGap, ArrowRight } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { aiApi, resolveImageUrl, ApiError } from "@/lib/api";
 import Image from "next/image";
@@ -80,7 +80,7 @@ export function AiProductFinder() {
     <section className="w-full">
       <div className="text-center mb-6">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-black text-white text-[10px] uppercase tracking-[0.2em] rounded-full mb-4">
-          <Sparkles className="w-3 h-3 text-yellow-400" />
+          <Sparkle className="w-3 h-3 text-yellow-400" />
           AI-Powered Discovery
         </div>
         <h2 className="text-2xl md:text-3xl tracking-tight font-light">
@@ -91,13 +91,13 @@ export function AiProductFinder() {
         </p>
       </div>
 
-      {/* Search bar */}
+      {/* MagnifyingGlass bar */}
       <form
         onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
         className="relative max-w-2xl mx-auto mb-6"
       >
         <div className="relative">
-          <Sparkles className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
+          <Sparkle className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-neutral-400" />
           <input
             ref={inputRef}
             type="text"
@@ -113,9 +113,9 @@ export function AiProductFinder() {
             className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-black text-white rounded-full flex items-center justify-center hover:bg-neutral-800 transition-colors disabled:opacity-30"
           >
             {isSearching ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <SpinnerGap className="w-4 h-4 animate-spin" />
             ) : (
-              <Search className="w-4 h-4" />
+              <MagnifyingGlass className="w-4 h-4" />
             )}
           </button>
         </div>
@@ -145,7 +145,7 @@ export function AiProductFinder() {
             exit={{ opacity: 0 }}
             className="flex items-center justify-center gap-2 py-8 text-sm text-neutral-500"
           >
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <SpinnerGap className="w-4 h-4 animate-spin" />
             Searching our catalog...
           </motion.div>
         )}
@@ -186,7 +186,7 @@ export function AiProductFinder() {
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-neutral-300">
-                            <Sparkles className="w-8 h-8" />
+                            <Sparkle className="w-8 h-8" />
                           </div>
                         )}
                       </div>

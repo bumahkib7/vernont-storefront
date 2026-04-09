@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, Check, Ruler, Eye, Package, Sparkles, Info } from "lucide-react";
+import { CaretDown, Check, Ruler, Eye, Package, Sparkle, Info } from "@phosphor-icons/react";
 import type { ProductSpecificationsResponse } from "@/lib/api";
 import type { DisplayProduct } from "@/lib/transforms";
 
@@ -34,7 +34,7 @@ function AccordionSection({ title, icon, defaultOpen = false, children }: Accord
             {title}
           </span>
         </div>
-        <ChevronDown
+        <CaretDown
           className={`w-4 h-4 text-neutral-400 transition-transform duration-200 ${
             isOpen ? "rotate-180" : ""
           }`}
@@ -315,7 +315,7 @@ export function ProductSpecifications({ specs, product }: ProductSpecificationsP
       {careInstructions && careInstructions.length > 0 && (
         <AccordionSection
           title="Care Instructions"
-          icon={<Sparkles className="w-4 h-4" />}
+          icon={<Sparkle className="w-4 h-4" />}
         >
           <ul className="space-y-2.5">
             {careInstructions.map((tip, i) => (
@@ -332,7 +332,7 @@ export function ProductSpecifications({ specs, product }: ProductSpecificationsP
       {features && features.length > 0 && (
         <AccordionSection
           title="Features"
-          icon={<Sparkles className="w-4 h-4" />}
+          icon={<Sparkle className="w-4 h-4" />}
         >
           <div className="flex flex-wrap gap-2">
             {features.map((feature, i) => (

@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
-import { ChevronRight, ArrowRight } from "lucide-react";
+import { CaretRight, ArrowRight } from "@phosphor-icons/react";
 import Link from "next/link";
 
 export default function Home() {

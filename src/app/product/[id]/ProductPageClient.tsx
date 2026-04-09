@@ -9,11 +9,11 @@ import {
   Plus,
   Check,
   Truck,
-  RotateCcw,
-  ChevronDown,
-  ChevronLeft,
+  ArrowCounterClockwise,
+  CaretDown,
+  CaretLeft,
   Package,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { ProductReviews } from "@/components/ProductReviews";
@@ -38,7 +38,7 @@ function AccordionSection({ title, children, defaultOpen = false }: { title: str
     <div className="border-b border-[#E5E5E5]">
       <button onClick={() => setOpen(!open)} className="flex items-center justify-between w-full py-5 text-left">
         <span className="text-base" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}>{title}</span>
-        <ChevronDown className={`w-5 h-5 text-[#999] transition-transform ${open ? "rotate-180" : ""}`} />
+        <CaretDown className={`w-5 h-5 text-[#999] transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
       {open && <div className="pb-5 text-sm text-[#666] leading-relaxed">{children}</div>}
     </div>
@@ -148,7 +148,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       {/* Back button — SGH style */}
       <div className="px-4 lg:px-6 pt-4">
         <button onClick={() => window.history.back()} className="p-1 hover:opacity-60 transition-opacity">
-          <ChevronLeft className="w-5 h-5" />
+          <CaretLeft className="w-5 h-5" />
         </button>
       </div>
 
@@ -284,7 +284,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <RotateCcw className="w-5 h-5 text-[#1A1A1A] mt-0.5 flex-shrink-0" />
+                <ArrowCounterClockwise className="w-5 h-5 text-[#1A1A1A] mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-[13px] font-bold uppercase tracking-wider">Free Returns</p>
                   <p className="text-[12px] text-[#999]">Within 30 days</p>

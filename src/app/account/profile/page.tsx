@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Save, Loader2, Check, AlertCircle, Trash2, Lock, User } from "lucide-react";
+import { FloppyDisk, SpinnerGap, Check, WarningCircle, Trash, Lock, User } from "@phosphor-icons/react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -119,7 +119,7 @@ export default function ProfilePage() {
               animate={{ opacity: 1, y: 0 }}
               className="mb-5 p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-[var(--destructive)] text-sm flex items-center gap-2"
             >
-              <AlertCircle className="h-4 w-4" />
+              <WarningCircle className="h-4 w-4" />
               {error}
             </motion.div>
           )}
@@ -199,11 +199,11 @@ export default function ProfilePage() {
                 className="btn-primary flex items-center gap-2"
               >
                 {isLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <SpinnerGap className="h-4 w-4 animate-spin" />
                 ) : (
-                  <Save className="h-4 w-4" />
+                  <FloppyDisk className="h-4 w-4" />
                 )}
-                Save Changes
+                FloppyDisk Changes
               </button>
             </div>
           </form>
@@ -249,7 +249,7 @@ export default function ProfilePage() {
       >
         <div className="flex items-center gap-3 p-5 border-b border-[var(--destructive)]/20">
           <div className="h-10 w-10 rounded-lg bg-[var(--destructive)]/10 flex items-center justify-center">
-            <Trash2 className="h-5 w-5 text-[var(--destructive)]" />
+            <Trash className="h-5 w-5 text-[var(--destructive)]" />
           </div>
           <div>
             <h2 className="font-semibold text-[var(--destructive)]">Danger Zone</h2>
@@ -267,9 +267,9 @@ export default function ProfilePage() {
             className="flex items-center gap-2 px-4 py-2 border border-[var(--destructive)]/30 text-[var(--destructive)] rounded-lg hover:bg-[var(--destructive)]/10 transition-colors text-sm font-medium disabled:opacity-50"
           >
             {deleteAccountMutation.isPending ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
+              <SpinnerGap className="h-4 w-4 animate-spin" />
             ) : (
-              <Trash2 className="h-4 w-4" />
+              <Trash className="h-4 w-4" />
             )}
             Delete Account
           </button>
@@ -294,7 +294,7 @@ export default function ProfilePage() {
               className="bg-[var(--destructive)] text-white hover:bg-[var(--destructive)]/90"
             >
               {deleteAccountMutation.isPending ? (
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                <SpinnerGap className="h-4 w-4 animate-spin mr-2" />
               ) : null}
               Yes, delete my account
             </AlertDialogAction>

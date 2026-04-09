@@ -1,4 +1,4 @@
-import { Package, Truck, RefreshCw, Shield } from "lucide-react";
+import { Package, Truck, ArrowsClockwise, Shield } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {
@@ -32,7 +32,7 @@ export default function ShippingPage() {
             <p className="text-xs text-muted-foreground">Complimentary</p>
           </div>
           <div className="text-center p-4">
-            <RefreshCw className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
+            <ArrowsClockwise className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
             <p className="text-sm tracking-wide">Easy Returns</p>
             <p className="text-xs text-muted-foreground">30 days</p>
           </div>

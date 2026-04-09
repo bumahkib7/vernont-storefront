@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Shield, CheckCircle, Award } from "lucide-react";
+import { Shield, CheckCircle, Medal } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { ServicesGrid } from "@/components/ServicesGrid";
@@ -82,7 +82,7 @@ export default function PreOwnedPage() {
             {[
               { icon: Shield, title: "Expert Authenticated", desc: "Verified by our specialists" },
               { icon: CheckCircle, title: "Quality Inspected", desc: "Professional cleaning included" },
-              { icon: Award, title: "30-Day Guarantee", desc: "Full satisfaction guarantee" },
+              { icon: Medal, title: "30-Day Guarantee", desc: "Full satisfaction guarantee" },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex items-center justify-center gap-3">
                 <div className="w-10 h-10 rounded-full border border-[var(--border)] flex items-center justify-center flex-shrink-0">
@@ -98,7 +98,7 @@ export default function PreOwnedPage() {
         </div>
       </section>
 
-      {/* Collection — Grade Filter + Product Grid */}
+      {/* Collection — Grade Funnel + Product Grid */}
       <section id="collection" className="py-16 lg:py-24">
         <div className="px-6 lg:px-20">
           <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between mb-8 gap-4">
@@ -109,7 +109,7 @@ export default function PreOwnedPage() {
               </p>
             </div>
 
-            {/* Grade Filter Pills */}
+            {/* Grade Funnel Pills */}
             <div className="flex gap-2">
               {(["all", "A", "B", "C"] as GradeFilter[]).map((grade) => (
                 <button

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Loader2, TrendingUp, Clock, Tag, ArrowRight, Sparkles } from "lucide-react";
+import { MagnifyingGlass, X, SpinnerGap, TrendUp, Clock, Tag, ArrowRight, Sparkle } from "@phosphor-icons/react";
 import { productsApi, resolveImageUrl, type Product } from "@/lib/api";
 import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import Image from "next/image";
@@ -70,8 +70,8 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         setSuggestions(suggestionsRes);
         setProducts(productsRes.products);
       } catch (err) {
-        console.error("Search error:", err);
-        toast.error("Search suggestions failed");
+        console.error("MagnifyingGlass error:", err);
+        toast.error("MagnifyingGlass suggestions failed");
       } finally {
         setLoading(false);
       }
@@ -120,7 +120,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <div className="absolute inset-0" onClick={onClose} />
 
           <div className="relative container mx-auto px-4 py-8 max-w-4xl">
-            {/* Search Header */}
+            {/* MagnifyingGlass Header */}
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-xl tracking-[0.2em] uppercase text-[var(--secondary)]">Search</h2>
               <button
@@ -131,19 +131,19 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               </button>
             </div>
 
-            {/* Search Input */}
+            {/* MagnifyingGlass Input */}
             <form onSubmit={handleSubmit} className="relative mb-8">
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--secondary)]/60" />
+              <MagnifyingGlass className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--secondary)]/60" />
               <input
                 ref={inputRef}
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder={`Search for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
+                placeholder={`MagnifyingGlass for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
                 className="w-full pl-14 pr-12 py-5 bg-transparent border border-[var(--secondary)]/20 text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-[var(--secondary)]/60 transition-colors"
               />
               {loading && (
-                <Loader2 className="absolute right-5 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-[var(--secondary)]/60" />
+                <SpinnerGap className="absolute right-5 top-1/2 -translate-y-1/2 h-5 w-5 animate-spin text-[var(--secondary)]/60" />
               )}
             </form>
 
@@ -184,7 +184,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   {/* Popular Searches */}
                   <div>
                     <h3 className="text-sm tracking-[0.15em] uppercase text-muted-foreground flex items-center gap-2 mb-4">
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendUp className="h-4 w-4" />
                       Popular Searches
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -201,7 +201,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   </div>
                 </div>
               ) : hasResults ? (
-                /* Search Results */
+                /* MagnifyingGlass Results */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Suggestions Column */}
                   <div className="space-y-6">
@@ -240,7 +240,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                               onClick={() => handleSearch(title)}
                               className="flex items-center gap-3 w-full px-3 py-2 text-left hover:bg-[var(--secondary)]/5 transition-colors group"
                             >
-                              <Search className="h-4 w-4 text-muted-foreground" />
+                              <MagnifyingGlass className="h-4 w-4 text-muted-foreground" />
                               <span>{title}</span>
                               <ArrowRight className="h-4 w-4 ml-auto opacity-0 group-hover:opacity-100 text-[var(--secondary)] transition-opacity" />
                             </button>
@@ -312,7 +312,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               ) : query.length >= 2 && !loading ? (
                 /* No Results */
                 <div className="text-center py-12">
-                  <Search className="h-12 w-12 mx-auto text-[var(--secondary)]/20 mb-4" />
+                  <MagnifyingGlass className="h-12 w-12 mx-auto text-[var(--secondary)]/20 mb-4" />
                   <p className="text-lg tracking-wide">No results found</p>
                   <p className="text-muted-foreground mt-2">
                     Try different keywords or browse our collections
@@ -320,7 +320,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
 
                   {/* AI assistant prompt */}
                   <p className="text-sm text-muted-foreground mt-4 mb-2 flex items-center justify-center gap-1.5">
-                    <Sparkles className="h-3.5 w-3.5" />
+                    <Sparkle className="h-3.5 w-3.5" />
                     Try asking our AI:
                   </p>
                   <div className="flex flex-wrap justify-center gap-2 mb-4">
@@ -345,7 +345,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                     }}
                     className="inline-flex items-center gap-2 mt-2 px-6 py-3 bg-foreground text-background text-xs tracking-[0.15em] uppercase hover:opacity-90 transition-all"
                   >
-                    <Sparkles className="h-4 w-4" />
+                    <Sparkle className="h-4 w-4" />
                     Ask AI Assistant
                   </button>
 

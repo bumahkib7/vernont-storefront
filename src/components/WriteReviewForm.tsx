@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Plus, X, Loader2, Check, AlertCircle } from "lucide-react";
+import { Star, Plus, X, SpinnerGap, Check, WarningCircle } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCreateReview } from "@/lib/hooks";
 import { useAuth } from "@/context/AuthContext";
@@ -149,7 +149,7 @@ export function WriteReviewForm({
             exit={{ opacity: 0, y: -10 }}
             className="flex items-center gap-2 p-3 bg-[var(--destructive)]/10 text-[var(--destructive)] rounded-lg text-sm"
           >
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <WarningCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </motion.div>
         )}
@@ -337,7 +337,7 @@ export function WriteReviewForm({
         >
           {createReview.isPending ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <SpinnerGap className="w-4 h-4 animate-spin" />
               Submitting...
             </>
           ) : (

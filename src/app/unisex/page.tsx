@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, Sparkles, Circle } from "lucide-react";
+import { CaretDown, Sparkle, Circle } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { CategoryButtons } from "@/components/CategoryButtons";
@@ -38,7 +38,7 @@ function SortDropdown({
         className="flex items-center gap-2 text-sm border border-border px-4 py-2 hover:border-[var(--foreground)] transition-colors"
       >
         <span>Sort: {currentLabel}</span>
-        <ChevronDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
+        <CaretDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
 
       <AnimatePresence>
@@ -184,7 +184,7 @@ export default function UnisexPage() {
             className="mt-8 flex items-center justify-center gap-3"
           >
             <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
-            <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+            <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
             <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
           </motion.div>
         </motion.div>
@@ -308,7 +308,7 @@ export default function UnisexPage() {
             className="text-center max-w-2xl mx-auto"
           >
             <div className="inline-flex items-center gap-2 mb-6">
-              <Sparkles className="h-5 w-5 text-[var(--secondary)]" />
+              <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
               <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
                 Personalized
               </span>

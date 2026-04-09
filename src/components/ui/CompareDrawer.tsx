@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X, Plus, ArrowRight, GitCompare } from "lucide-react";
+import { X, Plus, ArrowRight, GitDiff } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -36,7 +36,7 @@ export function CompareDrawer() {
             {/* Header */}
             <div className="flex items-center justify-between h-16 px-6 border-b border-[var(--border)]">
               <div className="flex items-center gap-3">
-                <GitCompare className="w-5 h-5 text-[var(--primary)]" />
+                <GitDiff className="w-5 h-5 text-[var(--primary)]" />
                 <span className="font-semibold">Compare ({itemCount}/3)</span>
               </div>
               <div className="flex items-center gap-4">
@@ -62,7 +62,7 @@ export function CompareDrawer() {
               {itemCount === 0 ? (
                 <div className="flex flex-col items-center justify-center h-full p-6 text-center">
                   <div className="w-16 h-16 rounded-full bg-[var(--surface)] flex items-center justify-center mb-4">
-                    <GitCompare className="w-8 h-8 text-[var(--muted-foreground)]" />
+                    <GitDiff className="w-8 h-8 text-[var(--muted-foreground)]" />
                   </div>
                   <p className="font-medium text-lg mb-2">No products to compare</p>
                   <p className="text-[var(--muted-foreground)] text-sm mb-6 max-w-xs">
@@ -103,7 +103,7 @@ export function CompareDrawer() {
                               />
                             ) : (
                               <div className="absolute inset-0 flex items-center justify-center text-[var(--muted-foreground)]">
-                                <GitCompare className="w-8 h-8" />
+                                <GitDiff className="w-8 h-8" />
                               </div>
                             )}
                           </div>

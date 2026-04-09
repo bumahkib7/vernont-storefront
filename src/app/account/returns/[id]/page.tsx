@@ -7,16 +7,16 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
-  RotateCcw,
+  ArrowCounterClockwise,
   Package,
-  Loader2,
+  SpinnerGap,
   Clock,
   CheckCircle,
   XCircle,
   Truck,
   CreditCard,
-  AlertCircle,
-} from "lucide-react";
+  WarningCircle,
+} from "@phosphor-icons/react";
 import { returnsApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";
@@ -143,7 +143,7 @@ export default function ReturnDetailsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+        <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
       </div>
     );
   }
@@ -206,7 +206,7 @@ export default function ReturnDetailsPage() {
         >
           <div className="flex items-start gap-4">
             <div className={`h-10 w-10 rounded-lg ${isRejected ? "bg-red-500/10" : "bg-gray-500/10"} flex items-center justify-center flex-shrink-0`}>
-              <AlertCircle className={`h-5 w-5 ${isRejected ? "text-red-500" : "text-gray-500"}`} />
+              <WarningCircle className={`h-5 w-5 ${isRejected ? "text-red-500" : "text-gray-500"}`} />
             </div>
             <div>
               <h2 className={`font-semibold ${isRejected ? "text-red-600" : "text-gray-600"}`}>
@@ -341,7 +341,7 @@ export default function ReturnDetailsPage() {
           >
             <div className="flex items-center gap-3 p-4 border-b border-[var(--border)]">
               <div className="h-8 w-8 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center">
-                <RotateCcw className="h-4 w-4 text-[var(--primary)]" />
+                <ArrowCounterClockwise className="h-4 w-4 text-[var(--primary)]" />
               </div>
               <h2 className="font-semibold text-sm">Return Reason</h2>
             </div>
@@ -453,7 +453,7 @@ export default function ReturnDetailsPage() {
               >
                 {isCanceling ? (
                   <>
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                     Canceling...
                   </>
                 ) : (

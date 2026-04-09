@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Edit2, Trash2, MapPin, Loader2, X, Check, AlertCircle } from "lucide-react";
+import { Plus, PencilSimple, Trash, MapPin, SpinnerGap, X, Check, WarningCircle } from "@phosphor-icons/react";
 import { customerApi, type CustomerAddress } from "@/lib/api";
 import { toast } from "sonner";
 import {
@@ -192,7 +192,7 @@ export default function AddressesPage() {
       {/* Addresses List */}
       {isLoading ? (
         <div className="flex items-center justify-center py-16">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
       ) : addresses.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -246,7 +246,7 @@ export default function AddressesPage() {
                   onClick={() => openEditModal(address)}
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-[var(--border)] rounded-lg hover:bg-[var(--background)] transition-colors"
                 >
-                  <Edit2 className="h-3.5 w-3.5" />
+                  <PencilSimple className="h-3.5 w-3.5" />
                   Edit
                 </button>
                 <button
@@ -255,10 +255,10 @@ export default function AddressesPage() {
                   className="flex items-center gap-1.5 px-3 py-1.5 text-sm border border-[var(--destructive)]/30 text-[var(--destructive)] rounded-lg hover:bg-[var(--destructive)]/10 transition-colors disabled:opacity-50"
                 >
                   {deletingId === address.id ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                    <SpinnerGap className="h-3.5 w-3.5 animate-spin" />
                   ) : (
                     <>
-                      <Trash2 className="h-3.5 w-3.5" />
+                      <Trash className="h-3.5 w-3.5" />
                       Delete
                     </>
                   )}
@@ -318,7 +318,7 @@ export default function AddressesPage() {
                 {/* Error */}
                 {error && (
                   <div className="p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-[var(--destructive)] text-sm flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 flex-shrink-0" />
+                    <WarningCircle className="h-4 w-4 flex-shrink-0" />
                     {error}
                   </div>
                 )}
@@ -503,7 +503,7 @@ export default function AddressesPage() {
                     className="flex-1 btn-primary flex items-center justify-center gap-2"
                   >
                     {isSubmitting ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <SpinnerGap className="h-4 w-4 animate-spin" />
                     ) : editingAddress ? (
                       "Update Address"
                     ) : (

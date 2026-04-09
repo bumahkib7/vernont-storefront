@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X } from "lucide-react";
+import { X } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { content } from "@/config/vertical";
 

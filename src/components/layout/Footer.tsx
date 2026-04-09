@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
-import { Check, Mail, Instagram, Facebook, Twitter } from "lucide-react";
+import { Check, EnvelopeSimple, InstagramLogo, FacebookLogo, XLogo } from "@phosphor-icons/react";
 import { content, DEFAULT_HELP_LINKS, DEFAULT_COMPANY_LINKS } from "@/config/vertical";
 
 const HELP_LINKS = DEFAULT_HELP_LINKS;
@@ -74,7 +74,7 @@ export function Footer() {
                     required
                   />
                   <button type="submit" className="px-3 py-2 bg-white text-[#1A1A1A] hover:bg-white/90 transition-colors">
-                    <Mail className="h-4 w-4" />
+                    <EnvelopeSimple className="h-4 w-4" />
                   </button>
                 </form>
               )}
@@ -82,9 +82,9 @@ export function Footer() {
 
             <div className="flex gap-3">
               {[
-                { icon: Instagram, label: "Instagram", href: "https://instagram.com" },
-                { icon: Facebook, label: "Facebook", href: "https://facebook.com" },
-                { icon: Twitter, label: "Twitter", href: "https://twitter.com" },
+                { icon: InstagramLogo, label: "Instagram", href: "https://instagram.com" },
+                { icon: FacebookLogo, label: "Facebook", href: "https://facebook.com" },
+                { icon: XLogo, label: "Twitter", href: "https://twitter.com" },
               ].map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}

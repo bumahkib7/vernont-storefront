@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Eye, EyeOff, Mail, Lock, ArrowRight, Loader2 } from "lucide-react";
+import { Eye, EyeSlash, EnvelopeSimple, Lock, ArrowRight, SpinnerGap } from "@phosphor-icons/react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";
@@ -110,7 +110,7 @@ function LoginContent() {
       <div className="min-h-screen bg-[var(--background)]">
         <Header />
         <div className="min-h-[60vh] flex items-center justify-center">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
         </div>
         <Footer />
       </div>
@@ -177,7 +177,7 @@ function LoginContent() {
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
+                    <EnvelopeSimple className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
                     <input
                       type="email"
                       value={email}
@@ -210,7 +210,7 @@ function LoginContent() {
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)] transition-colors"
                     >
                       {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
+                        <EyeSlash className="h-4 w-4" />
                       ) : (
                         <Eye className="h-4 w-4" />
                       )}
@@ -235,7 +235,7 @@ function LoginContent() {
                   className="w-full btn-primary btn-lg flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 animate-spin" />
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
                   ) : (
                     <>
                       Sign In
@@ -284,7 +284,7 @@ export default function LoginPage() {
         <div className="min-h-screen bg-[var(--background)]">
           <Header />
           <div className="min-h-[60vh] flex items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin text-[var(--primary)]" />
+            <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
           </div>
           <Footer />
         </div>

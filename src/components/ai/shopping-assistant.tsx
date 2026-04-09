@@ -2,24 +2,24 @@
 
 import { useState, useRef, useEffect, useCallback } from "react";
 import {
-  MessageCircle,
+  ChatCircle,
   X,
-  Send,
-  Loader2,
-  Sparkles,
-  RotateCcw,
-  Search,
+  PaperPlaneRight,
+  SpinnerGap,
+  Sparkle,
+  ArrowCounterClockwise,
+  MagnifyingGlass,
   Package,
   ShoppingCart,
-  RotateCw,
+  ArrowClockwise,
   Eye,
   Tag,
   Headphones,
   XCircle,
   ShoppingBag,
-  GitCompareArrows,
+  GitDiff,
   Shuffle,
-} from "lucide-react";
+} from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "framer-motion";
 import Markdown from "react-markdown";
 import { aiApi, resolveImageUrl, ApiError } from "@/lib/api";
@@ -44,8 +44,8 @@ interface ChatMessage {
 }
 
 // ---------- Tool Display Config ----------
-const TOOL_META: Record<string, { icon: typeof Search; label: string; activeLabel: string }> = {
-  search_products:      { icon: Search,       label: "Searched products",        activeLabel: "Searching products..." },
+const TOOL_META: Record<string, { icon: typeof MagnifyingGlass; label: string; activeLabel: string }> = {
+  search_products:      { icon: MagnifyingGlass,       label: "Searched products",        activeLabel: "Searching products..." },
   get_product_details:  { icon: Eye,          label: "Viewed product details",   activeLabel: "Loading product details..." },
   check_stock:          { icon: Package,      label: "Checked stock",            activeLabel: "Checking availability..." },
   add_to_cart:          { icon: ShoppingCart,  label: "Added to cart",            activeLabel: "Adding to cart..." },
@@ -55,13 +55,13 @@ const TOOL_META: Record<string, { icon: typeof Search; label: string; activeLabe
   get_customer_orders:  { icon: Package,      label: "Loaded orders",            activeLabel: "Looking up orders..." },
   get_order:            { icon: Package,      label: "Loaded order details",     activeLabel: "Loading order..." },
   get_order_by_display_id: { icon: Package,   label: "Found order",             activeLabel: "Finding order..." },
-  check_return_eligibility: { icon: RotateCw, label: "Checked return eligibility", activeLabel: "Checking return eligibility..." },
-  initiate_return:      { icon: RotateCw,     label: "Initiated return",         activeLabel: "Initiating return..." },
-  get_return_status:    { icon: RotateCw,     label: "Checked return status",    activeLabel: "Checking return status..." },
-  cancel_return:        { icon: RotateCw,     label: "Cancelled return",         activeLabel: "Cancelling return..." },
-  get_return_reasons:   { icon: RotateCw,     label: "Loaded return reasons",    activeLabel: "Loading return reasons..." },
+  check_return_eligibility: { icon: ArrowClockwise, label: "Checked return eligibility", activeLabel: "Checking return eligibility..." },
+  initiate_return:      { icon: ArrowClockwise,     label: "Initiated return",         activeLabel: "Initiating return..." },
+  get_return_status:    { icon: ArrowClockwise,     label: "Checked return status",    activeLabel: "Checking return status..." },
+  cancel_return:        { icon: ArrowClockwise,     label: "Cancelled return",         activeLabel: "Cancelling return..." },
+  get_return_reasons:   { icon: ArrowClockwise,     label: "Loaded return reasons",    activeLabel: "Loading return reasons..." },
   escalate_to_human:    { icon: Headphones,   label: "Escalated to support",     activeLabel: "Connecting to support..." },
-  compare_products:     { icon: GitCompareArrows, label: "Compared products",    activeLabel: "Comparing products..." },
+  compare_products:     { icon: GitDiff, label: "Compared products",    activeLabel: "Comparing products..." },
   find_similar_products: { icon: Shuffle,      label: "Found similar products",   activeLabel: "Finding similar products..." },
 };
 
@@ -93,7 +93,7 @@ function getOrCreateSessionId(): string {
 /** Compact tool activity pill */
 function ToolPill({ tool }: { tool: ToolActivity }) {
   const meta = TOOL_META[tool.toolName] || {
-    icon: Sparkles,
+    icon: Sparkle,
     label: tool.toolName.replace(/_/g, " "),
     activeLabel: `Running ${tool.toolName.replace(/_/g, " ")}...`,
   };
@@ -112,7 +112,7 @@ function ToolPill({ tool }: { tool: ToolActivity }) {
       }`}
     >
       {isActive ? (
-        <Loader2 className="w-2.5 h-2.5 animate-spin" />
+        <SpinnerGap className="w-2.5 h-2.5 animate-spin" />
       ) : isError ? (
         <XCircle className="w-2.5 h-2.5" />
       ) : (
@@ -441,7 +441,7 @@ export function ShoppingAssistant() {
                     <X className="w-3 h-3" />
                   </button>
                   <div className="flex items-start gap-2">
-                    <Sparkles className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <Sparkle className="w-3.5 h-3.5 text-yellow-400 flex-shrink-0 mt-0.5" />
                     <span>{nudgeMessage}</span>
                   </div>
                 </motion.div>
@@ -458,9 +458,9 @@ export function ShoppingAssistant() {
               className="w-14 h-14 bg-black text-white rounded-full shadow-lg hover:bg-neutral-800 transition-colors flex items-center justify-center group relative"
               aria-label="Open AI shopping assistant"
             >
-              <MessageCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
+              <ChatCircle className="w-6 h-6 group-hover:scale-110 transition-transform" />
               <span className="absolute -top-0.5 -right-0.5 w-3.5 h-3.5 bg-yellow-400 rounded-full border-2 border-white flex items-center justify-center">
-                <Sparkles className="w-2 h-2 text-black" />
+                <Sparkle className="w-2 h-2 text-black" />
               </span>
             </motion.button>
           </div>
@@ -480,7 +480,7 @@ export function ShoppingAssistant() {
             {/* Header */}
             <div className="flex items-center justify-between px-4 py-3 bg-black text-white flex-shrink-0">
               <div className="flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-yellow-400" />
+                <Sparkle className="w-4 h-4 text-yellow-400" />
                 <div>
                   <h3 className="text-sm font-medium">Shopping Assistant</h3>
                   <p className="text-[10px] text-neutral-400">AI-powered personal stylist</p>
@@ -493,7 +493,7 @@ export function ShoppingAssistant() {
                     className="p-1.5 hover:bg-white/10 rounded-lg transition-colors"
                     title="New conversation"
                   >
-                    <RotateCcw className="w-4 h-4" />
+                    <ArrowCounterClockwise className="w-4 h-4" />
                   </button>
                 )}
                 <button
@@ -510,7 +510,7 @@ export function ShoppingAssistant() {
               {messages.length === 0 ? (
                 <div className="flex flex-col items-center text-center pt-4 pb-3">
                   <div className="w-14 h-14 bg-gradient-to-br from-neutral-100 to-neutral-200 rounded-full flex items-center justify-center mb-3">
-                    <Sparkles className="w-7 h-7 text-neutral-700" />
+                    <Sparkle className="w-7 h-7 text-neutral-700" />
                   </div>
                   <h4 className="font-medium text-sm mb-0.5">Your personal stylist</h4>
                   <p className="text-[11px] text-neutral-500 mb-4 max-w-[260px]">
@@ -541,7 +541,7 @@ export function ShoppingAssistant() {
                             <span className="text-[11px] text-neutral-600">{productContext.price}</span>
                           )}
                         </div>
-                        <Sparkles className="w-4 h-4 text-neutral-400 group-hover:text-yellow-500 transition-colors flex-shrink-0" />
+                        <Sparkle className="w-4 h-4 text-neutral-400 group-hover:text-yellow-500 transition-colors flex-shrink-0" />
                       </div>
                     </button>
                   )}
@@ -554,7 +554,7 @@ export function ShoppingAssistant() {
                         onClick={() => sendMessage(suggestion)}
                         className="w-full px-3 py-2.5 border border-neutral-200 rounded-lg text-xs text-left hover:border-black hover:bg-neutral-50 transition-all flex items-center gap-2"
                       >
-                        <Search className="w-3 h-3 text-neutral-400 flex-shrink-0" />
+                        <MagnifyingGlass className="w-3 h-3 text-neutral-400 flex-shrink-0" />
                         {suggestion}
                       </button>
                     ))}
@@ -563,10 +563,10 @@ export function ShoppingAssistant() {
                   {/* Feature badges */}
                   <div className="flex flex-wrap gap-1.5 mt-4 justify-center">
                     {[
-                      { icon: Search, label: "Smart search" },
+                      { icon: MagnifyingGlass, label: "Smart search" },
                       { icon: ShoppingBag, label: "Add to bag" },
                       { icon: Package, label: "Track orders" },
-                      { icon: RotateCw, label: "Easy returns" },
+                      { icon: ArrowClockwise, label: "Easy returns" },
                     ].map(({ icon: Icon, label }) => (
                       <span key={label} className="inline-flex items-center gap-1 px-2 py-1 bg-neutral-50 rounded text-[10px] text-neutral-500">
                         <Icon className="w-2.5 h-2.5" />
@@ -607,7 +607,7 @@ export function ShoppingAssistant() {
                           )
                         ) : (
                           <span className="flex items-center gap-1.5 text-neutral-400">
-                            <Loader2 className="w-3 h-3 animate-spin" />
+                            <SpinnerGap className="w-3 h-3 animate-spin" />
                             Looking into it...
                           </span>
                         )}
@@ -636,7 +636,7 @@ export function ShoppingAssistant() {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                placeholder={isStreaming ? "AI is responding..." : "Search products, ask about orders..."}
+                placeholder={isStreaming ? "AI is responding..." : "MagnifyingGlass products, ask about orders..."}
                 disabled={isStreaming}
                 className="flex-1 px-3 py-2 bg-neutral-50 border border-neutral-200 rounded-lg text-sm focus:outline-none focus:border-black transition-colors disabled:opacity-50"
               />
@@ -646,9 +646,9 @@ export function ShoppingAssistant() {
                 className="p-2 bg-black text-white rounded-lg hover:bg-neutral-800 transition-colors disabled:opacity-30 disabled:cursor-not-allowed flex-shrink-0"
               >
                 {isStreaming ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <SpinnerGap className="w-4 h-4 animate-spin" />
                 ) : (
-                  <Send className="w-4 h-4" />
+                  <PaperPlaneRight className="w-4 h-4" />
                 )}
               </button>
             </form>

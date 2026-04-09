@@ -1,4 +1,4 @@
-import { MapPin, Phone, Clock } from "lucide-react";
+import { MapPin, Phone, Clock } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 export const metadata = {

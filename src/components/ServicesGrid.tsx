@@ -1,10 +1,10 @@
 "use client";
 
-import { Truck, RotateCcw, ShieldCheck, Lock } from "lucide-react";
+import { Truck, ArrowCounterClockwise, ShieldCheck, Lock } from "@phosphor-icons/react";
 
 const SERVICES = [
   { icon: Truck, title: "Free Delivery", description: "On orders over £75" },
-  { icon: RotateCcw, title: "Free Returns", description: "Within 30 days" },
+  { icon: ArrowCounterClockwise, title: "Free Returns", description: "Within 30 days" },
   { icon: ShieldCheck, title: "100% Authentic", description: "Verified genuine" },
   { icon: Lock, title: "Secure Checkout", description: "SSL encrypted" },
 ];

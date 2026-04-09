@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Mail, ArrowLeft, ArrowRight, Loader2, Check } from "lucide-react";
+import { EnvelopeSimple, ArrowLeft, ArrowRight, SpinnerGap, Check } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
                       Email Address
                     </label>
                     <div className="relative">
-                      <Mail className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <EnvelopeSimple className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                         type="email"
                         value={email}
@@ -104,10 +104,10 @@ export default function ForgotPasswordPage() {
                     className="w-full h-12 btn-luxury bg-[var(--secondary)] text-primary hover:bg-[var(--secondary)]/90"
                   >
                     {isLoading ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <SpinnerGap className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        Send Reset Link
+                        PaperPlaneRight Reset Link
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </>
                     )}
