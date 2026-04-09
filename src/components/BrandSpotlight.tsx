@@ -28,7 +28,7 @@ export function BrandSpotlight({ cards }: BrandSpotlightProps) {
               className="group block"
             >
               {/* Image — full width, no overlay text */}
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#F5F5F5]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-white">
                 <Image
                   src={card.image}
                   alt={card.title}

@@ -176,7 +176,7 @@ export function AiProductFinder() {
                       href={`/product/${product.handle}`}
                       className="block group"
                     >
-                      <div className="aspect-square relative bg-neutral-100 rounded-lg overflow-hidden mb-2">
+                      <div className="aspect-square relative bg-white rounded-lg overflow-hidden mb-2">
                         {resolveImageUrl(product.thumbnail) ? (
                           <Image
                             src={resolveImageUrl(product.thumbnail)!}

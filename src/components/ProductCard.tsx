@@ -65,7 +65,7 @@ export function ProductCard({
 
       <Link href={productUrl} className="block">
         {/* Image */}
-        <div className="relative aspect-square overflow-hidden bg-[var(--surface)] rounded-lg mb-3">
+        <div className="relative aspect-square overflow-hidden bg-white rounded-lg mb-3">
           {!imageError ? (
             <Image
               src={image}

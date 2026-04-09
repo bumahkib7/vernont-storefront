@@ -127,7 +127,7 @@ export function CartDrawer() {
                         <Link
                           href={item.product_handle ? `/product/${item.product_handle}` : "#"}
                           onClick={closeCart}
-                          className="relative w-20 h-20 bg-[var(--surface)] rounded-lg flex-shrink-0 overflow-hidden"
+                          className="relative w-20 h-20 bg-white rounded-lg flex-shrink-0 overflow-hidden"
                         >
                           {resolveImageUrl(item.thumbnail) ? (
                             <Image

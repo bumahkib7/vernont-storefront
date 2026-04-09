@@ -42,7 +42,7 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
         onClick={handleCardClick}
       >
         {/* Image — SGH style: completely frameless, product floating on white */}
-        <div className="relative aspect-[3/2] overflow-hidden mb-3">
+        <div className="relative aspect-[3/2] overflow-hidden mb-3 bg-white">
           {!isImageLoaded && (
             <div className="absolute inset-0 bg-[#FAFAFA] animate-pulse" />
           )}

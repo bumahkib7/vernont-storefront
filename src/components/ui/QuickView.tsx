@@ -92,7 +92,7 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
 
               <div className="grid grid-cols-1 md:grid-cols-2">
                 {/* Image */}
-                <div className="relative aspect-square bg-secondary">
+                <div className="relative aspect-square bg-white">
                   <Image
                     src={product.image}
                     alt={product.name}

@@ -93,7 +93,7 @@ export function CompareDrawer() {
                           <X className="h-3 w-3" />
                         </button>
                         <Link href={`/product/${item.handle}`} onClick={closeDrawer}>
-                          <div className="aspect-square relative bg-[var(--surface)]">
+                          <div className="aspect-square relative bg-white">
                             {resolveImageUrl(item.thumbnail) ? (
                               <Image
                                 src={resolveImageUrl(item.thumbnail)!}
