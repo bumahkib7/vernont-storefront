@@ -61,9 +61,11 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
 
         {/* Product info — SGH style: brand, price, SHOP NOW */}
         <div className="space-y-0.5">
-          <p className="text-[12px] font-medium uppercase tracking-[0.05em] text-[#1A1A1A]">
-            {product.brand}
-          </p>
+          {product.brand && (
+            <p className="text-[12px] font-medium uppercase tracking-[0.05em] text-[#1A1A1A]">
+              {product.brand}
+            </p>
+          )}
           <p className="text-[13px] font-medium tabular-nums text-[#1A1A1A]">
             {formatPriceMajor(product.price, currency)}
           </p>

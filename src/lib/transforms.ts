@@ -130,7 +130,7 @@ export function transformProduct(product: Product): DisplayProduct {
     id: product.id,
     handle: product.handle,
     name: product.title,
-    brand: product.brand ?? 'Vernont',
+    brand: product.brand ?? '',
     price,
     originalPrice,
     image: resolvedThumbnail ?? uniqueImages[0] ?? '/placeholder.jpg',
