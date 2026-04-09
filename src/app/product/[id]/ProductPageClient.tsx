@@ -167,16 +167,34 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       <section className="px-4 lg:px-8 py-6 lg:py-10 max-w-[1400px] mx-auto">
         <div className="grid lg:grid-cols-[1fr_420px] gap-8 lg:gap-16">
           {/* LEFT: Image gallery with vertical dot navigation */}
-          <div className="relative">
+          <div className="flex items-center gap-4 lg:gap-8">
+            {/* Vertical dot navigation - Moved OUTSIDE the image to prevent overlap */}
+            {productImages.length > 1 && (
+              <div className="flex flex-col gap-4 relative z-20">
+                {productImages.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedImage(index)}
+                    className={`w-3.5 h-3.5 rounded-full border-2 transition-colors ${
+                      selectedImage === index
+                        ? "bg-[#1A1A1A] border-[#1A1A1A]"
+                        : "bg-transparent border-[#999] hover:border-[#1A1A1A]"
+                    }`}
+                    aria-label={`View image ${index + 1}`}
+                  />
+                ))}
+              </div>
+            )}
+
             <div 
-              className="relative aspect-[4/3] bg-white overflow-hidden cursor-zoom-in group"
-              onMouseEnter={() => setIsZoomed(true)}
+              className={`relative flex-1 aspect-[4/3] bg-white overflow-hidden group ${isZoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'}`}
+              onClick={() => setIsZoomed(!isZoomed)}
               onMouseLeave={() => setIsZoomed(false)}
               onMouseMove={handleMouseMove}
             >
               {productImages.map((src, idx) => (
                 <div
-                  key={src}
+                  key={`${src}-${idx}`}
                   className={`absolute inset-0 transition-opacity duration-150 ${
                     idx === selectedImage ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
                   }`}
@@ -203,31 +221,13 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
 
               {/* Magnifying glass icon - fade out to hide when zoomed in */}
               <div 
-                className={`absolute bottom-4 left-4 p-2 text-[#999] pointer-events-none z-20 transition-opacity duration-300 ${
-                  isZoomed ? "opacity-0" : "opacity-100"
+                className={`absolute bottom-4 left-4 p-2 transition-opacity duration-300 pointer-events-none z-20 ${
+                  isZoomed ? "opacity-0" : "opacity-100 text-[#999]"
                 }`}
               >
-                <MagnifyingGlass className="w-5 h-5" />
+                <MagnifyingGlass className="w-6 h-6" />
               </div>
             </div>
-
-            {/* Vertical dot navigation */}
-            {productImages.length > 1 && (
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-3">
-                {productImages.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`w-2.5 h-2.5 rounded-full border transition-colors ${
-                      selectedImage === index
-                        ? "bg-[#1A1A1A] border-[#1A1A1A]"
-                        : "bg-transparent border-[#999] hover:border-[#1A1A1A]"
-                    }`}
-                    aria-label={`View image ${index + 1}`}
-                  />
-                ))}
-              </div>
-            )}
           </div>
 
           {/* RIGHT: Product Info — Pret a Voir style */}
