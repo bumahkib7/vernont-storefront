@@ -13,6 +13,7 @@ import {
   CaretDown,
   CaretLeft,
   Package,
+  MagnifyingGlass,
 } from "@phosphor-icons/react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
@@ -152,34 +153,41 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
         </button>
       </div>
 
-      {/* Product Section — SGH layout: large image LEFT, info RIGHT */}
-      <section className="px-4 lg:px-6 py-4 lg:py-6">
-        <div className="grid lg:grid-cols-[1fr_380px] gap-6 lg:gap-10">
-          {/* LEFT: Product Image */}
-          <div className="space-y-3">
-            <div className="relative aspect-square bg-[#F0F0F0] overflow-hidden">
+      {/* Product Section — Pret à Voir layout */}
+      <section className="px-4 lg:px-8 py-6 lg:py-10 max-w-[1400px] mx-auto">
+        <div className="grid lg:grid-cols-[1fr_420px] gap-8 lg:gap-16">
+          {/* LEFT: Image gallery with vertical dot navigation */}
+          <div className="relative">
+            <div className="relative aspect-[4/3] bg-white overflow-hidden">
               <Image
                 src={productImages[selectedImage]}
                 alt={product.name}
                 fill
-                className="object-contain p-8 lg:p-12"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                className="object-contain p-6 lg:p-16"
                 priority
               />
+
+              {/* Magnifying glass icon */}
+              <button className="absolute bottom-4 left-4 p-2 text-[#999] hover:text-[#1A1A1A] transition-colors">
+                <MagnifyingGlass className="w-5 h-5" />
+              </button>
             </div>
 
-            {/* Thumbnail Gallery */}
+            {/* Vertical dot navigation */}
             {productImages.length > 1 && (
-              <div className="grid grid-cols-4 gap-2">
-                {productImages.map((img, index) => (
+              <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-3">
+                {productImages.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`relative aspect-square bg-[#F0F0F0] overflow-hidden border-2 ${
-                      selectedImage === index ? "border-[#1A1A1A]" : "border-transparent"
+                    className={`w-2.5 h-2.5 rounded-full border transition-colors ${
+                      selectedImage === index
+                        ? "bg-[#1A1A1A] border-[#1A1A1A]"
+                        : "bg-transparent border-[#999] hover:border-[#1A1A1A]"
                     }`}
-                  >
-                    <Image src={img} alt="" fill className="object-contain p-2" />
-                  </button>
+                    aria-label={`View image ${index + 1}`}
+                  />
                 ))}
               </div>
             )}
@@ -237,22 +245,22 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               </button>
             </div>
 
-            {/* Colour variants — count label + swatch row */}
+            {/* Colour variants — count label + image swatches */}
             {product.variants.length > 1 && (
-              <div className="mb-6">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-3">
+              <div className="mb-6 border-t border-b border-[#E5E5E5] py-5">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-4">
                   {product.variants.length} COLOURS
                 </p>
-                <div className="flex gap-2 flex-wrap justify-center">
+                <div className="flex gap-3 flex-wrap justify-center">
                   {product.variants.map((variant, index) => (
                     <button
                       key={variant.id}
                       onClick={() => setSelectedVariantIndex(index)}
-                      className={`w-14 h-14 border-2 bg-[#F5F5F5] flex items-center justify-center transition-colors ${
-                        selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-transparent hover:border-[#CCC]"
+                      className={`relative w-16 h-12 border-2 bg-white overflow-hidden transition-colors ${
+                        selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-[#E5E5E5] hover:border-[#999]"
                       }`}
                     >
-                      <span className="text-[9px] text-center leading-tight px-1">{variant.title}</span>
+                      <span className="text-[9px] text-center leading-tight px-0.5 flex items-center justify-center h-full">{variant.title}</span>
                     </button>
                   ))}
                 </div>
@@ -273,7 +281,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                   <Check className="w-4 h-4" /> Added to Bag
                 </span>
               ) : (
-                "ADD TO CART or ADD PRESCRIPTION"
+                "ADD TO CART OR ADD FREE LENSES"
               )}
             </button>
 
