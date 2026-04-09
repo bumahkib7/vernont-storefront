@@ -6,6 +6,7 @@ import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { CaretRight, ArrowRight } from "@phosphor-icons/react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function Home() {
@@ -27,10 +28,13 @@ export default function Home() {
         {/* === S1: Miu Miu Hero Split === */}
         <section className="w-full lg:h-[800px] flex flex-col lg:flex-row border-b border-[#E5E5E5]">
            <div className="w-full lg:w-1/2 h-[500px] lg:h-full relative overflow-hidden bg-black">
-              <img 
-                 src="/images/home/miu_miu_campaign_1775729723590.png" 
+              <Image
+                 src="/images/home/miu_miu_campaign_1775729723590.png"
                  alt="Miu Miu Campaign"
-                 className="absolute inset-0 w-full h-full object-cover object-center opacity-90 transition-transform duration-1000 hover:scale-105"
+                 fill
+                 sizes="(max-width: 1024px) 100vw, 50vw"
+                 priority
+                 className="object-cover object-center opacity-90 transition-transform duration-1000 hover:scale-105"
               />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 py-3">
                  <span className="text-2xl font-bold tracking-widest uppercase">MIU MIU</span>
@@ -48,8 +52,8 @@ export default function Home() {
               <div className="grid grid-cols-2 gap-8 w-full max-w-[600px] mb-12">
                  {miuMiuProducts.map(p => (
                     <div key={p.id} className="flex flex-col items-center">
-                       <div className="w-full aspect-[4/3] bg-white mb-4 p-4 flex items-center justify-center">
-                          {p.image && <img src={p.image} alt={p.name} className="w-full h-full object-contain mix-blend-multiply" />}
+                       <div className="w-full aspect-[4/3] bg-white mb-4 p-4 relative">
+                          {p.image && <Image src={p.image} alt={p.name} fill sizes="300px" className="object-contain mix-blend-multiply" />}
                        </div>
                        <Link href={`/product/${p.handle}`} className="px-6 py-2 bg-gray-500 text-white text-[11px] uppercase tracking-widest hover:bg-black transition-colors">
                           SHOP
@@ -67,10 +71,12 @@ export default function Home() {
         {/* === S2: Maui Jim Banner === */}
         <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-8 mt-16 mb-24">
            <div className="relative w-full h-[300px] md:h-[450px] lg:h-[600px] mb-12">
-              <img 
-                 src="/images/home/maui_jim_banner_1775729742958.png" 
-                 alt="Maui Jim Banner" 
-                 className="absolute inset-0 w-full h-full object-cover" 
+              <Image
+                 src="/images/home/maui_jim_banner_1775729742958.png"
+                 alt="Maui Jim Banner"
+                 fill
+                 sizes="100vw"
+                 className="object-cover"
               />
               <div className="absolute bottom-8 left-8 text-white">
                  <h3 className="text-4xl lg:text-6xl font-bold tracking-tight mb-2">COLOR YOU CAN FEEL</h3>
@@ -102,16 +108,16 @@ export default function Home() {
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <img src="/images/home/vogue_cover_1775729762034.png" alt="Vogue Cover" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/vogue_cover_1775729762034.png" alt="Vogue Cover" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <img src="/images/home/balenciaga_editorial_1775729800168.png" alt="Editorial" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/balenciaga_editorial_1775729800168.png" alt="Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <img src="/images/home/couple_editorial_1775729817725.png" alt="Editorial" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/couple_editorial_1775729817725.png" alt="Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <img src="/images/home/collage_editorial_1775729833211.png" alt="Collage" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/collage_editorial_1775729833211.png" alt="Collage" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
            </div>
         </section>
@@ -139,7 +145,7 @@ export default function Home() {
                  ].map((star) => (
                     <div key={star.label} className="flex flex-col items-center">
                        <div className="w-full aspect-square relative mb-6 overflow-hidden">
-                          <img src={star.img} alt={star.label} className="w-full h-full object-cover" />
+                          <Image src={star.img} alt={star.label} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
                        </div>
                        <span className="px-6 py-1.5 bg-black text-white text-[10px] font-bold uppercase tracking-wider">
                           {star.label}
@@ -177,7 +183,9 @@ export default function Home() {
                  { title: 'Golden Globe Awards 2026', img: '/images/home/blog_gg_1775730089657.png', color: 'bg-[#bc8926]' },
               ].map(blog => (
                  <Link href="/blog" key={blog.title} className="group flex flex-col relative h-[300px] overflow-hidden">
-                    <img src={blog.img} alt={blog.title} className="w-full h-[85%] object-cover transition-transform duration-700 group-hover:scale-105" />
+                    <div className="relative w-full h-[85%]">
+                       <Image src={blog.img} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                    </div>
                     <div className={`w-full h-[15%] ${blog.color} flex items-center justify-center p-2 absolute bottom-0`}>
                        <span className="text-white font-serif italic text-lg leading-none tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>{blog.title}</span>
                     </div>
@@ -213,28 +221,7 @@ export default function Home() {
                  ))}
               </div>
            </div>
-
-           <div className="w-full bg-black py-4 grid grid-cols-2 lg:grid-cols-4 text-center divide-x divide-gray-800">
-              {['FAST SECURE SHIPPING', '5 STAR REVIEWS', '24/7 SUPPORT', '24 MONTH WARRANTY'].map(t => (
-                 <span key={t} className="text-[11px] font-bold tracking-[0.15em] text-white">{t}</span>
-              ))}
-           </div>
-        </section>
-
-        {/* === S9: Newsletter Block === */}
-        <section className="w-full bg-[#f4f4f4] py-16">
-           <div className="max-w-[800px] mx-auto text-center px-4">
-              <h3 className="text-xl md:text-2xl text-[#1A1A1A] tracking-wide mb-8" style={{ fontFamily: 'Georgia, serif' }}>
-                 Get Exclusive Offers, News and Entry to our monthly prize draw
-              </h3>
-              <form className="flex w-full bg-white max-w-[600px] mx-auto shadow-sm">
-                 <input type="email" placeholder="Enter your email to register" className="flex-1 py-3 px-4 outline-none text-sm bg-transparent" />
-                 <button type="submit" className="bg-[#e5e5e5] text-[#999] px-6 text-[11px] font-bold tracking-[0.1em] hover:bg-[#d5d5d5] hover:text-[#1A1A1A] transition-colors">
-                    SUBMIT
-                 </button>
-              </form>
-           </div>
-        </section>
+         </section>
 
       </main>
       

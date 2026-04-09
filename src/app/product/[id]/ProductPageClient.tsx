@@ -185,77 +185,84 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             )}
           </div>
 
-          {/* RIGHT: Product Info — SGH style */}
+          {/* RIGHT: Product Info — Pret a Voir style */}
           <div className="lg:sticky lg:top-[80px] lg:self-start">
-            {/* Price + Wishlist row */}
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <span className="text-xl font-medium tabular-nums">
-                  {formatPriceMajor(currentPrice, currency)}
-                </span>
-                {hasDiscount && (
-                  <span className="ml-2 text-sm text-[#999] line-through tabular-nums">
-                    {formatPriceMajor(currentOriginalPrice!, currency)}
-                  </span>
-                )}
-              </div>
-              <button
-                onClick={() => toggleItem(product.id)}
-                className="p-1 hover:opacity-60 transition-opacity"
-                aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                <Heart className={`w-5 h-5 ${isWishlisted ? "fill-[#1A1A1A] text-[#1A1A1A]" : "text-[#999]"}`} />
-              </button>
-            </div>
 
-            {/* Brand — serif, large */}
+            {/* Brand — large centered serif heading, uppercase */}
             {product.brand && (
-              <h1 className="text-2xl lg:text-3xl mb-1" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}>
+              <h1 className="text-3xl lg:text-4xl font-bold tracking-widest uppercase text-center mb-6"
+                  style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}>
                 {product.brand}
               </h1>
             )}
 
-            {/* Model name */}
-            <p className="text-sm text-[#666] mb-1">{product.name}</p>
+            {/* Product name — uppercase small */}
+            <h2 className="text-[13px] font-bold uppercase tracking-[0.12em] text-center text-[#1A1A1A] border-b border-[#E5E5E5] pb-5 mb-5">
+              {product.name}
+            </h2>
 
-            {/* Badges */}
-            {product.isBestseller && (
-              <p className="text-[12px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-4">Best Seller</p>
-            )}
-
-            {/* Frame / Lens specs if available */}
-            {(product.frameShape || product.frameMaterial || product.lensType) && (
-              <div className="space-y-1 mb-4 text-[13px]">
-                {product.frameMaterial && (
-                  <p><span className="text-[#999] uppercase tracking-wider text-[11px]">Frame</span> <span className="ml-2 font-medium">{product.frameMaterial}</span></p>
-                )}
-                {product.lensType && (
-                  <p><span className="text-[#999] uppercase tracking-wider text-[11px]">Lenses</span> <span className="ml-2 font-medium">{product.lensType}</span></p>
-                )}
+            {/* Frame / Lens specs */}
+            {(product.frameMaterial || product.lensType) && (
+              <div className="text-center space-y-1 mb-5 text-[13px] text-[#666]">
+                {product.frameMaterial && <p>{product.frameMaterial}</p>}
+                {product.lensType && <p>{product.lensType}</p>}
+                {product.variants?.[0]?.sku && <p className="text-[11px] text-[#999]">Ref. {product.variants[0].sku}</p>}
               </div>
             )}
 
-            {/* Variant swatches — SGH style thumbnail boxes */}
+            {/* Price row */}
+            <div className="text-center mb-4">
+              <span className="text-xl font-medium tabular-nums tracking-wide">
+                {formatPriceMajor(currentPrice, currency)}
+              </span>
+              {hasDiscount && (
+                <span className="ml-3 text-sm text-[#999] line-through tabular-nums">
+                  {formatPriceMajor(currentOriginalPrice!, currency)}
+                </span>
+              )}
+            </div>
+
+            {/* Wishlist — outline heart + text, centered */}
+            <div className="flex justify-center mb-6">
+              <button
+                onClick={() => toggleItem(product.id)}
+                className="flex items-center gap-2 text-[12px] text-[#666] hover:text-[#1A1A1A] transition-colors"
+                aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                <Heart
+                  weight={isWishlisted ? "fill" : "regular"}
+                  className={`w-4 h-4 ${isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"}`}
+                />
+                {isWishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
+              </button>
+            </div>
+
+            {/* Colour variants — count label + swatch row */}
             {product.variants.length > 1 && (
-              <div className="flex gap-2 mb-6">
-                {product.variants.map((variant, index) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => setSelectedVariantIndex(index)}
-                    className={`w-16 h-16 border-2 bg-[#F0F0F0] flex items-center justify-center transition-colors ${
-                      selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-transparent"
-                    }`}
-                  >
-                    <span className="text-[10px] text-center leading-tight">{variant.title}</span>
-                  </button>
-                ))}
+              <div className="mb-6">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-3">
+                  {product.variants.length} COLOURS
+                </p>
+                <div className="flex gap-2 flex-wrap justify-center">
+                  {product.variants.map((variant, index) => (
+                    <button
+                      key={variant.id}
+                      onClick={() => setSelectedVariantIndex(index)}
+                      className={`w-14 h-14 border-2 bg-[#F5F5F5] flex items-center justify-center transition-colors ${
+                        selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-transparent hover:border-[#CCC]"
+                      }`}
+                    >
+                      <span className="text-[9px] text-center leading-tight px-1">{variant.title}</span>
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 
-            {/* Add to bag — SGH style: full-width, black, rounded-full */}
+            {/* Primary CTA — full-width black, Pret a Voir style */}
             <button
               onClick={handleAddToCart}
-              className={`w-full py-4 text-sm font-medium rounded-full transition-colors mb-3 ${
+              className={`w-full py-4 text-[12px] font-bold uppercase tracking-[0.15em] transition-colors mb-2 ${
                 isAdded
                   ? "bg-green-600 text-white"
                   : "bg-[#1A1A1A] text-white hover:bg-[#333]"
@@ -263,36 +270,39 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             >
               {isAdded ? (
                 <span className="flex items-center justify-center gap-2">
-                  <Check className="w-4 h-4" /> Added to bag
+                  <Check className="w-4 h-4" /> Added to Bag
                 </span>
               ) : (
-                "Add to bag"
+                "ADD TO CART or ADD PRESCRIPTION"
               )}
             </button>
 
-            {/* Payment methods */}
-            <p className="text-center text-[12px] text-[#999] mb-6">
-              <span className="font-medium text-[#1A1A1A]">Apple Pay</span>, <span className="font-medium text-[#1A1A1A]">Google Pay</span> and all major cards accepted.
+            {/* Urgency line */}
+            <p className="text-center text-[11px] text-[#666] tracking-wide mb-6">
+              CHECK OUT IN 1 hrs — WE SHIP TODAY <span className="text-[#999]">(non prescription)</span>
             </p>
 
-            {/* Delivery info — SGH style */}
-            <div className="space-y-4 mb-6 py-4 border-t border-[#E5E5E5]">
-              <div className="flex items-start gap-3">
-                <Truck className="w-5 h-5 text-[#1A1A1A] mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-[13px] font-bold uppercase tracking-wider">Free Home Delivery</p>
+            {/* Confidence panel */}
+            <div className="border border-[#E5E5E5] rounded px-5 py-4 mb-5">
+              <p className="text-[12px] font-bold uppercase tracking-widest text-center text-[#1A1A1A] mb-3">Shop with Confidence</p>
+              <p className="text-[11px] text-[#666] text-center mb-4">No Quibble Refunds on Frame and Lenses</p>
+              <div className="space-y-2">
+                <div className="flex items-center gap-3 text-[12px] text-[#444]">
+                  <Truck className="w-4 h-4 flex-shrink-0 text-[#666]" />
+                  <span>Express Shipping</span>
                 </div>
-              </div>
-              <div className="flex items-start gap-3">
-                <ArrowCounterClockwise className="w-5 h-5 text-[#1A1A1A] mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-[13px] font-bold uppercase tracking-wider">Free Returns</p>
-                  <p className="text-[12px] text-[#999]">Within 30 days</p>
+                <div className="flex items-center gap-3 text-[12px] text-[#444]">
+                  <Package className="w-4 h-4 flex-shrink-0 text-[#666]" />
+                  <span>24 Month Global Warranty</span>
+                </div>
+                <div className="flex items-center gap-3 text-[12px] text-[#444]">
+                  <ArrowCounterClockwise className="w-4 h-4 flex-shrink-0 text-[#666]" />
+                  <span>Easy Returns</span>
                 </div>
               </div>
             </div>
 
-            {/* Accordion sections — inside info column for mobile flow */}
+            {/* Accordion sections */}
             <div className="border-t border-[#E5E5E5]">
               <AccordionSection title="Product details" defaultOpen>
                 <ProductSpecifications specs={specsData} product={product} />
