@@ -29,7 +29,7 @@ async function fetchProductSeo(handle: string): Promise<ProductSeoData | null> {
   try {
     const response = await fetch(
       `${BACKEND_URL}/store/seo/products/${encodeURIComponent(handle)}`,
-      { next: { revalidate: 300 } },
+      { next: { revalidate: 60, tags: ["products"] } },
     );
     if (!response.ok) return null;
     return await response.json();
