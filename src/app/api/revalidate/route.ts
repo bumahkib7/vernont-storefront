@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const tag = body.tag || "products";
 
-    revalidateTag(tag);
+    revalidateTag(tag, "default");
 
     return NextResponse.json({ revalidated: true, tag });
   } catch {
