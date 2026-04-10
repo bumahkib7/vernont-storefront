@@ -102,19 +102,7 @@ export function Header() {
   return (
     <>
       <div className="flex flex-col w-full border-b border-[#E5E5E5]">
-        {/* === Layer 1: Trustpilot === */}
-        <div className="bg-[#f2fcf6] py-1.5 flex items-center justify-center text-[11px] font-semibold text-[#1A1A1A] tracking-wide">
-          Excellent 
-          <span className="flex items-center mx-2 text-white bg-[#00b67a] px-1 py-0.5 gap-0.5 text-xs">
-            ★ ★ ★ ★ ★
-          </span> 
-          <span className="underline cursor-pointer hover:opacity-70">33,470 reviews on</span> 
-          <span className="ml-1 text-[#00b67a] font-bold flex items-center gap-1">
-             <span className="text-sm">★</span> Trustpilot
-          </span>
-        </div>
-
-        {/* === Layer 2: Main Utility === */}
+        {/* === Layer 1: Main Utility === */}
         <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
           {/* Mobile List & Logo */}
           <div className="flex items-center gap-4 min-w-[200px]">
