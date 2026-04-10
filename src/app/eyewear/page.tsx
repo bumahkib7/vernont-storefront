@@ -2,7 +2,22 @@
 
 import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { CaretDown, X, SlidersHorizontal, GridFour, SquaresFour, Check, SpinnerGap } from "@phosphor-icons/react";
+import {
+  CaretDown,
+  X,
+  SlidersHorizontal,
+  GridFour,
+  SquaresFour,
+  Check,
+  SpinnerGap,
+  Medal,
+  Eye,
+  ArrowCounterClockwise,
+  Gift,
+  Truck,
+  Plus,
+  Minus,
+} from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -188,6 +203,111 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
     </span>
   );
 }
+
+/**
+ * Collapsible FAQ row used in the bottom-of-page SEO section.
+ * Closed by default, single-panel toggle, smooth height animation.
+ */
+function SeoFaqItem({ question, answer }: { question: string; answer: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border-b border-[#E5E5E5] last:border-b-0">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between py-5 text-left group"
+        aria-expanded={open}
+      >
+        <span
+          className="text-[15px] text-[#1A1A1A] group-hover:text-black transition-colors pr-6"
+          style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+        >
+          {question}
+        </span>
+        <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-[#666]">
+          {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+        </span>
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className="overflow-hidden"
+          >
+            <p className="pb-5 text-[13px] leading-relaxed text-[#666] max-w-[700px]">
+              {answer}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+/** Guarantees list rendered as icon + title + body cards. */
+const SEO_GUARANTEES = [
+  {
+    Icon: Medal,
+    title: "100% Authentic",
+    body: "All eyewear sourced directly from authorized retailers and verified for authenticity.",
+  },
+  {
+    Icon: Eye,
+    title: "Expert Quality Assurance",
+    body: "Every pair inspected by optometry professionals before shipping.",
+  },
+  {
+    Icon: ArrowCounterClockwise,
+    title: "30-Day Hassle-Free Returns",
+    body: "Not satisfied? Return for a full refund, no questions asked.",
+  },
+  {
+    Icon: Gift,
+    title: "Complimentary Care Kit",
+    body: "Premium cleaning cloth and protective case with every order.",
+  },
+  {
+    Icon: Truck,
+    title: "Fast, Secure Shipping",
+    body: "Fully insured delivery with tracking to your door.",
+  },
+] as const;
+
+const SEO_FRAME_STYLES = [
+  { title: "Aviator", body: "Timeless teardrop design, universally flattering" },
+  { title: "Cat-Eye", body: "Vintage-inspired feminine elegance" },
+  { title: "Wayfarer", body: "Bold rectangular frames, iconic look" },
+  { title: "Round", body: "Retro circular frames for every face shape" },
+  { title: "Oversized", body: "Maximum coverage and fashion impact" },
+  { title: "Sport", body: "Performance eyewear for active lifestyles" },
+  { title: "Square", body: "Modern angular aesthetic" },
+  { title: "Optical", body: "Prescription-ready eyeglasses" },
+] as const;
+
+const SEO_FAQS = [
+  {
+    q: "Are all your sunglasses authentic designer products?",
+    a: "Yes, 100%. We source all eyewear directly from authorized brand retailers and manufacturers. Every pair comes with authenticity certificates and original packaging.",
+  },
+  {
+    q: "What does polarized mean, and do I need it?",
+    a: "Polarized lenses have a special filter that blocks intense reflected light (glare) from horizontal surfaces. They're highly recommended for driving, water activities, and snow sports, significantly reducing eye strain and improving visual comfort.",
+  },
+  {
+    q: "Can I get prescription lenses in these frames?",
+    a: "Many of our optical frames and select sunglass styles are prescription-ready. Look for \u201CPrescription Available\u201D tags on product pages, or contact our optometry team for personalized guidance.",
+  },
+  {
+    q: "Do your sunglasses provide UV protection?",
+    a: "All our sunglasses offer 100% UVA and UVB protection as standard. UV protection is essential for long-term eye health, preventing cataracts and other sun-related damage.",
+  },
+  {
+    q: "What's your return policy if the frames don't fit?",
+    a: "We offer a 30-day money-back guarantee. If you're not completely satisfied with the fit, style, or quality, return your eyewear in its original condition for a full refund. Return shipping is free within the UK.",
+  },
+] as const;
 
 function EyewearPageContent() {
   const searchParams = useSearchParams();
@@ -677,126 +797,141 @@ function EyewearPageContent() {
           </section>
         </div>
 
-        {/* SEO Content Section — moved below the product grid so that shoppers
-            see the actual products first (above the fold). Still crawlable by
-            search engines as part of the page body. Only rendered when no
-            brand/category filter is active, since the copy is generic catalog
-            marketing and doesn't match a filtered view (e.g. showing "curated
-            collection from Miu Miu, Maui Jim, Ray-Ban..." on /eyewear?brand=prada
-            would confuse both users and search engines). */}
+        {/* SEO Content Section — sits below the product grid so shoppers see
+            products first. Gated on !hasActiveFilters so brand- or
+            category-filtered views don't render generic multi-brand copy.
+            Redesigned with proper hierarchy: serif display headings, icon
+            cards for the guarantees, bordered style cards, and a
+            collapsible FAQ accordion. */}
         {!hasActiveFilters && (
-          <section className="max-w-[1400px] mx-auto px-4 lg:px-8 py-16 mt-12 border-t border-[#E5E5E5]">
-            <div className="prose max-w-none">
-              <div className="mb-8">
-                <p className="text-[15px] leading-relaxed text-[#333] mb-4">
-                  Discover our curated collection of designer sunglasses and luxury eyewear from the world&apos;s most prestigious brands including Miu Miu, Maui Jim, Ray-Ban, Oakley, and more. Each frame is carefully selected for its exceptional quality, timeless design, and superior craftsmanship. Whether you&apos;re seeking polarized sunglasses for outdoor adventures, prescription sunglasses for everyday wear, or statement optical frames that express your unique style, our collection offers something special for every taste.
+          <section className="border-t border-[#E5E5E5] bg-[#FAFAFA]">
+            <div className="max-w-[1200px] mx-auto px-4 lg:px-8 py-20">
+
+              {/* Editorial intro — serif display heading + lede */}
+              <div className="max-w-[720px] mx-auto text-center mb-20">
+                <p className="text-[10px] tracking-[0.3em] uppercase text-[#999] mb-4">
+                  The Vernont Collection
                 </p>
-                <p className="text-[15px] leading-relaxed text-[#333]">
-                  From classic aviator sunglasses to contemporary cat-eye frames and sporty wraparound styles, we stock an extensive range of shapes, colors, and lens technologies. Our eyewear combines fashion-forward aesthetics with advanced UV protection and optical clarity, ensuring you look great while protecting your vision.
+                <h2
+                  className="text-3xl md:text-4xl lg:text-5xl leading-tight text-[#1A1A1A] mb-6"
+                  style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                >
+                  Designer sunglasses &amp; luxury eyewear, curated.
+                </h2>
+                <p className="text-[15px] leading-relaxed text-[#555]">
+                  Discover frames from the world&apos;s most prestigious brands &mdash; Miu Miu, Maui Jim,
+                  Ray-Ban, Oakley, and more. Each piece is selected for its exceptional quality,
+                  timeless design, and superior craftsmanship &mdash; whether you&apos;re seeking polarized
+                  sunglasses for outdoor adventures, prescription frames for everyday wear, or
+                  statement optical pieces that express your unique style.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-8 mb-8">
-                <div>
-                  <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Why Choose Vernont for Designer Eyewear?</h2>
-                  <ul className="space-y-2 text-[14px] text-[#333]">
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#666] mt-1">•</span>
-                      <span><strong>100% Authentic Designer Frames</strong> - All eyewear sourced directly from authorized retailers and verified for authenticity</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#666] mt-1">•</span>
-                      <span><strong>Expert Quality Assurance</strong> - Every pair inspected by optometry professionals before shipping</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#666] mt-1">•</span>
-                      <span><strong>30-Day Hassle-Free Returns</strong> - Not satisfied? Return for a full refund, no questions asked</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#666] mt-1">•</span>
-                      <span><strong>Complimentary Care Kit</strong> - Premium cleaning cloth and protective case included with every order</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-[#666] mt-1">•</span>
-                      <span><strong>Fast, Secure Shipping</strong> - Fully insured delivery with tracking to your door</span>
-                    </li>
-                  </ul>
+              {/* Guarantees — icon cards on a clean 5-up grid */}
+              <div className="mb-20">
+                <div className="text-center mb-10">
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-[#999] mb-3">Our Promise</p>
+                  <h3
+                    className="text-2xl md:text-3xl text-[#1A1A1A]"
+                    style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                  >
+                    Why shoppers choose Vernont
+                  </h3>
                 </div>
-
-                <div>
-                  <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Premium Polarized Sunglasses</h2>
-                  <p className="text-[14px] leading-relaxed text-[#333] mb-3">
-                    Our polarized sunglasses collection features advanced lens technology that reduces glare and enhances visual clarity. Perfect for driving, water sports, skiing, and everyday outdoor activities, polarized lenses eliminate reflected light from horizontal surfaces like roads, water, and snow.
-                  </p>
-                  <p className="text-[14px] leading-relaxed text-[#333]">
-                    Choose from top brands like Maui Jim (renowned for their color-enhancing PolarizedPlus2 technology), Ray-Ban (iconic style meets performance), and Oakley (sport-optimized optical engineering). All our polarized sunglasses provide 100% UVA and UVB protection.
-                  </p>
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                  {SEO_GUARANTEES.map(({ Icon, title, body }) => (
+                    <div
+                      key={title}
+                      className="bg-white border border-[#E5E5E5] rounded-sm p-6 flex flex-col items-center text-center hover:border-[#1A1A1A] transition-colors duration-300"
+                    >
+                      <div className="w-11 h-11 rounded-full bg-[#F5F5F5] flex items-center justify-center mb-4">
+                        <Icon className="w-5 h-5 text-[#1A1A1A]" weight="regular" />
+                      </div>
+                      <h4 className="text-[12px] font-bold uppercase tracking-wider text-[#1A1A1A] mb-2">
+                        {title}
+                      </h4>
+                      <p className="text-[12px] leading-relaxed text-[#666]">{body}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="mb-8">
-                <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Shop by Style: Find Your Perfect Frame</h2>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[14px]">
+              {/* Polarized feature block — editorial 2-column */}
+              <div className="mb-20 bg-white border border-[#E5E5E5] rounded-sm p-8 md:p-12">
+                <div className="grid md:grid-cols-[1fr_2fr] gap-8 md:gap-16 items-start">
                   <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Aviator Sunglasses</h3>
-                    <p className="text-[#666] text-[13px]">Timeless teardrop design, universally flattering</p>
+                    <p className="text-[10px] tracking-[0.3em] uppercase text-[#999] mb-3">Featured</p>
+                    <h3
+                      className="text-2xl md:text-3xl text-[#1A1A1A] leading-tight"
+                      style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                    >
+                      Premium polarized sunglasses
+                    </h3>
                   </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Cat-Eye Frames</h3>
-                    <p className="text-[#666] text-[13px]">Vintage-inspired feminine elegance</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Wayfarer Style</h3>
-                    <p className="text-[#666] text-[13px]">Bold rectangular frames, iconic look</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Round Sunglasses</h3>
-                    <p className="text-[#666] text-[13px]">Retro circular frames for every face shape</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Oversized Frames</h3>
-                    <p className="text-[#666] text-[13px]">Maximum coverage and fashion impact</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Sport Sunglasses</h3>
-                    <p className="text-[#666] text-[13px]">Performance eyewear for active lifestyles</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Square Frames</h3>
-                    <p className="text-[#666] text-[13px]">Modern angular aesthetic</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Optical Frames</h3>
-                    <p className="text-[#666] text-[13px]">Prescription-ready eyeglasses</p>
+                  <div className="space-y-4 text-[14px] leading-relaxed text-[#555]">
+                    <p>
+                      Our polarized collection features advanced lens technology that reduces glare
+                      and enhances visual clarity &mdash; perfect for driving, water sports, skiing, and
+                      everyday outdoor activities. Polarized lenses eliminate reflected light from
+                      horizontal surfaces like roads, water, and snow.
+                    </p>
+                    <p>
+                      Choose from top brands like Maui Jim (renowned for their color-enhancing
+                      PolarizedPlus2 technology), Ray-Ban (iconic style meets performance), and
+                      Oakley (sport-optimized optical engineering). All our polarized sunglasses
+                      provide 100% UVA and UVB protection.
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="bg-[#F9F9F9] p-6 rounded-lg">
-                <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Frequently Asked Questions About Designer Eyewear</h2>
-                <div className="space-y-4 text-[14px]">
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Are all your sunglasses authentic designer products?</h3>
-                    <p className="text-[#333]">Yes, 100%. We source all eyewear directly from authorized brand retailers and manufacturers. Every pair comes with authenticity certificates and original packaging.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">What does polarized mean, and do I need it?</h3>
-                    <p className="text-[#333]">Polarized lenses have a special filter that blocks intense reflected light (glare) from horizontal surfaces. They&apos;re highly recommended for driving, water activities, and snow sports, significantly reducing eye strain and improving visual comfort.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Can I get prescription lenses in these frames?</h3>
-                    <p className="text-[#333]">Many of our optical frames and select sunglass styles are prescription-ready. Look for &ldquo;Prescription Available&rdquo; tags on product pages, or contact our optometry team for personalized guidance.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">Do your sunglasses provide UV protection?</h3>
-                    <p className="text-[#333]">All our sunglasses offer 100% UVA and UVB protection as standard. UV protection is essential for long-term eye health, preventing cataracts and other sun-related damage.</p>
-                  </div>
-                  <div>
-                    <h3 className="font-medium text-[#1A1A1A] mb-1">What&apos;s your return policy if the frames don&apos;t fit?</h3>
-                    <p className="text-[#333]">We offer a 30-day money-back guarantee. If you&apos;re not completely satisfied with the fit, style, or quality, return your eyewear in its original condition for a full refund. Return shipping is free within the UK.</p>
-                  </div>
+              {/* Shop by style — bordered cards in a 4-up grid */}
+              <div className="mb-20">
+                <div className="text-center mb-10">
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-[#999] mb-3">By Shape</p>
+                  <h3
+                    className="text-2xl md:text-3xl text-[#1A1A1A]"
+                    style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                  >
+                    Find your perfect frame
+                  </h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {SEO_FRAME_STYLES.map(({ title, body }) => (
+                    <div
+                      key={title}
+                      className="group bg-white border border-[#E5E5E5] rounded-sm p-6 hover:border-[#1A1A1A] hover:-translate-y-0.5 transition-all duration-300 cursor-default"
+                    >
+                      <h4
+                        className="text-xl text-[#1A1A1A] mb-2"
+                        style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                      >
+                        {title}
+                      </h4>
+                      <p className="text-[12px] leading-relaxed text-[#666]">{body}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
+
+              {/* FAQ — collapsible accordion */}
+              <div>
+                <div className="text-center mb-10">
+                  <p className="text-[10px] tracking-[0.3em] uppercase text-[#999] mb-3">Questions</p>
+                  <h3
+                    className="text-2xl md:text-3xl text-[#1A1A1A]"
+                    style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
+                  >
+                    Frequently asked
+                  </h3>
+                </div>
+                <div className="max-w-[820px] mx-auto bg-white border border-[#E5E5E5] rounded-sm px-6 md:px-10">
+                  {SEO_FAQS.map(({ q, a }) => (
+                    <SeoFaqItem key={q} question={q} answer={a} />
+                  ))}
+                </div>
+              </div>
+
             </div>
           </section>
         )}
