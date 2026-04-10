@@ -56,6 +56,7 @@ export interface DisplayProduct {
     sku: string;
     inventoryQuantity?: number;
     image?: string;
+    options?: Record<string, string>;
   }>;
 }
 
@@ -171,6 +172,7 @@ export function transformProduct(product: Product): DisplayProduct {
         sku: v.sku ?? '',
         inventoryQuantity: v.inventoryQuantity ?? undefined,
         image: v.imageUrl ? resolveImageUrl(v.imageUrl) ?? undefined : undefined,
+        options: v.options && Object.keys(v.options).length > 0 ? v.options : undefined,
       };
     }),
   };

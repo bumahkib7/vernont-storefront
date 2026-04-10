@@ -55,6 +55,9 @@ export const StorefrontVariantSchema = z.object({
   currency: z.string().nullable().optional(),
   inventoryQuantity: z.number().nullable().optional(),
   imageUrl: z.string().nullable().optional(),
+  // Option values keyed by option title — e.g. {"Color": "Black", "Size": "M"}.
+  // Empty record when the admin hasn't configured options for this variant.
+  options: z.record(z.string(), z.string()).nullable().optional(),
 });
 
 export type StorefrontVariant = z.infer<typeof StorefrontVariantSchema>;

@@ -65,14 +65,16 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
             <div className="absolute inset-0 bg-transparent animate-pulse delay-150" />
           )}
 
-          {/* Primary image — fades out on group-hover if a secondary exists */}
+          {/* Primary image — fades out on group-hover if a secondary exists.
+              Uses object-contain so the full product (sunglasses shot) stays
+              visible and centered rather than being cropped to fit a 4/3 box. */}
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             quality={90}
-            className={`object-cover transition-all duration-[400ms] group-hover:scale-[1.03] ${
+            className={`object-contain p-2 transition-all duration-[400ms] group-hover:scale-[1.03] ${
               isImageLoaded ? "opacity-100" : "opacity-0"
             } ${
               product.images && product.images.length > 1
@@ -83,7 +85,10 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
           />
 
           {/* Secondary image — only rendered when there's a second distinct
-              image. Starts hidden, fades in on group-hover. */}
+              image. loading=eager so the browser fetches it alongside the
+              primary on initial paint — without this, Next.js lazy-loads it
+              and there's a blank white flash the first time the user hovers
+              while the fetch happens. */}
           {product.images && product.images.length > 1 && product.images[1] !== product.image && (
             <Image
               src={product.images[1]}
@@ -91,7 +96,8 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               quality={90}
-              className="object-cover transition-all duration-[400ms] opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
+              loading="eager"
+              className="object-contain p-2 transition-all duration-[400ms] opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
             />
           )}
         </div>

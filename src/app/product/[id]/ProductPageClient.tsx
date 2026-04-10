@@ -328,74 +328,93 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               </button>
             </div>
 
-            {/* Colour variants — count label + image swatches.
-                Shows a clear "Selected: X" line and a ring + checkmark on the
-                chosen swatch so the user knows exactly which variant will be
-                added to the cart. Variants named "1"/"2" by default get
-                "Option 1"/"Option 2" as their display fallback so labels are
-                never blank or ambiguous. */}
-            {product.variants.length > 1 && (
-              <div className="mb-6 border-t border-b border-[#E5E5E5] py-5">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-1">
-                  {product.variants.length} COLOURS
-                </p>
-                {(() => {
-                  const rawTitle = selectedVariant?.title?.trim();
-                  const label =
-                    rawTitle && !/^\d+$/.test(rawTitle)
-                      ? rawTitle
-                      : `Option ${selectedVariantIndex + 1}`;
-                  return (
-                    <p className="text-[11px] text-[#666] text-center mb-4">
-                      Selected: <span className="font-medium text-[#1A1A1A]">{label}</span>
-                    </p>
-                  );
-                })()}
-                <div className="flex gap-3 flex-wrap justify-center">
-                  {product.variants.map((variant, index) => {
-                    const isSelected = selectedVariantIndex === index;
-                    const raw = variant.title?.trim();
-                    const displayLabel = raw && !/^\d+$/.test(raw) ? raw : `Option ${index + 1}`;
-                    return (
-                      <button
-                        key={variant.id}
-                        onClick={() => {
-                          setSelectedVariantIndex(index);
-                          setSelectedImage(0);
-                        }}
-                        className={`relative ${variant.image ? "w-20 h-14" : "w-16 h-12"} bg-white overflow-hidden transition-all ${
-                          isSelected
-                            ? "ring-2 ring-[#1A1A1A] ring-offset-2 border border-[#1A1A1A]"
-                            : "border border-[#E5E5E5] hover:border-[#1A1A1A]"
-                        }`}
-                        aria-label={displayLabel}
-                        aria-pressed={isSelected}
-                        title={displayLabel}
-                      >
-                        {variant.image ? (
-                          <Image
-                            src={variant.image}
-                            alt={displayLabel}
-                            fill
-                            sizes="80px"
-                            className="object-cover"
-                          />
-                        ) : (
-                          <span className="text-[10px] text-center leading-tight px-1 flex items-center justify-center h-full font-medium">
-                            {displayLabel}
-                          </span>
-                        )}
-                        {isSelected && (
-                          <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center">
-                            <Check className="w-2.5 h-2.5" weight="bold" />
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
+            {/* Variant picker.
+                Label resolution priority for each swatch:
+                  1. variant.options values joined ("Black / M") — most
+                     meaningful, comes from the ProductVariantOption rows in
+                     the backend keyed by option title.
+                  2. variant.title if it's not just a numeric placeholder.
+                  3. "Option N" fallback.
+                Selected swatch gets a visible ring + offset + checkmark
+                badge so there's zero ambiguity about which variant will
+                hit the cart when the user clicks Add to Bag. */}
+            {product.variants.length > 1 && (() => {
+              // Derive the picker group title ("COLOURS" / "SIZES" / "OPTIONS")
+              // from whichever option name dominates the variant set.
+              const optionKeys = Array.from(
+                new Set(product.variants.flatMap((v) => (v.options ? Object.keys(v.options) : [])))
+              );
+              const primaryOption = optionKeys[0]; // e.g. "Color"
+              const groupLabel = primaryOption
+                ? `${product.variants.length} ${primaryOption.toUpperCase()}${primaryOption.endsWith("s") ? "" : "S"}`
+                : `${product.variants.length} OPTIONS`;
+
+              const labelFor = (variant: typeof product.variants[number], index: number) => {
+                if (variant.options && Object.keys(variant.options).length > 0) {
+                  return Object.values(variant.options).join(" / ");
+                }
+                const raw = variant.title?.trim();
+                if (raw && !/^\d+$/.test(raw)) return raw;
+                return `Option ${index + 1}`;
+              };
+
+              const selectedLabel = selectedVariant
+                ? labelFor(selectedVariant, selectedVariantIndex)
+                : `Option ${selectedVariantIndex + 1}`;
+
+              return (
+                <div className="mb-6 border-t border-b border-[#E5E5E5] py-5">
+                  <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-1">
+                    {groupLabel}
+                  </p>
+                  <p className="text-[11px] text-[#666] text-center mb-4">
+                    Selected: <span className="font-medium text-[#1A1A1A]">{selectedLabel}</span>
+                  </p>
+                  <div className="flex gap-3 flex-wrap justify-center">
+                    {product.variants.map((variant, index) => {
+                      const isSelected = selectedVariantIndex === index;
+                      const displayLabel = labelFor(variant, index);
+                      return (
+                        <button
+                          key={variant.id}
+                          onClick={() => {
+                            setSelectedVariantIndex(index);
+                            setSelectedImage(0);
+                          }}
+                          className={`relative ${variant.image ? "w-20 h-14" : "min-w-16 h-12 px-3"} bg-white overflow-hidden transition-all ${
+                            isSelected
+                              ? "ring-2 ring-[#1A1A1A] ring-offset-2 border border-[#1A1A1A]"
+                              : "border border-[#E5E5E5] hover:border-[#1A1A1A]"
+                          }`}
+                          aria-label={displayLabel}
+                          aria-pressed={isSelected}
+                          title={displayLabel}
+                        >
+                          {variant.image ? (
+                            <Image
+                              src={variant.image}
+                              alt={displayLabel}
+                              fill
+                              sizes="80px"
+                              className="object-cover"
+                            />
+                          ) : (
+                            <span className="text-[10px] text-center leading-tight flex items-center justify-center h-full font-medium whitespace-nowrap">
+                              {displayLabel}
+                            </span>
+                          )}
+                          {isSelected && (
+                            <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center">
+                              <Check className="w-2.5 h-2.5" weight="bold" />
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            )}
+              );
+            })()}
 
             {/* Primary CTA — full-width black, Pret a Voir style */}
             <motion.button
