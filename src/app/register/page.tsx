@@ -20,11 +20,39 @@ function RegisterContent() {
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [googleLoaded, setGoogleLoaded] = useState(false);
+
+  // Password strength: 0–4 based on length + character-class diversity.
+  // 0 = empty, 1 = very weak, 2 = weak, 3 = medium, 4 = strong.
+  const passwordStrength = (() => {
+    const p = formData.password;
+    if (!p) return 0;
+    let score = 0;
+    if (p.length >= 8) score++;
+    if (p.length >= 12) score++;
+    if (/[a-z]/.test(p) && /[A-Z]/.test(p)) score++;
+    if (/\d/.test(p)) score++;
+    if (/[^a-zA-Z0-9]/.test(p)) score++;
+    // Cap at 4 (the meter has 4 segments).
+    return Math.min(4, score);
+  })();
+
+  const strengthLabels = ["", "Very weak", "Weak", "Medium", "Strong"];
+  const strengthColors = ["", "bg-red-500", "bg-orange-500", "bg-yellow-500", "bg-green-600"];
+  const passwordsMatch =
+    formData.confirmPassword.length === 0 || formData.password === formData.confirmPassword;
+  const canSubmit =
+    formData.firstName.trim().length > 0 &&
+    formData.email.trim().length > 0 &&
+    formData.password.length >= 8 &&
+    passwordStrength >= 3 &&
+    formData.confirmPassword === formData.password;
 
   useEffect(() => {
     if (isAuthenticated && !authLoading) {
@@ -80,6 +108,14 @@ function RegisterContent() {
     }
     if (formData.password.length < 8) {
       setError("Password must be at least 8 characters");
+      return;
+    }
+    if (passwordStrength < 3) {
+      setError("Password is too weak. Use a mix of upper and lower case letters, numbers, and symbols.");
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
       return;
     }
     setIsLoading(true);
@@ -177,30 +213,87 @@ function RegisterContent() {
             />
           </div>
 
-          <div className="relative">
-            <label className="sr-only">Password</label>
-            <input
-              type={showPassword ? "text" : "password"}
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              placeholder="Password (min. 8 characters)"
-              className="w-full px-4 py-3 bg-white border border-[#CCCCCC] rounded text-[14px] text-[#1A1A1A] placeholder:text-[#999] focus:outline-none focus:border-[#1A1A1A] focus:ring-1 focus:ring-[#1A1A1A] transition-colors pr-10"
-              disabled={isLoading}
-            />
-            <button
-               type="button"
-               onClick={() => setShowPassword(!showPassword)}
-               className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#1A1A1A]"
-            >
-               {showPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
+          <div>
+            <div className="relative">
+              <label className="sr-only">Password</label>
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Password (min. 8 characters)"
+                autoComplete="new-password"
+                className="w-full px-4 py-3 bg-white border border-[#CCCCCC] rounded text-[14px] text-[#1A1A1A] placeholder:text-[#999] focus:outline-none focus:border-[#1A1A1A] focus:ring-1 focus:ring-[#1A1A1A] transition-colors pr-10"
+                disabled={isLoading}
+              />
+              <button
+                 type="button"
+                 onClick={() => setShowPassword(!showPassword)}
+                 aria-label={showPassword ? "Hide password" : "Show password"}
+                 className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#1A1A1A]"
+              >
+                 {showPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+
+            {/* Strength meter — only shown once the user starts typing. */}
+            {formData.password.length > 0 && (
+              <div className="mt-2">
+                <div className="flex gap-1" aria-hidden="true">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div
+                      key={i}
+                      className={`h-1 flex-1 rounded transition-colors ${
+                        i <= passwordStrength ? strengthColors[passwordStrength] : "bg-[#EBEBEB]"
+                      }`}
+                    />
+                  ))}
+                </div>
+                <p className="mt-1.5 text-[11px] text-[#666]">
+                  Strength: <span className="font-medium text-[#1A1A1A]">{strengthLabels[passwordStrength]}</span>
+                  {passwordStrength < 3 && (
+                    <span className="text-[#999]"> — add upper/lower case, numbers, or symbols</span>
+                  )}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <div>
+            <div className="relative">
+              <label className="sr-only">Confirm password</label>
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Confirm password"
+                autoComplete="new-password"
+                className={`w-full px-4 py-3 bg-white border rounded text-[14px] text-[#1A1A1A] placeholder:text-[#999] focus:outline-none focus:ring-1 transition-colors pr-10 ${
+                  !passwordsMatch
+                    ? "border-red-400 focus:border-red-500 focus:ring-red-500"
+                    : "border-[#CCCCCC] focus:border-[#1A1A1A] focus:ring-[#1A1A1A]"
+                }`}
+                disabled={isLoading}
+              />
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#1A1A1A]"
+              >
+                {showConfirmPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
+            </div>
+            {!passwordsMatch && (
+              <p className="mt-1.5 text-[11px] text-red-600">Passwords do not match</p>
+            )}
           </div>
 
           <button
             type="submit"
-            disabled={isLoading}
-            className="w-full py-3.5 bg-[#5f9e90] hover:bg-[#5a7670] text-white rounded text-[13px] font-medium transition-colors flex items-center justify-center gap-2 mt-2"
+            disabled={isLoading || !canSubmit}
+            className="w-full py-3.5 bg-[#5f9e90] hover:bg-[#5a7670] disabled:bg-[#C5D6D2] disabled:cursor-not-allowed text-white rounded text-[13px] font-medium transition-colors flex items-center justify-center gap-2 mt-2"
           >
             {isLoading ? <SpinnerGap className="h-4 w-4 animate-spin" /> : "Continue"}
           </button>
