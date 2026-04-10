@@ -3,13 +3,20 @@ FROM node:20-alpine AS builder
 WORKDIR /app
 
 # Accept NEXT_PUBLIC_ env vars as build args so Next.js can inline them
+# into the client bundle during `next build`. Runix passes runtime env
+# vars only to `docker run`, so anything consumed at build time must be
+# declared here explicitly.
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_ENABLE_ANALYTICS
 ARG NEXT_PUBLIC_IMAGE_CDN_URL
+ARG NEXT_PUBLIC_GA_MEASUREMENT_ID
+ARG NEXT_PUBLIC_SITE_URL
 
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_ENABLE_ANALYTICS=$NEXT_PUBLIC_ENABLE_ANALYTICS
 ENV NEXT_PUBLIC_IMAGE_CDN_URL=$NEXT_PUBLIC_IMAGE_CDN_URL
+ENV NEXT_PUBLIC_GA_MEASUREMENT_ID=$NEXT_PUBLIC_GA_MEASUREMENT_ID
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
 
 COPY package.json pnpm-lock.yaml ./
 
