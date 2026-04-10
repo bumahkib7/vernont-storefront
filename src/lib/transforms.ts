@@ -55,6 +55,7 @@ export interface DisplayProduct {
     originalPrice?: number;
     sku: string;
     inventoryQuantity?: number;
+    image?: string;
   }>;
 }
 
@@ -169,6 +170,7 @@ export function transformProduct(product: Product): DisplayProduct {
         originalPrice: vCompareAt ? priceFromMinor(vCompareAt) : undefined,
         sku: v.sku ?? '',
         inventoryQuantity: v.inventoryQuantity ?? undefined,
+        image: v.imageUrl ? resolveImageUrl(v.imageUrl) ?? undefined : undefined,
       };
     }),
   };

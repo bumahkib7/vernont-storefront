@@ -83,6 +83,28 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       .slice(0, 3);
   }, [relatedData, id]);
 
+  // Derive gallery images: prepend the selected variant's image (deduped) so it
+  // appears at position 0 when the user clicks a variant swatch. Computed here —
+  // before the early returns — so hook ordering stays stable for the guard
+  // useEffect below.
+  const productImages = useMemo(() => {
+    if (!product) return [] as string[];
+    const selected = product.variants[selectedVariantIndex];
+    const base = product.images.length > 0 ? product.images : [product.image];
+    if (selected?.image) {
+      return [selected.image, ...base.filter((img) => img !== selected.image)];
+    }
+    return base;
+  }, [product, selectedVariantIndex]);
+
+  // Guard against stale selectedImage index when the derived gallery shrinks
+  // (e.g. switching from a variant-with-image to one without).
+  useEffect(() => {
+    if (selectedImage >= productImages.length && productImages.length > 0) {
+      setSelectedImage(0);
+    }
+  }, [productImages.length, selectedImage]);
+
   if (isLoading) {
     return (
       <PageLayout>
@@ -119,7 +141,6 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
   const currentPrice = selectedVariant?.price ?? product.price;
   const currentOriginalPrice = selectedVariant?.originalPrice ?? product.originalPrice;
   const isWishlisted = isInWishlist(product.id);
-  const productImages = product.images.length > 0 ? product.images : [product.image];
   const hasDiscount = currentOriginalPrice && currentOriginalPrice > currentPrice;
 
   const handleAddToCart = async () => {
@@ -297,12 +318,28 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                   {product.variants.map((variant, index) => (
                     <button
                       key={variant.id}
-                      onClick={() => setSelectedVariantIndex(index)}
-                      className={`relative w-16 h-12 border-2 bg-white overflow-hidden transition-colors ${
+                      onClick={() => {
+                        setSelectedVariantIndex(index);
+                        setSelectedImage(0);
+                      }}
+                      className={`relative ${variant.image ? "w-20 h-14" : "w-16 h-12"} border-2 bg-white overflow-hidden transition-colors ${
                         selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-[#E5E5E5] hover:border-[#999]"
                       }`}
+                      aria-label={variant.title ?? `Variant ${index + 1}`}
                     >
-                      <span className="text-[9px] text-center leading-tight px-0.5 flex items-center justify-center h-full">{variant.title}</span>
+                      {variant.image ? (
+                        <Image
+                          src={variant.image}
+                          alt={variant.title ?? `Variant ${index + 1}`}
+                          fill
+                          sizes="80px"
+                          className="object-cover"
+                        />
+                      ) : (
+                        <span className="text-[9px] text-center leading-tight px-0.5 flex items-center justify-center h-full">
+                          {variant.title}
+                        </span>
+                      )}
                     </button>
                   ))}
                 </div>
