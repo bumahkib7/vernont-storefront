@@ -93,7 +93,7 @@ function LoginContent() {
         {/* Brand */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-block text-xl md:text-2xl font-bold tracking-[0.2em] uppercase text-[#1A1A1A] mb-8" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}>
-            PRET A VOIR
+            VERNONT
           </Link>
           <div className="text-left">
              <h1 className="text-xl font-bold text-[#1A1A1A] mb-1">Sign in</h1>
