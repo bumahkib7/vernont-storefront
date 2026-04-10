@@ -4,14 +4,21 @@ import Link from "next/link";
 import { useState } from "react";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
-import { 
-  InstagramLogo, 
-  FacebookLogo, 
-  XLogo, 
-  PinterestLogo, 
-  YoutubeLogo, 
-  LinkedinLogo 
+import {
+  InstagramLogo,
+  FacebookLogo,
+  XLogo,
+  PinterestLogo,
+  YoutubeLogo,
+  LinkedinLogo
 } from "@phosphor-icons/react";
+import {
+  VisaIcon,
+  MastercardIcon,
+  AmexIcon,
+  DiscoverIcon,
+  PayPalIcon,
+} from "react-svg-credit-card-payment-icons";
 
 export function Footer() {
   const { storeName } = useStoreBranding();
@@ -173,12 +180,16 @@ export function Footer() {
             &copy; {new Date().getFullYear()} {storeName}
          </div>
          
+         {/* Payment method logos — real brand SVGs via react-svg-credit-card-payment-icons.
+             Wallet logos (Apple Pay / Google Pay / Shop Pay) are not shown here since
+             Stripe's Payment Element surfaces them dynamically at checkout based on
+             the shopper's device + available methods. */}
          <div className="flex flex-wrap items-center justify-center gap-2 lg:absolute lg:left-1/2 lg:-translate-x-1/2">
-            {["Amex", "Apple Pay", "MC", "Discover", "G Pay", "Shop Pay", "Visa"].map((str) => (
-               <div key={str} className="px-2 py-0.5 border border-[#E5E5E5] text-[9px] uppercase font-medium text-[#666] rounded-sm bg-white">
-                 {str}
-               </div>
-            ))}
+            <VisaIcon format="logoBorder" width={40} height={28} />
+            <MastercardIcon format="logoBorder" width={40} height={28} />
+            <AmexIcon format="logoBorder" width={40} height={28} />
+            <DiscoverIcon format="logoBorder" width={40} height={28} />
+            <PayPalIcon format="logoBorder" width={40} height={28} />
          </div>
 
          <div>

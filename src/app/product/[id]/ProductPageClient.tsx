@@ -322,40 +322,71 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               </button>
             </div>
 
-            {/* Colour variants — count label + image swatches */}
+            {/* Colour variants — count label + image swatches.
+                Shows a clear "Selected: X" line and a ring + checkmark on the
+                chosen swatch so the user knows exactly which variant will be
+                added to the cart. Variants named "1"/"2" by default get
+                "Option 1"/"Option 2" as their display fallback so labels are
+                never blank or ambiguous. */}
             {product.variants.length > 1 && (
               <div className="mb-6 border-t border-b border-[#E5E5E5] py-5">
-                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-4">
+                <p className="text-[11px] font-bold uppercase tracking-widest text-[#1A1A1A] text-center mb-1">
                   {product.variants.length} COLOURS
                 </p>
+                {(() => {
+                  const rawTitle = selectedVariant?.title?.trim();
+                  const label =
+                    rawTitle && !/^\d+$/.test(rawTitle)
+                      ? rawTitle
+                      : `Option ${selectedVariantIndex + 1}`;
+                  return (
+                    <p className="text-[11px] text-[#666] text-center mb-4">
+                      Selected: <span className="font-medium text-[#1A1A1A]">{label}</span>
+                    </p>
+                  );
+                })()}
                 <div className="flex gap-3 flex-wrap justify-center">
-                  {product.variants.map((variant, index) => (
-                    <button
-                      key={variant.id}
-                      onClick={() => {
-                        setSelectedVariantIndex(index);
-                        setSelectedImage(0);
-                      }}
-                      className={`relative ${variant.image ? "w-20 h-14" : "w-16 h-12"} border-2 bg-white overflow-hidden transition-colors ${
-                        selectedVariantIndex === index ? "border-[#1A1A1A]" : "border-[#E5E5E5] hover:border-[#999]"
-                      }`}
-                      aria-label={variant.title ?? `Variant ${index + 1}`}
-                    >
-                      {variant.image ? (
-                        <Image
-                          src={variant.image}
-                          alt={variant.title ?? `Variant ${index + 1}`}
-                          fill
-                          sizes="80px"
-                          className="object-cover"
-                        />
-                      ) : (
-                        <span className="text-[9px] text-center leading-tight px-0.5 flex items-center justify-center h-full">
-                          {variant.title}
-                        </span>
-                      )}
-                    </button>
-                  ))}
+                  {product.variants.map((variant, index) => {
+                    const isSelected = selectedVariantIndex === index;
+                    const raw = variant.title?.trim();
+                    const displayLabel = raw && !/^\d+$/.test(raw) ? raw : `Option ${index + 1}`;
+                    return (
+                      <button
+                        key={variant.id}
+                        onClick={() => {
+                          setSelectedVariantIndex(index);
+                          setSelectedImage(0);
+                        }}
+                        className={`relative ${variant.image ? "w-20 h-14" : "w-16 h-12"} bg-white overflow-hidden transition-all ${
+                          isSelected
+                            ? "ring-2 ring-[#1A1A1A] ring-offset-2 border border-[#1A1A1A]"
+                            : "border border-[#E5E5E5] hover:border-[#1A1A1A]"
+                        }`}
+                        aria-label={displayLabel}
+                        aria-pressed={isSelected}
+                        title={displayLabel}
+                      >
+                        {variant.image ? (
+                          <Image
+                            src={variant.image}
+                            alt={displayLabel}
+                            fill
+                            sizes="80px"
+                            className="object-cover"
+                          />
+                        ) : (
+                          <span className="text-[10px] text-center leading-tight px-1 flex items-center justify-center h-full font-medium">
+                            {displayLabel}
+                          </span>
+                        )}
+                        {isSelected && (
+                          <span className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-[#1A1A1A] text-white flex items-center justify-center">
+                            <Check className="w-2.5 h-2.5" weight="bold" />
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}

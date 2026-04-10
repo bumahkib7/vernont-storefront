@@ -42,7 +42,10 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
         className="group cursor-pointer flex flex-col items-center text-center border border-[#E5E5E5] p-2 lg:p-4 bg-white"
         onClick={handleCardClick}
       >
-        {/* Image — Pret a Voir style: bordered container image matrix */}
+        {/* Image — bordered container. When the product has 2+ images, the
+            secondary image crossfades in on hover so shoppers can preview a
+            second angle without opening the PDP. Falls back silently to the
+            single image when there's only one. */}
         <div className="relative w-full aspect-[4/3] bg-white mb-4">
           {/* Wishlist Heart — Top Right absolute */}
           <button
@@ -61,17 +64,36 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
           {!isImageLoaded && (
             <div className="absolute inset-0 bg-transparent animate-pulse delay-150" />
           )}
+
+          {/* Primary image — fades out on group-hover if a secondary exists */}
           <Image
             src={product.image}
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             quality={90}
-            className={`object-cover transition-transform duration-[400ms] group-hover:scale-[1.03] ${
+            className={`object-cover transition-all duration-[400ms] group-hover:scale-[1.03] ${
               isImageLoaded ? "opacity-100" : "opacity-0"
+            } ${
+              product.images && product.images.length > 1
+                ? "group-hover:opacity-0"
+                : ""
             }`}
             onLoad={() => setIsImageLoaded(true)}
           />
+
+          {/* Secondary image — only rendered when there's a second distinct
+              image. Starts hidden, fades in on group-hover. */}
+          {product.images && product.images.length > 1 && product.images[1] !== product.image && (
+            <Image
+              src={product.images[1]}
+              alt={`${product.name} alternate view`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={90}
+              className="object-cover transition-all duration-[400ms] opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
+            />
+          )}
         </div>
 
         {/* Product info — Pret a Voir style: Natural mixed-case format */}
