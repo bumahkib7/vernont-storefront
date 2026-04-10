@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
 import { CartDrawer } from "@/components/ui/CartDrawer";
@@ -12,6 +13,11 @@ import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
+
+// GA4 measurement ID (format: G-XXXXXXXXXX). Read at build time from the
+// environment so local dev / preview deploys don't pollute production
+// analytics. If the env var is unset we simply don't inject the GA script.
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -98,6 +104,13 @@ export default function RootLayout({
           <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>
+        {/* Google Analytics 4 — only injects the gtag script + page view
+            handler when NEXT_PUBLIC_GA_MEASUREMENT_ID is set at build time.
+            The @next/third-parties helper loads the script with
+            strategy=afterInteractive and auto-tracks App Router navigation
+            via the Next.js router, so SPA page views are captured without
+            any manual wiring. */}
+        {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );
