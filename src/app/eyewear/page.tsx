@@ -277,22 +277,33 @@ function EyewearPageContent() {
   const { data: unfilteredData } = useProducts({ limit: 1 });
   const filters = unfilteredData?.filters || productsData?.filters;
   const categories = filters?.categories || [];
-  const brands = filters?.brands || [];
   const sizes = filters?.sizes || [];
 
-  // Initialize filters from URL params
+  // Brands come from the dedicated /store/brands endpoint (useBrands). The
+  // storefront products endpoint currently returns filters: null, so we
+  // cannot rely on productsData.filters.brands for either the sidebar
+  // checkboxes or the URL-param → brand matching. Normalize here to the
+  // shape the rest of the page expects: { id, name, count }.
+  const brands = useMemo(
+    () =>
+      (brandsData?.brands ?? [])
+        .filter((b) => b.product_count > 0)
+        .map((b) => ({ id: b.id, name: b.name, slug: b.slug, count: b.product_count })),
+    [brandsData]
+  );
+
+  // Initialize filters from URL params. Match `?brand=<slug|name|id>` against
+  // the brands list from useBrands().
   useEffect(() => {
     const brandParam = searchParams.get('brand');
     if (brandParam && brands.length > 0) {
-      // Match brand by slug, name (case-insensitive), or ID
-      const matchedBrand = brands.find(b => {
-        const paramLower = brandParam.toLowerCase();
-        return (
+      const paramLower = brandParam.toLowerCase();
+      const matchedBrand = brands.find(
+        (b) =>
           b.id === brandParam ||
-          b.name.toLowerCase() === paramLower ||
-          (b as any).slug?.toLowerCase() === paramLower
-        );
-      });
+          b.slug.toLowerCase() === paramLower ||
+          b.name.toLowerCase() === paramLower
+      );
       if (matchedBrand && !selectedBrands.includes(matchedBrand.id)) {
         setSelectedBrands([matchedBrand.id]);
       }
