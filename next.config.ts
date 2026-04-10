@@ -63,6 +63,32 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async headers() {
+    // Long-cache static assets served from the public/ directory.
+    // /_next/static/* already gets `public, max-age=31536000, immutable`
+    // from Next.js automatically (hashed filenames). This extends the same
+    // treatment to /public/* (non-hashed but versioned in git).
+    //
+    // Cache-Control: immutable tells browsers + Cloudflare's edge cache to
+    // hold the response for a year without revalidation. Safe because any
+    // changed file gets a new commit → new container → new origin response.
+    const immutableYear = "public, max-age=31536000, immutable";
+    return [
+      {
+        source: "/images/:path*",
+        headers: [{ key: "Cache-Control", value: immutableYear }],
+      },
+      {
+        // Root-level static files: favicon, logos, manifest, svg icons, etc.
+        source: "/:path*\\.(svg|png|jpg|jpeg|gif|webp|avif|ico|woff|woff2|ttf|otf)",
+        headers: [{ key: "Cache-Control", value: immutableYear }],
+      },
+      {
+        source: "/manifest.json",
+        headers: [{ key: "Cache-Control", value: "public, max-age=3600" }],
+      },
+    ];
+  },
   async redirects() {
     return [
       {
