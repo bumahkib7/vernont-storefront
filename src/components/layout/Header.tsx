@@ -9,6 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
+import { useBrands } from "@/lib/hooks";
 import { productsApi, type Product } from "@/lib/api";
 import { product as productConfig } from "@/config/vertical";
 
@@ -28,6 +29,14 @@ export function Header() {
   const { itemCount: wishlistCount } = useWishlist();
   const { storeName } = useStoreBranding();
   const { mainNav } = useNavigation();
+
+  // Brand strip — fetch from backend, show only brands that actually have products.
+  // Cached by React Query (see useBrands); stale-while-revalidate keeps it cheap across page nav.
+  const { data: brandsData } = useBrands({ limit: 20 }, { staleTime: 5 * 60 * 1000 });
+  const brandStripItems = (brandsData?.brands ?? [])
+    .filter((b) => b.product_count > 0)
+    .sort((a, b) => b.product_count - a.product_count)
+    .slice(0, 8);
 
   // Debounced search
   useEffect(() => {
@@ -219,15 +228,22 @@ export function Header() {
         </nav>
 
         {/* === Layer 4: Brand Strip === */}
-        <div className="w-full bg-black py-2.5 overflow-x-auto no-scrollbar">
-           <div className="flex items-center justify-center gap-12 lg:gap-16 min-w-max px-6">
-              {['CHANEL', 'Cartier', 'GUCCI', 'PRADA', 'Meta', 'Maui Jim', 'TOM FORD'].map((brand) => (
-                 <span key={brand} className="text-white text-sm lg:text-[15px] font-bold tracking-widest uppercase hover:opacity-70 transition-opacity cursor-pointer">
-                    {brand}
-                 </span>
-              ))}
-           </div>
-        </div>
+        {/* Hidden entirely until brands load to avoid a flash of an empty black bar. */}
+        {brandStripItems.length > 0 && (
+          <div className="w-full bg-black py-2.5 overflow-x-auto no-scrollbar">
+             <div className="flex items-center justify-center gap-12 lg:gap-16 min-w-max px-6">
+                {brandStripItems.map((brand) => (
+                   <Link
+                      key={brand.id}
+                      href={`/eyewear?brand=${encodeURIComponent(brand.slug)}`}
+                      className="text-white text-sm lg:text-[15px] font-bold tracking-widest uppercase hover:opacity-70 transition-opacity"
+                   >
+                      {brand.name}
+                   </Link>
+                ))}
+             </div>
+          </div>
+        )}
 
         {/* === Layer 5: Policy === */}
         <div className="w-full bg-white py-3 border-b border-[#E5E5E5]">
