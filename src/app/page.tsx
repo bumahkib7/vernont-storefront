@@ -194,34 +194,13 @@ export default function Home() {
            </div>
         </section>
 
-        {/* === S8: Trustpilot Block === */}
-        <section className="w-full border-t border-[#E5E5E5] bg-white">
-           <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-12 flex flex-col lg:flex-row gap-8 items-center lg:items-start">
-              <div className="flex flex-col items-center lg:items-start min-w-[200px]">
-                 <span className="font-bold text-lg text-[#1A1A1A]">Excellent</span>
-                 <div className="flex text-white bg-[#00b67a] px-2 py-1 gap-1 text-sm my-2">
-                    ★ ★ ★ ★ ★
-                 </div>
-                 <span className="text-[11px] text-[#666]">Based on <span className="underline font-medium text-[#1A1A1A]">33,470 reviews</span></span>
-                 <span className="text-[#00b67a] font-bold text-sm mt-1">★ Trustpilot</span>
-              </div>
-              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                 {[
-                    { headline: 'Delighted with my new Tom Ford glasses', body: 'Process was easy from ordering, picking...', star: '★★★★★', name: 'Ann' },
-                    { headline: 'Excellent experience', body: 'Excellent experience! Super fast delivery and high quality product!', star: '★★★★★', name: 'Liliya' },
-                    { headline: 'Really pleased with my purchase!', body: 'I had been looking at a pair of Chanel sunglasses for several months...', star: '★★★★★', name: 'Emily' },
-                    { headline: 'Perfect seller', body: 'Perfect seller', star: '★★★★★', name: 'Ramin' },
-                 ].map((r, i) => (
-                    <div key={i} className="flex flex-col">
-                       <span className="text-[#00b67a] text-[15px] mb-2">{r.star}</span>
-                       <span className="text-[13px] font-bold text-[#1A1A1A] leading-tight mb-2">{r.headline}</span>
-                       <p className="text-[12px] text-[#666] leading-relaxed mb-4">{r.body}</p>
-                       <span className="text-[11px] text-[#999] mt-auto">{r.name}, 16 hours ago</span>
-                    </div>
-                 ))}
-              </div>
-           </div>
-         </section>
+        {/* Reviews section intentionally removed until a real review source
+            (Trustpilot / Reviews.io / own DB) is wired up. The previous
+            hardcoded testimonials with fake names, counts, and timestamps
+            were misleading — the site has no real reviews yet, so claiming
+            "33,470 reviews" and quoting customers by name reduces trust.
+            Re-add this block as a dynamic component once Vernont is
+            collecting real reviews. */}
 
       </main>
       
