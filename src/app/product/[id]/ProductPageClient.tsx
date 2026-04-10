@@ -273,11 +273,15 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             </h2>
 
             {/* Frame / Lens specs */}
-            {(product.frameMaterial || product.lensType) && (
+            {(product.frameMaterial || product.lensType || product.variants?.[0]?.sku) && (
               <div className="text-center space-y-1 mb-5 text-[13px] text-[#666]">
                 {product.frameMaterial && <p>{product.frameMaterial}</p>}
                 {product.lensType && <p>{product.lensType}</p>}
-                {product.variants?.[0]?.sku && <p className="text-[11px] text-[#999]">Ref. {product.variants[0].sku}</p>}
+                {product.variants?.[0]?.sku && (
+                  <p className="text-[13px] text-[#444] font-medium mt-2">
+                    SKU: {product.variants[0].sku}
+                  </p>
+                )}
               </div>
             )}
 

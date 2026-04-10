@@ -39,11 +39,25 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
       transition={{ duration: 0.15, delay: index * 0.02 }}
     >
       <div
-        className="group cursor-pointer flex flex-col items-center text-center"
+        className="group cursor-pointer flex flex-col items-center text-center border border-[#E5E5E5] p-2 lg:p-4 bg-white"
         onClick={handleCardClick}
       >
-        {/* Image — Pret a Voir style: pure white background, frameless */}
+        {/* Image — Pret a Voir style: bordered container image matrix */}
         <div className="relative w-full aspect-[4/3] bg-white mb-4">
+          {/* Wishlist Heart — Top Right absolute */}
+          <button
+            onClick={handleToggleWishlist}
+            className="absolute top-0 right-0 z-10 p-2 hover:scale-110 transition-transform"
+            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            <Heart
+              weight={isWishlisted ? "fill" : "regular"}
+              className={`h-5 w-5 ${
+                isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"
+              }`}
+            />
+          </button>
+
           {!isImageLoaded && (
             <div className="absolute inset-0 bg-transparent animate-pulse delay-150" />
           )}
@@ -60,34 +74,27 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
           />
         </div>
 
-        {/* Product info — Pret a Voir style: Centered */}
-        <div className="flex flex-col items-center justify-center gap-1 w-full px-2">
-           <h3 className="text-[11px] lg:text-[12px] font-bold uppercase tracking-[0.1em] text-[#1A1A1A]">
+        {/* Product info — Pret a Voir style: Natural mixed-case format */}
+        <div className="flex flex-col items-center justify-center gap-1.5 w-full px-1 mb-2">
+           <h3 className="text-[12px] font-normal leading-tight text-[#1A1A1A]">
              {product.name}
            </h3>
-           <p className="text-[10px] font-medium uppercase tracking-widest text-[#666] mb-1">
-             {product.variants?.length ? product.variants.length : 1} COLOURS
-           </p>
            
-           <div className="flex items-end gap-2 justify-center">
-             <p className={`text-[12px] font-bold tracking-widest uppercase tabular-nums ${hasDiscount ? "text-[#E31837]" : "text-[#1A1A1A]"}`}>
-               {hasDiscount && "FROM "}£ {Number(product.price).toFixed(2)} GBP
-             </p>
+           <div className="flex items-center gap-2 justify-center mt-0.5 text-[11px] font-medium tracking-wide">
+             <span className="text-[#1A1A1A]">
+               £ {Number(product.price).toFixed(2)}
+             </span>
+             {hasDiscount && (
+               <span className="text-[#999] line-through">
+                 £ {Number(product.originalPrice).toFixed(2)}
+               </span>
+             )}
            </div>
            
-           {/* Wishlist Heart — bottom centered static outline */}
-           <button
-             onClick={handleToggleWishlist}
-             className="mt-1 p-1.5 hover:scale-110 transition-transform"
-             aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-           >
-             <Heart
-               weight={isWishlisted ? "fill" : "regular"}
-               className={`h-4 w-4 ${
-                 isWishlisted ? "text-[#1A1A1A]" : "text-[#1A1A1A]"
-               }`}
-             />
-           </button>
+           {/* Stock indicator — Pret A Voir styled green check */}
+           <div className="flex items-center justify-center gap-1 mt-1 text-[#108c5c] text-[11px]">
+             <span className="font-sans">✓</span> <span>In Stock</span>
+           </div>
         </div>
       </div>
     </motion.div>

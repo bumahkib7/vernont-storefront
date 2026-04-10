@@ -182,10 +182,18 @@ export function Header() {
 
           {/* Right: Icons */}
           <div className="flex items-center gap-5 min-w-[200px] justify-end">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="lg:hidden p-1 hover:opacity-60 transition-opacity text-[#1A1A1A]"
+              aria-label="Search"
+            >
+              <MagnifyingGlass className="w-5 h-5" />
+            </button>
+
             <div className="hidden lg:flex items-center text-[13px] font-medium text-[#1A1A1A] cursor-pointer hover:opacity-70 gap-1 border border-[#E5E5E5] rounded-full px-3 py-1">
                GBP £ <CaretRight className="w-3 h-3 rotate-90" />
             </div>
-            
+
             <Link href="/account" className="p-1 hover:opacity-60 transition-opacity hidden sm:block">
               <User className="w-5 h-5 text-[#1A1A1A]" />
             </Link>
@@ -203,28 +211,51 @@ export function Header() {
           </div>
         </div>
 
-        {/* === Layer 3: Nav Center === */}
+        {/* === Layer 3: Dynamic Navigation === */}
         <nav className="hidden lg:flex items-center justify-center gap-8 py-3 pb-4">
-           {['GLASSES', 'SUNGLASSES', 'CELEBRITY', 'RE-LENS', 'NEW IN', 'ACCESSORIES'].map((label) => (
-              <div key={label} className="group relative cursor-pointer flex items-center gap-1.5">
-                 <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
-                    {label}
-                 </span>
-                 <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
-              </div>
-           ))}
-           <div className="cursor-pointer flex items-center gap-1.5">
-              <span className="text-2xl text-red-600 italic font-serif leading-none hover:opacity-70 transition-opacity pr-1" style={{ fontFamily: 'Georgia, serif' }}>
-                 Sale
-              </span>
-              <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
-           </div>
-           <div className="cursor-pointer flex items-center gap-1.5 group">
-              <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity">
-                 CONTACT US
-              </span>
-              <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />
-           </div>
+          {mainNav.map((item) => (
+            <div
+              key={item.label}
+              className="group relative"
+              onMouseEnter={() => item.hasDropdown && handleMouseEnter(item.label)}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link
+                href={item.href}
+                className="flex items-center gap-1.5 cursor-pointer"
+              >
+                <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity uppercase">
+                  {item.label}
+                </span>
+                {item.hasDropdown && <CaretRight className="w-3 h-3 rotate-90 text-[#999]" />}
+              </Link>
+
+              {/* Dropdown */}
+              {item.hasDropdown && item.dropdownItems && activeDropdown === item.label && (
+                <div
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-2 bg-white border border-[#E5E5E5] shadow-lg min-w-[220px] py-2 z-50"
+                  onMouseEnter={() => handleMouseEnter(item.label)}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  {item.dropdownItems.map((dropItem) => (
+                    <Link
+                      key={dropItem.href}
+                      href={dropItem.href}
+                      className="block px-4 py-2.5 text-[13px] text-[#1A1A1A] hover:bg-[#F5F5F5] transition-colors"
+                    >
+                      {dropItem.label}
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+
+          <Link href="/contact" className="flex items-center gap-1.5 cursor-pointer">
+            <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity uppercase">
+              Contact
+            </span>
+          </Link>
         </nav>
 
         {/* === Layer 4: Brand Strip === */}

@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { CaretDown, X, SlidersHorizontal, GridFour, SquaresFour, Check } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
@@ -63,15 +64,15 @@ function FilterSection({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-[var(--border)] pb-4 mb-4">
+    <div className="pb-3 mb-3">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full text-left py-2"
+        className="flex items-center gap-2 w-full text-left py-1.5"
       >
-        <span className="font-medium text-sm">{title}</span>
-        <CaretDown
-          className={`w-4 h-4 text-[var(--muted-foreground)] transition-transform ${isOpen ? "rotate-180" : ""}`}
-        />
+        <span className="text-[#666] text-[10px] w-3 flex justify-center pb-0.5">
+          {isOpen ? "^" : "v"}
+        </span>
+        <span className="text-[13px] text-[#1A1A1A]">{title}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -107,13 +108,13 @@ function Checkbox({
     >
       <span className="flex items-center gap-2">
         <span
-          className={`w-4 h-4 rounded border-2 flex items-center justify-center transition-all ${
+          className={`w-3.5 h-3.5 flex items-center justify-center transition-all ${
             checked
-              ? "bg-[var(--primary)] border-[var(--primary)]"
-              : "border-[var(--border)] group-hover:border-[var(--primary)]"
+              ? "bg-white border-2 border-[#1A1A1A]"
+              : "border border-[#CCC] group-hover:border-[#999]"
           }`}
         >
-          {checked && <Check className="w-3 h-3 text-white" />}
+          {checked && <div className="w-1.5 h-1.5 bg-[#1A1A1A]" />}
         </span>
         <span className={checked ? "font-medium" : ""}>{label}</span>
       </span>
@@ -189,6 +190,7 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
 }
 
 export default function EyewearPage() {
+  const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
@@ -199,6 +201,25 @@ export default function EyewearPage() {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+
+  // Initialize filters from URL params
+  useEffect(() => {
+    const brandParam = searchParams.get('brand');
+    if (brandParam && brands.length > 0) {
+      // Match brand by slug, name (case-insensitive), or ID
+      const matchedBrand = brands.find(b => {
+        const paramLower = brandParam.toLowerCase();
+        return (
+          b.id === brandParam ||
+          b.name.toLowerCase() === paramLower ||
+          (b as any).slug?.toLowerCase() === paramLower
+        );
+      });
+      if (matchedBrand && !selectedBrands.includes(matchedBrand.id)) {
+        setSelectedBrands([matchedBrand.id]);
+      }
+    }
+  }, [searchParams, brands]);
 
   // Build API query params from active filters
   const apiParams = useMemo(() => {
@@ -312,6 +333,18 @@ export default function EyewearPage() {
     return transformProducts(productsData.items);
   }, [productsData]);
 
+  // Compute dynamic page title based on active filters
+  const pageTitle = useMemo(() => {
+    if (selectedBrands.length === 1) {
+      const brand = brands.find(b => b.id === selectedBrands[0]);
+      if (brand) return `${brand.name} Eyewear`;
+    }
+    if (selectedBrands.length > 1) {
+      return "Designer Eyewear";
+    }
+    return productConfig.catalogTitle;
+  }, [selectedBrands, brands]);
+
   const FilterContent = () => (
     <>
       {/* Categories */}
@@ -401,35 +434,20 @@ export default function EyewearPage() {
       <Header />
 
       <main>
-        {/* Page Header */}
-        <section className="border-b border-[#E5E5E5]">
-          <div className="px-4 lg:px-6 py-8">
+        {/* Page Header - Compact Pret A Voir layout */}
+        <section className="px-4 lg:px-8 py-4">
+          <div className="flex flex-col gap-2">
             <h1
-              className="text-3xl"
-              style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}
-            >{productConfig.catalogTitle}</h1>
-            <p className="text-[var(--muted-foreground)]">
+              className="text-2xl font-normal"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {pageTitle}
+            </h1>
+            <p className="text-[13px] text-[#666]">
               {productsData?.total && brandsData?.brands?.length
                 ? `${productsData.total} products across ${brandsData.brands.length} brands`
                 : productConfig.catalogDescription}
             </p>
-
-            {/* Quick Filters */}
-            <div className="flex flex-wrap gap-2 mt-6">
-              {QUICK_FILTERS.map((filter) => (
-                <button
-                  key={filter.value}
-                  onClick={() => setQuickFilter(filter.value === quickFilter ? "" : filter.value)}
-                  className={`px-4 py-2 text-sm rounded-sm border transition-all ${
-                    quickFilter === filter.value
-                      ? "bg-[var(--primary)] text-white border-[var(--primary)]"
-                      : "bg-[var(--background)] border-[var(--border)] hover:border-[var(--primary)]"
-                  }`}
-                >
-                  {filter.label}
-                </button>
-              ))}
-            </div>
           </div>
         </section>
 
@@ -534,14 +552,33 @@ export default function EyewearPage() {
         </div>
 
         {/* Main Content */}
-        <div className="flex">
+        <div className="flex border-t border-[#E5E5E5]">
           {hasFiltersToShow && (
-            <aside className="hidden lg:block w-64 flex-shrink-0 px-4 lg:px-8 py-8 border-r border-[var(--border)]">
-              <FilterContent />
+            <aside className="hidden lg:block w-64 flex-shrink-0 py-6 border-r border-[#E5E5E5]">
+              <div className="px-4 pr-6">
+                <FilterContent />
+              </div>
             </aside>
           )}
 
-          <section className="flex-1 px-4 lg:px-8 py-8">
+          <section className="flex-1 px-4 lg:px-6 py-6">
+            
+            {/* Quick Filters - Pret a Voir Black Pills */}
+            <div className="flex justify-center flex-wrap gap-3 mb-8">
+              {QUICK_FILTERS.map((filter) => (
+                <button
+                  key={filter.value}
+                  onClick={() => setQuickFilter(filter.value === quickFilter ? "" : filter.value)}
+                  className={`px-6 py-1.5 text-[11px] font-bold tracking-widest rounded-full transition-all ${
+                    quickFilter === filter.value
+                      ? "bg-[#666] text-white border-2 border-[#666]"
+                      : "bg-black text-white border-2 border-black hover:bg-[#333] hover:border-[#333]"
+                  }`}
+                >
+                  {filter.label.toUpperCase()} +
+                </button>
+              ))}
+            </div>
             {isLoading ? (
               <div className={`grid grid-cols-2 lg:grid-cols-${gridCols} gap-6 lg:gap-8`}>
                 {[...Array(12)].map((_, i) => (
