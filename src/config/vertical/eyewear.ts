@@ -29,7 +29,6 @@ export const eyewearConfig: VerticalConfig = {
       { label: "All", value: "" },
       { label: "Sunglasses", value: "sunglasses" },
       { label: "New Arrivals", value: "newest" },
-      { label: "Luxury", value: "luxury" },
     ],
 
     sortOptions: [

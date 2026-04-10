@@ -212,9 +212,16 @@ function EyewearPageContent() {
       params.onSale = true;
     }
 
-    // Quick filter → map to API params
+    // Quick filter → map to API params. Each pill maps to a proper filter
+    // (not a blind text search on the pill value, which is how "New Arrivals"
+    // used to return empty results — the backend was searching products for
+    // the literal word "newest").
     if (quickFilter === "under-150") {
       params.maxPrice = 15000; // cents
+    } else if (quickFilter === "newest") {
+      // "New Arrivals" → sort by most recent, no text query
+      params.sortBy = "newest";
+      params.sortDirection = "desc";
     } else if (quickFilter === "sunglasses" || quickFilter === "optical") {
       params.query = quickFilter;
     } else if (quickFilter === "polarized") {

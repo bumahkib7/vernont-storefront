@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   Heart,
   Minus,
@@ -297,17 +298,26 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               )}
             </div>
 
-            {/* Wishlist — outline heart + text, centered */}
+            {/* Wishlist — outline heart + text, centered. Heart pops on tap
+                and gently spring-scales when toggling to 'saved' state. */}
             <div className="flex justify-center mb-6">
               <button
                 onClick={() => toggleItem(product.id)}
                 className="flex items-center gap-2 text-[12px] text-[#666] hover:text-[#1A1A1A] transition-colors"
                 aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
               >
-                <Heart
-                  weight={isWishlisted ? "fill" : "regular"}
-                  className={`w-4 h-4 ${isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"}`}
-                />
+                <motion.span
+                  key={isWishlisted ? "wish-on" : "wish-off"}
+                  initial={{ scale: 1 }}
+                  animate={{ scale: [1, 1.3, 1] }}
+                  transition={{ duration: 0.28, times: [0, 0.5, 1], ease: "easeOut" }}
+                  className="inline-flex"
+                >
+                  <Heart
+                    weight={isWishlisted ? "fill" : "regular"}
+                    className={`w-4 h-4 ${isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"}`}
+                  />
+                </motion.span>
                 {isWishlisted ? "Saved to Wishlist" : "Add to Wishlist"}
               </button>
             </div>
@@ -351,22 +361,44 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             )}
 
             {/* Primary CTA — full-width black, Pret a Voir style */}
-            <button
+            <motion.button
               onClick={handleAddToCart}
-              className={`w-full py-4 text-[12px] font-bold uppercase tracking-[0.15em] transition-colors mb-2 ${
+              whileTap={{ scale: 0.97 }}
+              className={`relative overflow-hidden w-full py-4 text-[12px] font-bold uppercase tracking-[0.15em] transition-colors mb-2 ${
                 isAdded
                   ? "bg-green-600 text-white"
                   : "bg-[#1A1A1A] text-white hover:bg-[#333]"
               }`}
             >
-              {isAdded ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Check className="w-4 h-4" /> Added to Bag
-                </span>
-              ) : (
-                "ADD TO CART OR ADD FREE LENSES"
-              )}
-            </button>
+              {/* Crossfade the button label between idle and "Added to Bag".
+                  AnimatePresence + mode=wait ensures the old text fades out
+                  before the new one fades in so there's no visual stutter. */}
+              <AnimatePresence mode="wait" initial={false}>
+                {isAdded ? (
+                  <motion.span
+                    key="added"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <Check className="w-4 h-4" /> Added to Bag
+                  </motion.span>
+                ) : (
+                  <motion.span
+                    key="idle"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.18 }}
+                    className="block"
+                  >
+                    ADD TO CART OR ADD FREE LENSES
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </motion.button>
 
             {/* Urgency line */}
             <p className="text-center text-[11px] text-[#666] tracking-wide mb-6">
