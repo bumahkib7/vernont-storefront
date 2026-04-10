@@ -56,6 +56,11 @@ const nextConfig: NextConfig = {
         hostname: "*.workers.dev",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.vernont.com",
+        pathname: "/**",
+      },
     ],
   },
   async redirects() {
