@@ -44,24 +44,48 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!product) {
     return {
-      title: "Product Not Found",
+      title: "Product Not Found | Vernont",
+      description: "The product you're looking for could not be found.",
     };
   }
 
+  // Determine category type (Sunglasses, Optical Frames, etc.)
+  const category = product.title?.toLowerCase().includes("optical")
+    ? "Optical Frames"
+    : "Sunglasses";
+
+  // Build SEO-optimized title: "{Brand} {ProductName} | Designer {Category} | Vernont"
   const pageTitle = product.brandName
-    ? `${product.title} by ${product.brandName} | Vernont`
-    : `${product.title} | Vernont`;
-  const description = product.description?.substring(0, 160) || `Shop ${product.title} at Vernont`;
+    ? `${product.brandName} ${product.title} | Designer ${category} | Vernont`
+    : `${product.title} | Designer ${category} | Vernont`;
+
+  // Enhanced description with brand, benefits, and call-to-action (155-160 chars)
+  const baseDescription = product.description?.substring(0, 80) || product.title;
+  const description = product.brandName
+    ? `Shop ${product.brandName} ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`.substring(0, 160)
+    : `Shop ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`.substring(0, 160);
+
   const thumbnail = product.thumbnail || product.images?.[0];
   const canonicalPath = `/product/${product.handle || id}`;
+
+  // Build keywords array
+  const keywords = [
+    product.brandName || "",
+    product.title,
+    `designer ${category.toLowerCase()}`,
+    "luxury eyewear",
+    "authentic designer glasses",
+    category.toLowerCase(),
+  ].filter(Boolean);
 
   return {
     title: pageTitle,
     description,
+    keywords,
     openGraph: {
       title: pageTitle,
       description,
-      type: "article",
+      type: "website",
       images: thumbnail ? [{ url: thumbnail, width: 1200, height: 630 }] : [],
       url: `${SITE_URL}${canonicalPath}`,
     },

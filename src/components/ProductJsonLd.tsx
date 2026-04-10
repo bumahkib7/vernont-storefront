@@ -1,11 +1,12 @@
-import type { Product as ApiProduct } from "@/lib/schemas";
+import type { Product as ApiProduct, ReviewStats } from "@/lib/schemas";
 
 interface ProductJsonLdProps {
   product: ApiProduct;
   url: string;
+  reviewStats?: ReviewStats | null;
 }
 
-export function ProductJsonLd({ product, url }: ProductJsonLdProps) {
+export function ProductJsonLd({ product, url, reviewStats }: ProductJsonLdProps) {
   // Get first variant for pricing
   const variant = product.variants?.[0];
   const price = variant?.priceMinor
@@ -15,19 +16,37 @@ export function ProductJsonLd({ product, url }: ProductJsonLdProps) {
       : 0;
   const currency = variant?.currency?.toUpperCase() || product.currency?.toUpperCase() || "GBP";
 
-  // Get images
-  const images = product.imageUrls || [];
-  const thumbnail = product.thumbnail || images[0];
+  // Get images - ensure we have an array
+  const images = product.imageUrls && product.imageUrls.length > 0
+    ? product.imageUrls
+    : product.thumbnail
+      ? [product.thumbnail]
+      : [];
+
+  // Determine availability status
+  const inventoryQuantity = variant?.inventoryQuantity ?? 0;
+  let availabilityStatus = "https://schema.org/InStock";
+  if (inventoryQuantity === 0) {
+    availabilityStatus = "https://schema.org/OutOfStock";
+  } else if (inventoryQuantity < 5) {
+    availabilityStatus = "https://schema.org/LimitedAvailability";
+  }
+
+  // Map product condition
+  const itemCondition = product.condition?.toLowerCase() === "new"
+    ? "https://schema.org/NewCondition"
+    : product.condition?.toLowerCase() === "used"
+      ? "https://schema.org/UsedCondition"
+      : "https://schema.org/RefurbishedCondition";
 
   // Build the JSON-LD schema
-  const jsonLd = {
+  const jsonLd: any = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.title,
-    description: product.description,
-    image: images.length > 0 ? images : thumbnail ? [thumbnail] : undefined,
+    description: product.description || `${product.title} - Available at Vernont`,
+    image: images,
     sku: variant?.sku || product.id,
-    mpn: variant?.sku,
     brand: {
       "@type": "Brand",
       name: product.brand || "Vernont",
@@ -38,16 +57,36 @@ export function ProductJsonLd({ product, url }: ProductJsonLdProps) {
       url: url,
       priceCurrency: currency,
       price: price.toFixed(2),
-      availability:
-        variant?.inventoryQuantity && variant.inventoryQuantity > 0
-          ? "https://schema.org/InStock"
-          : "https://schema.org/InStock", // Default to in stock if unknown
+      availability: availabilityStatus,
+      itemCondition: itemCondition,
       seller: {
         "@type": "Organization",
         name: "Vernont",
+        url: "https://vernont.com",
       },
     },
   };
+
+  // Add MPN if available
+  if (variant?.sku) {
+    jsonLd.mpn = variant.sku;
+  }
+
+  // Add compareAt price if available
+  if (variant?.compareAtPriceMinor && variant.compareAtPriceMinor > (variant.priceMinor || 0)) {
+    jsonLd.offers.priceValidUntil = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];
+  }
+
+  // Add aggregateRating if reviews exist
+  if (reviewStats && reviewStats.total_reviews > 0 && reviewStats.average_rating) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: reviewStats.average_rating.toFixed(1),
+      reviewCount: reviewStats.total_reviews,
+      bestRating: "5",
+      worstRating: "1",
+    };
+  }
 
   return (
     <script

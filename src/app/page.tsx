@@ -24,7 +24,7 @@ export default function Home() {
       <Header />
 
       <main className="w-full">
-        
+
         {/* === S1: Miu Miu Hero Split === */}
         <section className="w-full lg:h-[800px] flex flex-col lg:flex-row border-b border-[#E5E5E5]">
            <div className="w-full lg:w-1/2 h-[500px] lg:h-full relative overflow-hidden bg-black">
@@ -41,7 +41,7 @@ export default function Home() {
               </div>
            </div>
            <div className="w-full lg:w-1/2 h-full flex flex-col items-center justify-center p-8 lg:p-16 text-center bg-white">
-              <h2 className="text-3xl font-bold tracking-[0.2em] uppercase mb-8">MIU MIU</h2>
+              <h1 className="text-3xl font-bold tracking-[0.2em] uppercase mb-8">Designer Sunglasses & Luxury Eyewear - Miu Miu, Maui Jim, Bottega Veneta</h1>
               <p className="max-w-[500px] text-[13px] leading-relaxed text-[#333] mb-4">
                  Miu Miu Eyewear Collection for the new season combines irreverent sophistication with playful flair. The Miu-Miu style reimagines classic allure with a modern twist, with a seamless wraparound design that conveys both elegance and boldness.
               </p>
@@ -79,12 +79,12 @@ export default function Home() {
                  className="object-cover"
               />
               <div className="absolute bottom-8 left-8 text-white">
-                 <h3 className="text-4xl lg:text-6xl font-bold tracking-tight mb-2">COLOR YOU CAN FEEL</h3>
+                 <h2 className="text-4xl lg:text-6xl font-bold tracking-tight mb-2">Maui Jim - Color You Can Feel</h2>
               </div>
            </div>
-           
+
            <div className="text-center mb-12">
-              <h4 className="text-[13px] font-bold tracking-[0.1em] uppercase">NEW IN MAUI JIM SS26</h4>
+              <h3 className="text-[13px] font-bold tracking-[0.1em] uppercase">NEW IN MAUI JIM SS26</h3>
            </div>
 
            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">

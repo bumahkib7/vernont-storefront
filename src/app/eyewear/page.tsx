@@ -485,6 +485,122 @@ function EyewearPageContent() {
           </div>
         </section>
 
+        {/* SEO Content Section */}
+        <section className="max-w-[1400px] mx-auto px-4 lg:px-8 py-8 border-b border-[#E5E5E5]">
+          <div className="prose max-w-none">
+            <div className="mb-8">
+              <p className="text-[15px] leading-relaxed text-[#333] mb-4">
+                Discover our curated collection of designer sunglasses and luxury eyewear from the world's most prestigious brands including Miu Miu, Maui Jim, Ray-Ban, Oakley, and more. Each frame is carefully selected for its exceptional quality, timeless design, and superior craftsmanship. Whether you're seeking polarized sunglasses for outdoor adventures, prescription sunglasses for everyday wear, or statement optical frames that express your unique style, our collection offers something special for every taste.
+              </p>
+              <p className="text-[15px] leading-relaxed text-[#333]">
+                From classic aviator sunglasses to contemporary cat-eye frames and sporty wraparound styles, we stock an extensive range of shapes, colors, and lens technologies. Our eyewear combines fashion-forward aesthetics with advanced UV protection and optical clarity, ensuring you look great while protecting your vision.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-8">
+              <div>
+                <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Why Choose Vernont for Designer Eyewear?</h2>
+                <ul className="space-y-2 text-[14px] text-[#333]">
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#666] mt-1">•</span>
+                    <span><strong>100% Authentic Designer Frames</strong> - All eyewear sourced directly from authorized retailers and verified for authenticity</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#666] mt-1">•</span>
+                    <span><strong>Expert Quality Assurance</strong> - Every pair inspected by optometry professionals before shipping</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#666] mt-1">•</span>
+                    <span><strong>30-Day Hassle-Free Returns</strong> - Not satisfied? Return for a full refund, no questions asked</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#666] mt-1">•</span>
+                    <span><strong>Complimentary Care Kit</strong> - Premium cleaning cloth and protective case included with every order</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-[#666] mt-1">•</span>
+                    <span><strong>Fast, Secure Shipping</strong> - Fully insured delivery with tracking to your door</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Premium Polarized Sunglasses</h2>
+                <p className="text-[14px] leading-relaxed text-[#333] mb-3">
+                  Our polarized sunglasses collection features advanced lens technology that reduces glare and enhances visual clarity. Perfect for driving, water sports, skiing, and everyday outdoor activities, polarized lenses eliminate reflected light from horizontal surfaces like roads, water, and snow.
+                </p>
+                <p className="text-[14px] leading-relaxed text-[#333]">
+                  Choose from top brands like Maui Jim (renowned for their color-enhancing PolarizedPlus2 technology), Ray-Ban (iconic style meets performance), and Oakley (sport-optimized optical engineering). All our polarized sunglasses provide 100% UVA and UVB protection.
+                </p>
+              </div>
+            </div>
+
+            <div className="mb-8">
+              <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Shop by Style: Find Your Perfect Frame</h2>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[14px]">
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Aviator Sunglasses</h3>
+                  <p className="text-[#666] text-[13px]">Timeless teardrop design, universally flattering</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Cat-Eye Frames</h3>
+                  <p className="text-[#666] text-[13px]">Vintage-inspired feminine elegance</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Wayfarer Style</h3>
+                  <p className="text-[#666] text-[13px]">Bold rectangular frames, iconic look</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Round Sunglasses</h3>
+                  <p className="text-[#666] text-[13px]">Retro circular frames for every face shape</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Oversized Frames</h3>
+                  <p className="text-[#666] text-[13px]">Maximum coverage and fashion impact</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Sport Sunglasses</h3>
+                  <p className="text-[#666] text-[13px]">Performance eyewear for active lifestyles</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Square Frames</h3>
+                  <p className="text-[#666] text-[13px]">Modern angular aesthetic</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Optical Frames</h3>
+                  <p className="text-[#666] text-[13px]">Prescription-ready eyeglasses</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-[#F9F9F9] p-6 rounded-lg">
+              <h2 className="text-[18px] font-semibold text-[#1A1A1A] mb-3">Frequently Asked Questions About Designer Eyewear</h2>
+              <div className="space-y-4 text-[14px]">
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Are all your sunglasses authentic designer products?</h3>
+                  <p className="text-[#333]">Yes, 100%. We source all eyewear directly from authorized brand retailers and manufacturers. Every pair comes with authenticity certificates and original packaging.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">What does polarized mean, and do I need it?</h3>
+                  <p className="text-[#333]">Polarized lenses have a special filter that blocks intense reflected light (glare) from horizontal surfaces. They're highly recommended for driving, water activities, and snow sports, significantly reducing eye strain and improving visual comfort.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Can I get prescription lenses in these frames?</h3>
+                  <p className="text-[#333]">Many of our optical frames and select sunglass styles are prescription-ready. Look for "Prescription Available" tags on product pages, or contact our optometry team for personalized guidance.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">Do your sunglasses provide UV protection?</h3>
+                  <p className="text-[#333]">All our sunglasses offer 100% UVA and UVB protection as standard. UV protection is essential for long-term eye health, preventing cataracts and other sun-related damage.</p>
+                </div>
+                <div>
+                  <h3 className="font-medium text-[#1A1A1A] mb-1">What's your return policy if the frames don't fit?</h3>
+                  <p className="text-[#333]">We offer a 30-day money-back guarantee. If you're not completely satisfied with the fit, style, or quality, return your eyewear in its original condition for a full refund. Return shipping is free within the UK.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Toolbar */}
         <div className="sticky top-[60px] z-30 bg-white border-b border-[#E5E5E5]">
           <div className="px-4 lg:px-6 py-3">

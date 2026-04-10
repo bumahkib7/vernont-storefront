@@ -169,7 +169,13 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
 
   return (
     <PageLayout>
-      {productData?.product && <ProductJsonLd product={productData.product} url={productUrl} />}
+      {productData?.product && (
+        <ProductJsonLd
+          product={productData.product}
+          url={productUrl}
+          reviewStats={reviewStatsData?.stats || null}
+        />
+      )}
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: "https://vernont.com" },

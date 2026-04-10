@@ -60,6 +60,138 @@ export default function CollectionsPage() {
         </section>
       )}
 
+      {/* SEO Content Section */}
+      <section className="max-w-[1500px] mx-auto px-6 lg:px-20 py-12 border-b border-neutral-200">
+        <div className="prose max-w-none">
+          <div className="mb-8">
+            <p className="text-[15px] leading-relaxed text-neutral-700 mb-4">
+              Explore Vernont's expertly curated eyewear collections, each thoughtfully designed around specific styles, occasions, or trends. Our collections make it easy to discover frames that align with your aesthetic preferences, lifestyle needs, or the season's latest fashion movements. From timeless classics that never go out of style to avant-garde designs pushing the boundaries of contemporary eyewear, each collection tells a unique story through carefully selected pieces from the world's finest brands.
+            </p>
+            <p className="text-[15px] leading-relaxed text-neutral-700">
+              Whether you're building a wardrobe of versatile everyday frames, seeking statement sunglasses for special occasions, or looking for performance eyewear for outdoor adventures, our collections provide curated starting points for your perfect eyewear discovery journey.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div className="bg-white border border-neutral-200 p-6 rounded-lg shadow-sm">
+              <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Seasonal Collections</h2>
+              <p className="text-[14px] leading-relaxed text-neutral-700 mb-3">
+                Our seasonal collections capture the essence of each time of year, featuring frames and lens colors perfectly suited to spring blooms, summer adventures, autumn elegance, and winter sports. Updated quarterly with fresh arrivals and trending styles.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Includes:</strong> Summer Essentials, Winter Sports, Spring Renewal, Autumn Classics
+              </p>
+            </div>
+
+            <div className="bg-white border border-neutral-200 p-6 rounded-lg shadow-sm">
+              <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Lifestyle Collections</h2>
+              <p className="text-[14px] leading-relaxed text-neutral-700 mb-3">
+                Curated around how you live and what you love. From beach vacations and urban commutes to mountain adventures and office-ready professional frames, these collections match eyewear to your activities and environment.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Includes:</strong> Outdoor Performance, Urban Commuter, Beach & Resort, Professional Collection
+              </p>
+            </div>
+
+            <div className="bg-white border border-neutral-200 p-6 rounded-lg shadow-sm">
+              <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Designer Collaborations</h2>
+              <p className="text-[14px] leading-relaxed text-neutral-700 mb-3">
+                Exclusive limited-edition collections from designer partnerships and special brand capsule releases. These unique pieces blend fashion house heritage with innovative eyewear design for truly distinctive frames.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Includes:</strong> Limited editions, celebrity collaborations, artist partnerships, heritage re-issues
+              </p>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-[20px] font-semibold text-neutral-900 mb-4">How Our Collections Work</h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div>
+                <h3 className="text-[16px] font-medium text-neutral-900 mb-2">Expertly Curated</h3>
+                <p className="text-[14px] text-neutral-700 mb-4">
+                  Each collection is assembled by our team of eyewear specialists and fashion consultants who analyze trends, customer preferences, and seasonal needs. We hand-select every piece to ensure cohesive aesthetics and complementary styles within each collection.
+                </p>
+                <h3 className="text-[16px] font-medium text-neutral-900 mb-2">Multi-Brand Selections</h3>
+                <p className="text-[14px] text-neutral-700">
+                  Unlike single-brand showcases, our collections span multiple designers and price points, allowing you to compare styles, discover new brands, and find the perfect frame regardless of your budget or brand loyalty.
+                </p>
+              </div>
+              <div>
+                <h3 className="text-[16px] font-medium text-neutral-900 mb-2">Regularly Refreshed</h3>
+                <p className="text-[14px] text-neutral-700 mb-4">
+                  Collections evolve with fashion cycles, customer feedback, and new product launches. We continuously add fresh arrivals and retire dated styles to keep every collection current, relevant, and inspiring.
+                </p>
+                <h3 className="text-[16px] font-medium text-neutral-900 mb-2">Easy Navigation</h3>
+                <p className="text-[14px] text-neutral-700">
+                  Shopping by collection simplifies your search by pre-filtering thousands of frames down to curated selections. Save time, discover unexpected styles, and find frames that match your intended use or aesthetic preference.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-neutral-50 p-6 rounded-lg mb-8">
+            <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Popular Collection Categories</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[14px]">
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Bestsellers</h3>
+                <p className="text-neutral-600 text-[13px]">Customer favorites and top-rated frames</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">New Arrivals</h3>
+                <p className="text-neutral-600 text-[13px]">Latest releases and fresh styles</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Sale Items</h3>
+                <p className="text-neutral-600 text-[13px]">Premium frames at discounted prices</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Timeless Classics</h3>
+                <p className="text-neutral-600 text-[13px]">Iconic styles that transcend trends</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Bold & Statement</h3>
+                <p className="text-neutral-600 text-[13px]">Oversized, colorful, and dramatic frames</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Minimalist</h3>
+                <p className="text-neutral-600 text-[13px]">Clean lines and understated elegance</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Sport & Active</h3>
+                <p className="text-neutral-600 text-[13px]">Performance eyewear for athletes</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-1">Eco-Friendly</h3>
+                <p className="text-neutral-600 text-[13px]">Sustainable materials and production</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-l-4 border-neutral-300 pl-6">
+            <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Shopping Tips: Making the Most of Our Collections</h2>
+            <ul className="space-y-2 text-[14px] text-neutral-700">
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-500 mt-1">•</span>
+                <span><strong>Start Broad, Then Filter:</strong> Browse a collection that matches your general style, then use filters for color, price, or brand to narrow results</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-500 mt-1">•</span>
+                <span><strong>Mix Collections:</strong> Don't limit yourself to one collection - explore multiple to discover diverse styles and compare options</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-500 mt-1">•</span>
+                <span><strong>Check Back Regularly:</strong> Collections update frequently with new additions, so your perfect frame might arrive next week</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-neutral-500 mt-1">•</span>
+                <span><strong>Save Favorites:</strong> Use your wishlist to bookmark frames from different collections for easy comparison later</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* Collections Grid */}
       <section className="py-16 lg:py-24">
         <div className="max-w-[1500px] mx-auto px-6 lg:px-20">

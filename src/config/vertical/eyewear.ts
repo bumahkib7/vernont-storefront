@@ -160,13 +160,14 @@ export const eyewearConfig: VerticalConfig = {
     },
 
     siteMetadata: {
-      titleDefault: "Vernont | Designer & Luxury Eyewear",
+      titleDefault: "Designer Sunglasses & Luxury Eyewear | Miu Miu, Maui Jim, Ray-Ban | Vernont",
       titleTemplate: "%s | Vernont",
       description:
-        "Shop designer frames from luxury and premium brands. 30-day returns and complimentary cleaning kit with every order.",
+        "Shop authentic designer sunglasses from Miu Miu, Maui Jim & Ray-Ban. Free UK delivery, 30-day returns. Premium quality guaranteed.",
       keywords: [
-        "sunglasses", "eyewear", "designer frames", "luxury sunglasses",
-        "polarized", "optical frames",
+        "designer sunglasses", "luxury eyewear", "designer glasses UK",
+        "Miu Miu sunglasses", "Maui Jim", "Ray-Ban", "polarized sunglasses",
+        "optical frames", "designer frames", "luxury sunglasses",
       ],
     },
   },

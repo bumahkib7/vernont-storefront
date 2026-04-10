@@ -80,6 +80,121 @@ export default function BrandsPage() {
         </div>
       </section>
 
+      {/* SEO Content Section */}
+      <section className="max-w-7xl mx-auto px-6 py-12 border-b border-neutral-200">
+        <div className="prose max-w-none">
+          <div className="mb-8">
+            <p className="text-[15px] leading-relaxed text-neutral-700 mb-4">
+              Welcome to Vernont's comprehensive collection of designer eyewear brands. From iconic luxury labels like Miu Miu and Gucci to innovative sports performance brands like Oakley and Maui Jim, our carefully curated selection represents the pinnacle of optical craftsmanship. Each brand in our collection has been chosen for its commitment to quality, design innovation, and heritage in the eyewear industry.
+            </p>
+            <p className="text-[15px] leading-relaxed text-neutral-700">
+              Whether you're seeking timeless sophistication from heritage fashion houses, cutting-edge lens technology from sport specialists, or contemporary minimalist aesthetics from emerging designers, you'll find the perfect eyewear brand to match your personal style and lifestyle needs.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            <div className="bg-amber-50 border border-amber-200 p-6 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Crown className="w-5 h-5 text-amber-600" />
+                <h2 className="text-[18px] font-semibold text-neutral-900">Luxury Brands</h2>
+              </div>
+              <p className="text-[14px] text-neutral-700 mb-3">
+                Our luxury collection features prestigious fashion houses renowned for exceptional craftsmanship and timeless elegance. These brands represent the highest tier of designer eyewear, combining heritage with contemporary design.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Featured:</strong> Miu Miu, Prada, Gucci, Saint Laurent, Cartier, and other iconic luxury labels known for their distinctive aesthetic and superior materials.
+              </p>
+            </div>
+
+            <div className="bg-indigo-50 border border-indigo-200 p-6 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Star className="w-5 h-5 text-indigo-600" />
+                <h2 className="text-[18px] font-semibold text-neutral-900">Premium Brands</h2>
+              </div>
+              <p className="text-[14px] text-neutral-700 mb-3">
+                Premium eyewear brands that balance exceptional quality with accessible luxury. These labels offer professional-grade optics, innovative lens technologies, and designs that seamlessly transition from casual to formal settings.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Featured:</strong> Ray-Ban, Maui Jim, Persol, Oliver Peoples, and specialized performance brands that deliver outstanding value and reliability.
+              </p>
+            </div>
+
+            <div className="bg-neutral-100 border border-neutral-200 p-6 rounded-lg">
+              <div className="flex items-center gap-2 mb-3">
+                <Package className="w-5 h-5 text-neutral-600" />
+                <h2 className="text-[18px] font-semibold text-neutral-900">Contemporary Brands</h2>
+              </div>
+              <p className="text-[14px] text-neutral-700 mb-3">
+                Modern eyewear brands that prioritize innovation, sustainability, and on-trend designs. Perfect for fashion-forward individuals seeking quality frames at competitive price points.
+              </p>
+              <p className="text-[13px] text-neutral-600">
+                <strong>Featured:</strong> Emerging designers, direct-to-consumer brands, and contemporary labels pushing boundaries in sustainable eyewear production.
+              </p>
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-[20px] font-semibold text-neutral-900 mb-4">Why Shop Designer Brands at Vernont?</h2>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <ul className="space-y-3 text-[14px] text-neutral-700">
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>100% Authentic Guarantee</strong> - All brands sourced directly from authorized distributors with complete authenticity certification</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>Comprehensive Warranty</strong> - Full manufacturer warranties honored on all designer frames</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>Expert Curation</strong> - Each brand vetted by our optical specialists for quality, innovation, and customer satisfaction</span>
+                  </li>
+                </ul>
+              </div>
+              <div>
+                <ul className="space-y-3 text-[14px] text-neutral-700">
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>Detailed Brand Information</strong> - Explore heritage, design philosophy, and signature technologies for each label</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>Complete Collections</strong> - Access full seasonal ranges from sunglasses to optical frames</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-neutral-500 mt-1">✓</span>
+                    <span><strong>Personalized Recommendations</strong> - Our team helps match you with brands that suit your style and needs</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-neutral-50 p-6 rounded-lg">
+            <h2 className="text-[18px] font-semibold text-neutral-900 mb-3">Popular Designer Eyewear Brands by Category</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-[14px]">
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-2">Best for Fashion</h3>
+                <p className="text-neutral-600 text-[13px]">Miu Miu, Gucci, Prada, Celine, Dior</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-2">Best for Sports</h3>
+                <p className="text-neutral-600 text-[13px]">Oakley, Maui Jim, Costa Del Mar, Smith</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-2">Best Classic Styles</h3>
+                <p className="text-neutral-600 text-[13px]">Ray-Ban, Persol, Oliver Peoples, Warby Parker</p>
+              </div>
+              <div>
+                <h3 className="font-medium text-neutral-900 mb-2">Best Polarized Tech</h3>
+                <p className="text-neutral-600 text-[13px]">Maui Jim, Costa, Oakley, Ray-Ban</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">
         {viewMode === "tier" ? (
