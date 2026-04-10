@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { CaretDown, X, SlidersHorizontal, GridFour, SquaresFour, Check } from "@phosphor-icons/react";
+import { CaretDown, X, SlidersHorizontal, GridFour, SquaresFour, Check, SpinnerGap } from "@phosphor-icons/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -189,7 +189,7 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
   );
 }
 
-export default function EyewearPage() {
+function EyewearPageContent() {
   const searchParams = useSearchParams();
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -202,28 +202,15 @@ export default function EyewearPage() {
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(null);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
 
-  // Initialize filters from URL params
-  useEffect(() => {
-    const brandParam = searchParams.get('brand');
-    if (brandParam && brands.length > 0) {
-      // Match brand by slug, name (case-insensitive), or ID
-      const matchedBrand = brands.find(b => {
-        const paramLower = brandParam.toLowerCase();
-        return (
-          b.id === brandParam ||
-          b.name.toLowerCase() === paramLower ||
-          (b as any).slug?.toLowerCase() === paramLower
-        );
-      });
-      if (matchedBrand && !selectedBrands.includes(matchedBrand.id)) {
-        setSelectedBrands([matchedBrand.id]);
-      }
-    }
-  }, [searchParams, brands]);
-
   // Build API query params from active filters
   const apiParams = useMemo(() => {
     const params: Parameters<typeof useProducts>[0] = { limit: 100 };
+
+    // Check for sale parameter
+    const saleParam = searchParams.get('sale');
+    if (saleParam === 'true') {
+      params.onSale = true;
+    }
 
     // Quick filter → map to API params
     if (quickFilter === "under-150") {
@@ -281,7 +268,7 @@ export default function EyewearPage() {
     }
 
     return params;
-  }, [quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy]);
+  }, [searchParams, quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy]);
 
   const { data: productsData, isLoading, error } = useProducts(apiParams);
   const { data: brandsData } = useBrands();
@@ -292,6 +279,31 @@ export default function EyewearPage() {
   const categories = filters?.categories || [];
   const brands = filters?.brands || [];
   const sizes = filters?.sizes || [];
+
+  // Initialize filters from URL params
+  useEffect(() => {
+    const brandParam = searchParams.get('brand');
+    if (brandParam && brands.length > 0) {
+      // Match brand by slug, name (case-insensitive), or ID
+      const matchedBrand = brands.find(b => {
+        const paramLower = brandParam.toLowerCase();
+        return (
+          b.id === brandParam ||
+          b.name.toLowerCase() === paramLower ||
+          (b as any).slug?.toLowerCase() === paramLower
+        );
+      });
+      if (matchedBrand && !selectedBrands.includes(matchedBrand.id)) {
+        setSelectedBrands([matchedBrand.id]);
+      }
+    }
+
+    // Check for sale parameter
+    const saleParam = searchParams.get('sale');
+    if (saleParam === 'true') {
+      // Sale filter will be handled in apiParams
+    }
+  }, [searchParams, brands, selectedBrands]);
   const priceRanges = useMemo(() => {
     return generatePriceRanges(filters?.priceRange?.min, filters?.priceRange?.max);
   }, [filters?.priceRange]);
@@ -335,6 +347,10 @@ export default function EyewearPage() {
 
   // Compute dynamic page title based on active filters
   const pageTitle = useMemo(() => {
+    const saleParam = searchParams.get('sale');
+    if (saleParam === 'true') {
+      return "Sale Eyewear";
+    }
     if (selectedBrands.length === 1) {
       const brand = brands.find(b => b.id === selectedBrands[0]);
       if (brand) return `${brand.name} Eyewear`;
@@ -343,7 +359,7 @@ export default function EyewearPage() {
       return "Designer Eyewear";
     }
     return productConfig.catalogTitle;
-  }, [selectedBrands, brands]);
+  }, [searchParams, selectedBrands, brands]);
 
   const FilterContent = () => (
     <>
@@ -679,5 +695,23 @@ export default function EyewearPage() {
 
       <Footer />
     </div>
+  );
+}
+
+export default function EyewearPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[var(--background)]">
+        <Header />
+        <main className="max-w-7xl mx-auto px-4 py-8">
+          <div className="flex items-center justify-center py-16">
+            <SpinnerGap className="h-8 w-8 animate-spin text-[var(--primary)]" />
+          </div>
+        </main>
+        <Footer />
+      </div>
+    }>
+      <EyewearPageContent />
+    </Suspense>
   );
 }

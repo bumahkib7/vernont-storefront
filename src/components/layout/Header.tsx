@@ -251,6 +251,12 @@ export function Header() {
             </div>
           ))}
 
+          <Link href="/eyewear?sale=true" className="flex items-center gap-1.5 cursor-pointer">
+            <span className="text-2xl text-red-600 italic font-serif leading-none hover:opacity-70 transition-opacity pr-1" style={{ fontFamily: 'Georgia, serif' }}>
+              Sale
+            </span>
+          </Link>
+
           <Link href="/contact" className="flex items-center gap-1.5 cursor-pointer">
             <span className="text-[12px] font-medium text-[#1A1A1A] tracking-wider hover:opacity-60 transition-opacity uppercase">
               Contact
