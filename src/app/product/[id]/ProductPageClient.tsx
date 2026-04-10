@@ -166,8 +166,13 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       {/* Product Section — Pret à Voir layout */}
       <section className="px-4 lg:px-8 py-6 lg:py-10 max-w-[1400px] mx-auto">
         <div className="grid lg:grid-cols-[1fr_420px] gap-8 lg:gap-16">
-          {/* LEFT: Image gallery with vertical dot navigation */}
-          <div className="flex items-center gap-4 lg:gap-8">
+          {/* LEFT: Image gallery with vertical dot navigation.
+              self-start stops grid from stretching the column to match the right
+              column's height; items-start keeps the image pinned to the top.
+              Combined with lg:sticky so the gallery stays visible while the
+              description column scrolls. Without this, a tall right column
+              (expanded accordion, long description) pushed the image below the fold. */}
+          <div className="flex items-start gap-4 lg:gap-8 lg:self-start lg:sticky lg:top-[80px]">
             {/* Vertical dot navigation - Moved OUTSIDE the image to prevent overlap */}
             {productImages.length > 1 && (
               <div className="flex flex-col gap-4 relative z-20">
