@@ -9,6 +9,7 @@ import { WishlistProvider } from "@/context/WishlistContext";
 import { CompareProvider } from "@/context/CompareContext";
 import { NavigationProvider } from "@/context/NavigationContext";
 import { ScrollToTop } from "@/components/ScrollToTop";
+import { PostHogProvider } from "@/providers/PostHogProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [queryClient] = useState(
@@ -30,21 +31,23 @@ export function Providers({ children }: { children: React.ReactNode }) {
   );
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <StoreConfigProvider>
-        <AuthProvider>
-          <CartProvider>
-            <WishlistProvider>
-              <CompareProvider>
-                <NavigationProvider>
-                  <ScrollToTop />
-                  {children}
-                </NavigationProvider>
-              </CompareProvider>
-            </WishlistProvider>
-          </CartProvider>
-        </AuthProvider>
-      </StoreConfigProvider>
-    </QueryClientProvider>
+    <PostHogProvider>
+      <QueryClientProvider client={queryClient}>
+        <StoreConfigProvider>
+          <AuthProvider>
+            <CartProvider>
+              <WishlistProvider>
+                <CompareProvider>
+                  <NavigationProvider>
+                    <ScrollToTop />
+                    {children}
+                  </NavigationProvider>
+                </CompareProvider>
+              </WishlistProvider>
+            </CartProvider>
+          </AuthProvider>
+        </StoreConfigProvider>
+      </QueryClientProvider>
+    </PostHogProvider>
   );
 }

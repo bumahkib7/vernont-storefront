@@ -13,6 +13,7 @@ import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
+import { PostHogPageView } from "@/providers/PostHogProvider";
 
 // GA4 measurement ID (format: G-XXXXXXXXXX). Read at build time from the
 // environment so local dev / preview deploys don't pollute production
@@ -96,6 +97,7 @@ export default function RootLayout({
           searchUrl={`${siteUrl}/eyewear`}
         />
         <Providers>
+          <PostHogPageView />
           {children}
           <CartDrawer />
           <CompareDrawer />
