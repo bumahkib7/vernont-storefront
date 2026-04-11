@@ -45,17 +45,19 @@ export function Footer() {
              <div className="text-[#5f9e90] text-sm">Thank you for subscribing!</div>
           ) : (
             <form onSubmit={handleSubscribe} className="flex w-full bg-white max-w-[600px] mx-auto shadow-sm">
-              <input 
-                type="email" 
-                placeholder="Enter your email to register" 
+              <label htmlFor="newsletter-email" className="sr-only">Email address for newsletter</label>
+              <input
+                id="newsletter-email"
+                type="email"
+                placeholder="Enter your email to register"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="flex-1 py-3 px-4 outline-none text-[13px] bg-transparent placeholder:text-[#999]" 
+                className="flex-1 py-3 px-4 outline-none text-[13px] bg-transparent placeholder:text-[#999]"
               />
-              <button 
-                type="submit" 
-                className="bg-[#e5e5e5] text-[#999] px-6 text-[11px] hover:bg-[#d5d5d5] hover:text-[#1A1A1A] font-bold tracking-[0.1em] transition-colors"
+              <button
+                type="submit"
+                className="bg-[#e5e5e5] text-[#595959] px-6 text-[11px] hover:bg-[#d5d5d5] hover:text-[#1A1A1A] font-bold tracking-[0.1em] transition-colors"
               >
                 SUBMIT
               </button>
@@ -149,7 +151,8 @@ export function Footer() {
          </div>
 
          <div>
-            <select className="bg-[#6b8982] text-white text-[12px] px-4 py-2 rounded-full appearance-none pr-8 bg-no-repeat bg-[right_10px_center] cursor-pointer outline-none font-medium hover:bg-[#5a7670] transition-colors"
+            <label htmlFor="currency-select" className="sr-only">Select Currency</label>
+            <select id="currency-select" className="bg-[#6b8982] text-white text-[12px] px-4 py-2 rounded-full appearance-none pr-8 bg-no-repeat bg-[right_10px_center] cursor-pointer outline-none font-medium hover:bg-[#5a7670] transition-colors"
                 style={{ backgroundImage: "url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2210%22%20height%3D%226%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1%201l4%204%204-4%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.5%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')" }}
             >
                <option value="GBP">GBP £</option>

@@ -120,8 +120,9 @@ function LoginContent() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="sr-only">Email</label>
+            <label htmlFor="email" className="sr-only">Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -132,8 +133,9 @@ function LoginContent() {
           </div>
 
           <div className="relative">
-            <label className="sr-only">Password</label>
+            <label htmlFor="password" className="sr-only">Password</label>
             <input
+              id="password"
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -145,6 +147,7 @@ function LoginContent() {
                type="button"
                onClick={() => setShowPassword(!showPassword)}
                className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999] hover:text-[#1A1A1A]"
+               aria-label={showPassword ? "Hide password" : "Show password"}
             >
                {showPassword ? <EyeSlash className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>

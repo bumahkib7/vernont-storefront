@@ -56,6 +56,7 @@ export function CartDrawer() {
               <button
                 onClick={closeCart}
                 className="p-2 hover:bg-[var(--surface)] rounded-full transition-colors"
+                aria-label="Close cart"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -171,6 +172,7 @@ export function CartDrawer() {
                                 }}
                                 disabled={loading}
                                 className="p-1.5 hover:bg-[var(--surface)] transition-colors disabled:opacity-30 rounded-l-md"
+                                aria-label="Decrease quantity"
                               >
                                 <Minus className="w-3 h-3" />
                               </button>
@@ -185,6 +187,7 @@ export function CartDrawer() {
                                 }}
                                 disabled={loading}
                                 className="p-1.5 hover:bg-[var(--surface)] transition-colors disabled:opacity-30 rounded-r-md"
+                                aria-label="Increase quantity"
                               >
                                 <Plus className="w-3 h-3" />
                               </button>

@@ -106,7 +106,7 @@ export function Header() {
         <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
           {/* Mobile List & Logo */}
           <div className="flex items-center gap-4 min-w-[200px]">
-            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-1">
+            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-1" aria-label="Open menu">
               <List className="w-6 h-6" />
             </button>
             <Link href="/" className="font-bold text-xl lg:text-3xl tracking-[0.35em] text-[#1A1A1A] whitespace-nowrap">
@@ -128,7 +128,7 @@ export function Header() {
                    onFocus={() => setShowResults(true)}
                    className="w-full bg-[#f4f4f4] text-sm py-2.5 px-4 outline-none placeholder:text-[#666]"
                 />
-                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A]">
+                <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 text-[#1A1A1A]" aria-label="Search">
                    {searchLoading ? <SpinnerGap className="w-4 h-4 animate-spin" /> : <MagnifyingGlass className="w-4 h-4" />}
                 </button>
              </form>
@@ -186,7 +186,7 @@ export function Header() {
               <User className="w-5 h-5 text-[#1A1A1A]" />
             </Link>
 
-            <button onClick={openCart} className="relative p-1 hover:opacity-60 transition-opacity text-[#1A1A1A]">
+            <button onClick={openCart} className="relative p-1 hover:opacity-60 transition-opacity text-[#1A1A1A]" aria-label={`Shopping cart with ${itemCount} item${itemCount !== 1 ? 's' : ''}`}>
               <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-[18px] h-[18px] bg-black text-white text-[10px] font-bold flex items-center justify-center rounded-full">
                 {itemCount}
               </div>
@@ -375,6 +375,7 @@ export function Header() {
                   type="button"
                   onClick={() => { setSearchOpen(false); setSearchQuery(""); setSearchResults([]); }}
                   className="p-1"
+                  aria-label="Close search"
                 >
                   <X className="w-5 h-5" />
                 </button>

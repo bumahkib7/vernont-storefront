@@ -126,6 +126,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               <button
                 onClick={onClose}
                 className="w-10 h-10 flex items-center justify-center hover:text-[var(--secondary)] transition-colors"
+                aria-label="Close search"
               >
                 <X className="h-5 w-5" />
               </button>

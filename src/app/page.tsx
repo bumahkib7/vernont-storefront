@@ -111,10 +111,10 @@ export default function Home() {
                  <Image src="/images/home/vogue_cover_1775729762034.png" alt="Vogue Cover" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/balenciaga_editorial_1775729800168.png" alt="Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/balenciaga_editorial_1775729800168.png" alt="Balenciaga Fashion Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/couple_editorial_1775729817725.png" alt="Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/couple_editorial_1775729817725.png" alt="Fashion Couple Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
                  <Image src="/images/home/collage_editorial_1775729833211.png" alt="Collage" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
