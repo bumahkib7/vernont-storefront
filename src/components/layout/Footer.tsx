@@ -125,6 +125,7 @@ export function Footer() {
             <ul className="space-y-4 text-[12px] text-[#666]">
               <li><Link href="/terms" className="hover:text-[#1A1A1A] transition-colors">Terms of Service</Link></li>
               <li><Link href="/privacy" className="hover:text-[#1A1A1A] transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/return-policy" className="hover:text-[#1A1A1A] transition-colors">Return Policy</Link></li>
               <li><Link href="/cookies" className="hover:text-[#1A1A1A] transition-colors">Cookie Policy</Link></li>
               <li><Link href="/imprint" className="hover:text-[#1A1A1A] transition-colors">Imprint</Link></li>
             </ul>

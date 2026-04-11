@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { Header } from "@/components/layout/Header";
+import { Footer } from "@/components/layout/Footer";
 import { CaretDown } from "@/components/icons";
-import { PageLayout } from "@/components/layout/PageLayout";
 
 interface FAQItem {
   question: string;
@@ -34,17 +36,22 @@ const faqs: FAQItem[] = [
   {
     category: "Returns & Refunds",
     question: "What is your return policy?",
-    answer: "We accept returns of unworn eyewear within 30 days of delivery. Items must be in their original packaging and condition, with all tags attached. Please contact our customer service to initiate a return.",
+    answer: "We accept returns of unworn eyewear within 14 days of delivery. Items must be in their original packaging and condition, with all tags attached. You can initiate a return through your account or visit our returns page.",
   },
   {
     category: "Returns & Refunds",
     question: "How do I return a product?",
-    answer: "Contact our customer service team to request a return authorization. Once approved, you will receive instructions and a prepaid shipping label for your return.",
+    answer: "Log into your account, go to your order history, and select the order you'd like to return. Click 'Request Return' and follow the instructions. If you checked out as a guest, visit our returns page and enter your email and order number.",
   },
   {
     category: "Returns & Refunds",
     question: "How long do refunds take?",
-    answer: "Refunds are processed within 5-7 business days after we receive your return. The funds will be credited to your original payment method.",
+    answer: "Refunds are processed within 1-2 business days after we receive your return. The funds will be credited to your original payment method within 5-7 business days.",
+  },
+  {
+    category: "Returns & Refunds",
+    question: "Is return shipping free?",
+    answer: "Yes! We offer free return shipping on all orders. When you request a return, we'll provide a prepaid shipping label via email.",
   },
   {
     category: "Products",
@@ -99,94 +106,119 @@ export default function FAQPage() {
     : faqs;
 
   return (
-    <PageLayout>
-      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
-        <div className="text-center mb-12">
-          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-3">
-            Help Center
-          </p>
-          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-muted-foreground">
-            Find answers to common questions about our eyewear, orders, shipping, returns, and more.
-          </p>
-        </div>
+    <div className="min-h-screen bg-white text-[#1A1A1A]">
+      <Header />
 
-        {/* Category Funnel */}
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          <button
-            onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 text-sm border transition-colors ${
-              selectedCategory === null
-                ? "border-[var(--secondary)] text-[var(--secondary)]"
-                : "border-border text-muted-foreground hover:border-[var(--foreground)]"
-            }`}
-          >
-            All
-          </button>
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 text-sm border transition-colors ${
-                selectedCategory === category
-                  ? "border-[var(--secondary)] text-[var(--secondary)]"
-                  : "border-border text-muted-foreground hover:border-[var(--foreground)]"
-              }`}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
+      <main className="w-full">
+        {/* Page Header */}
+        <section className="w-full border-b border-[#E5E5E5] py-16 bg-[#FAFAFA]">
+          <div className="max-w-[1400px] mx-auto px-4 lg:px-8 text-center">
+            <p className="text-[11px] font-bold uppercase tracking-widest text-[#999] mb-4">
+              Help Center
+            </p>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight mb-4">
+              Frequently Asked Questions
+            </h1>
+            <p className="text-[#666]">
+              Find answers to common questions about our eyewear, orders, shipping, returns, and more.
+            </p>
+          </div>
+        </section>
+
+        {/* Category Filter */}
+        <section className="w-full py-12 border-b border-[#E5E5E5]">
+          <div className="max-w-[1400px] mx-auto px-4 lg:px-8">
+            <div className="flex flex-wrap justify-center gap-3">
+              <button
+                onClick={() => setSelectedCategory(null)}
+                className={`px-6 py-2.5 text-[12px] uppercase tracking-wider font-medium border transition-colors ${
+                  selectedCategory === null
+                    ? "border-[#1A1A1A] bg-[#1A1A1A] text-white"
+                    : "border-[#E5E5E5] text-[#666] hover:border-[#1A1A1A]"
+                }`}
+              >
+                All
+              </button>
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`px-6 py-2.5 text-[12px] uppercase tracking-wider font-medium border transition-colors ${
+                    selectedCategory === category
+                      ? "border-[#1A1A1A] bg-[#1A1A1A] text-white"
+                      : "border-[#E5E5E5] text-[#666] hover:border-[#1A1A1A]"
+                  }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
+        </section>
 
         {/* FAQ List */}
-        <div className="space-y-4">
-          {filteredFaqs.map((faq, index) => (
-            <div
-              key={index}
-              className="border border-border"
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-secondary/50 transition-colors"
-              >
-                <span className="text-base tracking-wide pr-4">
-                  {faq.question}
-                </span>
-                <CaretDown
-                  className={`h-5 w-5 text-muted-foreground flex-shrink-0 transition-transform ${
-                    openIndex === index ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {openIndex === index && (
-                <div className="px-6 pb-4">
-                  <p className="text-muted-foreground leading-relaxed">
-                    {faq.answer}
-                  </p>
+        <section className="w-full py-16">
+          <div className="max-w-[900px] mx-auto px-4 lg:px-8">
+            <div className="space-y-4">
+              {filteredFaqs.map((faq, index) => (
+                <div
+                  key={index}
+                  className="border border-[#E5E5E5]"
+                >
+                  <button
+                    onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                    className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-[#FAFAFA] transition-colors"
+                  >
+                    <span className="text-[15px] font-medium pr-4">
+                      {faq.question}
+                    </span>
+                    <CaretDown
+                      className={`h-5 w-5 text-[#666] flex-shrink-0 transition-transform ${
+                        openIndex === index ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {openIndex === index && (
+                    <div className="px-6 pb-5 border-t border-[#E5E5E5]">
+                      <p className="text-[#666] leading-relaxed pt-4">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        </section>
 
         {/* Contact CTA */}
-        <div className="mt-16 text-center p-8 bg-secondary">
-          <h2 className="text-2xl tracking-wide mb-4">
-            Still Have Questions?
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            Our customer service team is here to help. Contact us anytime.
-          </p>
-          <a
-            href="/contact"
-            className="btn-outline-luxury inline-block"
-          >
-            Contact Us
-          </a>
-        </div>
-      </div>
-    </PageLayout>
+        <section className="w-full py-16 bg-[#FAFAFA] border-t border-[#E5E5E5]">
+          <div className="max-w-[800px] mx-auto px-4 lg:px-8 text-center">
+            <h2 className="text-2xl font-bold tracking-tight mb-4">
+              Still Have Questions?
+            </h2>
+            <p className="text-[#666] mb-8">
+              Our customer service team is here to help. Contact us anytime.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/contact"
+                className="px-8 py-3.5 bg-[#1A1A1A] text-white text-[12px] uppercase tracking-[0.15em] font-medium hover:bg-black transition-colors"
+              >
+                Contact Us
+              </Link>
+              <Link
+                href="/return-policy"
+                className="px-8 py-3.5 border border-[#E5E5E5] text-[12px] uppercase tracking-[0.15em] font-medium hover:bg-white transition-colors"
+              >
+                View Return Policy
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <Footer />
+    </div>
   );
 }

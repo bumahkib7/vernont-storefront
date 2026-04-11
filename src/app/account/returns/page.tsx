@@ -224,11 +224,19 @@ export default function ReturnsPage() {
         transition={{ delay: 0.1 }}
         className="bg-[var(--primary)]/5 border border-[var(--primary)]/10 rounded-lg p-5"
       >
-        <h3 className="font-semibold mb-4">Return Policy</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-semibold">Return Policy</h3>
+          <Link
+            href="/return-policy"
+            className="text-sm text-[var(--primary)] hover:underline"
+          >
+            View Full Policy
+          </Link>
+        </div>
         <ul className="text-sm text-[var(--muted-foreground)] space-y-3">
           <li className="flex items-start gap-3">
             <CheckCircle className="h-4 w-4 text-[var(--primary)] mt-0.5 flex-shrink-0" />
-            <span>Returns accepted within 30 days of delivery</span>
+            <span>Returns accepted within 14 days of delivery</span>
           </li>
           <li className="flex items-start gap-3">
             <CheckCircle className="h-4 w-4 text-[var(--primary)] mt-0.5 flex-shrink-0" />
