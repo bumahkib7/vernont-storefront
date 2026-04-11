@@ -32,9 +32,10 @@ export default function Home() {
                  src="/images/home/miu_miu_campaign_1775729723590.png"
                  alt="Miu Miu Campaign"
                  fill
-                 sizes="(max-width: 1024px) 100vw, 50vw"
+                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 50vw"
                  priority
                  fetchPriority="high"
+                 quality={85}
                  className="object-cover object-center opacity-90 transition-transform duration-1000 hover:scale-105"
               />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 py-3">
@@ -54,7 +55,7 @@ export default function Home() {
                  {miuMiuProducts.map(p => (
                     <div key={p.id} className="flex flex-col items-center">
                        <div className="w-full aspect-[4/3] bg-white mb-4 p-4 relative">
-                          {p.image && <Image src={p.image} alt={p.name} fill sizes="300px" className="object-contain mix-blend-multiply" />}
+                          {p.image && <Image src={p.image} alt={p.name} fill sizes="(max-width: 640px) 50vw, 300px" quality={80} className="object-contain mix-blend-multiply" />}
                        </div>
                        <Link href={`/product/${p.handle}`} className="px-6 py-2 bg-gray-500 text-white text-[11px] uppercase tracking-widest hover:bg-black transition-colors">
                           SHOP
@@ -76,7 +77,9 @@ export default function Home() {
                  src="/images/home/maui_jim_banner_1775729742958.png"
                  alt="Maui Jim Banner"
                  fill
-                 sizes="(max-width: 768px) 100vw, 1400px"
+                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 1400px"
+                 quality={85}
+                 loading="lazy"
                  className="object-cover"
               />
               <div className="absolute bottom-8 left-8 text-white">
@@ -109,16 +112,16 @@ export default function Home() {
 
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-1">
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/vogue_cover_1775729762034.png" alt="Vogue Cover" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/vogue_cover_1775729762034.png" alt="Vogue Cover" fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/balenciaga_editorial_1775729800168.png" alt="Balenciaga Fashion Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/balenciaga_editorial_1775729800168.png" alt="Balenciaga Fashion Editorial" fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/couple_editorial_1775729817725.png" alt="Fashion Couple Editorial" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/couple_editorial_1775729817725.png" alt="Fashion Couple Editorial" fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
               <div className="aspect-square bg-gray-100 relative group overflow-hidden">
-                 <Image src="/images/home/collage_editorial_1775729833211.png" alt="Collage" fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                 <Image src="/images/home/collage_editorial_1775729833211.png" alt="Collage" fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
               </div>
            </div>
         </section>
@@ -146,7 +149,7 @@ export default function Home() {
                  ].map((star) => (
                     <div key={star.label} className="flex flex-col items-center">
                        <div className="w-full aspect-square relative mb-6 overflow-hidden">
-                          <Image src={star.img} alt={star.label} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
+                          <Image src={star.img} alt={star.label} fill sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover" />
                        </div>
                        <span className="px-6 py-1.5 bg-black text-white text-[10px] font-bold uppercase tracking-wider">
                           {star.label}
@@ -185,7 +188,7 @@ export default function Home() {
               ].map(blog => (
                  <Link href="/blog" key={blog.title} className="group flex flex-col relative h-[300px] overflow-hidden">
                     <div className="relative w-full h-[85%]">
-                       <Image src={blog.img} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 25vw" className="object-cover transition-transform duration-700 group-hover:scale-105" />
+                       <Image src={blog.img} alt={blog.title} fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                     </div>
                     <div className={`w-full h-[15%] ${blog.color} flex items-center justify-center p-2 absolute bottom-0`}>
                        <span className="text-white font-serif italic text-lg leading-none tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>{blog.title}</span>

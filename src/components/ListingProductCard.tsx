@@ -73,7 +73,7 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
             alt={product.name}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            quality={90}
+            quality={80}
             className={`object-contain p-2 transition-all duration-[400ms] group-hover:scale-[1.03] ${
               isImageLoaded ? "opacity-100" : "opacity-0"
             } ${
@@ -95,7 +95,7 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
               alt={`${product.name} alternate view`}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              quality={90}
+              quality={80}
               loading="eager"
               className="object-contain p-2 transition-all duration-[400ms] opacity-0 group-hover:opacity-100 group-hover:scale-[1.03]"
             />

@@ -88,6 +88,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Preload critical LCP image for mobile */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/home/miu_miu_campaign_1775729723590.png"
+          type="image/png"
+          media="(max-width: 1024px)"
+          fetchPriority="high"
+        />
         {/* Resource hints to reduce DNS lookup and connection time */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
