@@ -1,13 +1,11 @@
 # Modern browsers only - reduces polyfills and bundle size
-# Targets browsers with ES2020+ support
-# Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+# Targets browsers with ES2020+ support (Array.at, Object.hasOwn, etc.)
+# Chrome 92+, Firefox 90+, Safari 15.4+, Edge 92+
 
-> 0.5%
-last 2 versions
+Chrome >= 92
+Firefox >= 90
+Safari >= 15.4
+Edge >= 92
 not dead
 not IE 11
 not op_mini all
-Chrome >= 90
-Firefox >= 88
-Safari >= 14
-Edge >= 90

@@ -454,10 +454,10 @@ export function ShoppingAssistant() {
 
             {/* Chat bubble - Modern gradient style */}
             <motion.button
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
               onClick={() => { setHasInteracted(true); open(); }}
               className="w-16 h-16 bg-gradient-to-br from-neutral-900 to-neutral-800 text-white rounded-full shadow-2xl hover:shadow-xl hover:scale-105 transition-all duration-300 flex items-center justify-center group relative"
               aria-label="Open AI shopping assistant"

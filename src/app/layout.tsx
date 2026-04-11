@@ -91,12 +91,10 @@ export default function RootLayout({
         {/* Pinterest domain verification */}
         <meta name="p:domain_verify" content="86f00dd301eb1410f0605a138f895bef"/>
         {/* Resource hints to reduce DNS lookup and connection time */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.google-analytics.com" />
-        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
-        <link rel="dns-prefetch" href="https://us.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://eu-assets.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://eu.i.posthog.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://cdn.vernont.com" />
       </head>
