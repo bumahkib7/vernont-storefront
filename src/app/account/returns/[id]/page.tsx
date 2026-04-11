@@ -16,7 +16,7 @@ import {
   Truck,
   CreditCard,
   WarningCircle,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { returnsApi } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";

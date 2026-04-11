@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Lock, Eye, EyeSlash, ArrowRight, SpinnerGap, Check, WarningCircle } from "@phosphor-icons/react";
+import { Lock, Eye, EyeSlash, ArrowRight, SpinnerGap, Check, WarningCircle } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

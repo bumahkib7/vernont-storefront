@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X, Minus, Plus, SpinnerGap, ShoppingBag, Truck, Gift } from "@phosphor-icons/react";
+import { X, Minus, Plus, SpinnerGap, ShoppingBag, Truck, Gift } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { useStoreConfig } from "@/context/StoreConfigContext";

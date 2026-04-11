@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
-import { Sparkle, MagnifyingGlass, SpinnerGap, ArrowRight } from "@phosphor-icons/react";
+import { Sparkle, MagnifyingGlass, SpinnerGap, ArrowRight } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { aiApi, resolveImageUrl, ApiError } from "@/lib/api";
 import Image from "next/image";

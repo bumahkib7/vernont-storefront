@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, PencilSimple, Trash, MapPin, SpinnerGap, X, Check, WarningCircle } from "@phosphor-icons/react";
+import { Plus, PencilSimple, Trash, MapPin, SpinnerGap, X, Check, WarningCircle } from "@/components/icons";
 import { customerApi, type CustomerAddress } from "@/lib/api";
 import { toast } from "sonner";
 import {

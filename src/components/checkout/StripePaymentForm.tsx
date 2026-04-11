@@ -8,7 +8,7 @@ import {
   Elements,
 } from "@stripe/react-stripe-js";
 import { loadStripe, Stripe, StripeElementsOptions } from "@stripe/stripe-js";
-import { Lock, WarningCircle, ArrowLeft, SpinnerGap, Shield } from "@phosphor-icons/react";
+import { Lock, WarningCircle, ArrowLeft, SpinnerGap, Shield } from "@/components/icons";
 import { motion } from "framer-motion";
 import { formatPrice } from "@/context/CartContext";
 

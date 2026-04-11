@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { CaretDown, ArrowRight, ArrowSquareOut, Crown, Star, Package } from "@phosphor-icons/react";
+import { CaretDown, ArrowRight, ArrowSquareOut, Crown, Star, Package } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { useBrandBySlug, useProducts } from "@/lib/hooks";

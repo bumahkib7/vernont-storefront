@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { MagnifyingGlass, X, SpinnerGap, TrendUp, Clock, Tag, ArrowRight, Sparkle } from "@phosphor-icons/react";
+import { MagnifyingGlass, X, SpinnerGap, TrendUp, Clock, Tag, ArrowRight, Sparkle } from "@/components/icons";
 import { productsApi, resolveImageUrl, type Product } from "@/lib/api";
 import { useShoppingAssistantStore } from "@/stores/shopping-assistant";
 import Image from "next/image";

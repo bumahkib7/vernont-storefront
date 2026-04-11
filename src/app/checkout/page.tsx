@@ -19,7 +19,7 @@ import {
   MapPin,
   Shield,
   ArrowCounterClockwise,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";

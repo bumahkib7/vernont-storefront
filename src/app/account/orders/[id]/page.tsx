@@ -19,7 +19,7 @@ import {
   X,
   WarningCircle,
   MapPin,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { ordersApi, returnsApi, type Order, type ReturnReason } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";

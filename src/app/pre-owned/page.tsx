@@ -3,7 +3,7 @@
 import { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Shield, CheckCircle, Medal } from "@phosphor-icons/react";
+import { Shield, CheckCircle, Medal } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ProductCarousel } from "@/components/ProductCarousel";
 import { ServicesGrid } from "@/components/ServicesGrid";

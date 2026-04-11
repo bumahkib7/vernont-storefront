@@ -19,7 +19,7 @@ import {
   ShoppingBag,
   GitDiff,
   Shuffle,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import Markdown from "react-markdown";
 import { aiApi, resolveImageUrl, ApiError } from "@/lib/api";

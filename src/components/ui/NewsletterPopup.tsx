@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Sparkle, Gift, EnvelopeSimple } from "@phosphor-icons/react";
+import { X, Sparkle, Gift, EnvelopeSimple } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 

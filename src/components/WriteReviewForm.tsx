@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Star, Plus, X, SpinnerGap, Check, WarningCircle } from "@phosphor-icons/react";
+import { Star, Plus, X, SpinnerGap, Check, WarningCircle } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCreateReview } from "@/lib/hooks";
 import { useAuth } from "@/context/AuthContext";

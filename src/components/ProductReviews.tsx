@@ -14,7 +14,7 @@ import {
   Image as ImageIcon,
   User,
   SpinnerGap,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   useProductReviews,

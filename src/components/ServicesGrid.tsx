@@ -1,6 +1,6 @@
 "use client";
 
-import { Truck, ArrowCounterClockwise, ShieldCheck, Lock } from "@phosphor-icons/react";
+import { Truck, ArrowCounterClockwise, ShieldCheck, Lock } from "@/components/icons";
 
 const SERVICES = [
   { icon: Truck, title: "Free Delivery", description: "On orders over £75" },

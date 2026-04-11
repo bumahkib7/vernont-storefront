@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGap, ShoppingBag } from "@phosphor-icons/react";
+import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGap, ShoppingBag } from "@/components/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";

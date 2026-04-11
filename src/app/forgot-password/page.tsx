@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { EnvelopeSimple, ArrowLeft, ArrowRight, SpinnerGap, Check } from "@phosphor-icons/react";
+import { EnvelopeSimple, ArrowLeft, ArrowRight, SpinnerGap, Check } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

@@ -3,7 +3,7 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeSlash, SpinnerGap } from "@phosphor-icons/react";
+import { Eye, EyeSlash, SpinnerGap } from "@/components/icons";
 import { useAuth } from "@/context/AuthContext";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;

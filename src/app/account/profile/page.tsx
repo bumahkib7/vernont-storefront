@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { FloppyDisk, SpinnerGap, Check, WarningCircle, Trash, Lock, User } from "@phosphor-icons/react";
+import { FloppyDisk, SpinnerGap, Check, WarningCircle, Trash, Lock, User } from "@/components/icons";
 import {
   AlertDialog,
   AlertDialogAction,

@@ -5,7 +5,7 @@ import { useBrands } from "@/lib/hooks";
 import { resolveImageUrl } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
-import { SpinnerGap, CaretRight, Crown, Star, Package } from "@phosphor-icons/react";
+import { SpinnerGap, CaretRight, Crown, Star, Package } from "@/components/icons";
 
 const TIER_CONFIG: Record<string, { label: string; icon: typeof Crown; color: string }> = {
   LUXURY: { label: "Luxury", icon: Crown, color: "text-amber-600" },

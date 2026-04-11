@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Sparkle, Star } from "@phosphor-icons/react";
+import { Sparkle, Star } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { CategoryButtons } from "@/components/CategoryButtons";

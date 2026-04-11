@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { CaretUp } from "@phosphor-icons/react";
+import { CaretUp } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function BackToTop() {

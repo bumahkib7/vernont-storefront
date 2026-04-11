@@ -16,7 +16,7 @@ import {
   CaretRight,
   List,
   X,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { useAuth } from "@/context/AuthContext";

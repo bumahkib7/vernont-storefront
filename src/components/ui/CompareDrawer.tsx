@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { X, Plus, ArrowRight, GitDiff } from "@phosphor-icons/react";
+import { X, Plus, ArrowRight, GitDiff } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 import { formatPriceMajor } from "@/context/CartContext";

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Camera, ArrowRight, Check, EnvelopeSimple } from "@phosphor-icons/react";
+import { Camera, ArrowRight, Check, EnvelopeSimple } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 
 export default function TryOnPage() {

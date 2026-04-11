@@ -17,7 +17,7 @@ import {
   Truck,
   Plus,
   Minus,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";

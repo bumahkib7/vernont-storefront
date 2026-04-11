@@ -14,7 +14,7 @@ import {
   CheckCircle,
   Clock,
   XCircle,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { ordersApi, type Order } from "@/lib/api";
 import { useAuth } from "@/context/AuthContext";
 import { formatPriceMajor } from "@/context/CartContext";

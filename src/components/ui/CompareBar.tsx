@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { X, GitDiff } from "@phosphor-icons/react";
+import { X, GitDiff } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCompare } from "@/context/CompareContext";
 

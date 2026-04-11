@@ -25,6 +25,11 @@ export { CaretRight } from '@phosphor-icons/react/dist/icons/CaretRight';
 export { CaretUp } from '@phosphor-icons/react/dist/icons/CaretUp';
 export { X } from '@phosphor-icons/react/dist/icons/X';
 export { List } from '@phosphor-icons/react/dist/icons/List';
+export { GridFour } from '@phosphor-icons/react/dist/icons/GridFour';
+export { SquaresFour } from '@phosphor-icons/react/dist/icons/SquaresFour';
+export { SignOut } from '@phosphor-icons/react/dist/icons/SignOut';
+export { DownloadSimple } from '@phosphor-icons/react/dist/icons/DownloadSimple';
+export { Funnel } from '@phosphor-icons/react/dist/icons/Funnel';
 
 // Actions
 export { Plus } from '@phosphor-icons/react/dist/icons/Plus';
@@ -34,6 +39,9 @@ export { CheckCircle } from '@phosphor-icons/react/dist/icons/CheckCircle';
 export { Trash } from '@phosphor-icons/react/dist/icons/Trash';
 export { FloppyDisk } from '@phosphor-icons/react/dist/icons/FloppyDisk';
 export { PencilSimple } from '@phosphor-icons/react/dist/icons/PencilSimple';
+export { ThumbsUp } from '@phosphor-icons/react/dist/icons/ThumbsUp';
+export { ThumbsDown } from '@phosphor-icons/react/dist/icons/ThumbsDown';
+export { Flag } from '@phosphor-icons/react/dist/icons/Flag';
 
 // E-commerce
 export { ShoppingBag } from '@phosphor-icons/react/dist/icons/ShoppingBag';
@@ -49,6 +57,8 @@ export { User } from '@phosphor-icons/react/dist/icons/User';
 export { Lock } from '@phosphor-icons/react/dist/icons/Lock';
 export { Shield } from '@phosphor-icons/react/dist/icons/Shield';
 export { ShieldCheck } from '@phosphor-icons/react/dist/icons/ShieldCheck';
+export { CreditCard } from '@phosphor-icons/react/dist/icons/CreditCard';
+export { Gear } from '@phosphor-icons/react/dist/icons/Gear';
 
 // Communication
 export { EnvelopeSimple } from '@phosphor-icons/react/dist/icons/EnvelopeSimple';
@@ -68,6 +78,7 @@ export { Eye } from '@phosphor-icons/react/dist/icons/Eye';
 export { EyeSlash } from '@phosphor-icons/react/dist/icons/EyeSlash';
 export { Camera } from '@phosphor-icons/react/dist/icons/Camera';
 export { MagnifyingGlass } from '@phosphor-icons/react/dist/icons/MagnifyingGlass';
+export { Image } from '@phosphor-icons/react/dist/icons/Image';
 
 // Shopping & Compare
 export { ShoppingCart } from '@phosphor-icons/react/dist/icons/ShoppingCart';
@@ -88,4 +99,4 @@ export { Ruler } from '@phosphor-icons/react/dist/icons/Ruler';
 export { SlidersHorizontal } from '@phosphor-icons/react/dist/icons/SlidersHorizontal';
 
 // Type exports for TypeScript
-export type { IconProps } from '@phosphor-icons/react';
+export type { IconProps, Icon } from '@phosphor-icons/react';

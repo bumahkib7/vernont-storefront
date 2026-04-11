@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
-import { CaretRight, ArrowRight } from "@phosphor-icons/react";
+import { CaretRight, ArrowRight } from "@/components/icons";
 import Image from "next/image";
 import Link from "next/link";
 

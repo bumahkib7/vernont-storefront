@@ -4,7 +4,7 @@ import { useMemo, useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { MagnifyingGlass, ArrowLeft, SlidersHorizontal, X, SpinnerGap, Heart, Sparkle } from "@phosphor-icons/react";
+import { MagnifyingGlass, ArrowLeft, SlidersHorizontal, X, SpinnerGap, Heart, Sparkle } from "@/components/icons";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { productsApi, aiApi, resolveImageUrl, type Product } from "@/lib/api";

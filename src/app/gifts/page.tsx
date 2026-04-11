@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Gift, Package, Heart, Sparkle, ArrowRight } from "@phosphor-icons/react";
+import { Gift, Package, Heart, Sparkle, ArrowRight } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { useProducts } from "@/lib/hooks";

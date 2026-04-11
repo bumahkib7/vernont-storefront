@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
-import { ShoppingBag, SpinnerGap, WarningCircle, ArrowRight } from "@phosphor-icons/react";
+import { ShoppingBag, SpinnerGap, WarningCircle, ArrowRight } from "@/components/icons";
 import { motion } from "framer-motion";
 
 const API_BASE_URL =

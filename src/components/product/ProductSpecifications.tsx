@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CaretDown, Check, Ruler, Eye, Package, Sparkle, Info } from "@phosphor-icons/react";
+import { CaretDown, Check, Ruler, Eye, Package, Sparkle, Info } from "@/components/icons";
 import type { ProductSpecificationsResponse } from "@/lib/api";
 import type { DisplayProduct } from "@/lib/transforms";
 

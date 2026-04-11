@@ -17,7 +17,7 @@ import {
   CaretRight,
   CreditCard,
   Gear,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { useAuth } from "@/context/AuthContext";
 import { ordersApi, customerApi } from "@/lib/api";
 import { formatPriceMajor } from "@/context/CartContext";

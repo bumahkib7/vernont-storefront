@@ -13,7 +13,7 @@ import {
   CreditCard,
   ArrowRight,
   DownloadSimple,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PrintableReceipt } from "@/components/checkout/PrintableReceipt";
 import { formatPrice } from "@/context/CartContext";

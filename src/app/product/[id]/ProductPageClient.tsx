@@ -15,7 +15,7 @@ import {
   CaretLeft,
   Package,
   MagnifyingGlass,
-} from "@phosphor-icons/react";
+} from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { ProductReviews } from "@/components/ProductReviews";

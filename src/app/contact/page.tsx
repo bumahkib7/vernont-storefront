@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { EnvelopeSimple, Phone, MapPin, Clock } from "@phosphor-icons/react";
+import { EnvelopeSimple, Phone, MapPin, Clock } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
 

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { CaretDown, Sparkle, Circle } from "@phosphor-icons/react";
+import { CaretDown, Sparkle, Circle } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
 import { CategoryButtons } from "@/components/CategoryButtons";

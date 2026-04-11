@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "@phosphor-icons/react";
+import { ArrowRight } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { useCollections } from "@/lib/hooks";
 import { getCollectionImage } from "@/lib/collection-images";

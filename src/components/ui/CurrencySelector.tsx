@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Globe, CaretDown, Check } from "@phosphor-icons/react";
+import { Globe, CaretDown, Check } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, currencySymbols } from "@/context/CartContext";
 
