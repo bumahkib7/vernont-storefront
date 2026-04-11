@@ -201,3 +201,40 @@ export function WebsiteJsonLd({ name, url, searchUrl }: WebsiteJsonLdProps) {
     />
   );
 }
+
+// ItemList JSON-LD for product listing pages
+interface ItemListJsonLdProps {
+  items: Array<{
+    name: string;
+    url: string;
+    image?: string;
+    position: number;
+  }>;
+  name?: string;
+}
+
+export function ItemListJsonLd({ items, name }: ItemListJsonLdProps) {
+  if (!items || items.length === 0) {
+    return null;
+  }
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    ...(name && { name }),
+    itemListElement: items.map((item) => ({
+      "@type": "ListItem",
+      position: item.position,
+      name: item.name,
+      url: item.url,
+      ...(item.image && { image: item.image }),
+    })),
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+}

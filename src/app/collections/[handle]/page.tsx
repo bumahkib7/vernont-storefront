@@ -1,268 +1,137 @@
-"use client";
+import type { Metadata } from "next";
+import CollectionPageClient from "./CollectionPageClient";
+import { BreadcrumbJsonLd } from "@/components/ProductJsonLd";
 
-import { useMemo, useState } from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import { CaretDown, ArrowRight } from "@phosphor-icons/react";
-import { PageLayout } from "@/components/layout/PageLayout";
-import { ListingProductCard } from "@/components/ListingProductCard";
-import { useCollectionByHandle, useCollectionProducts } from "@/lib/hooks";
-import { transformProducts } from "@/lib/transforms";
-import { getCollectionHeroImage } from "@/lib/collection-images";
+const SITE_URL = "https://vernont.com";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-function SortDropdown({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
+type CollectionShape = {
+  id?: string;
+  title?: string | null;
+  handle?: string | null;
+  description?: string | null;
+};
 
-  const options = [
-    { value: "featured", label: "Featured" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
-  ];
+type TopProduct = {
+  id: string;
+  name?: string | null;
+  title?: string | null;
+  handle?: string | null;
+  slug?: string | null;
+};
 
-  const currentLabel = options.find((o) => o.value === value)?.label || "Featured";
-
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm border border-neutral-200 px-4 py-2 hover:border-neutral-400 transition-colors"
-      >
-        <span>Sort: {currentLabel}</span>
-        <CaretDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-      </button>
-
-      {isOpen && (
-        <div className="absolute right-0 top-full mt-2 bg-white border border-neutral-200 shadow-lg z-20 min-w-[200px]">
-          {options.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-              className={`block w-full text-left px-4 py-3 text-sm hover:bg-neutral-50 transition-colors ${
-                value === option.value ? "text-black font-medium" : "text-neutral-600"
-              }`}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ProductsSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-      {[...Array(8)].map((_, i) => (
-        <div key={i} className="animate-pulse">
-          <div className="aspect-[3/4] bg-neutral-100" />
-          <div className="pt-4 space-y-2">
-            <div className="h-3 w-16 bg-neutral-100" />
-            <div className="h-4 w-32 bg-neutral-100" />
-            <div className="h-4 w-20 bg-neutral-100" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export default function CollectionPage() {
-  const params = useParams();
-  const handle = params.handle as string;
-  const [sortBy, setSortBy] = useState("featured");
-
-  const {
-    data: collectionData,
-    isLoading: isCollectionLoading,
-    error: collectionError
-  } = useCollectionByHandle(handle);
-
-  const {
-    data: productsData,
-    isLoading: isProductsLoading,
-    error: productsError
-  } = useCollectionProducts(handle, { limit: 50 });
-
-  const collection = collectionData?.collection;
-
-  const displayProducts = useMemo(() => {
-    if (!productsData?.items) return [];
-    let products = transformProducts(productsData.items);
-
-    switch (sortBy) {
-      case "price-low":
-        return [...products].sort((a, b) => a.price - b.price);
-      case "price-high":
-        return [...products].sort((a, b) => b.price - a.price);
-      case "newest":
-        return [...products].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-      default:
-        return products;
-    }
-  }, [productsData, sortBy]);
-
-  const isLoading = isCollectionLoading || isProductsLoading;
-  const error = collectionError || productsError;
-
-  const formattedHandle = handle
-    .split('-')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-
-  if (error && !isLoading) {
-    return (
-      <PageLayout>
-        <section className="py-20 md:py-32">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center">
-            <h1 className="text-3xl md:text-4xl font-light tracking-tight mb-4">
-              Collection Not Found
-            </h1>
-            <p className="text-neutral-500 mb-8 max-w-md mx-auto">
-              The "{formattedHandle}" collection doesn't exist or isn't available.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/collections"
-                className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
-              >
-                Browse Collections
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/eyewear"
-                className="text-sm text-neutral-500 hover:text-black transition-colors"
-              >
-                View All Eyewear
-              </Link>
-            </div>
-          </div>
-        </section>
-      </PageLayout>
-    );
+async function fetchCollection(handle: string): Promise<CollectionShape | null> {
+  try {
+    const res = await fetch(`${API_URL}/store/collections/${handle}`, {
+      next: { revalidate: 300, tags: ["products"] },
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { collection?: CollectionShape } & CollectionShape;
+    return data?.collection ?? (data as CollectionShape) ?? null;
+  } catch {
+    return null;
   }
+}
+
+async function fetchCollectionProducts(handle: string): Promise<TopProduct[]> {
+  try {
+    const res = await fetch(
+      `${API_URL}/store/collections/${handle}/products?limit=12`,
+      { next: { revalidate: 300, tags: ["products"] } }
+    );
+    if (!res.ok) return [];
+    const data = (await res.json()) as { products?: TopProduct[] };
+    return Array.isArray(data?.products) ? data.products.slice(0, 12) : [];
+  } catch {
+    return [];
+  }
+}
+
+function humanizeHandle(handle: string) {
+  return handle
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}): Promise<Metadata> {
+  const { handle } = await params;
+  try {
+    const collection = await fetchCollection(handle);
+    const title = collection?.title || humanizeHandle(handle);
+    const description =
+      collection?.description && collection.description.trim().length > 0
+        ? collection.description
+        : `Shop ${title} collection. Curated designer eyewear with free UK delivery and 30-day returns.`;
+    return {
+      title: `${title} Collection | Designer Eyewear | Vernont`,
+      description,
+      alternates: { canonical: `/collections/${handle}` },
+      openGraph: {
+        title: `${title} Collection | Vernont`,
+        description,
+        type: "website",
+        url: `${SITE_URL}/collections/${handle}`,
+      },
+    };
+  } catch {
+    return {
+      title: "Collection | Vernont",
+      description: "Browse our designer eyewear collection.",
+    };
+  }
+}
+
+function buildItemListJsonLd(products: TopProduct[]) {
+  try {
+    if (!products.length) return null;
+    return {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      itemListElement: products.map((p, idx) => ({
+        "@type": "ListItem",
+        position: idx + 1,
+        url: `${SITE_URL}/product/${p.handle ?? p.slug ?? p.id}`,
+        name: p.name ?? p.title ?? "Product",
+      })),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export default async function CollectionPage({
+  params,
+}: {
+  params: Promise<{ handle: string }>;
+}) {
+  const { handle } = await params;
+  const collection = await fetchCollection(handle);
+  const products = await fetchCollectionProducts(handle);
+  const collectionTitle = collection?.title || humanizeHandle(handle);
+
+  const itemListLd = buildItemListJsonLd(products);
 
   return (
-    <PageLayout>
-      {/* Hero Banner */}
-      <section className="relative h-[40vh] min-h-[300px] max-h-[500px] flex items-center">
-        <div className="absolute inset-0">
-          <Image
-            src={getCollectionHeroImage(handle, collection?.thumbnail)}
-            alt={collection?.title || "Collection"}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40" />
-        </div>
-
-        <div className="relative max-w-7xl mx-auto px-4 lg:px-8 w-full">
-          <div className="max-w-xl text-white">
-            <p className="text-sm uppercase tracking-wide text-white/70 mb-2">
-              Collection
-            </p>
-            <h1 className="text-4xl md:text-5xl font-light tracking-tight mb-4">
-              {isCollectionLoading ? (
-                <span className="inline-block w-48 h-12 bg-white/20 animate-pulse" />
-              ) : (
-                collection?.title || formattedHandle
-              )}
-            </h1>
-            {collection?.description && (
-              <p className="text-lg text-white/80 max-w-lg">
-                {collection.description}
-              </p>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Products Section */}
-      <section className="py-12 md:py-20">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
-          {/* Toolbar */}
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-8 pb-6 border-b border-neutral-200">
-            <p className="text-sm text-neutral-500">
-              {isLoading ? (
-                <span className="inline-block w-32 h-4 bg-neutral-100 animate-pulse" />
-              ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
-              )}
-            </p>
-
-            <SortDropdown value={sortBy} onChange={setSortBy} />
-          </div>
-
-          {/* Products Grid */}
-          {isProductsLoading ? (
-            <ProductsSkeleton />
-          ) : displayProducts.length === 0 ? (
-            <div className="text-center py-24">
-              <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-neutral-100 flex items-center justify-center">
-                <svg className="w-7 h-7 text-neutral-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-light tracking-tight mb-2">No Frames Yet</h3>
-              <p className="text-neutral-500 mb-8 max-w-sm mx-auto">
-                We&apos;re adding pieces to this collection. Explore our other collections in the meantime.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link
-                  href="/collections"
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-black text-white text-sm font-medium hover:bg-neutral-800 transition-colors"
-                >
-                  Explore Collections
-                  <ArrowRight className="h-4 w-4" />
-                </Link>
-                <Link
-                  href="/eyewear"
-                  className="inline-flex items-center gap-2 px-6 py-3 text-sm text-neutral-600 hover:text-black transition-colors"
-                >
-                  Browse All Eyewear
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-              {displayProducts.map((product, index) => (
-                <ListingProductCard key={product.id} product={product} index={index} />
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Bottom CTA */}
-      <section className="py-16 md:py-24 bg-neutral-50">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 text-center">
-          <h2 className="text-2xl md:text-3xl font-light tracking-tight mb-4">
-            Discover More
-          </h2>
-          <p className="text-neutral-600 mb-8 max-w-md mx-auto">
-            Explore our other collections, each curated with passion and expertise.
-          </p>
-          <Link
-            href="/collections"
-            className="inline-flex items-center gap-2 px-8 py-3 border border-neutral-200 text-sm font-medium hover:bg-neutral-50 hover:border-neutral-400 transition-colors"
-          >
-            View All Collections
-            <ArrowRight className="h-4 w-4" />
-          </Link>
-        </div>
-      </section>
-    </PageLayout>
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: `${SITE_URL}/` },
+          { name: "Eyewear", url: `${SITE_URL}/eyewear` },
+          { name: collectionTitle, url: `${SITE_URL}/collections/${handle}` },
+        ]}
+      />
+      {itemListLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+        />
+      )}
+      <CollectionPageClient />
+    </>
   );
 }
