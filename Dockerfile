@@ -30,6 +30,9 @@ COPY . .
 
 RUN grep -q 'output' next.config.* || sed -i '/nextConfig/a\  output: "standalone",' next.config.*
 
+# Set NODE_ENV to production so Next.js loads .env.production during build
+ENV NODE_ENV=production
+
 RUN pnpm run build
 
 FROM node:20-alpine AS runner
