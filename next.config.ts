@@ -1,8 +1,12 @@
 import type { NextConfig } from "next";
 
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+  enabled: process.env.ANALYZE === "true",
+});
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-const nextConfig: NextConfig = {
+const baseConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
@@ -235,4 +239,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(baseConfig);

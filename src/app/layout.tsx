@@ -87,6 +87,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* Resource hints to reduce DNS lookup and connection time */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://us-assets.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://us.i.posthog.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://cdn.vernont.com" />
+      </head>
       <body className={manrope.className}>
         <OrganizationJsonLd
           name="Vernont"
@@ -116,8 +127,10 @@ export default function RootLayout({
             tag arrives in denied state. The cookie consent banner flips
             analytics_storage to 'granted' on Accept all. wait_for_update
             gives the banner a 500ms window to update consent before GA
-            fires its first hit, preventing a denied-then-granted flicker. */}
-        <Script id="gtag-consent-default" strategy="beforeInteractive">
+            fires its first hit, preventing a denied-then-granted flicker.
+            Using afterInteractive instead of beforeInteractive to avoid
+            render blocking while still loading before GA4. */}
+        <Script id="gtag-consent-default" strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 window.gtag = window.gtag || gtag;
