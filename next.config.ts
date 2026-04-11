@@ -25,6 +25,15 @@ const baseConfig: NextConfig = {
         source: "/api/proxy/:path*",
         destination: `${API_URL}/:path*`,
       },
+      // Pinterest catalog feeds - proxy to backend
+      {
+        source: "/pinterest-catalog.csv",
+        destination: `${API_URL}/pinterest-catalog.csv`,
+      },
+      {
+        source: "/pinterest-catalog.xml",
+        destination: `${API_URL}/pinterest-catalog.xml`,
+      },
     ];
   },
   images: {
