@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { Manrope } from "next/font/google";
+import Script from "next/script";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { Providers } from "@/components/Providers";
@@ -15,6 +16,7 @@ import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
 import { PostHogPageView } from "@/providers/PostHogProvider";
+import { CookieConsent } from "@/components/ui/CookieConsent";
 
 // GA4 measurement ID (format: G-XXXXXXXXXX). Read at build time from the
 // environment so local dev / preview deploys don't pollute production
@@ -109,6 +111,24 @@ export default function RootLayout({
           <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>
+        <CookieConsent />
+        {/* Google Consent Mode v2 — declare defaults BEFORE GA4 loads so the
+            tag arrives in denied state. The cookie consent banner flips
+            analytics_storage to 'granted' on Accept all. wait_for_update
+            gives the banner a 500ms window to update consent before GA
+            fires its first hit, preventing a denied-then-granted flicker. */}
+        <Script id="gtag-consent-default" strategy="beforeInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+window.gtag = window.gtag || gtag;
+gtag('consent', 'default', {
+  'analytics_storage': 'denied',
+  'ad_storage': 'denied',
+  'ad_user_data': 'denied',
+  'ad_personalization': 'denied',
+  'wait_for_update': 500
+});`}
+        </Script>
         {/* Google Analytics 4 — only injects the gtag script + page view
             handler when NEXT_PUBLIC_GA_MEASUREMENT_ID is set at build time.
             The @next/third-parties helper loads the script with

@@ -31,6 +31,24 @@ if (typeof window !== "undefined") {
       },
       loaded: (posthog) => {
         if (process.env.NODE_ENV === "development") posthog.debug();
+
+        // Respect cookie consent: opt out by default, CookieConsent banner
+        // will call opt_in_capturing() if user accepts analytics.
+        const stored = window.localStorage.getItem("vernont-consent");
+        if (stored) {
+          try {
+            const consent = JSON.parse(stored);
+            if (!consent.analytics) {
+              posthog.opt_out_capturing();
+            }
+          } catch {
+            // Malformed consent — default to opted out
+            posthog.opt_out_capturing();
+          }
+        } else {
+          // No consent recorded yet — opt out until user chooses
+          posthog.opt_out_capturing();
+        }
       },
     });
   }
