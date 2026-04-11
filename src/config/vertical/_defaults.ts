@@ -30,7 +30,6 @@ export const DEFAULT_HELP_LINKS: NavLink[] = [
 // Company links (not vertical-specific)
 export const DEFAULT_COMPANY_LINKS: NavLink[] = [
   { label: "About Us", href: "/about" },
-  { label: "Careers", href: "/careers" },
   { label: "Press", href: "/press" },
   { label: "Affiliate Program", href: "/affiliates" },
 ];

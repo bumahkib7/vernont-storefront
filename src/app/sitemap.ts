@@ -18,7 +18,6 @@ const staticPages = [
   { url: "/about", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/contact", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/faq", priority: 0.5, changeFrequency: "monthly" as const },
-  { url: "/careers", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/craftsmanship", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/imprint", priority: 0.3, changeFrequency: "yearly" as const },
   { url: "/press", priority: 0.5, changeFrequency: "monthly" as const },

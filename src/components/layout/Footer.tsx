@@ -114,7 +114,6 @@ export function Footer() {
               <li><Link href="/sustainability" className="hover:text-[#1A1A1A] transition-colors">Sustainability</Link></li>
               <li><Link href="/stores" className="hover:text-[#1A1A1A] transition-colors">Stores</Link></li>
               <li><Link href="/press" className="hover:text-[#1A1A1A] transition-colors">Press</Link></li>
-              <li><Link href="/careers" className="hover:text-[#1A1A1A] transition-colors">Careers</Link></li>
             </ul>
           </div>
 
