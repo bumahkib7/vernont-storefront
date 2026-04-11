@@ -10,6 +10,13 @@ const baseConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
+  // Target modern browsers to reduce polyfills (ES2020+)
+  // Excludes legacy polyfills for Array.at, flat, flatMap, Object.fromEntries, etc.
+  // .browserslistrc specifies modern browser targets
+  compiler: {
+    // Remove console.* in production
+    removeConsole: process.env.NODE_ENV === "production",
+  },
   // Proxy /api/proxy/* to the backend so auth cookies are same-origin (fixes mobile Safari)
   async rewrites() {
     return [

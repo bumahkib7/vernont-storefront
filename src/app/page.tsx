@@ -34,6 +34,7 @@ export default function Home() {
                  fill
                  sizes="(max-width: 1024px) 100vw, 50vw"
                  priority
+                 fetchPriority="high"
                  className="object-cover object-center opacity-90 transition-transform duration-1000 hover:scale-105"
               />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-8 py-3">
@@ -75,7 +76,7 @@ export default function Home() {
                  src="/images/home/maui_jim_banner_1775729742958.png"
                  alt="Maui Jim Banner"
                  fill
-                 sizes="100vw"
+                 sizes="(max-width: 768px) 100vw, 1400px"
                  className="object-cover"
               />
               <div className="absolute bottom-8 left-8 text-white">
