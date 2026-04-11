@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Manrope } from "next/font/google";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
@@ -97,7 +98,9 @@ export default function RootLayout({
           searchUrl={`${siteUrl}/eyewear`}
         />
         <Providers>
-          <PostHogPageView />
+          <Suspense fallback={null}>
+            <PostHogPageView />
+          </Suspense>
           {children}
           <CartDrawer />
           <CompareDrawer />
