@@ -88,6 +88,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Pinterest domain verification */}
+        <meta name="p:domain_verify" content="86f00dd301eb1410f0605a138f895bef"/>
         {/* Resource hints to reduce DNS lookup and connection time */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
