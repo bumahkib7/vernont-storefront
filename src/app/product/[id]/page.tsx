@@ -23,6 +23,16 @@ interface ProductSeoData {
   reviewCount: number;
   averageRating: number | null;
   updatedAt: string | null;
+  // Admin-editable SEO overrides — all optional, backend returns null
+  // when the admin hasn't configured an override for the field.
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  metaKeywords?: string[] | null;
+  canonicalUrl?: string | null;
+  noindex?: boolean;
+  ogTitle?: string | null;
+  ogDescription?: string | null;
+  ogImageUrl?: string | null;
 }
 
 async function fetchProductSeo(handle: string): Promise<ProductSeoData | null> {
@@ -54,49 +64,72 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Optical Frames"
     : "Sunglasses";
 
-  // Build SEO-optimized title: "{Brand} {ProductName} | Designer {Category} | Vernont"
-  const pageTitle = product.brandName
+  // Auto-generated defaults — used when the admin hasn't set an override.
+  const defaultTitle = product.brandName
     ? `${product.brandName} ${product.title} | Designer ${category} | Vernont`
     : `${product.title} | Designer ${category} | Vernont`;
 
-  // Enhanced description with brand, benefits, and call-to-action (155-160 chars)
   const baseDescription = product.description?.substring(0, 80) || product.title;
-  const description = product.brandName
-    ? `Shop ${product.brandName} ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`.substring(0, 160)
-    : `Shop ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`.substring(0, 160);
+  const defaultDescription = (product.brandName
+    ? `Shop ${product.brandName} ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`
+    : `Shop ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`
+  ).substring(0, 160);
 
-  const thumbnail = product.thumbnail || product.images?.[0];
+  // Override resolution: backend-edited meta wins, everything else falls
+  // back to the auto-generated defaults above.
+  const pageTitle = product.metaTitle?.trim() || defaultTitle;
+  const description = product.metaDescription?.trim() || defaultDescription;
+
+  // OG / share-card fields cascade: og* override → meta* override → auto.
+  const ogTitle = product.ogTitle?.trim() || pageTitle;
+  const ogDescription = product.ogDescription?.trim() || description;
+  const shareImage = product.ogImageUrl?.trim() || product.thumbnail || product.images?.[0];
+
+  // Canonical: admin override wins, otherwise the product's own path.
   const canonicalPath = `/product/${product.handle || id}`;
+  const canonical = product.canonicalUrl?.trim() || canonicalPath;
 
-  // Build keywords array
-  const keywords = [
-    product.brandName || "",
-    product.title,
-    `designer ${category.toLowerCase()}`,
-    "luxury eyewear",
-    "authentic designer glasses",
-    category.toLowerCase(),
-  ].filter(Boolean);
+  // Keywords: admin-supplied list wins. Falls back to a computed default
+  // that blends brand + title + category for legacy PDPs.
+  const keywords =
+    product.metaKeywords && product.metaKeywords.length > 0
+      ? product.metaKeywords
+      : [
+          product.brandName || "",
+          product.title,
+          `designer ${category.toLowerCase()}`,
+          "luxury eyewear",
+          "authentic designer glasses",
+          category.toLowerCase(),
+        ].filter(Boolean);
+
+  // Robots: if the admin flagged noindex, emit the directive and also
+  // block Googlebot explicitly. Otherwise use the standard indexable
+  // defaults from the root layout.
+  const robots = product.noindex
+    ? { index: false, follow: true, googleBot: { index: false, follow: true } }
+    : undefined;
 
   return {
     title: pageTitle,
     description,
     keywords,
+    robots,
     openGraph: {
-      title: pageTitle,
-      description,
+      title: ogTitle,
+      description: ogDescription,
       type: "website",
-      images: thumbnail ? [{ url: thumbnail, width: 1200, height: 630 }] : [],
+      images: shareImage ? [{ url: shareImage, width: 1200, height: 630 }] : [],
       url: `${SITE_URL}${canonicalPath}`,
     },
     twitter: {
       card: "summary_large_image",
-      title: pageTitle,
-      description,
-      images: thumbnail ? [thumbnail] : [],
+      title: ogTitle,
+      description: ogDescription,
+      images: shareImage ? [shareImage] : [],
     },
     alternates: {
-      canonical: canonicalPath,
+      canonical,
     },
   };
 }
