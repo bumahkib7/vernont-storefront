@@ -38,7 +38,7 @@ function AccordionSection({ title, children, defaultOpen = false }: { title: str
   const [open, setOpen] = useState(defaultOpen);
   return (
     <div className="border-b border-[#E5E5E5]">
-      <button onClick={() => setOpen(!open)} className="flex items-center justify-between w-full py-5 text-left">
+      <button onClick={() => setOpen(!open)} className="flex items-center justify-between w-full py-5 text-left" aria-expanded={open}>
         <span className="text-base" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}>{title}</span>
         <CaretDown className={`w-5 h-5 text-[#999] transition-transform ${open ? "rotate-180" : ""}`} />
       </button>
@@ -203,18 +203,20 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
           <div className="flex items-start gap-4 lg:gap-8 lg:self-start lg:sticky lg:top-[80px]">
             {/* Vertical dot navigation - Moved OUTSIDE the image to prevent overlap */}
             {productImages.length > 1 && (
-              <div className="flex flex-col gap-4 relative z-20">
+              <div className="flex flex-col gap-3 relative z-20">
                 {productImages.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImage(index)}
-                    className={`w-3.5 h-3.5 rounded-full border-2 transition-colors ${
+                    className={`w-11 h-11 rounded-full border-2 transition-colors flex items-center justify-center ${
                       selectedImage === index
                         ? "bg-[#1A1A1A] border-[#1A1A1A]"
                         : "bg-transparent border-[#999] hover:border-[#1A1A1A]"
                     }`}
                     aria-label={`View image ${index + 1}`}
-                  />
+                  >
+                    <span className={`w-2.5 h-2.5 rounded-full ${selectedImage === index ? "bg-white" : "bg-[#999]"}`} />
+                  </button>
                 ))}
               </div>
             )}
@@ -298,7 +300,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
                 {formatPriceMajor(currentPrice, currency)}
               </span>
               {hasDiscount && (
-                <span className="ml-3 text-sm text-[#999] line-through tabular-nums">
+                <span className="ml-3 text-sm text-[#767676] line-through tabular-nums">
                   {formatPriceMajor(currentOriginalPrice!, currency)}
                 </span>
               )}

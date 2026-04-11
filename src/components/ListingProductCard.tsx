@@ -113,7 +113,7 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
                £ {Number(product.price).toFixed(2)}
              </span>
              {hasDiscount && (
-               <span className="text-[#999] line-through">
+               <span className="text-[#767676] line-through">
                  £ {Number(product.originalPrice).toFixed(2)}
                </span>
              )}

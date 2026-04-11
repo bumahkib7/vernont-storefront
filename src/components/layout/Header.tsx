@@ -106,7 +106,7 @@ export function Header() {
         <div className="max-w-[1400px] w-full mx-auto px-4 lg:px-8 py-5 flex items-center justify-between">
           {/* Mobile List & Logo */}
           <div className="flex items-center gap-4 min-w-[200px]">
-            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-1" aria-label="Open menu">
+            <button onClick={() => setMobileMenuOpen(true)} className="lg:hidden p-3" aria-label="Open menu">
               <List className="w-6 h-6" />
             </button>
             <Link href="/" className="font-bold text-xl lg:text-3xl tracking-[0.35em] text-[#1A1A1A] whitespace-nowrap">
@@ -182,7 +182,7 @@ export function Header() {
                GBP £ <CaretRight className="w-3 h-3 rotate-90" />
             </div>
 
-            <Link href="/account" className="p-1 hover:opacity-60 transition-opacity hidden sm:block">
+            <Link href="/account" className="p-1 hover:opacity-60 transition-opacity hidden sm:block" aria-label="My account">
               <User className="w-5 h-5 text-[#1A1A1A]" />
             </Link>
 
@@ -193,7 +193,7 @@ export function Header() {
               <ShoppingBag className="w-5 h-5" />
             </button>
 
-            <Link href="/wishlist" className="p-1 hover:opacity-60 transition-opacity text-[#1A1A1A] hidden sm:block">
+            <Link href="/wishlist" className="p-1 hover:opacity-60 transition-opacity text-[#1A1A1A] hidden sm:block" aria-label="Wishlist">
               <Heart className="w-5 h-5" />
             </Link>
           </div>
@@ -374,7 +374,7 @@ export function Header() {
                 <button
                   type="button"
                   onClick={() => { setSearchOpen(false); setSearchQuery(""); setSearchResults([]); }}
-                  className="p-1"
+                  className="p-3"
                   aria-label="Close search"
                 >
                   <X className="w-5 h-5" />

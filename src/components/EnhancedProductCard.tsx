@@ -70,7 +70,7 @@ export function EnhancedProductCard({ product, index = 0 }: EnhancedProductCardP
             {formatPriceMajor(product.price, currency)}
           </p>
           {product.originalPrice && product.originalPrice > product.price && (
-            <p className="text-[12px] text-[#999] line-through tabular-nums">
+            <p className="text-[12px] text-[#767676] line-through tabular-nums">
               {formatPriceMajor(product.originalPrice, currency)}
             </p>
           )}

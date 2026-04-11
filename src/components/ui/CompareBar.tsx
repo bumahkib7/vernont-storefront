@@ -42,10 +42,10 @@ export function CompareBar() {
                   e.stopPropagation();
                   removeFromCompare(item.id);
                 }}
-                className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-[var(--destructive)] text-white flex items-center justify-center hover:bg-red-600 transition-colors"
+                className="absolute -top-1 -right-1 w-8 h-8 rounded-full bg-[var(--destructive)] text-white flex items-center justify-center hover:bg-red-600 transition-colors"
                 aria-label={`Remove ${item.name} from compare`}
               >
-                <X className="w-2.5 h-2.5" />
+                <X className="w-3 h-3" />
               </button>
             </div>
           ))}

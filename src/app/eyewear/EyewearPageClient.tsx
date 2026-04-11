@@ -84,6 +84,7 @@ function FilterSection({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 w-full text-left py-1.5"
+        aria-expanded={isOpen}
       >
         <span className="text-[#666] text-[10px] w-3 flex justify-center pb-0.5">
           {isOpen ? "^" : "v"}
@@ -198,7 +199,7 @@ function ActiveFilterBadge({ label, onRemove }: { label: string; onRemove: () =>
   return (
     <span className="inline-flex items-center gap-1 px-3 py-1 bg-[var(--primary)] text-white text-sm rounded-sm">
       {label}
-      <button onClick={onRemove} className="hover:bg-white/20 rounded-full p-0.5 transition-colors">
+      <button onClick={onRemove} className="hover:bg-white/20 rounded-full p-2 transition-colors" aria-label={`Remove ${label} filter`}>
         <X className="w-3 h-3" />
       </button>
     </span>
@@ -224,7 +225,7 @@ function SeoFaqItem({ question, answer }: { question: string; answer: string }) 
         >
           {question}
         </span>
-        <span className="flex-shrink-0 w-6 h-6 flex items-center justify-center text-[#666]">
+        <span className="flex-shrink-0 w-11 h-11 flex items-center justify-center text-[#666]">
           {open ? <Minus className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
         </span>
       </button>
