@@ -107,11 +107,11 @@ const baseConfig: NextConfig = {
         key: "Content-Security-Policy",
         value: [
           "default-src 'self' data: blob:",
-          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://eu-assets.i.posthog.com https://us-assets.i.posthog.com https://api.mapbox.com https://static.klaviyo.com https://js.stripe.com",
+          "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://eu-assets.i.posthog.com https://us-assets.i.posthog.com https://api.mapbox.com https://static.klaviyo.com https://static-tracking.klaviyo.com https://js.stripe.com",
           "style-src 'self' 'unsafe-inline' https://api.mapbox.com https://fonts.googleapis.com",
           "img-src 'self' data: blob: https: http:",
           "font-src 'self' data: https://fonts.gstatic.com",
-          "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://*.analytics.google.com https://eu.i.posthog.com https://eu.posthog.com https://us.i.posthog.com https://us.posthog.com https://eu-assets.i.posthog.com https://us-assets.i.posthog.com https://api.mapbox.com https://events.mapbox.com https://*.runixcloud.dev https://*.amazonaws.com https://*.workers.dev https://cdn.vernont.com https://images.unsplash.com https://api.stripe.com http://localhost:* http://127.0.0.1:*",
+          "connect-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://region1.google-analytics.com https://*.analytics.google.com https://eu.i.posthog.com https://eu.posthog.com https://us.i.posthog.com https://us.posthog.com https://eu-assets.i.posthog.com https://us-assets.i.posthog.com https://*.klaviyo.com https://api.mapbox.com https://events.mapbox.com https://*.runixcloud.dev https://*.amazonaws.com https://*.workers.dev https://cdn.vernont.com https://images.unsplash.com https://api.stripe.com http://localhost:* http://127.0.0.1:*",
           "frame-src 'self' https://js.stripe.com https://challenges.cloudflare.com",
           "object-src 'none'",
           "base-uri 'self'",
@@ -183,7 +183,7 @@ const baseConfig: NextConfig = {
       {
         key: "Content-Security-Policy-Report-Only",
         value:
-          "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.posthog.com https://*.i.posthog.com https://js.stripe.com https://challenges.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.runixcloud.dev https://www.google-analytics.com https://*.analytics.google.com https://*.posthog.com https://*.i.posthog.com https://api.stripe.com; frame-src https://js.stripe.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';",
+          "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://*.posthog.com https://*.i.posthog.com https://js.stripe.com https://challenges.cloudflare.com https://static.klaviyo.com https://static-tracking.klaviyo.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https:; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://*.runixcloud.dev https://www.google-analytics.com https://region1.google-analytics.com https://*.analytics.google.com https://*.posthog.com https://*.i.posthog.com https://api.stripe.com https://*.klaviyo.com; frame-src https://js.stripe.com https://challenges.cloudflare.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none';",
       },
     ];
 
