@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect, useRef } from "react";
+import { productsApi } from "@/lib/api";
 
 const MAX_COMPARE_ITEMS = 3;
 const LOCAL_STORAGE_KEY = "vernont-compare";
@@ -82,6 +83,44 @@ export function CompareProvider({ children }: { children: ReactNode }) {
       console.error("Failed to save compare items:", error);
     }
   }, []);
+
+  // Track which product IDs we've already fetched specs for
+  const fetchedSpecsRef = useRef<Set<string>>(new Set());
+
+  // Fetch specs for items that don't have them yet
+  useEffect(() => {
+    for (const item of items) {
+      if (fetchedSpecsRef.current.has(item.id)) continue;
+      if (item.frameShape || item.frameMaterial || item.measurements) continue;
+
+      fetchedSpecsRef.current.add(item.id);
+
+      productsApi.getSpecifications(item.id).then((specs) => {
+        if (!specs) return;
+        setItems((prev) => {
+          const updated = prev.map((i) => {
+            if (i.id !== item.id) return i;
+            return {
+              ...i,
+              frameShape: i.frameShape || specs.frame?.shape || undefined,
+              frameMaterial: i.frameMaterial || specs.frame?.material || undefined,
+              madeIn: i.madeIn || specs.madeIn || undefined,
+              uvProtection: i.uvProtection || specs.lens?.uvProtection || undefined,
+              lensType: i.lensType || (specs.lens?.technology ? [specs.lens.technology] : undefined),
+              measurements: i.measurements || (specs.measurements ? {
+                lensWidth: specs.measurements.lensWidth ?? undefined,
+                bridgeWidth: specs.measurements.bridgeWidth ?? undefined,
+                templeLength: specs.measurements.templeLength ?? undefined,
+                lensHeight: specs.measurements.lensHeight ?? undefined,
+              } : undefined),
+            };
+          });
+          saveToLocalStorage(updated);
+          return updated;
+        });
+      });
+    }
+  }, [items, saveToLocalStorage]);
 
   // Add item to compare
   const addToCompare = useCallback(
