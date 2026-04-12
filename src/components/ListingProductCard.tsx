@@ -47,6 +47,17 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
             second angle without opening the PDP. Falls back silently to the
             single image when there's only one. */}
         <div className="relative w-full aspect-[4/3] bg-white mb-4">
+          {/* Social proof badge — top left */}
+          {product.isBestseller ? (
+            <span className="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider bg-[#1A1A1A] text-white rounded-sm">
+              Bestseller
+            </span>
+          ) : product.isNew ? (
+            <span className="absolute top-1.5 left-1.5 z-10 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wider bg-[#F5F5F5] text-[#1A1A1A] border border-[#E5E5E5] rounded-sm">
+              New
+            </span>
+          ) : null}
+
           {/* Wishlist Heart — Top Right absolute */}
           <button
             onClick={handleToggleWishlist}

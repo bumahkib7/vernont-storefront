@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGap, ShoppingBag } from "@/components/icons";
@@ -151,7 +152,7 @@ export function Header() {
                              className="flex items-center gap-3 w-full p-2 text-left hover:bg-[#F5F5F5] transition-colors"
                            >
                              <div className="w-10 h-10 bg-[#F5F5F5]">
-                                {product.thumbnail && <img src={product.thumbnail} alt="" className="w-full h-full object-contain" />}
+                                {product.thumbnail && <Image src={product.thumbnail} alt={product.title || "Product thumbnail"} width={40} height={40} className="w-full h-full object-contain" />}
                              </div>
                              <div className="flex-1 min-w-0">
                                <p className="text-xs truncate text-[#1A1A1A]">{product.title}</p>
@@ -392,7 +393,7 @@ export function Header() {
                           className="flex items-center gap-3 w-full p-3 text-left hover:bg-[#F5F5F5] transition-colors"
                         >
                           {product.thumbnail ? (
-                            <img src={product.thumbnail} alt="" className="w-12 h-12 object-contain" />
+                            <Image src={product.thumbnail} alt={product.title || "Product thumbnail"} width={48} height={48} className="w-12 h-12 object-contain" />
                           ) : (
                             <div className="w-12 h-12 bg-[#F5F5F5] flex items-center justify-center text-[10px] text-[#999]">No img</div>
                           )}

@@ -294,6 +294,8 @@ function EyewearPageContent() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [gridCols, setGridCols] = useState<3 | 4>(3);
   const [quickFilter, setQuickFilter] = useState("");
+  const [page, setPage] = useState(0);
+  const PAGE_SIZE = 24;
 
   // Filters state
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -303,7 +305,7 @@ function EyewearPageContent() {
 
   // Build API query params from active filters
   const apiParams = useMemo(() => {
-    const params: Parameters<typeof useProducts>[0] = { limit: 100 };
+    const params: Parameters<typeof useProducts>[0] = { limit: PAGE_SIZE, page };
 
     // Check for sale parameter
     const saleParam = searchParams.get('sale');
@@ -374,7 +376,7 @@ function EyewearPageContent() {
     }
 
     return params;
-  }, [searchParams, quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy]);
+  }, [searchParams, quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy, page]);
 
   const { data: productsData, isLoading, error } = useProducts(apiParams);
   const { data: brandsData } = useBrands();
@@ -432,18 +434,21 @@ function EyewearPageContent() {
     setSelectedCategories((prev) =>
       prev.includes(categoryId) ? prev.filter((c) => c !== categoryId) : [...prev, categoryId]
     );
+    setPage(0);
   };
 
   const toggleBrand = (brandId: string) => {
     setSelectedBrands((prev) =>
       prev.includes(brandId) ? prev.filter((b) => b !== brandId) : [...prev, brandId]
     );
+    setPage(0);
   };
 
   const toggleSize = (size: string) => {
     setSelectedSizes((prev) =>
       prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]
     );
+    setPage(0);
   };
 
   const clearFilters = () => {
@@ -452,6 +457,7 @@ function EyewearPageContent() {
     setSelectedPriceRange(null);
     setSelectedSizes([]);
     setQuickFilter("");
+    setPage(0);
   };
 
   const hasActiveFilters = selectedCategories.length > 0 || selectedBrands.length > 0 || selectedPriceRange !== null || selectedSizes.length > 0 || quickFilter !== "";
@@ -522,7 +528,7 @@ function EyewearPageContent() {
               <Checkbox
                 key={range.label}
                 checked={selectedPriceRange === index}
-                onChange={() => setSelectedPriceRange(selectedPriceRange === index ? null : index)}
+                onChange={() => { setSelectedPriceRange(selectedPriceRange === index ? null : index); setPage(0); }}
                 label={range.label}
               />
             ))}
@@ -616,7 +622,7 @@ function EyewearPageContent() {
                   </button>
                 )}
                 <p className="text-sm text-[var(--muted-foreground)] tabular-nums">
-                  {isLoading ? "Loading..." : `${displayProducts.length} products`}
+                  {isLoading ? "Loading..." : `${displayProducts.length} of ${productsData?.total ?? 0} products`}
                 </p>
               </div>
 
@@ -638,7 +644,7 @@ function EyewearPageContent() {
                   </button>
                 </div>
 
-                <SortDropdown value={sortBy} onChange={setSortBy} />
+                <SortDropdown value={sortBy} onChange={(v) => { setSortBy(v); setPage(0); }} />
               </div>
             </div>
 
@@ -713,7 +719,7 @@ function EyewearPageContent() {
               {QUICK_FILTERS.map((filter) => (
                 <button
                   key={filter.value}
-                  onClick={() => setQuickFilter(filter.value === quickFilter ? "" : filter.value)}
+                  onClick={() => { setQuickFilter(filter.value === quickFilter ? "" : filter.value); setPage(0); }}
                   className={`px-6 py-1.5 text-[11px] font-bold tracking-widest rounded-full transition-all ${
                     quickFilter === filter.value
                       ? "bg-[#666] text-white border-2 border-[#666]"
@@ -766,13 +772,34 @@ function EyewearPageContent() {
               </div>
             )}
 
-            {displayProducts.length > 0 && (
-              <div className="text-center mt-12">
-                <p className="text-sm text-[var(--muted-foreground)] mb-4">
-                  Showing {displayProducts.length} of {displayProducts.length} products
-                </p>
-              </div>
-            )}
+            {displayProducts.length > 0 && (() => {
+              const total = productsData?.total ?? 0;
+              const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+              const isLastPage = page >= totalPages - 1;
+              return (
+                <div className="flex flex-col items-center gap-4 mt-12">
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    Page {page + 1} of {totalPages}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      disabled={page === 0}
+                      onClick={() => { setPage((p) => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="px-5 py-2 text-sm border border-[var(--border)] rounded-md hover:border-[var(--primary)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      disabled={isLastPage}
+                      onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="px-5 py-2 text-sm border border-[var(--border)] rounded-md hover:border-[var(--primary)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
           </section>
         </div>
 

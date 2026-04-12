@@ -102,6 +102,9 @@ export default function RootLayout({
         {/* Klaviyo tracking — gated on marketing consent via ConsentGatedScript */}
       </head>
       <body className={manrope.className}>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[9999] focus:bg-white focus:px-4 focus:py-2 focus:text-[#1A1A1A] focus:border focus:border-[#1A1A1A] focus:rounded">
+          Skip to main content
+        </a>
         {/* GTM noscript fallback removed — GTM is now consent-gated */}
         <OrganizationJsonLd
           name="Vernont"

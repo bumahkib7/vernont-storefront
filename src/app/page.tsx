@@ -23,7 +23,7 @@ export default function Home() {
     <div className="min-h-screen bg-white text-[#1A1A1A] w-full">
       <Header />
 
-      <main className="w-full">
+      <main id="main-content" className="w-full">
 
         {/* === S1: Miu Miu Hero Split === */}
         <section className="w-full lg:h-[800px] flex flex-col lg:flex-row border-b border-[#E5E5E5]">
