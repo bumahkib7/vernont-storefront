@@ -17,6 +17,7 @@ import { content } from "@/config/vertical";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
 import { PostHogPageView } from "@/providers/PostHogProvider";
 import { CookieConsent } from "@/components/ui/CookieConsent";
+import { ConsentGatedScript } from "@/components/ui/ConsentGatedScript";
 
 // GA4 measurement ID (format: G-XXXXXXXXXX). Read at build time from the
 // environment so local dev / preview deploys don't pollute production
@@ -88,15 +89,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        {/* Google Tag Manager */}
-        <script dangerouslySetInnerHTML={{
-          __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-N5T9JHV2');`
-        }} />
-        {/* End Google Tag Manager */}
+        {/* Google Tag Manager — gated on analytics consent via ConsentGatedScript */}
         {/* Pinterest domain verification */}
         <meta name="p:domain_verify" content="86f00dd301eb1410f0605a138f895bef"/>
         {/* Resource hints to reduce DNS lookup and connection time */}
@@ -106,20 +99,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <link rel="dns-prefetch" href="https://eu.i.posthog.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://cdn.vernont.com" />
-        {/* Klaviyo tracking */}
-        <script async type='text/javascript' src='https://static.klaviyo.com/onsite/js/WTXx5d/klaviyo.js?company_id=WTXx5d'></script>
+        {/* Klaviyo tracking — gated on marketing consent via ConsentGatedScript */}
       </head>
       <body className={manrope.className}>
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-N5T9JHV2"
-            height="0"
-            width="0"
-            style={{display: 'none', visibility: 'hidden'}}
-          />
-        </noscript>
-        {/* End Google Tag Manager (noscript) */}
+        {/* GTM noscript fallback removed — GTM is now consent-gated */}
         <OrganizationJsonLd
           name="Vernont"
           url={siteUrl}
@@ -170,10 +153,18 @@ gtag('consent', 'default', {
             via the Next.js router, so SPA page views are captured without
             any manual wiring. */}
         {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
-        {/* Klaviyo initialization */}
-        <Script id="klaviyo-init" strategy="afterInteractive">
-          {`!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();`}
-        </Script>
+        {/* Klaviyo — only loads when marketing consent is granted */}
+        <ConsentGatedScript
+          src="https://static.klaviyo.com/onsite/js/WTXx5d/klaviyo.js?company_id=WTXx5d"
+          category="marketing"
+          strategy="lazyOnload"
+        />
+        {/* GTM — only loads when analytics consent is granted */}
+        <ConsentGatedScript
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-N5T9JHV2"
+          category="analytics"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );
