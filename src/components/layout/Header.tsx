@@ -8,6 +8,7 @@ import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGa
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
 import { useBrands } from "@/lib/hooks";
@@ -28,6 +29,7 @@ export function Header() {
 
   const { itemCount, openCart } = useCart();
   const { itemCount: wishlistCount } = useWishlist();
+  const { itemCount: compareCount, openDrawer: openCompare } = useCompare();
   const { storeName } = useStoreBranding();
   const { mainNav } = useNavigation();
 
@@ -193,6 +195,21 @@ export function Header() {
               </div>
               <ShoppingBag className="w-5 h-5" />
             </button>
+
+            {compareCount > 0 && (
+              <button
+                onClick={openCompare}
+                className="relative p-1 hover:opacity-60 transition-opacity text-[#1A1A1A] hidden sm:block"
+                aria-label={`Compare ${compareCount} products`}
+              >
+                <div className="absolute top-0 right-0 translate-x-1/2 -translate-y-1/2 w-[18px] h-[18px] bg-black text-white text-[10px] font-bold flex items-center justify-center rounded-full">
+                  {compareCount}
+                </div>
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                  <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M12 3v18" />
+                </svg>
+              </button>
+            )}
 
             <Link href="/wishlist" className="p-1 hover:opacity-60 transition-opacity text-[#1A1A1A] hidden sm:block" aria-label="Wishlist">
               <Heart className="w-5 h-5" />

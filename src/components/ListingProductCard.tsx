@@ -45,6 +45,11 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
         handle: product.handle || product.id,
         frameMaterial: product.frameMaterial,
         frameShape: product.frameShape,
+        lensType: product.lensType,
+        measurements: product.measurements,
+        uvProtection: product.uvProtection,
+        weight: product.weight,
+        madeIn: product.madeIn,
       });
     }
   };
@@ -98,12 +103,12 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
               className={`p-1.5 hover:scale-110 transition-all rounded-full ${
                 isInCompare
                   ? "bg-[#1A1A1A] text-white"
-                  : "text-[#666] hover:text-[#1A1A1A]"
+                  : "bg-white/80 text-[#666] hover:text-[#1A1A1A] hover:bg-white"
               } ${isCompareFull && !isInCompare ? "opacity-30 cursor-not-allowed" : ""}`}
               aria-label={isInCompare ? "Remove from compare" : "Add to compare"}
               title={isCompareFull && !isInCompare ? "Compare is full (max 3)" : isInCompare ? "Remove from compare" : "Compare"}
             >
-              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M12 3v18" />
               </svg>
             </button>
