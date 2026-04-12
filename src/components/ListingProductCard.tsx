@@ -7,6 +7,7 @@ import { Heart } from "@/components/icons";
 import { motion } from "framer-motion";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCompare } from "@/context/CompareContext";
 import type { DisplayProduct } from "@/lib/transforms";
 
 interface ListingProductCardProps {
@@ -18,13 +19,35 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
   const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { addToCompare, removeFromCompare, isComparing, isCompareFull } = useCompare();
   const router = useRouter();
 
   const isWishlisted = isInWishlist(product.id);
+  const isInCompare = isComparing(product.id);
   const productUrl = `/product/${product.handle || product.id}`;
   const hasDiscount = product.originalPrice && product.originalPrice > product.price;
 
   const handleCardClick = () => router.push(productUrl);
+
+  const handleToggleCompare = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInCompare) {
+      removeFromCompare(product.id);
+    } else if (!isCompareFull) {
+      addToCompare({
+        id: product.id,
+        name: product.name,
+        brand: product.brand,
+        thumbnail: product.image,
+        price: product.price,
+        originalPrice: product.originalPrice,
+        handle: product.handle || product.id,
+        frameMaterial: product.frameMaterial,
+        frameShape: product.frameShape,
+      });
+    }
+  };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -58,19 +81,33 @@ export function ListingProductCard({ product, index = 0 }: ListingProductCardPro
             </span>
           ) : null}
 
-          {/* Wishlist Heart — Top Right absolute */}
-          <button
-            onClick={handleToggleWishlist}
-            className="absolute top-0 right-0 z-10 p-2 hover:scale-110 transition-transform"
-            aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            <Heart
-              weight={isWishlisted ? "fill" : "regular"}
-              className={`h-5 w-5 ${
-                isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"
-              }`}
-            />
-          </button>
+          {/* Action buttons — Top Right absolute */}
+          <div className="absolute top-0 right-0 z-10 flex flex-col gap-1 p-1.5">
+            <button
+              onClick={handleToggleWishlist}
+              className="p-1.5 hover:scale-110 transition-transform"
+              aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"}
+            >
+              <Heart
+                weight={isWishlisted ? "fill" : "regular"}
+                className={`h-5 w-5 ${isWishlisted ? "text-[#1A1A1A]" : "text-[#666]"}`}
+              />
+            </button>
+            <button
+              onClick={handleToggleCompare}
+              className={`p-1.5 hover:scale-110 transition-all rounded-full ${
+                isInCompare
+                  ? "bg-[#1A1A1A] text-white"
+                  : "text-[#666] hover:text-[#1A1A1A]"
+              } ${isCompareFull && !isInCompare ? "opacity-30 cursor-not-allowed" : ""}`}
+              aria-label={isInCompare ? "Remove from compare" : "Add to compare"}
+              title={isCompareFull && !isInCompare ? "Compare is full (max 3)" : isInCompare ? "Remove from compare" : "Compare"}
+            >
+              <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <path d="M9 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h4M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M12 3v18" />
+              </svg>
+            </button>
+          </div>
 
           {!isImageLoaded && (
             <div className="absolute inset-0 bg-transparent animate-pulse delay-150" />
