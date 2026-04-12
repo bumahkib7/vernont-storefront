@@ -126,7 +126,9 @@ export default function RootLayout({
           <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>
-        <CookieConsent />
+        <Suspense fallback={null}>
+          <CookieConsent />
+        </Suspense>
         {/* Google Consent Mode v2 — declare defaults BEFORE GA4 loads so the
             tag arrives in denied state. The cookie consent banner flips
             analytics_storage to 'granted' on Accept all. wait_for_update
@@ -157,12 +159,14 @@ gtag('consent', 'default', {
         <ConsentGatedScript
           src="https://static.klaviyo.com/onsite/js/WTXx5d/klaviyo.js?company_id=WTXx5d"
           category="marketing"
+          vendorId="klaviyo"
           strategy="lazyOnload"
         />
         {/* GTM — only loads when analytics consent is granted */}
         <ConsentGatedScript
           src="https://www.googletagmanager.com/gtm.js?id=GTM-N5T9JHV2"
           category="analytics"
+          vendorId="gtm"
           strategy="lazyOnload"
         />
       </body>
