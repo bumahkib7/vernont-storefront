@@ -733,12 +733,22 @@ function EyewearPageContent() {
             {isLoading ? (
               <div className={`grid grid-cols-2 lg:grid-cols-${gridCols} gap-6 lg:gap-8`}>
                 {[...Array(12)].map((_, i) => (
-                  <div key={i} className="animate-pulse">
-                    <div className="aspect-square bg-[var(--surface)] rounded-lg mb-3" />
-                    <div className="h-3 bg-[var(--surface)] rounded w-1/3 mb-2" />
-                    <div className="h-4 bg-[var(--surface)] rounded w-3/4 mb-2" />
-                    <div className="h-4 bg-[var(--surface)] rounded w-1/4" />
-                  </div>
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: i * 0.03 }}
+                    className="border border-[#E5E5E5] p-2 lg:p-4 bg-white"
+                  >
+                    <div className="relative w-full aspect-[4/3] bg-[#FAFAFA] mb-4 overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                    </div>
+                    <div className="flex flex-col items-center gap-2 px-1 mb-2">
+                      <div className="h-3 w-3/4 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: `${i * 80}ms` }} />
+                      <div className="h-3 w-1/3 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: `${i * 80 + 50}ms` }} />
+                      <div className="h-3 w-16 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: `${i * 80 + 100}ms` }} />
+                    </div>
+                  </motion.div>
                 ))}
               </div>
             ) : error ? (

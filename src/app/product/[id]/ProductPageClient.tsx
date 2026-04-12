@@ -109,13 +109,75 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
   if (isLoading) {
     return (
       <PageLayout>
-        <div className="px-4 lg:px-6 py-8">
-          <div className="grid lg:grid-cols-[1fr_400px] gap-8">
-            <div className="aspect-square bg-[#F0F0F0] animate-pulse" />
-            <div className="space-y-4">
-              <div className="h-6 w-24 bg-[#F0F0F0] animate-pulse" />
-              <div className="h-8 w-48 bg-[#F0F0F0] animate-pulse" />
-              <div className="h-4 w-32 bg-[#F0F0F0] animate-pulse" />
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-8">
+          {/* Breadcrumb skeleton */}
+          <div className="flex items-center gap-2 mb-8">
+            <div className="h-3 w-12 bg-[#F0F0F0] rounded-sm animate-pulse" />
+            <div className="h-3 w-3 bg-[#F0F0F0] rounded-sm animate-pulse" />
+            <div className="h-3 w-16 bg-[#F0F0F0] rounded-sm animate-pulse" />
+            <div className="h-3 w-3 bg-[#F0F0F0] rounded-sm animate-pulse" />
+            <div className="h-3 w-32 bg-[#F0F0F0] rounded-sm animate-pulse" />
+          </div>
+
+          <div className="grid lg:grid-cols-[1fr_440px] gap-12">
+            {/* Left: Image gallery skeleton */}
+            <div className="flex gap-4">
+              {/* Thumbnails */}
+              <div className="hidden lg:flex flex-col gap-3">
+                {[...Array(4)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="w-16 h-16 bg-[#F5F5F5] animate-pulse"
+                    style={{ animationDelay: `${i * 100}ms` }}
+                  />
+                ))}
+              </div>
+              {/* Main image */}
+              <div className="flex-1 aspect-square bg-[#FAFAFA] animate-pulse relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+              </div>
+            </div>
+
+            {/* Right: Product info skeleton */}
+            <div className="space-y-6">
+              {/* Brand */}
+              <div className="h-3 w-20 bg-[#F0F0F0] rounded-sm animate-pulse" />
+              {/* Title */}
+              <div className="space-y-2">
+                <div className="h-7 w-3/4 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: "50ms" }} />
+                <div className="h-7 w-1/2 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: "100ms" }} />
+              </div>
+              {/* Price */}
+              <div className="h-6 w-24 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: "150ms" }} />
+              {/* Trust badges */}
+              <div className="flex gap-6 py-4 border-y border-[#F0F0F0]">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex items-center gap-2" style={{ animationDelay: `${200 + i * 50}ms` }}>
+                    <div className="w-4 h-4 bg-[#F0F0F0] rounded-full animate-pulse" />
+                    <div className="h-3 w-24 bg-[#F0F0F0] rounded-sm animate-pulse" />
+                  </div>
+                ))}
+              </div>
+              {/* Variant selector */}
+              <div className="space-y-3">
+                <div className="h-3 w-16 bg-[#F0F0F0] rounded-sm animate-pulse" />
+                <div className="flex gap-2">
+                  {[...Array(3)].map((_, i) => (
+                    <div key={i} className="h-10 w-24 bg-[#F5F5F5] border border-[#E5E5E5] animate-pulse" style={{ animationDelay: `${300 + i * 50}ms` }} />
+                  ))}
+                </div>
+              </div>
+              {/* Add to cart button */}
+              <div className="h-14 w-full bg-[#E8E8E8] animate-pulse" style={{ animationDelay: "400ms" }} />
+              {/* Accordion sections */}
+              <div className="space-y-0 pt-4">
+                {[...Array(4)].map((_, i) => (
+                  <div key={i} className="flex items-center justify-between py-5 border-b border-[#F0F0F0]">
+                    <div className="h-4 w-32 bg-[#F0F0F0] rounded-sm animate-pulse" style={{ animationDelay: `${500 + i * 50}ms` }} />
+                    <div className="h-4 w-4 bg-[#F0F0F0] rounded-sm animate-pulse" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

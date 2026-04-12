@@ -590,6 +590,10 @@ button {
 /* ============================================
    ANIMATIONS
    ============================================ */
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+
 @keyframes cart-bump {
   0%, 100% { transform: scale(1) rotate(0deg); }
   25% { transform: scale(1.2) rotate(-10deg); }
