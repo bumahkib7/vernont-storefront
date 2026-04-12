@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { FloppyDisk, SpinnerGap, Check, WarningCircle, Trash, Lock, User } from "@/components/icons";
+import { FloppyDisk, SpinnerGap, Check, WarningCircle, Trash, Lock, User, DownloadSimple, ShieldCheck } from "@/components/icons";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -30,6 +30,33 @@ export default function ProfilePage() {
   const [isSaved, setIsSaved] = useState(false);
   const [error, setError] = useState("");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [downloading, setDownloading] = useState(false);
+  const [downloadError, setDownloadError] = useState("");
+
+  const handleDownloadData = async () => {
+    setDownloading(true);
+    setDownloadError("");
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+      const res = await fetch(`${API_URL}/store/customers/me/data-export`, {
+        credentials: "include",
+        headers: { "X-Requested-With": "XMLHttpRequest" },
+      });
+      if (!res.ok) throw new Error("Failed to export data");
+      const data = await res.json();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `vernont-data-export-${new Date().toISOString().split("T")[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      setDownloadError("Unable to download your data right now. Please try again later or contact privacy@vernont.com.");
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const deleteAccountMutation = useDeleteAccount({
     onSuccess: async () => {
@@ -236,6 +263,55 @@ export default function ProfilePage() {
             className="px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--background)] transition-colors text-sm font-medium"
           >
             Change Password
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Your Data */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.08 }}
+        className="bg-[var(--surface)] border border-[var(--border)] rounded-lg overflow-hidden"
+      >
+        <div className="flex items-center gap-3 p-5 border-b border-[var(--border)]">
+          <div className="h-10 w-10 rounded-lg bg-[var(--primary)]/10 flex items-center justify-center">
+            <ShieldCheck className="h-5 w-5 text-[var(--primary)]" />
+          </div>
+          <div>
+            <h2 className="font-semibold">Your Data</h2>
+            <p className="text-sm text-[var(--muted-foreground)]">Data portability &amp; privacy rights</p>
+          </div>
+        </div>
+
+        <div className="p-5">
+          <p className="text-sm text-[var(--muted-foreground)] mb-4">
+            Download a copy of all personal data we hold about you (GDPR Article 20).
+            The export includes your profile, orders, addresses, and preferences as a JSON file.
+          </p>
+
+          {downloadError && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-[var(--destructive)]/10 border border-[var(--destructive)]/20 rounded-lg text-[var(--destructive)] text-sm flex items-center gap-2"
+            >
+              <WarningCircle className="h-4 w-4" />
+              {downloadError}
+            </motion.div>
+          )}
+
+          <button
+            onClick={handleDownloadData}
+            disabled={downloading}
+            className="flex items-center gap-2 px-4 py-2 border border-[var(--border)] rounded-lg hover:bg-[var(--background)] transition-colors text-sm font-medium disabled:opacity-50"
+          >
+            {downloading ? (
+              <SpinnerGap className="h-4 w-4 animate-spin" />
+            ) : (
+              <DownloadSimple className="h-4 w-4" />
+            )}
+            Download My Data
           </button>
         </div>
       </motion.div>
