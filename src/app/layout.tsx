@@ -97,6 +97,8 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://eu.i.posthog.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://cdn.vernont.com" />
+        {/* Klaviyo tracking */}
+        <script async type='text/javascript' src='https://static.klaviyo.com/onsite/js/WTXx5d/klaviyo.js?company_id=WTXx5d'></script>
       </head>
       <body className={manrope.className}>
         <OrganizationJsonLd
@@ -149,6 +151,10 @@ gtag('consent', 'default', {
             via the Next.js router, so SPA page views are captured without
             any manual wiring. */}
         {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
+        {/* Klaviyo initialization */}
+        <Script id="klaviyo-init" strategy="afterInteractive">
+          {`!function(){if(!window.klaviyo){window._klOnsite=window._klOnsite||[];try{window.klaviyo=new Proxy({},{get:function(n,i){return"push"===i?function(){var n;(n=window._klOnsite).push.apply(n,arguments)}:function(){for(var n=arguments.length,o=new Array(n),w=0;w<n;w++)o[w]=arguments[w];var t="function"==typeof o[o.length-1]?o.pop():void 0,e=new Promise((function(n){window._klOnsite.push([i].concat(o,[function(i){t&&t(i),n(i)}]))}));return e}}})}catch(n){window.klaviyo=window.klaviyo||[],window.klaviyo.push=function(){var n;(n=window._klOnsite).push.apply(n,arguments)}}}}();`}
+        </Script>
       </body>
     </html>
   );
