@@ -138,9 +138,9 @@ function SearchContent() {
         const response = await productsApi.list({ query, limit: 50 });
         setProducts(response.items);
       } catch (err) {
-        console.error("MagnifyingGlass error:", err);
+        console.error("Search error:", err);
         setError("Unable to search products. Please try again.");
-        toast.error("MagnifyingGlass failed");
+        toast.error("Search failed");
       } finally {
         setLoading(false);
       }
@@ -210,7 +210,7 @@ function SearchContent() {
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {/* MagnifyingGlass Header */}
+        {/* Search Header */}
         <div className="mb-8">
           {/* Back link */}
           <Link
@@ -221,14 +221,14 @@ function SearchContent() {
             <span className="text-sm">Back to all {verticalConfig.label.toLowerCase()}</span>
           </Link>
 
-          {/* MagnifyingGlass input */}
+          {/* Search input */}
           <form onSubmit={handleSearch} className="relative max-w-2xl">
             <MagnifyingGlass className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--muted-foreground)]" />
             <input
               type="search"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="MagnifyingGlass by name, brand, SKU, or product ID..."
+              placeholder="Search by name, brand, SKU, or product ID..."
               className="w-full pl-12 pr-12 py-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg text-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all"
             />
             {searchInput && (
@@ -242,18 +242,17 @@ function SearchContent() {
             )}
           </form>
 
-          {/* MagnifyingGlass info */}
+          {/* Search info */}
           {query && (
             <div className="mt-6">
-              <h1 className="text-2xl lg:text-3xl font-bold">
-                MagnifyingGlass results for &ldquo;{query}&rdquo;
-              </h1>
-              {!loading && (
-                <p className="text-[var(--muted-foreground)] mt-2">
-                  {sortedProducts.length === 0
-                    ? "No products found"
-                    : `Found ${sortedProducts.length} product${sortedProducts.length !== 1 ? "s" : ""}`}
-                </p>
+              {!loading && sortedProducts.length > 0 ? (
+                <h1 className="text-2xl lg:text-3xl font-bold">
+                  {sortedProducts.length} result{sortedProducts.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
+                </h1>
+              ) : (
+                <h1 className="text-2xl lg:text-3xl font-bold">
+                  Search results for &ldquo;{query}&rdquo;
+                </h1>
               )}
             </div>
           )}
@@ -292,10 +291,10 @@ function SearchContent() {
               <MagnifyingGlass className="h-10 w-10 text-[var(--muted-foreground)]" />
             </div>
             <h2 className="text-2xl font-bold mb-4">
-              MagnifyingGlass our collection
+              Search our collection
             </h2>
             <p className="text-[var(--muted-foreground)] max-w-md mx-auto mb-8">
-              MagnifyingGlass by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
+              Search by product name, brand, SKU, or even product ID to find exactly what you&apos;re looking for.
             </p>
             <div className="flex flex-wrap justify-center gap-2">
               {productConfig.suggestedSearches.map((term) => (
@@ -331,8 +330,7 @@ function SearchContent() {
               No products found
             </h2>
             <p className="text-[var(--muted-foreground)] max-w-md mx-auto mb-8">
-              We couldn&apos;t find any products matching &ldquo;{query}&rdquo;.
-              Try different keywords or browse our collections.
+              No products found for &ldquo;{query}&rdquo;. Try a different search term.
             </p>
 
             {/* AI Suggestions */}

@@ -62,6 +62,10 @@ export { Gear } from '@phosphor-icons/react/dist/icons/Gear';
 
 // Communication
 export { EnvelopeSimple } from '@phosphor-icons/react/dist/icons/EnvelopeSimple';
+export { Copy } from '@phosphor-icons/react/dist/icons/Copy';
+export { ShareNetwork } from '@phosphor-icons/react/dist/icons/ShareNetwork';
+export { WhatsappLogo } from '@phosphor-icons/react/dist/icons/WhatsappLogo';
+export { Users } from '@phosphor-icons/react/dist/icons/Users';
 export { Phone } from '@phosphor-icons/react/dist/icons/Phone';
 export { ChatCircle } from '@phosphor-icons/react/dist/icons/ChatCircle';
 export { PaperPlaneRight } from '@phosphor-icons/react/dist/icons/PaperPlaneRight';

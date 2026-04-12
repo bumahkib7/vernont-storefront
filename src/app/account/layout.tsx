@@ -16,6 +16,7 @@ import {
   CaretRight,
   List,
   X,
+  Gift,
 } from "@/components/icons";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -26,6 +27,7 @@ const accountNavigation = [
   { name: "Orders", href: "/account/orders", icon: Package },
   { name: "Returns", href: "/account/returns", icon: ArrowCounterClockwise },
   { name: "Addresses", href: "/account/addresses", icon: MapPin },
+  { name: "Referrals", href: "/account/referrals", icon: Gift },
   { name: "Wishlist", href: "/wishlist", icon: Heart },
   { name: "Profile", href: "/account/profile", icon: Gear },
 ];

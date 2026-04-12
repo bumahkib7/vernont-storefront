@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { X, Minus, Plus, SpinnerGap, ShoppingBag, Truck, Gift } from "@/components/icons";
+import { ReferralCodeInput } from "@/components/ui/ReferralCodeInput";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart, formatPrice } from "@/context/CartContext";
 import { useStoreConfig } from "@/context/StoreConfigContext";
@@ -222,6 +223,9 @@ export function CartDrawer() {
                   <Gift className="w-4 h-4 text-[var(--accent)]" />
                   <span>Free samples included with your order</span>
                 </div>
+
+                {/* Referral code */}
+                <ReferralCodeInput />
 
                 {/* Subtotal */}
                 <div className="flex items-center justify-between">
