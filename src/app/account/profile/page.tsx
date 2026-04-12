@@ -37,8 +37,9 @@ export default function ProfilePage() {
     setDownloading(true);
     setDownloadError("");
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
-      const res = await fetch(`${API_URL}/store/customers/me/data-export`, {
+      // Use the same-origin proxy (/api/proxy) so auth cookies are forwarded
+      // correctly. Direct backend calls fail cross-origin on production.
+      const res = await fetch("/api/proxy/store/customers/me/data-export", {
         credentials: "include",
         headers: { "X-Requested-With": "XMLHttpRequest" },
       });
