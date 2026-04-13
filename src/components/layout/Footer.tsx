@@ -114,7 +114,7 @@ export function Footer() {
               <li><Link href="/about" className="hover:text-[#1A1A1A] transition-colors">About Us</Link></li>
               <li><Link href="/craftsmanship" className="hover:text-[#1A1A1A] transition-colors">Craftsmanship</Link></li>
               <li><Link href="/sustainability" className="hover:text-[#1A1A1A] transition-colors">Sustainability</Link></li>
-              <li><Link href="/stores" className="hover:text-[#1A1A1A] transition-colors">Stores</Link></li>
+
               <li><Link href="/press" className="hover:text-[#1A1A1A] transition-colors">Press</Link></li>
             </ul>
           </div>
