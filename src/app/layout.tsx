@@ -8,8 +8,7 @@ import { Providers } from "@/components/Providers";
 import { CartDrawer } from "@/components/ui/CartDrawer";
 import { CompareDrawer } from "@/components/ui/CompareDrawer";
 import { CompareBar } from "@/components/ui/CompareBar";
-// Newsletter popup disabled - using inline newsletter section instead
-// import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
+import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
 import { Toaster } from "sonner";
@@ -126,6 +125,7 @@ export default function RootLayout({
           <CompareDrawer />
           <CompareBar />
           <BackToTop />
+          <NewsletterPopup />
           <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>

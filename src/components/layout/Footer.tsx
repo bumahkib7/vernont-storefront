@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
+import { marketingApi } from "@/lib/api";
 import {
   VisaIcon,
   MastercardIcon,
@@ -16,12 +17,22 @@ export function Footer() {
   const { storeName } = useStoreBranding();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
+  const [subscribing, setSubscribing] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+    setSubscribing(true);
+    setError("");
+    try {
+      await marketingApi.publicSubscribe({ email });
       setSubscribed(true);
       setEmail("");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setSubscribing(false);
     }
   };
 
@@ -44,23 +55,28 @@ export function Footer() {
           {subscribed ? (
              <div className="text-[#5f9e90] text-sm">Thank you for subscribing!</div>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex w-full bg-white max-w-[600px] mx-auto shadow-sm">
-              <label htmlFor="newsletter-email" className="sr-only">Email address for newsletter</label>
-              <input
-                id="newsletter-email"
-                type="email"
-                placeholder="Enter your email to register"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="flex-1 py-3 px-4 outline-none text-[13px] bg-transparent placeholder:text-[#999]"
-              />
-              <button
-                type="submit"
-                className="bg-[#e5e5e5] text-[#595959] px-6 text-[11px] hover:bg-[#d5d5d5] hover:text-[#1A1A1A] font-bold tracking-[0.1em] transition-colors"
-              >
-                SUBMIT
-              </button>
+            <form onSubmit={handleSubscribe} className="flex flex-col items-center w-full max-w-[600px] mx-auto">
+              <div className="flex w-full bg-white shadow-sm">
+                <label htmlFor="newsletter-email" className="sr-only">Email address for newsletter</label>
+                <input
+                  id="newsletter-email"
+                  type="email"
+                  placeholder="Enter your email to register"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  disabled={subscribing}
+                  className="flex-1 py-3 px-4 outline-none text-[13px] bg-transparent placeholder:text-[#999]"
+                />
+                <button
+                  type="submit"
+                  disabled={subscribing}
+                  className="bg-[#e5e5e5] text-[#595959] px-6 text-[11px] hover:bg-[#d5d5d5] hover:text-[#1A1A1A] font-bold tracking-[0.1em] transition-colors disabled:opacity-50"
+                >
+                  {subscribing ? "SENDING..." : "SUBMIT"}
+                </button>
+              </div>
+              {error && <p className="text-red-600 text-xs mt-2">{error}</p>}
             </form>
           )}
         </div>

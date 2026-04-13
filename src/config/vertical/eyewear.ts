@@ -110,29 +110,7 @@ export const eyewearConfig: VerticalConfig = {
       { icon: Sparkle, text: "Free samples with every purchase" },
     ],
 
-    testimonials: [
-      {
-        id: 1,
-        text: "Perfect fit, arrived in 2 days. The quality of the frames is outstanding.",
-        author: "Sarah T.",
-        location: "London",
-        rating: 5,
-      },
-      {
-        id: 2,
-        text: "Best selection of designer eyewear I've found online. The cleaning kit is a nice touch.",
-        author: "James M.",
-        location: "Manchester",
-        rating: 5,
-      },
-      {
-        id: 3,
-        text: "Customer service helped me find the perfect frame shape for my face. Exceptional.",
-        author: "Emily R.",
-        location: "Edinburgh",
-        rating: 5,
-      },
-    ],
+    testimonials: [],
 
     newsletterCta: {
       headline: "Get 10% Off Your First Order",

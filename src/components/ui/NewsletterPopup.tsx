@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import { X, Sparkle, Gift, EnvelopeSimple } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { marketingApi } from "@/lib/api";
 
 export function NewsletterPopup() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     // Check if user has already seen or submitted
@@ -40,13 +43,23 @@ export function NewsletterPopup() {
     localStorage.setItem("vernont-newsletter-seen", "true");
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
-    localStorage.setItem("vernont-newsletter-seen", "subscribed");
-    setTimeout(() => {
-      setIsOpen(false);
-    }, 2500);
+    if (!email) return;
+    setIsSubmitting(true);
+    setError("");
+    try {
+      await marketingApi.publicSubscribe({ email });
+      setIsSubmitted(true);
+      localStorage.setItem("vernont-newsletter-seen", "subscribed");
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 2500);
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -125,14 +138,17 @@ export function NewsletterPopup() {
                           onChange={(e) => setEmail(e.target.value)}
                           placeholder="Enter your email address"
                           required
-                          className="w-full pl-12 pr-4 py-4 bg-secondary border border-border font-serif text-sm focus:outline-none focus:border-gold transition-colors"
+                          disabled={isSubmitting}
+                          className="w-full pl-12 pr-4 py-4 bg-secondary border border-border font-serif text-sm focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
                         />
                       </div>
+                      {error && <p className="text-red-600 text-xs text-center">{error}</p>}
                       <Button
                         type="submit"
+                        disabled={isSubmitting}
                         className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6"
                       >
-                        Subscribe & Get 10% Off
+                        {isSubmitting ? "Subscribing..." : "Subscribe & Get 10% Off"}
                       </Button>
                     </form>
 

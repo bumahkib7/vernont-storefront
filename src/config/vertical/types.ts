@@ -118,7 +118,7 @@ export interface ContentConfig {
   trustBandCatalog: IconBadge[];
   shippingFeatures: ShippingFeature[];
   announcements: Announcement[];
-  testimonials: Testimonial[];
+  testimonials?: Testimonial[];
   newsletterCta: { headline: string; description: string };
   footerDescription: string;
   visualCategories: VisualCategory[];

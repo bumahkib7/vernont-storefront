@@ -198,13 +198,6 @@ export default function Home() {
            </div>
         </section>
 
-        {/* Reviews section intentionally removed until a real review source
-            (Trustpilot / Reviews.io / own DB) is wired up. The previous
-            hardcoded testimonials with fake names, counts, and timestamps
-            were misleading — the site has no real reviews yet, so claiming
-            "33,470 reviews" and quoting customers by name reduces trust.
-            Re-add this block as a dynamic component once Vernont is
-            collecting real reviews. */}
 
       </main>
       
