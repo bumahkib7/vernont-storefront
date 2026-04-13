@@ -3,7 +3,7 @@ import { MetadataRoute } from "next";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export const revalidate = 3600;
+export const revalidate = 300; // 5 min — short so sitemap updates propagate quickly
 
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
@@ -61,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const response = await fetch(`${API_URL}/store/seo/sitemap`, {
-      next: { revalidate: 3600 },
+      next: { revalidate: 300 },
     });
 
     if (!response.ok) {
