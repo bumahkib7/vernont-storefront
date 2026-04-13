@@ -4,332 +4,146 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { CaretDown, Sparkle, Crown } from "@/components/icons";
+import { CaretDown } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
-import { CategoryButtons } from "@/components/CategoryButtons";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts, filterByGender } from "@/lib/transforms";
-import { useHeroScroll } from "@/lib/useHeroScroll";
 
-// Sort dropdown
-function SortDropdown({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (value: string) => void;
-}) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const options = [
-    { value: "featured", label: "Featured" },
-    { value: "price-low", label: "Price: Low to High" },
-    { value: "price-high", label: "Price: High to Low" },
-    { value: "newest", label: "Newest First" },
-  ];
-
-  const currentLabel = options.find((o) => o.value === value)?.label || "Featured";
-
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 text-sm border border-border px-4 py-2 hover:border-[var(--foreground)] transition-colors"
-      >
-        <span>Sort: {currentLabel}</span>
-        <CaretDown className={`h-4 w-4 transition-transform ${isOpen ? "rotate-180" : ""}`} />
-      </button>
-
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute right-0 top-full mt-2 bg-card border border-border shadow-lg z-20 min-w-[200px]"
-          >
-            {options.map((option) => (
-              <button
-                key={option.value}
-                onClick={() => {
-                  onChange(option.value);
-                  setIsOpen(false);
-                }}
-                className={`block w-full text-left px-4 py-3 text-sm hover:bg-secondary transition-colors ${
-                  value === option.value ? "text-[var(--secondary)]" : ""
-                }`}
-              >
-                {option.label}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
-// Loading skeleton
-function ProductsSkeleton() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-      {[...Array(8)].map((_, i) => (
-        <motion.div
-          key={i}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: i * 0.05 }}
-          className="animate-pulse"
-        >
-          <div className="aspect-[3/4] bg-secondary relative">
-            <div className="absolute inset-3 border border-[var(--secondary)]/10" />
-          </div>
-          <div className="pt-5 text-center space-y-2">
-            <div className="h-3 w-16 bg-secondary mx-auto" />
-            <div className="h-5 w-32 bg-secondary mx-auto" />
-            <div className="h-3 w-24 bg-secondary mx-auto" />
-            <div className="h-5 w-20 bg-secondary mx-auto" />
-          </div>
-        </motion.div>
-      ))}
-    </div>
-  );
-}
+const sortOptions = [
+  { value: "featured", label: "Featured" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" },
+  { value: "newest", label: "Newest First" },
+];
 
 export default function ForHimPage() {
   const [sortBy, setSortBy] = useState("featured");
-  const { heroRef, heroY, heroOpacity, heroScale } = useHeroScroll();
-
-  // Fetch products from API
+  const [sortOpen, setSortOpen] = useState(false);
   const { data: productsData, isLoading, error } = useProducts({ limit: 50 });
 
-  // Transform, filter, and sort products for men
   const displayProducts = useMemo(() => {
     if (!productsData?.items) return [];
-    const allProducts = transformProducts(productsData.items);
-    let menProducts = filterByGender(allProducts, 'men');
-
+    const all = transformProducts(productsData.items);
+    const filtered = filterByGender(all, "men");
     switch (sortBy) {
-      case "price-low":
-        return [...menProducts].sort((a, b) => a.price - b.price);
-      case "price-high":
-        return [...menProducts].sort((a, b) => b.price - a.price);
-      case "newest":
-        return [...menProducts].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
-      default:
-        return menProducts;
+      case "price-low": return [...filtered].sort((a, b) => a.price - b.price);
+      case "price-high": return [...filtered].sort((a, b) => b.price - a.price);
+      case "newest": return [...filtered].sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0));
+      default: return filtered;
     }
   }, [productsData, sortBy]);
 
+  const currentSortLabel = sortOptions.find((o) => o.value === sortBy)?.label || "Featured";
+
   return (
     <PageLayout>
-      {/* Immersive Hero */}
-      <section ref={heroRef} className="relative h-[70vh] min-h-[500px] flex items-center overflow-hidden">
-        <motion.div style={{ y: heroY, scale: heroScale }} className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=1920&q=80"
-            alt="Eyewear for Him"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/50" />
-        </motion.div>
-
-        <div className="absolute inset-6 md:inset-8 border border-[var(--secondary)]/20 pointer-events-none" />
-        <div className="absolute inset-10 md:inset-12 border border-[var(--secondary)]/10 pointer-events-none hidden md:block" />
-
-
-        {/* Content */}
-        <motion.div style={{ opacity: heroOpacity }} className="relative px-4 text-center text-white">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center justify-center gap-4 mb-6"
-          >
-            <span className="h-px w-12 bg-[var(--secondary)]" />
-            <Crown className="h-5 w-5 text-[var(--secondary)]" />
-            <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
-              Bold Sophistication
-            </span>
-            <Crown className="h-5 w-5 text-[var(--secondary)]" />
-            <span className="h-px w-12 bg-[var(--secondary)]" />
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-5xl md:text-7xl lg:text-8xl tracking-wider mb-6"
+      {/* Hero */}
+      <section className="relative h-[50vh] min-h-[380px] flex items-center justify-center overflow-hidden">
+        <Image
+          src="https://images.unsplash.com/photo-1595425970377-c9703cf48b6d?w=1920&q=80"
+          alt="Men's eyewear"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="relative text-center text-white px-4"
+        >
+          <p className="text-[11px] uppercase tracking-[0.2em] text-white/70 mb-3">Collection</p>
+          <h1
+            className="text-4xl md:text-6xl tracking-wide mb-4"
+            style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}
           >
             For Him
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
-            className="text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
-          >
-            Bold frames for the modern gentleman,
-            from classic aviators to refined rectangular silhouettes
-          </motion.p>
-
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ delay: 0.8, duration: 0.8 }}
-            className="mt-8 flex items-center justify-center gap-3"
-          >
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-[var(--secondary)]" />
-            <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-[var(--secondary)]" />
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-8 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-            className="w-px h-12 bg-gradient-to-b from-[var(--secondary)] to-transparent"
-          />
+          </h1>
+          <p className="text-sm md:text-base text-white/70 max-w-lg mx-auto">
+            From classic aviators to refined rectangular silhouettes
+          </p>
         </motion.div>
       </section>
 
-      {/* Products Section */}
-      <section className="py-16 md:py-24">
-        <div className="px-4">
-          {/* Section Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-12"
-          >
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <div className="h-px w-12 bg-gradient-to-r from-transparent to-[var(--secondary)]/50" />
-              <div className="w-2 h-2 rotate-45 bg-[var(--secondary)]" />
-              <div className="h-px w-12 bg-gradient-to-l from-transparent to-[var(--secondary)]/50" />
-            </div>
-            <h2 className="text-3xl md:text-4xl tracking-wide">
-              Men's Eyewear
-            </h2>
-          </motion.div>
-
-          {/* Toolbar */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex flex-wrap items-center justify-between gap-4 mb-12 pb-6 border-b border-border"
-          >
-            <p className="text-muted-foreground">
-              {isLoading ? (
-                <span className="inline-block w-32 h-4 bg-secondary animate-pulse" />
-              ) : (
-                `${displayProducts.length} ${displayProducts.length === 1 ? "frame" : "frames"}`
-              )}
-            </p>
-
-            <SortDropdown value={sortBy} onChange={setSortBy} />
-          </motion.div>
-
-          {/* Products Grid */}
-          {isLoading ? (
-            <ProductsSkeleton />
-          ) : error ? (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-center py-20"
+      {/* Products */}
+      <section className="max-w-[1400px] mx-auto px-4 lg:px-8 py-10 md:py-16">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#E5E5E5]">
+          <p className="text-[13px] text-[#666]">
+            {isLoading ? "Loading..." : `${displayProducts.length} frames`}
+          </p>
+          <div className="relative">
+            <button
+              onClick={() => setSortOpen(!sortOpen)}
+              className="flex items-center gap-2 text-[12px] border border-[#E5E5E5] px-4 py-2 hover:border-[#1A1A1A] transition-colors"
             >
-              <p className="text-muted-foreground">
-                Unable to load products. Please try again later.
-              </p>
-            </motion.div>
-          ) : displayProducts.length === 0 ? (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-center py-20"
-            >
-              <div className="w-16 h-16 mx-auto mb-6 border border-[var(--secondary)]/30 rotate-45" />
-              <h3 className="text-2xl tracking-wide mb-3">Coming Soon</h3>
-              <p className="text-muted-foreground mb-6">
-                Our masculine collection is being curated.
-              </p>
-              <Link href="/eyewear" className="btn-primary inline-block">
-                Browse All Eyewear
-              </Link>
-            </motion.div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-              {displayProducts.map((product, index) => (
+              Sort: {currentSortLabel}
+              <CaretDown className={`h-3 w-3 transition-transform ${sortOpen ? "rotate-180" : ""}`} />
+            </button>
+            <AnimatePresence>
+              {sortOpen && (
                 <motion.div
-                  key={product.id}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.05,
-                    ease: [0.165, 0.84, 0.44, 1]
-                  }}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  className="absolute right-0 top-full mt-1 bg-white border border-[#E5E5E5] shadow-lg z-20 min-w-[180px]"
                 >
-                  <ListingProductCard product={product} index={index} />
+                  {sortOptions.map((opt) => (
+                    <button
+                      key={opt.value}
+                      onClick={() => { setSortBy(opt.value); setSortOpen(false); }}
+                      className={`block w-full text-left px-4 py-2.5 text-[12px] hover:bg-[#F5F5F5] transition-colors ${
+                        sortBy === opt.value ? "font-medium text-[#1A1A1A]" : "text-[#666]"
+                      }`}
+                    >
+                      {opt.label}
+                    </button>
+                  ))}
                 </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <CategoryButtons title="Shop by Frame Shape" />
-
-      {/* Bottom CTA */}
-      <section className="py-20 bg-secondary relative overflow-hidden">
-        <div className="absolute inset-0 opacity-5">
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
-        <div className="px-4 relative">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center max-w-2xl mx-auto"
-          >
-            <div className="inline-flex items-center gap-2 mb-6">
-              <Sparkle className="h-5 w-5 text-[var(--secondary)]" />
-              <span className="text-[var(--secondary)] tracking-wider uppercase text-xs">
-                Personalized
-              </span>
-            </div>
-
-            <h2 className="text-3xl md:text-4xl tracking-wide mb-4">
-              Discover Your Style
-            </h2>
-            <p className="text-muted-foreground mb-8">
-              Use our face shape guide to find the perfect frames
-              that match your features and lifestyle
-            </p>
-
+        {isLoading ? (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {[...Array(9)].map((_, i) => (
+              <div key={i} className="border border-[#E5E5E5] p-2 lg:p-4 bg-white">
+                <div className="w-full aspect-[4/3] bg-[#FAFAFA] mb-4 relative overflow-hidden">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent -translate-x-full animate-[shimmer_2s_infinite]" />
+                </div>
+                <div className="flex flex-col items-center gap-2 px-1 mb-2">
+                  <div className="h-3 w-3/4 bg-[#F0F0F0] rounded-sm animate-pulse" />
+                  <div className="h-3 w-1/3 bg-[#F0F0F0] rounded-sm animate-pulse" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-20">
+            <p className="text-[#666] text-sm">Unable to load products. Please try again later.</p>
+          </div>
+        ) : displayProducts.length === 0 ? (
+          <div className="text-center py-20">
+            <h3 className="text-2xl mb-3" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}>
+              Coming Soon
+            </h3>
+            <p className="text-[#666] text-sm mb-6">Our men&apos;s collection is being curated.</p>
             <Link
               href="/eyewear"
-              className="btn-primary inline-block"
+              className="inline-block px-8 py-3 bg-[#1A1A1A] text-white text-[12px] font-medium uppercase tracking-[0.1em] hover:bg-[#333] transition-colors"
             >
-              Find Your Fit
+              Browse All Eyewear
             </Link>
-          </motion.div>
-        </div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
+            {displayProducts.map((product, index) => (
+              <ListingProductCard key={product.id} product={product} index={index} />
+            ))}
+          </div>
+        )}
       </section>
     </PageLayout>
   );
