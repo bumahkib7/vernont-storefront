@@ -14,7 +14,7 @@ export default function SustainabilityPage() {
       <section className="relative h-[50vh] min-h-[400px] flex items-center">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1473496169904-658ba7c44d8a?w=1920&q=80"
             alt="Sustainability"
             fill
             className="object-cover"
@@ -178,7 +178,7 @@ export default function SustainabilityPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-square">
               <Image
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=80"
+                src="https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&q=80"
                 alt="Sustainable materials"
                 fill
                 className="object-cover"

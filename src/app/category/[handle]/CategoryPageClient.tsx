@@ -32,11 +32,11 @@ const categoryMeta: Record<string, { image: string; description: string }> = {
     description: "Iconic trapezoidal frames that define casual elegance",
   },
   square: {
-    image: "https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1508296695146-257a814070b4?w=1920&q=80",
     description: "Angular frames that convey confidence and modern sensibility",
   },
   rectangular: {
-    image: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=1920&q=80",
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=1920&q=80",
     description: "Clean, proportioned frames with understated elegance",
   },
   oversized: {

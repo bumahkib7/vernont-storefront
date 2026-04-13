@@ -15,7 +15,7 @@ export default function CraftsmanshipPage() {
       <section className="relative h-[60vh] min-h-[500px] flex items-center">
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1600612253971-422e7f7faeb6?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1574258495973-f7a4e88f1e96?w=1920&q=80"
             alt="Vernont Craftsmanship"
             fill
             className="object-cover"
@@ -63,7 +63,7 @@ export default function CraftsmanshipPage() {
             </div>
             <div className="relative aspect-[4/5]">
               <Image
-                src="https://images.unsplash.com/photo-1541643600914-78b084683601?w=800&q=80"
+                src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80"
                 alt="Master artisan at work"
                 fill
                 className="object-cover"
@@ -144,7 +144,7 @@ export default function CraftsmanshipPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="relative aspect-[4/5] order-2 lg:order-1">
               <Image
-                src="https://images.unsplash.com/photo-1594035910387-fea47794261f?w=800&q=80"
+                src="https://images.unsplash.com/photo-1577803645773-f96470509666?w=800&q=80"
                 alt="Premium materials"
                 fill
                 className="object-cover"
