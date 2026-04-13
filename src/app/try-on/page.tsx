@@ -19,20 +19,29 @@ export default function TryOnPage() {
 
   return (
     <PageLayout>
-      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
+      <div className="max-w-4xl mx-auto px-4 py-16">
         {/* Hero */}
         <div className="text-center mb-16">
-          <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-[var(--primary)]/10 flex items-center justify-center">
-            <Camera className="h-10 w-10 text-[var(--primary)]" />
+          <div
+            className="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: "rgba(153, 153, 153, 0.1)" }}
+          >
+            <Camera className="h-10 w-10" style={{ color: "#999" }} />
           </div>
 
-          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
+          <h1
+            className="text-4xl md:text-5xl tracking-wide mb-4"
+            style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", color: "#1A1A1A" }}
+          >
             Virtual Try-On
           </h1>
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[var(--primary)]/10 text-[var(--primary)] rounded-full text-sm font-medium mb-6">
+          <div
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium mb-6"
+            style={{ backgroundColor: "rgba(153, 153, 153, 0.1)", color: "#999" }}
+          >
             Coming Soon
           </div>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-lg leading-relaxed">
+          <p className="max-w-2xl mx-auto text-lg leading-relaxed" style={{ color: "#666" }}>
             Try on any frame from our collection using your phone or webcam.
             See how different styles look on your face before you buy — powered by augmented reality.
           </p>
@@ -56,10 +65,16 @@ export default function TryOnPage() {
           ].map((feature) => (
             <div
               key={feature.title}
-              className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-6 text-center"
+              className="rounded-xl p-6 text-center"
+              style={{ backgroundColor: "#F5F5F5", border: "1px solid #E5E5E5" }}
             >
-              <h3 className="text-lg tracking-wide mb-2">{feature.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h3
+                className="text-lg tracking-wide mb-2"
+                style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", color: "#1A1A1A" }}
+              >
+                {feature.title}
+              </h3>
+              <p className="text-sm leading-relaxed" style={{ color: "#666" }}>
                 {feature.description}
               </p>
             </div>
@@ -67,16 +82,22 @@ export default function TryOnPage() {
         </div>
 
         {/* Email Capture */}
-        <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-8 md:p-12 text-center">
-          <h2 className="text-2xl tracking-wide mb-3">
+        <div
+          className="rounded-xl p-8 md:p-12 text-center"
+          style={{ backgroundColor: "#F5F5F5", border: "1px solid #E5E5E5" }}
+        >
+          <h2
+            className="text-2xl tracking-wide mb-3"
+            style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", color: "#1A1A1A" }}
+          >
             Be the First to Know
           </h2>
-          <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+          <p className="mb-8 max-w-md mx-auto" style={{ color: "#666" }}>
             Sign up to get notified when Virtual Try-On launches. Early access members get exclusive features.
           </p>
 
           {submitted ? (
-            <div className="flex items-center justify-center gap-2 text-[var(--success)]">
+            <div className="flex items-center justify-center gap-2" style={{ color: "#16a34a" }}>
               <Check className="h-5 w-5" />
               <span className="font-medium">You are on the list! We will notify you at launch.</span>
             </div>
@@ -87,12 +108,18 @@ export default function TryOnPage() {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-1 px-4 py-3 border border-[var(--border)] rounded-md bg-[var(--background)] focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent"
+                className="flex-1 px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:border-transparent"
+                style={{
+                  border: "1px solid #E5E5E5",
+                  backgroundColor: "#FFFFFF",
+                  color: "#1A1A1A",
+                }}
                 required
               />
               <button
                 type="submit"
-                className="px-6 py-3 bg-[var(--foreground)] text-[var(--background)] font-medium rounded-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                className="px-6 py-3 font-medium rounded-md hover:opacity-90 transition-opacity flex items-center justify-center gap-2"
+                style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF" }}
               >
                 <EnvelopeSimple className="h-4 w-4" />
                 Notify Me
@@ -103,13 +130,14 @@ export default function TryOnPage() {
 
         {/* Browse CTA */}
         <div className="text-center mt-12">
-          <p className="text-muted-foreground mb-4">
+          <p className="mb-4" style={{ color: "#666" }}>
             In the meantime, use our face shape guide to find your perfect frames.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <Link
               href="/eyewear"
               className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+              style={{ color: "#1A1A1A" }}
             >
               Face Shape Guide
               <ArrowRight className="h-4 w-4" />
@@ -117,6 +145,7 @@ export default function TryOnPage() {
             <Link
               href="/eyewear"
               className="inline-flex items-center gap-2 text-sm font-medium hover:underline"
+              style={{ color: "#1A1A1A" }}
             >
               Browse Eyewear
               <ArrowRight className="h-4 w-4" />

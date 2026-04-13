@@ -77,15 +77,18 @@ export default function CookiesPage() {
 
   return (
     <PageLayout>
-      <div className="mx-auto max-w-2xl px-4 py-20 md:py-28">
+      <div className="mx-auto max-w-2xl px-4 py-20 md:py-28" style={{ color: "#1A1A1A" }}>
         {/* Header */}
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4">
+        <p className="text-xs uppercase tracking-[0.2em] mb-4" style={{ color: "#999" }}>
           Privacy
         </p>
-        <h1 className="text-3xl md:text-4xl tracking-tight font-light mb-3">
+        <h1
+          className="text-3xl md:text-4xl tracking-tight font-light mb-3"
+          style={{ fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+        >
           Cookie Preferences
         </h1>
-        <p className="text-muted-foreground leading-relaxed mb-12">
+        <p className="leading-relaxed mb-12" style={{ color: "#666" }}>
           We use cookies to keep the site working, remember your choices, and
           understand how people use Vernont. You decide which you&apos;re
           comfortable with.
@@ -97,19 +100,25 @@ export default function CookiesPage() {
             <div
               key={cookie.id}
               className={`flex items-start justify-between gap-8 py-5 ${
-                i < cookies.length - 1 ? "border-b border-border" : ""
+                i < cookies.length - 1 ? "border-b" : ""
               }`}
+              style={i < cookies.length - 1 ? { borderColor: "#E5E5E5" } : undefined}
             >
               <div className="min-w-0">
                 <div className="flex items-center gap-3 mb-1">
-                  <span className="text-sm font-medium">{cookie.name}</span>
+                  <span className="text-sm font-medium" style={{ color: "#1A1A1A" }}>
+                    {cookie.name}
+                  </span>
                   {cookie.required && (
-                    <span className="text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                    <span
+                      className="text-[10px] uppercase tracking-[0.15em]"
+                      style={{ color: "#999" }}
+                    >
                       Always on
                     </span>
                   )}
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm leading-relaxed" style={{ color: "#666" }}>
                   {cookie.description}
                 </p>
               </div>
@@ -118,15 +127,17 @@ export default function CookiesPage() {
                 disabled={cookie.required}
                 aria-label={`Toggle ${cookie.name} cookies`}
                 className={`mt-1 relative shrink-0 inline-flex h-5 w-9 items-center rounded-full transition-colors ${
-                  cookie.enabled
-                    ? "bg-foreground"
-                    : "bg-muted-foreground/25"
-                } ${cookie.required ? "opacity-40 cursor-not-allowed" : "cursor-pointer"}`}
+                  cookie.required ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+                }`}
+                style={{
+                  backgroundColor: cookie.enabled ? "#1A1A1A" : "#E5E5E5",
+                }}
               >
                 <span
-                  className={`inline-block h-3.5 w-3.5 rounded-full bg-background transition-transform ${
+                  className={`inline-block h-3.5 w-3.5 rounded-full transition-transform ${
                     cookie.enabled ? "translate-x-[18px]" : "translate-x-[3px]"
                   }`}
+                  style={{ backgroundColor: "#FFFFFF" }}
                 />
               </button>
             </div>
@@ -138,7 +149,11 @@ export default function CookiesPage() {
           <Button
             onClick={acceptAll}
             size="sm"
-            className="bg-foreground text-background hover:bg-foreground/90 rounded-none px-6 text-xs uppercase tracking-wider"
+            className="rounded-none px-6 text-xs uppercase tracking-wider"
+            style={{
+              backgroundColor: "#1A1A1A",
+              color: "#FFFFFF",
+            }}
           >
             Accept all
           </Button>
@@ -147,6 +162,10 @@ export default function CookiesPage() {
             variant="outline"
             size="sm"
             className="rounded-none px-6 text-xs uppercase tracking-wider"
+            style={{
+              borderColor: "#E5E5E5",
+              color: "#1A1A1A",
+            }}
           >
             Essential only
           </Button>
@@ -154,22 +173,29 @@ export default function CookiesPage() {
             onClick={savePreferences}
             variant="ghost"
             size="sm"
-            className="text-xs uppercase tracking-wider text-muted-foreground"
+            className="text-xs uppercase tracking-wider"
+            style={{ color: "#666" }}
           >
             Save choices
           </Button>
         </div>
 
         {saved && (
-          <p className="text-sm text-muted-foreground mb-4">
+          <p className="text-sm mb-4" style={{ color: "#666" }}>
             Preferences saved.
           </p>
         )}
 
         {/* Policy text */}
-        <div className="mt-16 pt-10 border-t border-border space-y-8 text-sm text-muted-foreground leading-relaxed">
+        <div
+          className="mt-16 pt-10 border-t space-y-8 text-sm leading-relaxed"
+          style={{ borderColor: "#E5E5E5", color: "#666" }}
+        >
           <div>
-            <h2 className="text-foreground font-medium mb-2">
+            <h2
+              className="font-medium mb-2"
+              style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+            >
               What are cookies?
             </h2>
             <p>
@@ -180,7 +206,10 @@ export default function CookiesPage() {
           </div>
 
           <div>
-            <h2 className="text-foreground font-medium mb-2">
+            <h2
+              className="font-medium mb-2"
+              style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+            >
               How we use them
             </h2>
             <p>
@@ -192,7 +221,10 @@ export default function CookiesPage() {
           </div>
 
           <div>
-            <h2 className="text-foreground font-medium mb-2">
+            <h2
+              className="font-medium mb-2"
+              style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+            >
               Browser controls
             </h2>
             <p>
@@ -203,12 +235,20 @@ export default function CookiesPage() {
           </div>
 
           <div>
-            <h2 className="text-foreground font-medium mb-2">Questions</h2>
+            <h2
+              className="font-medium mb-2"
+              style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+            >
+              Questions
+            </h2>
             <p>
               Reach us at{" "}
               <a
                 href="mailto:privacy@vernont.com"
-                className="text-foreground underline underline-offset-4 decoration-muted-foreground/40 hover:decoration-foreground transition-colors"
+                className="underline underline-offset-4 transition-colors"
+                style={{ color: "#1A1A1A", textDecorationColor: "#E5E5E5" }}
+                onMouseEnter={(e) => (e.currentTarget.style.textDecorationColor = "#1A1A1A")}
+                onMouseLeave={(e) => (e.currentTarget.style.textDecorationColor = "#E5E5E5")}
               >
                 privacy@vernont.com
               </a>{" "}

@@ -1,100 +1,159 @@
-import { Package, Truck, ArrowsClockwise, Shield } from "@phosphor-icons/react/ssr";
-import { PageLayout } from "@/components/layout/PageLayout";
+"use client";
 
-export const metadata = {
-  title: "Shipping & Returns | Vernont",
-  description: "Information about Vernont shipping options, delivery times, and return policy.",
+import { Package, Truck, ArrowsClockwise, Shield } from "@phosphor-icons/react";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { motion } from "framer-motion";
+
+const headingFont = { fontFamily: "'Crimson Pro', 'Georgia', serif" };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fadeUp: any = {
+  hidden: { opacity: 0, y: 20 },
+  visible: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, duration: 0.5, ease: "easeOut" },
+  }),
 };
+
+const highlights = [
+  { icon: Truck, label: "UK Delivery", sub: "Fast & reliable" },
+  { icon: Package, label: "Gift Wrapping", sub: "Complimentary" },
+  { icon: ArrowsClockwise, label: "Easy Returns", sub: "30 days" },
+  { icon: Shield, label: "Secure Packaging", sub: "Protected delivery" },
+];
 
 export default function ShippingPage() {
   return (
     <PageLayout>
-      <div className="max-w-[1500px] mx-auto px-4 py-16 max-w-4xl">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
-            Shipping & Returns
+      <div className="max-w-4xl mx-auto px-4 py-16">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <h1
+            className="text-4xl md:text-5xl tracking-wide mb-4"
+            style={{ ...headingFont, color: "#1A1A1A" }}
+          >
+            Shipping &amp; Returns
           </h1>
-          <p className="text-muted-foreground">
+          <p style={{ color: "#666" }}>
             Everything you need to know about delivery and our return policy.
           </p>
-        </div>
+        </motion.div>
 
         {/* Highlights */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          <div className="text-center p-4">
-            <Truck className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
-            <p className="text-sm tracking-wide">UK Delivery</p>
-            <p className="text-xs text-muted-foreground">Fast & reliable</p>
-          </div>
-          <div className="text-center p-4">
-            <Package className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
-            <p className="text-sm tracking-wide">Gift Wrapping</p>
-            <p className="text-xs text-muted-foreground">Complimentary</p>
-          </div>
-          <div className="text-center p-4">
-            <ArrowsClockwise className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
-            <p className="text-sm tracking-wide">Easy Returns</p>
-            <p className="text-xs text-muted-foreground">30 days</p>
-          </div>
-          <div className="text-center p-4">
-            <Shield className="h-8 w-8 mx-auto mb-3 text-[var(--secondary)]" />
-            <p className="text-sm tracking-wide">Secure Packaging</p>
-            <p className="text-xs text-muted-foreground">Protected delivery</p>
-          </div>
+          {highlights.map((item, i) => (
+            <motion.div
+              key={item.label}
+              className="text-center p-4"
+              custom={i}
+              initial="hidden"
+              animate="visible"
+              variants={fadeUp}
+            >
+              <item.icon
+                className="h-8 w-8 mx-auto mb-3"
+                style={{ color: "#999" }}
+              />
+              <p
+                className="text-sm tracking-wide"
+                style={{ color: "#1A1A1A" }}
+              >
+                {item.label}
+              </p>
+              <p className="text-xs" style={{ color: "#666" }}>
+                {item.sub}
+              </p>
+            </motion.div>
+          ))}
         </div>
 
         {/* Shipping Information */}
-        <section className="mb-16">
-          <h2 className="text-2xl tracking-wide mb-6 pb-2 border-b border-border">
+        <motion.section
+          className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2
+            className="text-2xl tracking-wide mb-6 pb-2"
+            style={{
+              ...headingFont,
+              color: "#1A1A1A",
+              borderBottom: "1px solid #E5E5E5",
+            }}
+          >
             Shipping Information
           </h2>
 
           <div className="space-y-8">
             <div>
-              <h3 className="text-lg tracking-wide mb-3">Delivery Options</h3>
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Delivery Options
+              </h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-border">
-                      <th className="text-left py-3 font-normal">Shipping Method</th>
-                      <th className="text-left py-3 font-normal">Delivery Time</th>
-                      <th className="text-left py-3 font-normal">Cost</th>
+                    <tr style={{ borderBottom: "1px solid #E5E5E5" }}>
+                      <th
+                        className="text-left py-3 font-normal"
+                        style={{ color: "#1A1A1A" }}
+                      >
+                        Shipping Method
+                      </th>
+                      <th
+                        className="text-left py-3 font-normal"
+                        style={{ color: "#1A1A1A" }}
+                      >
+                        Delivery Time
+                      </th>
+                      <th
+                        className="text-left py-3 font-normal"
+                        style={{ color: "#1A1A1A" }}
+                      >
+                        Cost
+                      </th>
                     </tr>
                   </thead>
-                  <tbody className="text-muted-foreground">
-                    <tr className="border-b border-border">
-                      <td className="py-3">Standard (Germany)</td>
-                      <td className="py-3">2-3 business days</td>
-                      <td className="py-3">€4.95 (Free over €150)</td>
-                    </tr>
-                    <tr className="border-b border-border">
-                      <td className="py-3">Express (Germany)</td>
-                      <td className="py-3">1-2 business days</td>
-                      <td className="py-3">€9.95</td>
-                    </tr>
-                    <tr className="border-b border-border">
-                      <td className="py-3">Standard (EU)</td>
-                      <td className="py-3">3-5 business days</td>
-                      <td className="py-3">€7.95 (Free over €150)</td>
-                    </tr>
-                    <tr className="border-b border-border">
-                      <td className="py-3">Express (EU)</td>
-                      <td className="py-3">2-3 business days</td>
-                      <td className="py-3">€14.95</td>
-                    </tr>
-                    <tr className="border-b border-border">
-                      <td className="py-3">International</td>
-                      <td className="py-3">7-14 business days</td>
-                      <td className="py-3">From €19.95</td>
-                    </tr>
+                  <tbody style={{ color: "#666" }}>
+                    {[
+                      ["Standard (Germany)", "2-3 business days", "€4.95 (Free over €150)"],
+                      ["Express (Germany)", "1-2 business days", "€9.95"],
+                      ["Standard (EU)", "3-5 business days", "€7.95 (Free over €150)"],
+                      ["Express (EU)", "2-3 business days", "€14.95"],
+                      ["International", "7-14 business days", "From €19.95"],
+                    ].map(([method, time, cost]) => (
+                      <tr
+                        key={method}
+                        style={{ borderBottom: "1px solid #E5E5E5" }}
+                      >
+                        <td className="py-3">{method}</td>
+                        <td className="py-3">{time}</td>
+                        <td className="py-3">{cost}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3">Order Processing</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Order Processing
+              </h3>
+              <p className="leading-relaxed" style={{ color: "#666" }}>
                 Orders placed before 2:00 PM CET on business days are typically processed
                 and shipped the same day. Orders placed after this time or on weekends
                 will be processed the next business day.
@@ -102,30 +161,53 @@ export default function ShippingPage() {
             </div>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3">Tracking Your Order</h3>
-              <p className="text-muted-foreground leading-relaxed">
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Tracking Your Order
+              </h3>
+              <p className="leading-relaxed" style={{ color: "#666" }}>
                 Once your order has been shipped, you will receive an email with tracking
                 information. You can also track your order by logging into your account
                 or contacting our customer service team.
               </p>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Returns Policy */}
-        <section className="mb-16">
-          <h2 className="text-2xl tracking-wide mb-6 pb-2 border-b border-border">
+        <motion.section
+          className="mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <h2
+            className="text-2xl tracking-wide mb-6 pb-2"
+            style={{
+              ...headingFont,
+              color: "#1A1A1A",
+              borderBottom: "1px solid #E5E5E5",
+            }}
+          >
             Returns Policy
           </h2>
 
-          <div className="space-y-6 text-muted-foreground leading-relaxed">
+          <div className="space-y-6 leading-relaxed" style={{ color: "#666" }}>
             <p>
               We want you to be completely satisfied with your purchase. If for any reason
               you are not happy with your order, we offer a hassle-free return policy.
             </p>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3 text-foreground">Return Eligibility</h3>
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Return Eligibility
+              </h3>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Items must be returned within 30 days of delivery</li>
                 <li>Items must be unworn and in their original packaging with tags attached</li>
@@ -135,7 +217,12 @@ export default function ShippingPage() {
             </div>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3 text-foreground">How to Return</h3>
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                How to Return
+              </h3>
               <ol className="list-decimal pl-6 space-y-2">
                 <li>Contact our customer service team to request a return authorization</li>
                 <li>Receive your prepaid shipping label via email</li>
@@ -146,7 +233,12 @@ export default function ShippingPage() {
             </div>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3 text-foreground">Refunds</h3>
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Refunds
+              </h3>
               <p>
                 Refunds will be issued to your original payment method. Please allow 5-7
                 business days for the refund to appear on your statement after we process
@@ -156,7 +248,12 @@ export default function ShippingPage() {
             </div>
 
             <div>
-              <h3 className="text-lg tracking-wide mb-3 text-foreground">Exchanges</h3>
+              <h3
+                className="text-lg tracking-wide mb-3"
+                style={{ ...headingFont, color: "#1A1A1A" }}
+              >
+                Exchanges
+              </h3>
               <p>
                 If you would like to exchange an item for a different product, please
                 return the original item and place a new order for the desired product.
@@ -164,22 +261,36 @@ export default function ShippingPage() {
               </p>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Damaged Items */}
-        <section className="p-8 bg-secondary">
-          <h2 className="text-xl tracking-wide mb-4">
+        <motion.section
+          className="p-8"
+          style={{ backgroundColor: "#F5F5F5" }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.15 }}
+        >
+          <h2
+            className="text-xl tracking-wide mb-4"
+            style={{ ...headingFont, color: "#1A1A1A" }}
+          >
             Damaged or Incorrect Items?
           </h2>
-          <p className="text-muted-foreground mb-4">
+          <p className="mb-4" style={{ color: "#666" }}>
             If your order arrives damaged or you receive the wrong item, please contact
             us immediately. We will arrange for a replacement or full refund at no
             additional cost to you.
           </p>
-          <a href="/contact" className="text-sm text-[var(--secondary)] hover:underline">
-            Contact Customer Service →
+          <a
+            href="/contact"
+            className="text-sm hover:underline"
+            style={{ color: "#999" }}
+          >
+            Contact Customer Service &rarr;
           </a>
-        </section>
+        </motion.section>
       </div>
     </PageLayout>
   );

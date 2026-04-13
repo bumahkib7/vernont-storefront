@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { DownloadSimple, EnvelopeSimple } from "@phosphor-icons/react/ssr";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
@@ -37,15 +36,21 @@ export default function PressPage() {
   return (
     <PageLayout>
       {/* Hero */}
-      <section className="py-20 bg-secondary">
+      <section className="py-20" style={{ backgroundColor: "#F5F5F5" }}>
         <div className="max-w-[1500px] mx-auto px-4 text-center">
-          <p className="text-[var(--secondary)] tracking-wider uppercase text-sm mb-4">
+          <p
+            className="tracking-wider uppercase text-sm mb-4"
+            style={{ color: "#999" }}
+          >
             Media Center
           </p>
-          <h1 className="text-4xl md:text-5xl tracking-wide mb-4">
+          <h1
+            className="text-4xl md:text-5xl tracking-wide mb-4"
+            style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+          >
             Press
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto" style={{ color: "#666" }}>
             Media resources, press releases, and contact information for journalists and media professionals.
           </p>
         </div>
@@ -56,20 +61,30 @@ export default function PressPage() {
         <div className="max-w-[1500px] mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
             <div>
-              <h2 className="text-2xl tracking-wide mb-6">Press Contact</h2>
-              <p className="text-muted-foreground mb-6">
+              <h2
+                className="text-2xl tracking-wide mb-6"
+                style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+              >
+                Press Contact
+              </h2>
+              <p className="mb-6" style={{ color: "#666" }}>
                 For press inquiries, interview requests, and media information, please contact our press office.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <EnvelopeSimple className="h-5 w-5 text-[var(--secondary)]" />
-                  <span >press@vernont.com</span>
+                  <EnvelopeSimple className="h-5 w-5" style={{ color: "#999" }} />
+                  <span style={{ color: "#1A1A1A" }}>press@vernont.com</span>
                 </div>
               </div>
             </div>
             <div>
-              <h2 className="text-2xl tracking-wide mb-6">Media Kit</h2>
-              <p className="text-muted-foreground mb-6">
+              <h2
+                className="text-2xl tracking-wide mb-6"
+                style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+              >
+                Media Kit
+              </h2>
+              <p className="mb-6" style={{ color: "#666" }}>
                 DownloadSimple our media kit including logos, product images, and brand guidelines.
               </p>
               <Button className="btn-outline-luxury">
@@ -82,16 +97,21 @@ export default function PressPage() {
       </section>
 
       {/* Press Features */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="py-16" style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF" }}>
         <div className="max-w-[1500px] mx-auto px-4">
-          <h2 className="text-2xl tracking-wide text-center mb-12">
+          <h2
+            className="text-2xl tracking-wide text-center mb-12"
+            style={{ color: "#FFFFFF", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+          >
             As Seen In
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {pressFeatures.map((feature, index) => (
               <div key={index} className="text-center">
-                <p className="text-xl tracking-wider mb-2">{feature.publication}</p>
-                <p className="text-sm text-primary-foreground/70 italic">
+                <p className="text-xl tracking-wider mb-2" style={{ color: "#FFFFFF" }}>
+                  {feature.publication}
+                </p>
+                <p className="text-sm italic" style={{ color: "rgba(255,255,255,0.7)" }}>
                   &ldquo;{feature.quote}&rdquo;
                 </p>
               </div>
@@ -103,13 +123,26 @@ export default function PressPage() {
       {/* Press Releases */}
       <section className="py-16">
         <div className="max-w-[1500px] mx-auto px-4">
-          <h2 className="text-2xl tracking-wide mb-8">Press Releases</h2>
+          <h2
+            className="text-2xl tracking-wide mb-8"
+            style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+          >
+            Press Releases
+          </h2>
           <div className="space-y-6">
             {pressReleases.map((release, index) => (
-              <div key={index} className="p-6 border border-border hover:border-[var(--foreground)] transition-colors">
-                <p className="text-sm text-[var(--secondary)] mb-2">{release.date}</p>
-                <h3 className="text-lg tracking-wide mb-2">{release.title}</h3>
-                <p className="text-muted-foreground">{release.excerpt}</p>
+              <div
+                key={index}
+                className="p-6 border border-[#E5E5E5] hover:border-[#1A1A1A] transition-colors"
+              >
+                <p className="text-sm mb-2" style={{ color: "#999" }}>{release.date}</p>
+                <h3
+                  className="text-lg tracking-wide mb-2"
+                  style={{ color: "#1A1A1A", fontFamily: "'Crimson Pro', 'Georgia', serif" }}
+                >
+                  {release.title}
+                </h3>
+                <p style={{ color: "#666" }}>{release.excerpt}</p>
               </div>
             ))}
           </div>
