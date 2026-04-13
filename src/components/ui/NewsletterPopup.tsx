@@ -1,9 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Sparkle, Gift, EnvelopeSimple } from "@/components/icons";
+import { X, Sparkle, Gift } from "@/components/icons";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { marketingApi } from "@/lib/api";
 
 export function NewsletterPopup() {
@@ -130,26 +129,25 @@ export function NewsletterPopup() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
-                      <div className="relative">
-                        <EnvelopeSimple className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <input
-                          type="email"
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}
-                          placeholder="Enter your email address"
-                          required
-                          disabled={isSubmitting}
-                          className="w-full pl-12 pr-4 py-4 bg-secondary border border-border font-serif text-sm focus:outline-none focus:border-gold transition-colors disabled:opacity-50"
-                        />
-                      </div>
+                      <input
+                        type="email"
+                        name="newsletter_email"
+                        autoComplete="off"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter your email address"
+                        required
+                        disabled={isSubmitting}
+                        className="w-full px-4 py-4 bg-[#f5f5f5] border border-[#e0e0e0] text-sm focus:outline-none focus:border-[#1A1A1A] transition-colors disabled:opacity-50"
+                      />
                       {error && <p className="text-red-600 text-xs text-center">{error}</p>}
-                      <Button
+                      <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="w-full btn-luxury bg-gold text-primary hover:bg-gold/90 py-6"
+                        className="w-full py-4 bg-[#1A1A1A] text-white text-sm font-semibold tracking-widest uppercase hover:bg-[#333] transition-colors disabled:opacity-50"
                       >
                         {isSubmitting ? "Subscribing..." : "Subscribe & Get 10% Off"}
-                      </Button>
+                      </button>
                     </form>
 
                     <p className="font-serif text-xs text-muted-foreground text-center mt-6">
