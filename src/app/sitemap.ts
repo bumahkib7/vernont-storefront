@@ -22,7 +22,7 @@ const staticPages = [
   { url: "/imprint", priority: 0.3, changeFrequency: "yearly" as const },
   { url: "/press", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/size-guide", priority: 0.6, changeFrequency: "monthly" as const },
-  { url: "/stores", priority: 0.6, changeFrequency: "monthly" as const },
+
   { url: "/sustainability", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/try-on", priority: 0.7, changeFrequency: "monthly" as const },
   { url: "/shipping", priority: 0.4, changeFrequency: "monthly" as const },
