@@ -59,7 +59,7 @@ export default function TryOnPage() {
               description: "Our AR technology uses facial measurements to show frames at their actual proportions on your face.",
             },
             {
-              title: "FloppyDisk & Compare",
+              title: "Save & Compare",
               description: "Capture screenshots of your favourite looks and compare different styles side by side.",
             },
           ].map((feature) => (

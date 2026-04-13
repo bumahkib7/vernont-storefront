@@ -91,7 +91,7 @@ export function AiProductFinder() {
         </p>
       </div>
 
-      {/* MagnifyingGlass bar */}
+      {/* Search bar */}
       <form
         onSubmit={(e) => { e.preventDefault(); handleSearch(); }}
         className="relative max-w-2xl mx-auto mb-6"

@@ -107,7 +107,7 @@ export default function ForgotPasswordPage() {
                       <SpinnerGap className="h-4 w-4 animate-spin" />
                     ) : (
                       <>
-                        PaperPlaneRight Reset Link
+                        Send Reset Link
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </>
                     )}

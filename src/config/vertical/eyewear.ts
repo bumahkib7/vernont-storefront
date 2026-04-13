@@ -21,7 +21,7 @@ export const eyewearConfig: VerticalConfig = {
     metadataNamespace: "eyewear",
     defaultCategory: "Sunglasses",
 
-    searchPlaceholder: "MagnifyingGlass frames, brands...",
+    searchPlaceholder: "Search frames, brands...",
     popularSearches: ["Jacques Marie Mage", "Sunglasses", "Acetate", "Luxury", "Polarized", "Round"],
     suggestedSearches: ["Jacques Marie Mage", "Sunglasses", "Luxury Eyewear", "New Arrivals"],
 

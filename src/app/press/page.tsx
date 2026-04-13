@@ -85,11 +85,11 @@ export default function PressPage() {
                 Media Kit
               </h2>
               <p className="mb-6" style={{ color: "#666" }}>
-                DownloadSimple our media kit including logos, product images, and brand guidelines.
+                Download our media kit including logos, product images, and brand guidelines.
               </p>
               <Button className="btn-outline-luxury">
                 <DownloadSimple className="h-4 w-4 mr-2" />
-                DownloadSimple Media Kit
+                Download Media Kit
               </Button>
             </div>
           </div>

@@ -91,7 +91,16 @@ function ConfirmationContent() {
               total: orderResponse.total || 0,
               currency: orderResponse.currency_code?.toUpperCase() || "GBP",
               email: orderResponse.email || "",
-              shipping: undefined, // Shipping address would need to be added to schema
+              shipping: orderResponse.shipping_address ? {
+                first_name: orderResponse.shipping_address.first_name,
+                last_name: orderResponse.shipping_address.last_name,
+                address_1: orderResponse.shipping_address.address_1,
+                address_2: orderResponse.shipping_address.address_2,
+                city: orderResponse.shipping_address.city,
+                postal_code: orderResponse.shipping_address.postal_code,
+                country_code: orderResponse.shipping_address.country_code,
+                phone: orderResponse.shipping_address.phone,
+              } : undefined,
             };
 
             // Clear cart ID after successful order
@@ -127,7 +136,16 @@ function ConfirmationContent() {
             total: orderResponse.total || 0,
             currency: orderResponse.currency_code?.toUpperCase() || "GBP",
             email: orderResponse.email || "",
-            shipping: undefined, // Shipping address would need to be added to schema
+            shipping: orderResponse.shipping_address ? {
+              first_name: orderResponse.shipping_address.first_name,
+              last_name: orderResponse.shipping_address.last_name,
+              address_1: orderResponse.shipping_address.address_1,
+              address_2: orderResponse.shipping_address.address_2,
+              city: orderResponse.shipping_address.city,
+              postal_code: orderResponse.shipping_address.postal_code,
+              country_code: orderResponse.shipping_address.country_code,
+              phone: orderResponse.shipping_address.phone,
+            } : undefined,
           };
 
           setOrder(orderData);
@@ -355,7 +373,7 @@ function ConfirmationContent() {
               className="inline-flex items-center justify-center gap-2 px-8 py-3 border border-neutral-200 text-sm font-medium hover:bg-neutral-50 transition-colors w-full sm:w-auto"
             >
               <DownloadSimple className="h-4 w-4" />
-              DownloadSimple Receipt
+              Download Receipt
             </button>
           </div>
 

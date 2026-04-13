@@ -231,7 +231,7 @@ export default function ProfilePage() {
                 ) : (
                   <FloppyDisk className="h-4 w-4" />
                 )}
-                FloppyDisk Changes
+                Save Changes
               </button>
             </div>
           </form>

@@ -64,13 +64,13 @@ export default function OrdersPage() {
 
     const query = searchQuery.toLowerCase().trim().replace(/^#/, "");
 
-    // MagnifyingGlass by display_id
+    // Search by display_id
     const matchesDisplayId = order.display_id?.toString().includes(query);
 
-    // MagnifyingGlass by order id (last 8 characters or full id)
+    // Search by order id (last 8 characters or full id)
     const matchesOrderId = order.id.toLowerCase().includes(query);
 
-    // MagnifyingGlass by item titles (if items are loaded)
+    // Search by item titles (if items are loaded)
     const matchesItemTitle = order.items?.some(
       (item) => item.title?.toLowerCase().includes(query)
     );
@@ -89,7 +89,7 @@ export default function OrdersPage() {
           <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[var(--muted-foreground)]" />
           <input
             type="search"
-            placeholder="MagnifyingGlass by order number..."
+            placeholder="Search by order number..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 bg-[var(--surface)] border border-[var(--border)] rounded-lg focus:outline-none focus:ring-2 focus:ring-[var(--primary)] focus:border-transparent transition-all text-sm"

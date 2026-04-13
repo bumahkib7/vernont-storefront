@@ -6,6 +6,7 @@ import { EnhancedProductCard } from "@/components/EnhancedProductCard";
 import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { CaretRight, ArrowRight } from "@/components/icons";
+import { RecentlyViewed } from "@/components/RecentlyViewed";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -169,6 +170,9 @@ export default function Home() {
               ))}
            </div>
         </section>
+
+        {/* === Recently Viewed === */}
+        <RecentlyViewed />
 
         {/* === S7: Blogs === */}
         <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-8 py-16 border-t border-[#E5E5E5]">

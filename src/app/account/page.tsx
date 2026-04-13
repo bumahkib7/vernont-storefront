@@ -15,12 +15,12 @@ import {
   CheckCircle,
   Clock,
   CaretRight,
-  CreditCard,
   Gear,
 } from "@/components/icons";
 import { useAuth } from "@/context/AuthContext";
 import { ordersApi, customerApi } from "@/lib/api";
 import { formatPriceMajor } from "@/context/CartContext";
+import { useWishlistStore } from "@/stores/wishlist";
 
 interface Order {
   id: string;
@@ -82,6 +82,7 @@ const getStatusColor = (status: string) => {
 export default function AccountDashboard() {
   const { user, isAuthenticated, isLoading: authLoading } = useAuth();
   const [recentOrders, setRecentOrders] = useState<Order[]>([]);
+  const [totalOrderCount, setTotalOrderCount] = useState(0);
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
@@ -96,6 +97,7 @@ export default function AccountDashboard() {
       try {
         const response = await ordersApi.list({ limit: 3 });
         setRecentOrders(response.orders || []);
+        setTotalOrderCount(response.count ?? response.orders?.length ?? 0);
       } catch (error) {
         console.error("Failed to fetch orders:", error);
       } finally {
@@ -124,12 +126,13 @@ export default function AccountDashboard() {
     fetchAddresses();
   }, [authLoading, isAuthenticated]);
 
+  const wishlistItems = useWishlistStore((state) => state.items);
   const defaultAddress = addresses[0];
 
   return (
     <div className="space-y-8">
       {/* Stats Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -139,7 +142,7 @@ export default function AccountDashboard() {
           <div className="flex items-center justify-between mb-2">
             <Package className="h-5 w-5 text-[var(--primary)]" />
           </div>
-          <p className="text-2xl font-bold">{recentOrders.length}</p>
+          <p className="text-2xl font-bold">{totalOrderCount}</p>
           <p className="text-sm text-[var(--muted-foreground)]">Total Orders</p>
         </motion.div>
 
@@ -165,22 +168,10 @@ export default function AccountDashboard() {
           <div className="flex items-center justify-between mb-2">
             <Heart className="h-5 w-5 text-[var(--primary)]" />
           </div>
-          <p className="text-2xl font-bold">0</p>
+          <p className="text-2xl font-bold">{wishlistItems.length}</p>
           <p className="text-sm text-[var(--muted-foreground)]">Wishlist Items</p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.15 }}
-          className="bg-[var(--surface)] border border-[var(--border)] rounded-lg p-4"
-        >
-          <div className="flex items-center justify-between mb-2">
-            <CreditCard className="h-5 w-5 text-[var(--primary)]" />
-          </div>
-          <p className="text-2xl font-bold">0</p>
-          <p className="text-sm text-[var(--muted-foreground)]">Payment Methods</p>
-        </motion.div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">

@@ -9,6 +9,14 @@ import { Button } from "@/components/ui/button";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 
+interface ProductVariant {
+  id: string;
+  title?: string | null;
+  priceMinor?: number | null;
+  currency?: string | null;
+  options?: Record<string, string> | null;
+}
+
 interface Product {
   id: string;
   handle?: string;
@@ -21,6 +29,7 @@ interface Product {
   description?: string;
   frameShape?: string;
   frameMaterial?: string;
+  variants?: ProductVariant[];
 }
 
 interface QuickViewProps {
@@ -31,23 +40,23 @@ interface QuickViewProps {
 
 export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
   const [quantity, setQuantity] = useState(1);
-  const [selectedStyle, setSelectedStyle] = useState("Standard");
+  const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
 
   if (!product) return null;
 
-  const styles = [
-    { style: "Standard", price: product.price },
-    { style: "Polarized", price: product.price * 1.2 },
-    { style: "Photochromic", price: product.price * 1.4 },
-  ];
+  const variants = product.variants && product.variants.length > 0
+    ? product.variants
+    : [{ id: product.variantId || product.id, title: null, priceMinor: product.price, currency: null, options: null }];
 
-  const currentPrice = styles.find((s) => s.style === selectedStyle)?.price || product.price;
+  const selectedVariant = variants[selectedVariantIndex] || variants[0];
+  const hasMultipleVariants = variants.length > 1;
+  const currentPrice = selectedVariant.priceMinor ?? product.price;
   const isWishlisted = isInWishlist(product.id);
 
   const handleAddToCart = async () => {
-    const variantId = product.variantId || product.id;
+    const variantId = selectedVariant.id;
     if (!variantId) {
       console.error("No variant ID available");
       return;
@@ -123,25 +132,32 @@ export function QuickView({ product, isOpen, onClose }: QuickViewProps) {
                     </p>
                   )}
 
-                  {/* Lens Option Selection */}
-                  <div className="mb-6">
-                    <p className="font-display text-sm tracking-wider uppercase mb-3">Lens Option</p>
-                    <div className="flex gap-3">
-                      {styles.map((s) => (
-                        <button
-                          key={s.style}
-                          onClick={() => setSelectedStyle(s.style)}
-                          className={`px-4 py-2 border font-serif text-sm transition-colors ${
-                            selectedStyle === s.style
-                              ? "border-gold text-gold bg-gold/10"
-                              : "border-border hover:border-gold"
-                          }`}
-                        >
-                          {s.style}
-                        </button>
-                      ))}
+                  {/* Variant Selection */}
+                  {hasMultipleVariants && (
+                    <div className="mb-6">
+                      <p className="font-display text-sm tracking-wider uppercase mb-3">Option</p>
+                      <div className="flex flex-wrap gap-3">
+                        {variants.map((v, index) => (
+                          <button
+                            key={v.id}
+                            onClick={() => setSelectedVariantIndex(index)}
+                            className={`px-4 py-2 border font-serif text-sm transition-colors ${
+                              selectedVariantIndex === index
+                                ? "border-gold text-gold bg-gold/10"
+                                : "border-border hover:border-gold"
+                            }`}
+                          >
+                            {v.title || (v.options ? Object.values(v.options).join(" / ") : `Variant ${index + 1}`)}
+                            {v.priceMinor != null && v.priceMinor !== product.price && (
+                              <span className="ml-2 text-muted-foreground">
+                                {formatPriceMajor(v.priceMinor, currency)}
+                              </span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   {/* Quantity */}
                   <div className="mb-6">

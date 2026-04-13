@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { EnvelopeSimple, Phone, MapPin, Clock } from "@/components/icons";
+import { EnvelopeSimple, Phone, MapPin, Clock, PaperPlaneRight, SpinnerGap } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
+
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -13,11 +15,36 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, send to API
-    setSubmitted(true);
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/proxy/store/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.message || `Request failed (${res.status})`);
+      }
+
+      setSubmitted(true);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again or email us directly."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -111,7 +138,7 @@ export default function ContactPage() {
               className="text-2xl tracking-wide mb-8"
               style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", color: "#1A1A1A" }}
             >
-              PaperPlaneRight a Message
+              Send a Message
             </h2>
 
             {submitted ? (
@@ -128,6 +155,14 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div
+                    className="p-4 text-sm"
+                    style={{ backgroundColor: "#FEF2F2", color: "#991B1B", border: "1px solid #FECACA" }}
+                  >
+                    {error}
+                  </div>
+                )}
                 <div>
                   <label htmlFor="name" className="block text-sm mb-2" style={{ color: "#1A1A1A" }}>Name *</label>
                   <input
@@ -200,10 +235,16 @@ export default function ContactPage() {
 
                 <Button
                   type="submit"
-                  className="w-full tracking-wider uppercase text-sm py-3"
-                  style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF", border: "none" }}
+                  disabled={isLoading}
+                  className="w-full tracking-wider uppercase text-sm py-3 flex items-center justify-center gap-2"
+                  style={{ backgroundColor: "#1A1A1A", color: "#FFFFFF", border: "none", opacity: isLoading ? 0.7 : 1 }}
                 >
-                  PaperPlaneRight Message
+                  {isLoading ? (
+                    <SpinnerGap className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <PaperPlaneRight className="h-4 w-4" />
+                  )}
+                  {isLoading ? "Sending..." : "Send Message"}
                 </Button>
 
                 <p className="text-xs text-center" style={{ color: "#666" }}>

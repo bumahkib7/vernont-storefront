@@ -53,7 +53,7 @@ export function Header() {
         const response = await productsApi.search(searchQuery, 5);
         setSearchResults(response.products);
       } catch (err) {
-        console.error("MagnifyingGlass error:", err);
+        console.error("Search error:", err);
       } finally {
         setSearchLoading(false);
       }
@@ -61,7 +61,7 @@ export function Header() {
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // MagnifyingGlass results dropdown handling
+  // Search results dropdown handling
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
@@ -117,7 +117,7 @@ export function Header() {
             </Link>
           </div>
 
-          {/* Center: MagnifyingGlass Bar */}
+          {/* Center: Search Bar */}
           <div className="hidden lg:flex flex-1 max-w-[550px] mx-8 relative" ref={searchRef}>
              <form onSubmit={handleSearchSubmit} className="w-full relative">
                 <input 
@@ -136,7 +136,7 @@ export function Header() {
                 </button>
              </form>
 
-             {/* MagnifyingGlass Dropdown Desktop */}
+             {/* Search Dropdown Desktop */}
              <AnimatePresence>
                {showResults && searchQuery.length >= 2 && (
                  <motion.div 
@@ -364,7 +364,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      {/* === MagnifyingGlass Overlay — full screen === */}
+      {/* === Search Overlay — full screen === */}
       <AnimatePresence>
         {searchOpen && (
           <motion.div

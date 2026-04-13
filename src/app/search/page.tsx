@@ -111,7 +111,10 @@ function SearchContent() {
   const router = useRouter();
   const query = searchParams.get("q") || "";
 
+  const PAGE_SIZE = 24;
   const [products, setProducts] = useState<Product[]>([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState("relevance");
@@ -124,10 +127,16 @@ function SearchContent() {
     setSearchInput(query);
   }, [query]);
 
-  // Fetch products when query changes
+  // Reset page when query changes
+  useEffect(() => {
+    setPage(0);
+  }, [query]);
+
+  // Fetch products when query or page changes
   useEffect(() => {
     if (!query) {
       setProducts([]);
+      setTotal(0);
       return;
     }
 
@@ -135,8 +144,9 @@ function SearchContent() {
       setLoading(true);
       setError(null);
       try {
-        const response = await productsApi.list({ query, limit: 50 });
+        const response = await productsApi.list({ query, limit: PAGE_SIZE, page });
         setProducts(response.items);
+        setTotal(response.total);
       } catch (err) {
         console.error("Search error:", err);
         setError("Unable to search products. Please try again.");
@@ -147,7 +157,7 @@ function SearchContent() {
     };
 
     fetchProducts();
-  }, [query]);
+  }, [query, page]);
 
   // Fetch AI suggestions when results are few or empty
   useEffect(() => {
@@ -247,7 +257,7 @@ function SearchContent() {
             <div className="mt-6">
               {!loading && sortedProducts.length > 0 ? (
                 <h1 className="text-2xl lg:text-3xl font-bold">
-                  {sortedProducts.length} result{sortedProducts.length !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
+                  {total} result{total !== 1 ? "s" : ""} for &ldquo;{query}&rdquo;
                 </h1>
               ) : (
                 <h1 className="text-2xl lg:text-3xl font-bold">
@@ -264,7 +274,7 @@ function SearchContent() {
             <div className="flex items-center gap-2 text-[var(--muted-foreground)]">
               <SlidersHorizontal className="h-4 w-4" />
               <span className="text-sm">
-                {sortedProducts.length} result{sortedProducts.length !== 1 ? "s" : ""}
+                {total} result{total !== 1 ? "s" : ""}
               </span>
             </div>
             <div className="flex items-center gap-4">
@@ -379,6 +389,36 @@ function SearchContent() {
                 <ProductCard key={product.id} product={product} />
               ))}
             </div>
+
+            {/* Pagination */}
+            {sortedProducts.length > 0 && (() => {
+              const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+              const isLastPage = page >= totalPages - 1;
+              if (totalPages <= 1) return null;
+              return (
+                <div className="flex flex-col items-center gap-4 mt-12">
+                  <p className="text-sm text-[var(--muted-foreground)]">
+                    Page {page + 1} of {totalPages}
+                  </p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      disabled={page === 0}
+                      onClick={() => { setPage((p) => Math.max(0, p - 1)); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="px-5 py-2 text-sm border border-[var(--border)] rounded-md hover:border-[var(--primary)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      Previous
+                    </button>
+                    <button
+                      disabled={isLastPage}
+                      onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                      className="px-5 py-2 text-sm border border-[var(--border)] rounded-md hover:border-[var(--primary)] transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* AI suggestions when few results */}
             {sortedProducts.length > 0 && sortedProducts.length <= 5 && aiSuggestions.length > 0 && (

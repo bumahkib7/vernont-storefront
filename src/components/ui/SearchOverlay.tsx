@@ -70,8 +70,8 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
         setSuggestions(suggestionsRes);
         setProducts(productsRes.products);
       } catch (err) {
-        console.error("MagnifyingGlass error:", err);
-        toast.error("MagnifyingGlass suggestions failed");
+        console.error("Search error:", err);
+        toast.error("Search suggestions failed");
       } finally {
         setLoading(false);
       }
@@ -120,7 +120,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
           <div className="absolute inset-0" onClick={onClose} />
 
           <div className="relative container mx-auto px-4 py-8 max-w-4xl">
-            {/* MagnifyingGlass Header */}
+            {/* Search Header */}
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-xl tracking-[0.2em] uppercase text-[var(--secondary)]">Search</h2>
               <button
@@ -132,7 +132,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
               </button>
             </div>
 
-            {/* MagnifyingGlass Input */}
+            {/* Search Input */}
             <form onSubmit={handleSubmit} className="relative mb-8">
               <MagnifyingGlass className="absolute left-5 top-1/2 -translate-y-1/2 h-5 w-5 text-[var(--secondary)]/60" />
               <input
@@ -140,7 +140,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                 type="search"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                placeholder={`MagnifyingGlass for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
+                placeholder={`Search for ${productConfig.searchPlaceholder.toLowerCase().replace("search ", "")}`}
                 className="w-full pl-14 pr-12 py-5 bg-transparent border border-[var(--secondary)]/20 text-lg tracking-wide placeholder:text-muted-foreground placeholder:italic focus:outline-none focus:border-[var(--secondary)]/60 transition-colors"
               />
               {loading && (
@@ -202,7 +202,7 @@ export function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
                   </div>
                 </div>
               ) : hasResults ? (
-                /* MagnifyingGlass Results */
+                /* Search Results */
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Suggestions Column */}
                   <div className="space-y-6">

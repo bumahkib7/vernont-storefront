@@ -5,7 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 
 export const metadata = {
   title: "Our Story | Vernont",
-  description: "Discover the heritage and craftsmanship behind Vernont luxury eyewear.",
+  description: "Discover pre-owned luxury eyewear, authenticated by qualified optometrists. Sustainable style, uncompromising quality.",
 };
 
 export default function AboutPage() {
@@ -28,13 +28,13 @@ export default function AboutPage() {
           </div>
           <div className="relative max-w-[1400px] mx-auto px-4 lg:px-8 text-center text-white w-full">
             <p className="text-[11px] font-bold uppercase tracking-widest mb-4 opacity-80">
-              Our Heritage
+              Pre-Owned Luxury Eyewear
             </p>
             <h1 className="text-4xl md:text-6xl font-bold tracking-tight mb-4">
               The Vernont Story
             </h1>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
-              A legacy of excellence, crafted with passion since the beginning
+              Authenticated luxury frames, given a second life — with care, expertise, and purpose
             </p>
           </div>
         </section>
@@ -48,19 +48,19 @@ export default function AboutPage() {
                   The Beginning
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                  A Passion for Perfection
+                  A Passion for Pre-Owned Luxury
                 </h2>
                 <div className="space-y-4 text-[#666] leading-relaxed">
                   <p>
-                    Vernont was born from a deep appreciation for the art of eyewear curation and
-                    a desire to create frames that transcend the ordinary. Our founder
-                    believed that a truly exceptional frame has the power to evoke confidence,
-                    capture personality, and define style.
+                    Vernont was born from a simple conviction: the world&apos;s finest eyewear
+                    deserves more than one life. Premium frames from houses like Miu Miu,
+                    Maui Jim, and Bottega Veneta are built to last — yet so many sit
+                    unused in drawers after a single season. We set out to change that.
                   </p>
                   <p>
-                    What began as a small optical studio has grown into a house renowned for its
-                    commitment to quality, innovation, and the finest materials sourced
-                    from around the world.
+                    What began as a passion for exceptional eyewear has grown into a
+                    curated marketplace for pre-owned luxury frames — each one authenticated,
+                    inspected, and graded so you can buy with confidence.
                   </p>
                 </div>
               </div>
@@ -92,22 +92,23 @@ export default function AboutPage() {
                 <div className="w-20 h-20 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">✦</span>
                 </div>
-                <h3 className="text-xl font-bold tracking-tight mb-4">Craftsmanship</h3>
+                <h3 className="text-xl font-bold tracking-tight mb-4">Authentication</h3>
                 <p className="text-[#666] leading-relaxed">
-                  Every frame is meticulously crafted by our master artisans,
-                  combining traditional techniques with innovative approaches to create
-                  eyewear of exceptional quality.
+                  Every frame is inspected and verified by a qualified optometrist.
+                  We check for authenticity, structural integrity, lens quality, and
+                  cosmetic condition before anything reaches our shelves.
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-20 h-20 rounded-full bg-white border border-[#E5E5E5] flex items-center justify-center mx-auto mb-6">
                   <span className="text-3xl">◆</span>
                 </div>
-                <h3 className="text-xl font-bold tracking-tight mb-4">Quality</h3>
+                <h3 className="text-xl font-bold tracking-tight mb-4">Condition Grading</h3>
                 <p className="text-[#666] leading-relaxed">
-                  We source only the finest materials from ethical suppliers around
-                  the world, ensuring each frame meets our exacting standards of
-                  excellence.
+                  Each item is graded transparently: <strong>Excellent</strong> shows
+                  minimal signs of wear, <strong>Very Good</strong> has light cosmetic
+                  marks, and <strong>Good</strong> has visible wear that doesn&apos;t
+                  affect performance. No surprises — just honesty.
                 </p>
               </div>
               <div className="text-center">
@@ -116,9 +117,9 @@ export default function AboutPage() {
                 </div>
                 <h3 className="text-xl font-bold tracking-tight mb-4">Sustainability</h3>
                 <p className="text-[#666] leading-relaxed">
-                  We are committed to responsible practices, from sustainable sourcing
-                  to eco-friendly packaging, ensuring our luxury leaves a positive
-                  impact on the world.
+                  Buying pre-owned luxury eyewear keeps beautifully made frames in
+                  circulation and out of landfill. Every purchase is a choice for the
+                  planet — premium style with a smaller footprint.
                 </p>
               </div>
             </div>
@@ -142,23 +143,24 @@ export default function AboutPage() {
                   The Process
                 </p>
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-                  The Art of Creation
+                  How We Authenticate
                 </h2>
                 <div className="space-y-4 text-[#666] leading-relaxed">
                   <p>
-                    Each Vernont frame begins with an inspiration—a silhouette, a material,
-                    a vision. Our master artisans translate these inspirations into
-                    optical masterpieces through a process that can take months or
-                    even years to perfect.
+                    Every frame that enters Vernont goes through a rigorous multi-point
+                    inspection carried out by a qualified optometrist. We verify brand
+                    authenticity, examine hinges and temple arms for structural soundness,
+                    and assess lenses for clarity, coatings, and UV protection.
                   </p>
                   <p>
-                    We work with the finest materials: Italian acetate, Japanese titanium,
-                    German hinges, and many more premium components that form the
-                    foundation of our exceptional creations.
+                    Items that pass are cleaned, polished, and assigned a condition grade —
+                    Excellent, Very Good, or Good — so you know exactly what you&apos;re
+                    getting. Frames that don&apos;t meet our standards are returned to the seller.
                   </p>
                   <p>
-                    The result is a collection of eyewear that tells stories, evokes
-                    confidence, and creates lasting impressions.
+                    The result is a curated collection of pre-owned designer eyewear
+                    you can trust — Italian acetate, Japanese titanium, and German
+                    engineering, all at a fraction of the original price.
                   </p>
                 </div>
               </div>
@@ -173,13 +175,13 @@ export default function AboutPage() {
               Our Team
             </p>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-6">
-              The Artisans Behind Vernont
+              The People Behind Vernont
             </h2>
             <p className="text-white/80 max-w-2xl mx-auto leading-relaxed">
-              Our team of passionate designers, craftspeople, and eyewear enthusiasts
-              work together to bring you exceptional frames. United by a shared love
-              for the art of eyewear curation, we are dedicated to creating designs that inspire
-              and delight.
+              Our team of optical professionals and eyewear enthusiasts curate, inspect,
+              and grade every frame by hand. United by a belief that luxury should be
+              accessible and sustainable, we are dedicated to giving the world&apos;s
+              finest eyewear the second life it deserves.
             </p>
           </div>
         </section>

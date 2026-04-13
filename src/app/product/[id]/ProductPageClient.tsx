@@ -15,6 +15,7 @@ import {
   CaretLeft,
   Package,
   MagnifyingGlass,
+  ShieldCheck,
 } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { ListingProductCard } from "@/components/ListingProductCard";
@@ -26,12 +27,49 @@ import { transformProduct, transformProducts } from "@/lib/transforms";
 import { productsApi, type ProductSpecificationsResponse } from "@/lib/api";
 import { useCart, formatPriceMajor } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
 import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/ProductJsonLd";
+import { RecentlyViewed } from "@/components/RecentlyViewed";
 import { toast } from "sonner";
 import { verticalConfig } from "@/config/vertical";
 
 interface ProductPageClientProps {
   id: string;
+}
+
+function ConditionBadge({ condition, conditionGrade }: { condition?: string; conditionGrade?: 'A' | 'B' | 'C' }) {
+  let label: string;
+  let bgColor: string;
+  let textColor: string;
+
+  if (!condition || condition === 'new') {
+    label = 'New';
+    bgColor = 'bg-green-50 border-green-200';
+    textColor = 'text-green-800';
+  } else if (condition === 'pre_owned_a' || conditionGrade === 'A') {
+    label = 'Excellent Condition';
+    bgColor = 'bg-amber-50 border-amber-200';
+    textColor = 'text-amber-800';
+  } else if (condition === 'pre_owned_b' || conditionGrade === 'B') {
+    label = 'Very Good Condition';
+    bgColor = 'bg-blue-50 border-blue-200';
+    textColor = 'text-blue-800';
+  } else if (condition === 'pre_owned_c' || conditionGrade === 'C') {
+    label = 'Good Condition';
+    bgColor = 'bg-gray-50 border-gray-300';
+    textColor = 'text-gray-700';
+  } else {
+    label = 'Authenticated';
+    bgColor = 'bg-[#F9F7F4] border-[#E5E0D8]';
+    textColor = 'text-[#6B5E4F]';
+  }
+
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1 text-[11px] font-semibold uppercase tracking-widest border rounded-full ${bgColor} ${textColor}`}>
+      <ShieldCheck className="w-3.5 h-3.5" weight="fill" />
+      {label}
+    </span>
+  );
 }
 
 function AccordionSection({ title, children, defaultOpen = false }: { title: string; children: React.ReactNode; defaultOpen?: boolean }) {
@@ -58,6 +96,7 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
 
   const { addItem, currency } = useCart();
   const { toggleItem, isInWishlist } = useWishlist();
+  const { addProduct: addRecentlyViewed } = useRecentlyViewed();
 
   const { data: productData, isLoading, error } = useProductByHandle(id);
   const { data: relatedData } = useProducts({ limit: 6 });
@@ -76,6 +115,13 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
     });
     return () => { cancelled = true; };
   }, [product?.id]);
+
+  // Track recently viewed product
+  useEffect(() => {
+    if (product?.id) {
+      addRecentlyViewed(product.id);
+    }
+  }, [product?.id, addRecentlyViewed]);
 
   const relatedProducts = useMemo(() => {
     if (!relatedData?.items) return [];
@@ -339,9 +385,14 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             )}
 
             {/* Product name — uppercase small */}
-            <h2 className="text-[13px] font-bold uppercase tracking-[0.12em] text-center text-[#1A1A1A] border-b border-[#E5E5E5] pb-5 mb-5">
+            <h2 className="text-[13px] font-bold uppercase tracking-[0.12em] text-center text-[#1A1A1A] pb-3 mb-0">
               {product.name}
             </h2>
+
+            {/* Condition badge */}
+            <div className="flex justify-center pb-5 mb-5 border-b border-[#E5E5E5]">
+              <ConditionBadge condition={product.condition} conditionGrade={product.conditionGrade} />
+            </div>
 
             {/* Frame / Lens specs */}
             {(product.frameMaterial || product.lensType || product.variants?.[0]?.sku) && (
@@ -545,6 +596,19 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
               </div>
             </div>
 
+            {/* Authenticity guarantee */}
+            <div className="flex items-start gap-3 bg-[#FAFAF7] border border-[#E8E5DF] rounded px-5 py-4 mb-5">
+              <ShieldCheck className="w-6 h-6 text-[#1A1A1A] flex-shrink-0 mt-0.5" weight="fill" />
+              <div>
+                <p className="text-[12px] font-bold uppercase tracking-widest text-[#1A1A1A]">
+                  Authenticity Guaranteed
+                </p>
+                <p className="text-[11px] text-[#666] mt-0.5 leading-relaxed">
+                  Every item verified by our qualified optometrist
+                </p>
+              </div>
+            </div>
+
             {/* Accordion sections */}
             <div className="border-t border-[#E5E5E5]">
               <AccordionSection title="Product details" defaultOpen>
@@ -598,6 +662,9 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
           </div>
         </section>
       )}
+
+      {/* Recently Viewed */}
+      <RecentlyViewed excludeId={product.id} />
     </PageLayout>
   );
 }

@@ -118,7 +118,6 @@ export function Footer() {
               <li><Link href="/shipping" className="hover:text-[#1A1A1A] transition-colors">Shipping</Link></li>
               <li><Link href="/account/returns" className="hover:text-[#1A1A1A] transition-colors">Returns</Link></li>
               <li><Link href="/size-guide" className="hover:text-[#1A1A1A] transition-colors">Size Guide</Link></li>
-              <li><Link href="/try-on" className="hover:text-[#1A1A1A] transition-colors">Virtual Try-On</Link></li>
               <li><Link href="/contact" className="hover:text-[#1A1A1A] transition-colors">Contact Us</Link></li>
             </ul>
           </div>

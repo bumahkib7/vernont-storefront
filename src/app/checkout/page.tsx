@@ -913,7 +913,7 @@ export default function CheckoutPage() {
                                   onChange={handleInputChange}
                                   className="rounded border-[var(--border)] text-[var(--primary)] focus:ring-[var(--primary)]"
                                 />
-                                FloppyDisk this address for future orders
+                                Save this address for future orders
                               </label>
                             )}
                           </div>
