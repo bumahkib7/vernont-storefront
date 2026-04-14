@@ -90,6 +90,11 @@ export { ArrowClockwise } from '@phosphor-icons/react/dist/icons/ArrowClockwise'
 export { Shuffle } from '@phosphor-icons/react/dist/icons/Shuffle';
 export { Headphones } from '@phosphor-icons/react/dist/icons/Headphones';
 
+// Support Chat
+export { ChatsCircle } from '@phosphor-icons/react/dist/icons/ChatsCircle';
+export { WifiHigh } from '@phosphor-icons/react/dist/icons/WifiHigh';
+export { WifiSlash } from '@phosphor-icons/react/dist/icons/WifiSlash';
+
 // Misc
 export { Star } from '@phosphor-icons/react/dist/icons/Star';
 export { Crown } from '@phosphor-icons/react/dist/icons/Crown';

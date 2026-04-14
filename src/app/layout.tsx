@@ -11,6 +11,7 @@ import { CompareBar } from "@/components/ui/CompareBar";
 import { NewsletterPopup } from "@/components/ui/NewsletterPopup";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { ShoppingAssistant } from "@/components/ai/shopping-assistant";
+import { SupportChat } from "@/components/support/SupportChat";
 import { Toaster } from "sonner";
 import { content } from "@/config/vertical";
 import { OrganizationJsonLd, WebsiteJsonLd } from "@/components/ProductJsonLd";
@@ -126,6 +127,7 @@ export default function RootLayout({
           <CompareBar />
           <BackToTop />
           <NewsletterPopup />
+          <SupportChat />
           <ShoppingAssistant />
           <Toaster position="bottom-right" richColors />
         </Providers>
