@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { EnvelopeSimple, Phone, MapPin, Clock, PaperPlaneRight, SpinnerGap } from "@/components/icons";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,7 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [ticketNumber, setTicketNumber] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -33,6 +35,13 @@ export default function ContactPage() {
       if (!res.ok) {
         const body = await res.json().catch(() => null);
         throw new Error(body?.message || `Request failed (${res.status})`);
+      }
+
+      const body = await res.json().catch(() => null);
+      if (body?.ticketNumber) {
+        setTicketNumber(body.ticketNumber);
+      } else if (body?.ticket?.ticketNumber) {
+        setTicketNumber(body.ticket.ticketNumber);
       }
 
       setSubmitted(true);
@@ -150,7 +159,16 @@ export default function ContactPage() {
                   Thank You!
                 </h3>
                 <p style={{ color: "#666" }}>
-                  Your message has been sent. We will get back to you within 24-48 hours.
+                  Your message has been received.
+                  {ticketNumber ? (
+                    <> A support ticket (<strong>#{ticketNumber}</strong>) has been created. You can track it in your{" "}
+                      <Link href="/account/support" className="underline" style={{ color: "#1A1A1A" }}>
+                        account
+                      </Link>.
+                    </>
+                  ) : (
+                    <> We will get back to you within 24-48 hours.</>
+                  )}
                 </p>
               </div>
             ) : (

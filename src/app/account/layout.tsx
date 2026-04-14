@@ -17,6 +17,7 @@ import {
   List,
   X,
   Gift,
+  ChatCircle,
 } from "@/components/icons";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -28,6 +29,7 @@ const accountNavigation = [
   { name: "Returns", href: "/account/returns", icon: ArrowCounterClockwise },
   { name: "Addresses", href: "/account/addresses", icon: MapPin },
   { name: "Referrals", href: "/account/referrals", icon: Gift },
+  { name: "Support", href: "/account/support", icon: ChatCircle },
   { name: "Wishlist", href: "/wishlist", icon: Heart },
   { name: "Profile", href: "/account/profile", icon: Gear },
 ];
