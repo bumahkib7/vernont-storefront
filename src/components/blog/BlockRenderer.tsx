@@ -267,32 +267,46 @@ export function BlockRenderer({ blocks }: BlockRendererProps) {
   return (
     <div className="blog-blocks">
       {blocks.map((block, i) => {
+        let content: React.ReactNode;
         switch (block.type) {
           case "heading":
-            return <HeadingBlock key={i} block={block} />;
+            content = <HeadingBlock block={block} />;
+            break;
           case "paragraph":
-            return <ParagraphBlock key={i} block={block} />;
+            content = <ParagraphBlock block={block} />;
+            break;
           case "image":
-            return <ImageBlock key={i} block={block} />;
+            content = <ImageBlock block={block} />;
+            break;
           case "product-card":
-            return (
-              <ProductCardBlock key={i} productId={block.productId as string} />
-            );
+            content = <ProductCardBlock productId={block.productId as string} />;
+            break;
           case "product-comparison":
-            return <ProductComparisonBlock key={i} block={block} />;
+            content = <ProductComparisonBlock block={block} />;
+            break;
           case "callout":
-            return <CalloutBlock key={i} block={block} />;
+            content = <CalloutBlock block={block} />;
+            break;
           case "faq":
-            return <FaqBlock key={i} block={block} />;
+            content = <FaqBlock block={block} />;
+            break;
           case "cta":
-            return <CtaBlock key={i} block={block} />;
+            content = <CtaBlock block={block} />;
+            break;
           case "quote":
-            return <QuoteBlock key={i} block={block} />;
+            content = <QuoteBlock block={block} />;
+            break;
           case "divider":
-            return <DividerBlock key={i} />;
+            content = <DividerBlock />;
+            break;
           default:
-            return null;
+            content = null;
         }
+        return (
+          <div key={i} data-block-index={i} className="transition-all duration-300 rounded">
+            {content}
+          </div>
+        );
       })}
     </div>
   );

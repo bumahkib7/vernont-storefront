@@ -39,6 +39,7 @@ function PreviewContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Fetch initial post from token
   useEffect(() => {
     if (!token) {
       setError("No preview token provided.");
@@ -69,6 +70,62 @@ function PreviewContent() {
       cancelled = true;
     };
   }, [token]);
+
+  // Listen for live PostMessage updates from admin editor
+  useEffect(() => {
+    function handleMessage(event: MessageEvent) {
+      // Accept messages from admin origins
+      if (!event.data || typeof event.data !== "object") return;
+
+      if (event.data.type === "PREVIEW_UPDATE") {
+        setPost((prev) => {
+          if (!prev) {
+            // No initial post yet — create one from the message
+            return {
+              slug: "",
+              title: event.data.title ?? "Untitled",
+              subtitle: event.data.subtitle ?? null,
+              excerpt: event.data.excerpt ?? null,
+              coverImageUrl: event.data.coverImageUrl ?? null,
+              category: event.data.category ?? null,
+              readingTimeMinutes: event.data.readingTimeMinutes ?? null,
+              publishedAt: null,
+              author: event.data.author ?? null,
+              blocks: event.data.blocks ?? [],
+            };
+          }
+          return {
+            ...prev,
+            title: event.data.title ?? prev.title,
+            subtitle: event.data.subtitle ?? prev.subtitle,
+            excerpt: event.data.excerpt ?? prev.excerpt,
+            coverImageUrl: event.data.coverImageUrl ?? prev.coverImageUrl,
+            category: event.data.category ?? prev.category,
+            readingTimeMinutes: event.data.readingTimeMinutes ?? prev.readingTimeMinutes,
+            author: event.data.author ?? prev.author,
+            blocks: event.data.blocks ?? prev.blocks,
+          };
+        });
+        setLoading(false);
+        setError(null);
+      }
+
+      if (event.data.type === "SCROLL_TO_BLOCK" && typeof event.data.index === "number") {
+        const blockEl = document.querySelector(`[data-block-index="${event.data.index}"]`);
+        if (blockEl) {
+          blockEl.scrollIntoView({ behavior: "smooth", block: "center" });
+          // Flash highlight
+          blockEl.classList.add("ring-2", "ring-amber-400", "ring-offset-2");
+          setTimeout(() => blockEl.classList.remove("ring-2", "ring-amber-400", "ring-offset-2"), 1500);
+        }
+      }
+    }
+
+    window.addEventListener("message", handleMessage);
+    // Tell the parent we're ready to receive messages
+    window.parent?.postMessage({ type: "PREVIEW_READY" }, "*");
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   if (loading) {
     return (
