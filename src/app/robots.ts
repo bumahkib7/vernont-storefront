@@ -7,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        allow: ["/", "/_next/static/"],
         disallow: [
           "/api/",
           "/account/",
@@ -18,7 +18,8 @@ export default function robots(): MetadataRoute.Robots {
           "/forgot-password",
           "/reset-password",
           "/track",
-          "/_next/",
+          "/_next/data/",
+          "/_next/image",
           "/admin/",
         ],
       },
