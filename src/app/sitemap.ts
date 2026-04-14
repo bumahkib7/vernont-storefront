@@ -23,6 +23,7 @@ const staticPages = [
   { url: "/press", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/size-guide", priority: 0.6, changeFrequency: "monthly" as const },
 
+  { url: "/blog", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/collections", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/search", priority: 0.6, changeFrequency: "daily" as const },
   { url: "/return-policy", priority: 0.3, changeFrequency: "yearly" as const },
@@ -88,6 +89,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   } catch (error) {
     console.error("Failed to fetch sitemap data from backend:", error);
+  }
+
+  // Blog posts
+  try {
+    const blogRes = await fetch(`${API_URL}/store/blog/v2/posts?size=500`, {
+      next: { revalidate: 300 },
+    });
+    if (blogRes.ok) {
+      const blogData = await blogRes.json();
+      const posts: { slug: string; publishedAt?: string | null }[] = blogData.posts || [];
+      for (const post of posts) {
+        entries.push({
+          url: `${BASE_URL}/blog/${post.slug}`,
+          lastModified: post.publishedAt || now,
+          changeFrequency: "weekly",
+          priority: 0.7,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("Failed to fetch blog posts for sitemap:", error);
   }
 
   return entries;

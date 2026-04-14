@@ -131,6 +131,7 @@ export function Footer() {
               <li><Link href="/sustainability" className="hover:text-[#1A1A1A] transition-colors">Sustainability</Link></li>
 
               <li><Link href="/press" className="hover:text-[#1A1A1A] transition-colors">Press</Link></li>
+              <li><Link href="/blog" className="hover:text-[#1A1A1A] transition-colors">Blog</Link></li>
             </ul>
           </div>
 

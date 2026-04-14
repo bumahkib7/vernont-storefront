@@ -30,6 +30,7 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useRecentlyViewed } from "@/hooks/use-recently-viewed";
 import { ProductJsonLd, BreadcrumbJsonLd } from "@/components/ProductJsonLd";
 import { RecentlyViewed } from "@/components/RecentlyViewed";
+import { BlogCard, type BlogCardPost } from "@/components/blog/BlogCard";
 import { toast } from "sonner";
 import { verticalConfig } from "@/config/vertical";
 
@@ -122,6 +123,26 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
       addRecentlyViewed(product.id);
     }
   }, [product?.id, addRecentlyViewed]);
+
+  // Related blog articles for this product
+  const [relatedArticles, setRelatedArticles] = useState<BlogCardPost[]>([]);
+  useEffect(() => {
+    if (!product?.id) return;
+    let cancelled = false;
+    const apiBase =
+      typeof window !== "undefined" && process.env.NODE_ENV === "production"
+        ? "/api/proxy"
+        : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    fetch(`${apiBase}/store/blog/v2/posts/by-product/${product.id}?limit=3`, {
+      credentials: "include",
+    })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.posts) setRelatedArticles(data.posts);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [product?.id]);
 
   const relatedProducts = useMemo(() => {
     if (!relatedData?.items) return [];
@@ -657,6 +678,22 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {relatedProducts.map((p, i) => (
                 <ListingProductCard key={p.id} product={p} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Related Articles */}
+      {relatedArticles.length > 0 && (
+        <section className="py-10 lg:py-14 border-t border-[#E5E5E5]">
+          <div className="px-4 lg:px-6">
+            <h2 className="text-xl mb-6" style={{ fontFamily: "'Crimson Pro', 'Georgia', serif", fontWeight: 400 }}>
+              Related Articles
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {relatedArticles.map((post) => (
+                <BlogCard key={post.slug} post={post} />
               ))}
             </div>
           </div>

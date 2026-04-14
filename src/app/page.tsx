@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
@@ -7,12 +8,31 @@ import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
 import { CaretRight, ArrowRight } from "@/components/icons";
 import { RecentlyViewed } from "@/components/RecentlyViewed";
+import { BlogCard, type BlogCardPost } from "@/components/blog/BlogCard";
 import Image from "next/image";
 import Link from "next/link";
+
+const API_BASE =
+  typeof window !== "undefined" && process.env.NODE_ENV === "production"
+    ? "/api/proxy"
+    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function Home() {
   const { data: productsData, isLoading } = useProducts({ limit: 12 });
   const displayProducts = productsData?.items ? transformProducts(productsData.items) : [];
+
+  // Featured blog posts — fetched client-side, section hidden when empty
+  const [featuredPosts, setFeaturedPosts] = useState<BlogCardPost[]>([]);
+  useEffect(() => {
+    let cancelled = false;
+    fetch(`${API_BASE}/store/blog/v2/posts/featured?limit=4`, { credentials: "include" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.posts) setFeaturedPosts(data.posts);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, []);
   
   // Categorized slices
   const miuMiuProducts = displayProducts.slice(0, 2);
@@ -174,33 +194,23 @@ export default function Home() {
         {/* === Recently Viewed === */}
         <RecentlyViewed />
 
-        {/* === S7: Blogs === */}
-        <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-8 py-16 border-t border-[#E5E5E5]">
-           <div className="text-center mb-12">
+        {/* === S7: Blogs (dynamic) === */}
+        {featuredPosts.length > 0 && (
+          <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-8 py-16 border-t border-[#E5E5E5]">
+            <div className="text-center mb-12">
               <h3 className="text-[13px] font-bold tracking-[0.1em] uppercase mb-8">PERSPECTIVE - Insights Into The World of Eyewear</h3>
               <Link href="/blog" className="text-[11px] font-bold uppercase tracking-[0.15em] underline hover:opacity-60 transition-opacity">
-                 READ OUR BLOG
+                READ OUR BLOG
               </Link>
-           </div>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                 { title: 'F1: The Movie Sunglasses', img: '/images/home/blog_f1_1775729985457.png', color: 'bg-[#a30b0b]' },
-                 { title: 'Paris Fashion Week F/W 2026', img: '/images/home/blog_pfw_1775730007068.png', color: 'bg-[#0f34a1]' },
-                 { title: '2026 Grand Prix', img: '/images/home/blog_grandprix_1775730072838.png', color: 'bg-[#000000]' },
-                 { title: 'Golden Globe Awards 2026', img: '/images/home/blog_gg_1775730089657.png', color: 'bg-[#bc8926]' },
-              ].map(blog => (
-                 <Link href="/blog" key={blog.title} className="group flex flex-col relative h-[300px] overflow-hidden">
-                    <div className="relative w-full h-[85%]">
-                       <Image src={blog.img} alt={blog.title} fill sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 25vw" quality={80} loading="lazy" className="object-cover transition-transform duration-700 group-hover:scale-105" />
-                    </div>
-                    <div className={`w-full h-[15%] ${blog.color} flex items-center justify-center p-2 absolute bottom-0`}>
-                       <span className="text-white font-serif italic text-lg leading-none tracking-wide" style={{ fontFamily: 'Georgia, serif' }}>{blog.title}</span>
-                    </div>
-                 </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {featuredPosts.map((post) => (
+                <BlogCard key={post.slug} post={post} />
               ))}
-           </div>
-        </section>
+            </div>
+          </section>
+        )}
 
 
       </main>
