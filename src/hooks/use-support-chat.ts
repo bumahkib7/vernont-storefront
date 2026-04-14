@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import { importKey, encrypt, decrypt } from "@/lib/chat-crypto";
 
 // --------------- Types ---------------
 
@@ -122,6 +123,8 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
   const stompClientRef = useRef<Client | null>(null);
   const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const conversationIdRef = useRef(conversationId);
+  const encryptionKeyRef = useRef<CryptoKey | null>(null);
+  const rawEncryptionKeyRef = useRef<string | null>(null);
 
   // Keep ref in sync
   useEffect(() => {
@@ -137,6 +140,17 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
   const loadMessages = useCallback(async (convId: string) => {
     try {
       const data = await chatFetch(`/store/chat/conversations/${convId}/messages?size=50`);
+
+      // Capture per-conversation encryption key (delivered via HTTPS)
+      if (data.encryptionKey) {
+        rawEncryptionKeyRef.current = data.encryptionKey;
+        try {
+          encryptionKeyRef.current = await importKey(data.encryptionKey);
+        } catch {
+          encryptionKeyRef.current = null;
+        }
+      }
+
       const loaded: SupportMessage[] = (data.messages || []).map(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (m: any) => ({
@@ -177,33 +191,60 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
 
         // Subscribe to personal chat messages
         client.subscribe("/user/queue/chat-messages", (frame) => {
-          try {
-            const msg = JSON.parse(frame.body) as SupportMessage;
-            // Only add messages for our conversation
-            if (
-              conversationIdRef.current &&
-              msg.conversationId === conversationIdRef.current
-            ) {
-              setMessages((prev) => {
-                // Deduplicate by id or clientMessageId
-                const exists = prev.some(
-                  (m) =>
-                    m.id === msg.id ||
-                    (msg.clientMessageId &&
-                      m.clientMessageId === msg.clientMessageId)
-                );
-                if (exists) return prev;
-                return [...prev, msg];
-              });
+          (async () => {
+            try {
+              const raw = JSON.parse(frame.body);
 
-              if (msg.senderRole === "ADMIN") {
-                setHasAgent(true);
-                setUnreadCount((c) => c + 1);
+              // Decrypt message body if it arrived encrypted
+              let body: string;
+              if (raw.encryptedBody && raw.iv && encryptionKeyRef.current) {
+                try {
+                  body = await decrypt(encryptionKeyRef.current, raw.encryptedBody, raw.iv);
+                } catch {
+                  body = "[Decryption failed]";
+                }
+              } else {
+                body = raw.body || raw.encryptedBody || "";
               }
+
+              const msg: SupportMessage = {
+                id: raw.id,
+                conversationId: raw.conversationId,
+                senderUserId: raw.senderUserId,
+                senderRole: raw.senderRole,
+                messageType: raw.messageType || "TEXT",
+                body,
+                status: raw.status,
+                createdAt: raw.createdAt,
+                clientMessageId: raw.clientMessageId,
+              };
+
+              // Only add messages for our conversation
+              if (
+                conversationIdRef.current &&
+                msg.conversationId === conversationIdRef.current
+              ) {
+                setMessages((prev) => {
+                  // Deduplicate by id or clientMessageId
+                  const exists = prev.some(
+                    (m) =>
+                      m.id === msg.id ||
+                      (msg.clientMessageId &&
+                        m.clientMessageId === msg.clientMessageId)
+                  );
+                  if (exists) return prev;
+                  return [...prev, msg];
+                });
+
+                if (msg.senderRole === "ADMIN") {
+                  setHasAgent(true);
+                  setUnreadCount((c) => c + 1);
+                }
+              }
+            } catch {
+              // ignore parse errors
             }
-          } catch {
-            // ignore parse errors
-          }
+          })();
         });
 
         // Subscribe to conversation updates (status changes, assignment)
@@ -258,6 +299,9 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
       stompClientRef.current.deactivate();
       stompClientRef.current = null;
     }
+    // Clear encryption keys from memory
+    encryptionKeyRef.current = null;
+    rawEncryptionKeyRef.current = null;
     setIsConnected(false);
     setIsConnecting(false);
   }, []);
@@ -298,6 +342,16 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
       setHasAgent(!!conv.assignedAdminUserId);
       setMessages([]);
 
+      // Store encryption key from conversation creation (delivered via HTTPS)
+      if (conv.encryptionKey) {
+        rawEncryptionKeyRef.current = conv.encryptionKey;
+        try {
+          encryptionKeyRef.current = await importKey(conv.encryptionKey);
+        } catch {
+          encryptionKeyRef.current = null;
+        }
+      }
+
       // If initial message was included, load messages to show it
       if (initialMessage) {
         await loadMessages(conv.id);
@@ -330,15 +384,42 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
       setMessages((prev) => [...prev, optimistic]);
 
       try {
+        // Encrypt message body if we have a session key
+        let requestBody: string;
+        if (encryptionKeyRef.current) {
+          try {
+            const encrypted = await encrypt(encryptionKeyRef.current, text);
+            requestBody = JSON.stringify({
+              body: text,
+              messageType: "TEXT",
+              clientMessageId,
+              metadata: {
+                encrypted: true,
+                encryptedBody: encrypted.encryptedBody,
+                iv: encrypted.iv,
+              },
+            });
+          } catch {
+            // Fall back to plaintext on encryption failure
+            requestBody = JSON.stringify({
+              body: text,
+              messageType: "TEXT",
+              clientMessageId,
+            });
+          }
+        } else {
+          requestBody = JSON.stringify({
+            body: text,
+            messageType: "TEXT",
+            clientMessageId,
+          });
+        }
+
         const data = await chatFetch(
           `/store/chat/conversations/${conversationIdRef.current}/messages`,
           {
             method: "POST",
-            body: JSON.stringify({
-              body: text,
-              messageType: "TEXT",
-              clientMessageId,
-            }),
+            body: requestBody,
           }
         );
 
