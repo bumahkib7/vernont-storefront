@@ -11,6 +11,7 @@ interface User {
   lastName?: string | null;
   phone?: string | null;
   customerId?: string | null;
+  roles?: string[];
 }
 
 interface RegisterData {
@@ -61,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         lastName: customer?.lastName ?? authUser.lastName,
         phone: customer?.phone,
         customerId: authUser.customerId,
+        roles: authUser.roles,
       }
     : null;
 
