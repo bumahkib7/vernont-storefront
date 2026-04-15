@@ -25,7 +25,8 @@ const staticPages = [
 
   { url: "/blog", priority: 0.8, changeFrequency: "weekly" as const },
   { url: "/collections", priority: 0.8, changeFrequency: "weekly" as const },
-  { url: "/search", priority: 0.6, changeFrequency: "daily" as const },
+  // NB: `/search` intentionally excluded — Google discourages indexing
+  // internal search results; it wastes crawl budget.
   { url: "/return-policy", priority: 0.3, changeFrequency: "yearly" as const },
   { url: "/sustainability", priority: 0.5, changeFrequency: "monthly" as const },
   { url: "/try-on", priority: 0.2, changeFrequency: "yearly" as const },
@@ -53,9 +54,10 @@ interface SitemapData {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date().toISOString();
 
+  // Static pages: omit lastModified entirely. A request-time timestamp is a
+  // lie — Google detects churning `<lastmod>` and downgrades sitemap trust.
   const entries: MetadataRoute.Sitemap = staticPages.map((page) => ({
     url: `${BASE_URL}${page.url}`,
-    lastModified: now,
     changeFrequency: page.changeFrequency,
     priority: page.priority,
   }));
@@ -82,7 +84,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const entry of allEntries) {
       entries.push({
         url: `${BASE_URL}${entry.path}`,
-        lastModified: entry.lastModified || now,
+        // Only include lastModified when the backend gave us a real DB timestamp.
+        ...(entry.lastModified ? { lastModified: entry.lastModified } : {}),
         changeFrequency: entry.changeFrequency as any,
         priority: entry.priority,
       });
@@ -102,7 +105,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       for (const post of posts) {
         entries.push({
           url: `${BASE_URL}/blog/${post.slug}`,
-          lastModified: post.publishedAt || now,
+          ...(post.publishedAt ? { lastModified: post.publishedAt } : {}),
           changeFrequency: "weekly",
           priority: 0.7,
         });

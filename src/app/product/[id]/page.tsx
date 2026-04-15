@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import ProductPageClient from "./ProductPageClient";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -33,6 +34,8 @@ interface ProductSeoData {
   ogTitle?: string | null;
   ogDescription?: string | null;
   ogImageUrl?: string | null;
+  // Non-null when the requested slug is an old handle that now redirects.
+  redirectedFromHandle?: string | null;
 }
 
 async function fetchProductSeo(handle: string): Promise<ProductSeoData | null> {
@@ -220,6 +223,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
   const product = await fetchProductSeo(id);
+
+  // When the requested handle is a retired one the backend resolves it to
+  // the current product and flags `redirectedFromHandle`. Issue an HTTP 308
+  // so search engines update their index and external links stay valid.
+  if (product?.redirectedFromHandle && product.handle && product.handle !== id) {
+    redirect(`/product/${product.handle}`);
+  }
 
   return (
     <>
