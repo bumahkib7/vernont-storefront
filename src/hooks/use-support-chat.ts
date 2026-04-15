@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { Client } from "@stomp/stompjs";
-import SockJS from "sockjs-client";
 import { importKey, encrypt, decrypt } from "@/lib/chat-crypto";
 
 // --------------- Types ---------------
@@ -51,10 +50,13 @@ const API_BASE_URL =
     ? "/api/proxy"
     : DIRECT_API_URL;
 
-const WS_URL =
-  typeof window !== "undefined" && process.env.NODE_ENV === "production"
-    ? "/api/proxy/ws"
-    : `${DIRECT_API_URL}/ws`;
+// WebSocket connects directly via the native WebSocket API (no SockJS).
+// The backend auth cookie is SameSite=None; Secure so it's sent on the
+// cross-origin handshake; the storefront's origin is on the CORS allow-list.
+const WS_URL = (() => {
+  const base = DIRECT_API_URL.replace(/^http:/, "ws:").replace(/^https:/, "wss:");
+  return `${base}/ws`;
+})();
 
 const STORAGE_KEY = "vernont_support_chat";
 
@@ -181,7 +183,7 @@ export function useSupportChat(userId: string | null): UseSupportChatReturn {
     setIsConnecting(true);
 
     const client = new Client({
-      webSocketFactory: () => new SockJS(WS_URL),
+      brokerURL: WS_URL,
       reconnectDelay: 5000,
       heartbeatIncoming: 10000,
       heartbeatOutgoing: 10000,
