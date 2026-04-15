@@ -64,15 +64,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? "Optical Frames"
     : "Sunglasses";
 
-  // Auto-generated defaults — used when the admin hasn't set an override.
-  const defaultTitle = product.brandName
-    ? `${product.brandName} ${product.title} | Designer ${category} | Vernont`
-    : `${product.title} | Designer ${category} | Vernont`;
+  // Build the product name without duplicating the brand when the title
+  // already starts with it (e.g. "Tomford Tomford" → "Tomford").
+  const productDisplayName = formatProductName(product.title, product.brandName);
 
-  const baseDescription = product.description?.substring(0, 80) || product.title;
-  const defaultDescription = (product.brandName
-    ? `Shop ${product.brandName} ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`
-    : `Shop ${product.title}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`
+  // Auto-generated defaults — used when the admin hasn't set an override.
+  const defaultTitle = collapseSpaces(
+    product.brandName && !product.title.toLowerCase().startsWith(product.brandName.toLowerCase())
+      ? `${product.brandName} ${productDisplayName} | Designer ${category} | Vernont`
+      : `${productDisplayName} | Designer ${category} | Vernont`
+  );
+
+  const baseDescription = product.description?.substring(0, 80) || productDisplayName;
+  const defaultDescription = collapseSpaces(
+    (product.brandName && !product.title.toLowerCase().startsWith(product.brandName.toLowerCase())
+      ? `Shop ${product.brandName} ${productDisplayName}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`
+      : `Shop ${productDisplayName}. Authentic designer ${category.toLowerCase()}. Free UK delivery & 30-day returns. ${baseDescription}`)
   ).substring(0, 160);
 
   // Override resolution: backend-edited meta wins, everything else falls
@@ -103,10 +110,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           category.toLowerCase(),
         ].filter(Boolean);
 
-  // Robots: if the admin flagged noindex, emit the directive and also
-  // block Googlebot explicitly. Otherwise use the standard indexable
-  // defaults from the root layout.
-  const robots = product.noindex
+  // Robots gate: admin override wins. Otherwise auto-noindex products that
+  // look like test/broken data (e.g. £2.69 designer sunglasses, no image,
+  // or empty description) so Google doesn't waste crawl budget on them
+  // and they don't drag down site-wide quality signals.
+  const hasImage = Boolean(product.thumbnail || product.images?.[0]);
+  const priceLooksBroken =
+    product.price !== null && product.price !== undefined && product.price < 10;
+  const descriptionMissing = !product.description || product.description.trim().length < 40;
+  const autoNoindex = priceLooksBroken || !hasImage || descriptionMissing;
+
+  const robots = product.noindex || autoNoindex
     ? { index: false, follow: true, googleBot: { index: false, follow: true } }
     : undefined;
 
@@ -205,5 +219,122 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
-  return <ProductPageClient id={id} />;
+  const product = await fetchProductSeo(id);
+
+  return (
+    <>
+      {product && <ProductJsonLdScript product={product} id={id} />}
+      {product && <ProductSeoContent product={product} />}
+      <ProductPageClient id={id} />
+    </>
+  );
+}
+
+// ─── Server-rendered SEO pieces ──────────────────────────────────────────
+
+function collapseSpaces(text: string): string {
+  return text.replace(/\s+/g, " ").trim();
+}
+
+function formatProductName(title: string, brandName: string | null): string {
+  const cleanTitle = collapseSpaces(title || "");
+  if (!brandName) return cleanTitle;
+  const brand = brandName.trim();
+  const lowerBrand = brand.toLowerCase();
+  const lowerTitle = cleanTitle.toLowerCase();
+  if (lowerTitle === lowerBrand) return brand;
+  if (lowerTitle.startsWith(`${lowerBrand} `)) return cleanTitle;
+  return cleanTitle;
+}
+
+// Product fields come from our own backend, not user input — but we still
+// escape `<`, `>`, `&`, and U+2028/U+2029 so a product description that
+// happens to contain `</script>` or unusual Unicode can't break out of the
+// JSON-LD <script> tag or the surrounding JavaScript parser.
+function safeJsonForScriptTag(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}
+
+function ProductJsonLdScript({ product, id }: { product: ProductSeoData; id: string }) {
+  const displayName = formatProductName(product.title, product.brandName);
+  const availability = product.availability?.toLowerCase().includes("out")
+    ? "https://schema.org/OutOfStock"
+    : "https://schema.org/InStock";
+  const itemCondition = product.condition?.toLowerCase().includes("refurb")
+    ? "https://schema.org/RefurbishedCondition"
+    : product.condition?.toLowerCase().includes("used")
+      ? "https://schema.org/UsedCondition"
+      : "https://schema.org/NewCondition";
+
+  const jsonLd: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: displayName,
+    description: product.description || undefined,
+    sku: product.sku || undefined,
+    image: product.images?.length
+      ? product.images
+      : product.thumbnail
+        ? [product.thumbnail]
+        : undefined,
+    url: `${SITE_URL}/product/${product.handle || id}`,
+    brand: product.brandName ? { "@type": "Brand", name: product.brandName } : undefined,
+    itemCondition,
+  };
+
+  if (product.price !== null && product.price !== undefined) {
+    jsonLd.offers = {
+      "@type": "Offer",
+      price: product.price.toFixed(2),
+      priceCurrency: (product.currency || "GBP").toUpperCase(),
+      availability,
+      url: `${SITE_URL}/product/${product.handle || id}`,
+    };
+  }
+
+  if (
+    product.averageRating !== null &&
+    product.averageRating !== undefined &&
+    product.reviewCount > 0
+  ) {
+    jsonLd.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: product.averageRating,
+      reviewCount: product.reviewCount,
+    };
+  }
+
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: safeJsonForScriptTag(jsonLd) }}
+    />
+  );
+}
+
+function ProductSeoContent({ product }: { product: ProductSeoData }) {
+  const displayName = formatProductName(product.title, product.brandName);
+  const priceLabel =
+    product.price !== null && product.price !== undefined
+      ? `${(product.currency || "GBP").toUpperCase()} ${product.price.toFixed(2)}`
+      : null;
+  const heroImage = product.thumbnail || product.images?.[0];
+  const headingText = product.brandName ? `${product.brandName} ${displayName}` : displayName;
+
+  return (
+    <div className="sr-only" aria-hidden="true">
+      <h1>{headingText}</h1>
+      {product.brandName && <p>Brand: {product.brandName}</p>}
+      {priceLabel && <p>Price: {priceLabel}</p>}
+      {product.availability && <p>Availability: {product.availability}</p>}
+      {product.sku && <p>SKU: {product.sku}</p>}
+      {product.description && <p>{product.description}</p>}
+      {heroImage && <img src={heroImage} alt={displayName} />}
+    </div>
+  );
 }
