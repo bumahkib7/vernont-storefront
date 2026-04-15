@@ -60,7 +60,7 @@ export default function SupportTicketsPage() {
 
     const fetchTickets = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/proxy/store/support/tickets`, {
+        const res = await fetch(`/api/proxy/store/support/tickets`, {
           credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to load tickets");

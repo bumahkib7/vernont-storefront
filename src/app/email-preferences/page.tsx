@@ -49,7 +49,7 @@ export default function EmailPreferencesPage() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/proxy/store/marketing/preferences/public/by-email?email=${encodeURIComponent(emailToLoad)}`
+        `/api/proxy/store/marketing/preferences/public/by-email?email=${encodeURIComponent(emailToLoad)}`
       );
 
       if (!res.ok) {
@@ -86,7 +86,7 @@ export default function EmailPreferencesPage() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/proxy/store/marketing/preferences/public/by-email`,
+        `/api/proxy/store/marketing/preferences/public/by-email`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -130,7 +130,7 @@ export default function EmailPreferencesPage() {
 
     try {
       const res = await fetch(
-        `${API_BASE}/api/proxy/store/marketing/preferences/public/by-email`,
+        `/api/proxy/store/marketing/preferences/public/by-email`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

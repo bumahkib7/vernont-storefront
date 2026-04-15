@@ -67,7 +67,7 @@ export default function TicketDetailPage() {
 
     const fetchTicket = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/proxy/store/support/tickets/${ticketId}`, {
+        const res = await fetch(`/api/proxy/store/support/tickets/${ticketId}`, {
           credentials: "include",
         });
         if (!res.ok) throw new Error("Failed to load ticket");
@@ -93,7 +93,7 @@ export default function TicketDetailPage() {
 
     setIsSending(true);
     try {
-      const res = await fetch(`${API_BASE}/api/proxy/store/support/tickets/${ticketId}/reply`, {
+      const res = await fetch(`/api/proxy/store/support/tickets/${ticketId}/reply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -110,7 +110,7 @@ export default function TicketDetailPage() {
         );
       } else {
         // Refetch the full ticket if response doesn't include the message
-        const refetch = await fetch(`${API_BASE}/api/proxy/store/support/tickets/${ticketId}`, {
+        const refetch = await fetch(`/api/proxy/store/support/tickets/${ticketId}`, {
           credentials: "include",
         });
         if (refetch.ok) {
@@ -133,7 +133,7 @@ export default function TicketDetailPage() {
     if (isClosing) return;
     setIsClosing(true);
     try {
-      const res = await fetch(`${API_BASE}/api/proxy/store/support/tickets/${ticketId}/reply`, {
+      const res = await fetch(`/api/proxy/store/support/tickets/${ticketId}/reply`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
