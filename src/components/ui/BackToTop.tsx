@@ -33,7 +33,7 @@ export function BackToTop() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 z-50 w-12 h-12 bg-gold text-primary rounded-full shadow-lg flex items-center justify-center hover:bg-gold/90 transition-colors"
+          className="fixed bottom-[150px] right-6 z-40 w-12 h-12 bg-gold text-primary rounded-full shadow-lg flex items-center justify-center hover:bg-gold/90 transition-colors"
           aria-label="Back to top"
         >
           <CaretUp className="h-5 w-5" />

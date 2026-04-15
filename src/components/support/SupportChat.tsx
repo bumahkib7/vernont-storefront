@@ -94,6 +94,11 @@ export function SupportChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Hide support chat for admin users - they should use the admin panel
+  const isAdminUser = user?.roles?.some((role: string) =>
+    ["ADMIN", "CUSTOMER_SERVICE", "DEVELOPER"].includes(role)
+  ) ?? false;
+
   const {
     messages,
     isConnected,
@@ -104,7 +109,7 @@ export function SupportChat() {
     startConversation,
     sendMessage,
     markRead,
-  } = useSupportChat(isAuthenticated ? user?.id ?? null : null);
+  } = useSupportChat(isAuthenticated && !isAdminUser ? user?.id ?? null : null);
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -167,10 +172,15 @@ export function SupportChat() {
     [input, isSending, conversationId, startConversation, sendMessage]
   );
 
+  // Hide support chat for admin users
+  if (isAdminUser) {
+    return null;
+  }
+
   // If not authenticated, render a simple link to contact page
   if (!isAuthenticated) {
     return (
-      <div className="fixed bottom-24 right-6 z-40">
+      <div className="fixed bottom-[86px] right-6 z-40">
         <Link
           href="/contact"
           className="flex items-center gap-2 px-5 py-3 bg-white border-2 border-neutral-200 rounded-full shadow-lg hover:shadow-xl hover:border-neutral-300 transition-all text-sm font-semibold text-neutral-800"
@@ -192,7 +202,7 @@ export function SupportChat() {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed bottom-24 right-6 z-40"
+            className="fixed bottom-[86px] right-6 z-40"
           >
             <button
               onClick={handleOpen}
@@ -222,7 +232,7 @@ export function SupportChat() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.96 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed bottom-24 right-6 z-40 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-neutral-200 flex flex-col overflow-hidden"
+            className="fixed bottom-[86px] right-6 z-40 w-[380px] max-w-[calc(100vw-2rem)] h-[520px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl border border-neutral-200 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-200 flex-shrink-0 bg-gradient-to-r from-neutral-50 to-white">
