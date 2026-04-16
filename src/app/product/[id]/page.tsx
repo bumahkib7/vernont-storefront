@@ -243,11 +243,15 @@ export default async function ProductPage({ params }: Props) {
     redirect(`/product/${product.handle}`);
   }
 
+  // Pass serverVerified so the client component shows a loading skeleton
+  // instead of "Product not found" while the client-side fetch is in flight.
+  // Without this, Google's renderer sees "Product not found" during JS
+  // hydration and flags the page as a Soft 404.
   return (
     <>
       {product && <ProductJsonLdScript product={product} id={id} />}
       {product && <ProductSeoContent product={product} />}
-      <ProductPageClient id={id} />
+      <ProductPageClient id={id} serverVerified={!!product} />
     </>
   );
 }

@@ -36,6 +36,7 @@ import { verticalConfig } from "@/config/vertical";
 
 interface ProductPageClientProps {
   id: string;
+  serverVerified?: boolean;
 }
 
 function ConditionBadge({ condition, conditionGrade }: { condition?: string; conditionGrade?: 'A' | 'B' | 'C' }) {
@@ -86,7 +87,7 @@ function AccordionSection({ title, children, defaultOpen = false }: { title: str
   );
 }
 
-export default function ProductPageClient({ id }: ProductPageClientProps) {
+export default function ProductPageClient({ id, serverVerified }: ProductPageClientProps) {
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
   const [isAdded, setIsAdded] = useState(false);
@@ -253,6 +254,25 @@ export default function ProductPageClient({ id }: ProductPageClientProps) {
   }
 
   if (error || !product) {
+    // When the server already confirmed the product exists (via SEO endpoint),
+    // show a loading state instead of "not found". This prevents Google's
+    // renderer from flagging the page as a Soft 404 during JS hydration.
+    if (serverVerified) {
+      return (
+        <PageLayout>
+          <div className="max-w-[1400px] mx-auto px-4 lg:px-8 py-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="aspect-square bg-[#F5F5F5] animate-pulse rounded-lg" />
+              <div className="space-y-4">
+                <div className="h-8 bg-[#F5F5F5] animate-pulse rounded w-3/4" />
+                <div className="h-6 bg-[#F5F5F5] animate-pulse rounded w-1/4" />
+                <div className="h-24 bg-[#F5F5F5] animate-pulse rounded" />
+              </div>
+            </div>
+          </div>
+        </PageLayout>
+      );
+    }
     return (
       <PageLayout>
         <div className="px-4 lg:px-6 py-32 text-center">
