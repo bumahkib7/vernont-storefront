@@ -179,15 +179,10 @@ gtag('consent', 'default', {
           id="google-merchant-widget"
           src="https://www.gstatic.com/shopping/merchant/merchantwidget.js"
           strategy="lazyOnload"
-          onLoad={() => {
-            if (typeof window !== 'undefined' && (window as any).merchantwidget) {
-              (window as any).merchantwidget.start({
-                merchant_id: 5747221266,
-                position: 'BOTTOM_RIGHT',
-              });
-            }
-          }}
         />
+        <Script id="google-merchant-widget-init" strategy="lazyOnload">
+          {`(function check(){if(window.merchantwidget){window.merchantwidget.start({merchant_id:5747221266,position:"BOTTOM_RIGHT"})}else{setTimeout(check,500)}})();`}
+        </Script>
         {/* Microsoft Clarity — session recordings and heatmaps */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
