@@ -174,6 +174,20 @@ gtag('consent', 'default', {
           vendorId="gtm"
           strategy="lazyOnload"
         />
+        {/* Google Customer Reviews — seller rating badge */}
+        <Script
+          id="google-merchant-widget"
+          src="https://www.gstatic.com/shopping/merchant/merchantwidget.js"
+          strategy="lazyOnload"
+          onLoad={() => {
+            if (typeof window !== 'undefined' && (window as any).merchantwidget) {
+              (window as any).merchantwidget.start({
+                merchant_id: 5747221266,
+                position: 'BOTTOM_RIGHT',
+              });
+            }
+          }}
+        />
         {/* Microsoft Clarity — session recordings and heatmaps */}
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){

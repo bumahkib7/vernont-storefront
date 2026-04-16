@@ -174,6 +174,34 @@ function ConfirmationContent() {
     initOrder();
   }, [router, searchParams]);
 
+  // Google Customer Reviews opt-in survey
+  useEffect(() => {
+    if (!order) return;
+    const script = document.createElement("script");
+    script.src = "https://apis.google.com/js/platform.js?onload=renderOptIn";
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    const estimatedDelivery = new Date();
+    estimatedDelivery.setDate(estimatedDelivery.getDate() + (order.estimatedDeliveryDays || 5));
+    const deliveryDate = estimatedDelivery.toISOString().split("T")[0];
+
+    (window as any).renderOptIn = () => {
+      (window as any).gapi?.load("surveyoptin", () => {
+        (window as any).gapi.surveyoptin.render({
+          merchant_id: 5747221266,
+          order_id: order.orderNumber,
+          email: order.email,
+          delivery_country: order.shipping?.country_code || "GB",
+          estimated_delivery_date: deliveryDate,
+        });
+      });
+    };
+
+    return () => { script.remove(); };
+  }, [order]);
+
   if (!order) {
     return (
       <PageLayout>
