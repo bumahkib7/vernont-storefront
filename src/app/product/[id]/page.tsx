@@ -120,8 +120,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const hasImage = Boolean(product.thumbnail || product.images?.[0]);
   const priceLooksBroken =
     product.price !== null && product.price !== undefined && product.price < 10;
-  const descriptionMissing = !product.description || product.description.trim().length < 40;
-  const autoNoindex = priceLooksBroken || !hasImage || descriptionMissing;
+  const hasDescription =
+    (product.description && product.description.trim().length >= 40) ||
+    (product.metaDescription && product.metaDescription.trim().length >= 40);
+  const autoNoindex = priceLooksBroken || !hasImage || !hasDescription;
 
   const robots = product.noindex || autoNoindex
     ? { index: false, follow: true, googleBot: { index: false, follow: true } }
