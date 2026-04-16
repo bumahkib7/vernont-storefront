@@ -34,6 +34,16 @@ interface ProductSeoData {
   ogTitle?: string | null;
   ogDescription?: string | null;
   ogImageUrl?: string | null;
+  // Product specifications — populated by AI enrichment pipeline.
+  specifications?: {
+    frame?: { material?: string; color?: string; shape?: string; style?: string; templeDesign?: string; hingeType?: string };
+    lens?: { color?: string; material?: string; technology?: string; uvProtection?: string; polarized?: boolean };
+    measurements?: { lensWidth?: number; bridgeWidth?: number; templeLength?: number; totalWidth?: number; lensHeight?: number };
+    fit?: { size?: string; fitType?: string; faceShapes?: string[]; nosepadType?: string };
+    model?: { styleCode?: string; modelCode?: string; colorCode?: string };
+    features?: string[];
+    includedItems?: string[];
+  } | null;
   // Non-null when the requested slug is an old handle that now redirects.
   redirectedFromHandle?: string | null;
 }
@@ -319,6 +329,35 @@ function ProductJsonLdScript({ product, id }: { product: ProductSeoData; id: str
       ratingValue: product.averageRating,
       reviewCount: product.reviewCount,
     };
+  }
+
+  // Structured specs as additionalProperty for Google rich results
+  const specs: Array<{ "@type": string; name: string; value: string }> = [];
+  const addSpec = (name: string, value: string | number | boolean | null | undefined) => {
+    if (value !== null && value !== undefined && String(value).trim()) {
+      specs.push({ "@type": "PropertyValue", name, value: String(value) });
+    }
+  };
+  // Frame
+  addSpec("Frame Material", product.specifications?.frame?.material);
+  addSpec("Frame Color", product.specifications?.frame?.color);
+  addSpec("Frame Shape", product.specifications?.frame?.shape);
+  addSpec("Frame Style", product.specifications?.frame?.style);
+  // Lens
+  addSpec("Lens Color", product.specifications?.lens?.color);
+  addSpec("Lens Technology", product.specifications?.lens?.technology);
+  addSpec("UV Protection", product.specifications?.lens?.uvProtection);
+  addSpec("Polarized", product.specifications?.lens?.polarized);
+  // Measurements
+  addSpec("Lens Width", product.specifications?.measurements?.lensWidth ? `${product.specifications.measurements.lensWidth}mm` : undefined);
+  addSpec("Bridge Width", product.specifications?.measurements?.bridgeWidth ? `${product.specifications.measurements.bridgeWidth}mm` : undefined);
+  addSpec("Temple Length", product.specifications?.measurements?.templeLength ? `${product.specifications.measurements.templeLength}mm` : undefined);
+  // Model
+  addSpec("Model Code", product.specifications?.model?.styleCode);
+  addSpec("Color Code", product.specifications?.model?.colorCode);
+
+  if (specs.length > 0) {
+    jsonLd.additionalProperty = specs;
   }
 
   return (
