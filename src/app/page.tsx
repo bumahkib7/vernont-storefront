@@ -1,40 +1,47 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { EnhancedProductCard } from "@/components/EnhancedProductCard";
-import { useProducts } from "@/lib/hooks";
 import { transformProducts } from "@/lib/transforms";
-import { CaretRight, ArrowRight } from "@/components/icons";
 import { RecentlyViewed } from "@/components/RecentlyViewed";
 import { BlogCard, type BlogCardPost } from "@/components/blog/BlogCard";
 import Image from "next/image";
 import Link from "next/link";
+import type { ProductsListResponse } from "@/lib/schemas";
 
-const API_BASE =
-  typeof window !== "undefined" && process.env.NODE_ENV === "production"
-    ? "/api/proxy"
-    : process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
-export default function Home() {
-  const { data: productsData, isLoading } = useProducts({ limit: 12 });
-  const displayProducts = productsData?.items ? transformProducts(productsData.items) : [];
+async function getProducts() {
+  try {
+    const res = await fetch(`${API_URL}/storefront/products?size=12`, {
+      next: { revalidate: 60 },
+    });
+    if (!res.ok) return [];
+    const data: ProductsListResponse = await res.json();
+    return transformProducts(data.items);
+  } catch {
+    return [];
+  }
+}
 
-  // Featured blog posts — fetched client-side, section hidden when empty
-  const [featuredPosts, setFeaturedPosts] = useState<BlogCardPost[]>([]);
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`${API_BASE}/store/blog/v2/posts/featured?limit=4`, { credentials: "include" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((data) => {
-        if (!cancelled && data?.posts) setFeaturedPosts(data.posts);
-      })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
-  
-  // Categorized slices
+async function getFeaturedPosts() {
+  try {
+    const res = await fetch(`${API_URL}/store/blog/v2/posts/featured?limit=4`, {
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return (data?.posts ?? []) as BlogCardPost[];
+  } catch {
+    return [];
+  }
+}
+
+export default async function Home() {
+  const [displayProducts, featuredPosts] = await Promise.all([
+    getProducts(),
+    getFeaturedPosts(),
+  ]);
+
   const miuMiuProducts = displayProducts.slice(0, 2);
   const bestSellers = displayProducts.slice(0, 4);
   const mauiJimProducts = displayProducts.slice(2, 6);
