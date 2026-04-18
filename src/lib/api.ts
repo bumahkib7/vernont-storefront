@@ -425,6 +425,7 @@ export const productsApi = {
     gender?: string;
     sortBy?: string;
     sortDirection?: string;
+    productType?: string;
     limit?: number;
     page?: number;
     currencyCode?: string;
@@ -446,6 +447,7 @@ export const productsApi = {
       if (params.gender) searchParams.append('gender', params.gender);
       if (params.sortBy) searchParams.append('sortBy', params.sortBy);
       if (params.sortDirection) searchParams.append('sortDirection', params.sortDirection);
+      if (params.productType) searchParams.append('productType', params.productType);
       if (params.limit) searchParams.append('size', String(params.limit));
       if (params.page) searchParams.append('page', String(params.page));
       if (params.currencyCode) searchParams.append('currencyCode', params.currencyCode);

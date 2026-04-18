@@ -193,6 +193,46 @@ export interface CollectionImagesConfig {
 }
 
 // ==================
+// SEO content (catalog page bottom sections)
+// ==================
+
+export interface SeoGuarantee {
+  icon: string; // icon name for dynamic rendering
+  title: string;
+  body: string;
+}
+
+export interface ProductStyleCard {
+  title: string;
+  body: string;
+}
+
+export interface SeoFaq {
+  q: string;
+  a: string;
+}
+
+export interface SeoContentConfig {
+  editorialIntro: {
+    label: string;
+    headline: string;
+    body: string;
+  };
+  guarantees: SeoGuarantee[];
+  featuredEditorial?: {
+    sectionLabel: string;
+    heading: string;
+    paragraphs: string[];
+  };
+  productStyles: {
+    sectionLabel: string;
+    heading: string;
+    items: ProductStyleCard[];
+  };
+  faqs: SeoFaq[];
+}
+
+// ==================
 // Root config
 // ==================
 
@@ -200,9 +240,11 @@ export interface VerticalConfig {
   id: string;
   label: string;
   catalogPath: string;
+  productType: string; // maps to backend SpecificationType, e.g. "EYEWEAR", "SHOES"
   product: ProductDomainConfig;
   content: ContentConfig;
-  guides: GuideConfig;
+  seoContent: SeoContentConfig;
+  guides?: GuideConfig; // optional — not all verticals have guides
   navigation: NavigationConfig;
   collectionImages: CollectionImagesConfig;
 }

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, ReactNode, useMemo } from "react";
 import { useCollections, useCategories, useBrands } from "@/lib/hooks";
-import { navigation, verticalConfig } from "@/config/vertical";
+import { navigation, verticalConfig, getAllVerticals } from "@/config/vertical";
 
 interface NavItem {
   label: string;
@@ -97,9 +97,10 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
 
   // Build main navigation
   const mainNav = useMemo((): NavItem[] => {
-    // Shop dropdown - combine categories and static items
+    // Shop dropdown — combine items from all registered verticals + gender categories
+    const allVerticals = getAllVerticals();
     const shopDropdownItems = [
-      ...STATIC_SHOP_ITEMS,
+      ...allVerticals.flatMap((v) => v.navigation.shopDropdownItems),
       ...genderCategories,
     ];
 
@@ -152,20 +153,24 @@ export function NavigationProvider({ children }: { children: ReactNode }) {
     ];
   }, [collections, genderCategories, topBrands]);
 
-  // Footer shop links — use real categories when available
+  // Footer shop links — include all verticals + real categories
   const footerShopLinks = useMemo(() => {
+    const allVerticals = getAllVerticals();
+    const verticalLinks = allVerticals.map((v) => ({
+      label: `All ${v.label}`,
+      href: v.catalogPath,
+    }));
     if (shopCategories.length > 0) {
       return [
-        { label: "All Eyewear", href: "/eyewear" },
+        ...verticalLinks,
         ...shopCategories.slice(0, 4).map((c) => ({
           label: c.label,
           href: c.href,
         })),
-        { label: "New Arrivals", href: "/eyewear?sort=newest" },
       ];
     }
     return [
-      ...navigation.footerShopLinks,
+      ...verticalLinks,
       ...genderCategories.slice(0, 3),
     ];
   }, [shopCategories, genderCategories]);

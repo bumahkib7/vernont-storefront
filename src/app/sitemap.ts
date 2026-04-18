@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { getAllVerticals } from "@/config/vertical";
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://vernont.com";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -7,7 +8,12 @@ export const revalidate = 300; // 5 min — short so sitemap updates propagate q
 
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
-  { url: "/eyewear", priority: 0.9, changeFrequency: "daily" as const },
+  // Vertical catalog pages (eyewear, shoes, bags, etc.) — auto-discovered from registry
+  ...getAllVerticals().map((v) => ({
+    url: v.catalogPath,
+    priority: 0.9,
+    changeFrequency: "daily" as const,
+  })),
   { url: "/new", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/pre-owned", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/gifts", priority: 0.8, changeFrequency: "weekly" as const },

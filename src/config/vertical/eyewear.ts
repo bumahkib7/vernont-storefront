@@ -9,10 +9,13 @@ import {
 import type { VerticalConfig } from "./types";
 import { DEFAULT_TRUST_BADGES, DEFAULT_SHIPPING_FEATURES } from "./_defaults";
 
+import { registerVertical } from "./registry";
+
 export const eyewearConfig: VerticalConfig = {
   id: "eyewear",
   label: "Eyewear",
   catalogPath: "/eyewear",
+  productType: "EYEWEAR",
 
   // ==================
   // Product domain
@@ -286,4 +289,54 @@ export const eyewearConfig: VerticalConfig = {
       "designer": "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80",
     },
   },
+
+  // ==================
+  // SEO content (catalog page bottom sections)
+  // ==================
+  seoContent: {
+    editorialIntro: {
+      label: "The Vernont Edit",
+      headline: "Designer sunglasses & luxury eyewear, curated",
+      body: "Every pair is hand-selected by our team of eyewear specialists. We source from authorised retailers and verified luxury channels, ensuring authenticity and quality on every frame that enters our collection.",
+    },
+    guarantees: [
+      { icon: "ShieldCheck", title: "100% Authentic", body: "Every pair verified and certified" },
+      { icon: "Eye", title: "Expert QA", body: "Inspected by our eyewear specialists" },
+      { icon: "ArrowCounterClockwise", title: "30-Day Returns", body: "Free UK returns, no questions" },
+      { icon: "Gift", title: "Premium Care Kit", body: "Case, cloth, and care card included" },
+      { icon: "Truck", title: "Free UK Shipping", body: "Next-day delivery available" },
+    ],
+    featuredEditorial: {
+      sectionLabel: "Featured",
+      heading: "Premium polarized sunglasses",
+      paragraphs: [
+        "Polarized lenses eliminate glare from reflective surfaces — water, roads, snow, glass. The result is sharper, more comfortable vision with true-to-life colour.",
+        "Every polarized pair in our collection offers full UV400 protection and meets EN ISO 12312-1 standards.",
+      ],
+    },
+    productStyles: {
+      sectionLabel: "Shop by style",
+      heading: "Frame styles for every face",
+      items: [
+        { title: "Aviator", body: "The original pilot shape — timeless and universally flattering" },
+        { title: "Cat-Eye", body: "Upswept feminine frames with vintage charm" },
+        { title: "Wayfarer", body: "Angular and iconic — the most popular sunglass shape" },
+        { title: "Round", body: "Retro circular frames with intellectual appeal" },
+        { title: "Oversized", body: "Statement-making frames with maximum coverage" },
+        { title: "Sport", body: "Performance wrap-around frames for active lifestyles" },
+        { title: "Square", body: "Bold geometric lines for a modern, structured look" },
+        { title: "Optical", body: "Prescription-ready frames for everyday wear" },
+      ],
+    },
+    faqs: [
+      { q: "Are all your sunglasses authentic designer products?", a: "Yes, 100%. We source all eyewear directly from authorized brand retailers and manufacturers. Every pair comes with authenticity certificates and original packaging." },
+      { q: "What does polarized mean, and do I need it?", a: "Polarized lenses have a special filter that blocks intense reflected light (glare) from horizontal surfaces. They're highly recommended for driving, water activities, and snow sports." },
+      { q: "Can I get prescription lenses in these frames?", a: "Many of our optical frames and select sunglass styles are prescription-ready. Look for \"Prescription Available\" tags on product pages, or contact our optometry team." },
+      { q: "Do your sunglasses provide UV protection?", a: "All our sunglasses offer 100% UVA and UVB protection as standard. UV protection is essential for long-term eye health." },
+      { q: "What's your return policy if the frames don't fit?", a: "We offer a 30-day money-back guarantee. Return your eyewear in its original condition for a full refund. Return shipping is free within the UK." },
+    ],
+  },
 };
+
+// Register with the vertical registry
+registerVertical(eyewearConfig);

@@ -1,10 +1,16 @@
 import { eyewearConfig } from "./eyewear";
+// Import new verticals so they self-register
+import "./shoes";
+import "./bags";
 
-// Active vertical — change this import to switch verticals
+// Active vertical — primary/default for root layout metadata
 export const verticalConfig = eyewearConfig;
 
-// Destructured re-exports for convenience
+// Destructured re-exports for convenience (backward compat)
 export const { product, content, guides, navigation, collectionImages } = verticalConfig;
+
+// Registry exports for multi-vertical pages
+export { getVertical, getAllVerticals, getVerticalByPath } from "./registry";
 
 // Re-export types
 export type {
@@ -30,6 +36,10 @@ export type {
   LensTypeData,
   FrameSizeData,
   FrameMaterialData,
+  SeoContentConfig,
+  SeoGuarantee,
+  SeoFaq,
+  ProductStyleCard,
 } from "./types";
 
 // Re-export defaults for pages that need store-wide (non-vertical) links

@@ -1,7 +1,9 @@
 "use client";
 
 import { PageLayout } from "@/components/layout/PageLayout";
-import { guides, verticalConfig } from "@/config/vertical";
+import { guides as _guides, verticalConfig } from "@/config/vertical";
+
+const guides = _guides!;
 import { motion } from "framer-motion";
 
 export default function SizeGuidePage() {
