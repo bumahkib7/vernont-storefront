@@ -344,7 +344,7 @@ function CatalogPageContent({ config }: { config: VerticalConfig }) {
   }, [searchParams, quickFilter, selectedCategories, selectedBrands, selectedPriceRange, selectedSizes, sortBy, page]);
 
   const { data: productsData, isLoading, error } = useProducts(apiParams);
-  const { data: brandsData } = useBrands();
+  const { data: brandsData } = useBrands({ productType: config.productType });
 
   // Also fetch unfiltered data for filter options (categories, brands, price range)
   const { data: unfilteredData } = useProducts({ limit: 1 });

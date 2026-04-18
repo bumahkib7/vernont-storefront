@@ -576,7 +576,7 @@ export const collectionsApi = {
 // BRANDS API
 // ==================
 export const brandsApi = {
-  async list(params?: { q?: string; tier?: string; limit?: number; offset?: number }): Promise<BrandsListResponse> {
+  async list(params?: { q?: string; tier?: string; productType?: string; limit?: number; offset?: number }): Promise<BrandsListResponse> {
     const searchParams = new URLSearchParams();
     if (params) {
       Object.entries(params).forEach(([key, value]) => {

@@ -253,6 +253,7 @@ export const StoreBrandSchema = z.object({
   website_url: z.string().nullable().optional(),
   tier: z.string(),
   product_count: z.number().default(0),
+  product_types: z.array(z.string()).default([]),
 });
 
 export type StoreBrand = z.infer<typeof StoreBrandSchema>;
