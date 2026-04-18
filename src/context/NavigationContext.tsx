@@ -34,8 +34,8 @@ const NavigationContext = createContext<NavigationContextType | undefined>(undef
 const STATIC_SHOP_ITEMS = navigation.shopDropdownItems;
 
 export function NavigationProvider({ children }: { children: ReactNode }) {
-  const { data: collectionsData, isLoading: collectionsLoading, error: collectionsError } = useCollections();
-  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = useCategories();
+  const { data: collectionsData, isLoading: collectionsLoading, error: collectionsError } = useCollections(undefined);
+  const { data: categoriesData, isLoading: categoriesLoading, error: categoriesError } = useCategories(undefined);
   const { data: brandsData, isLoading: brandsLoading, error: brandsError } = useBrands();
 
   const isLoading = collectionsLoading || categoriesLoading || brandsLoading;

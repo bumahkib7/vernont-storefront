@@ -532,8 +532,11 @@ export const productsApi = {
 // COLLECTIONS API
 // ==================
 export const collectionsApi = {
-  async list(): Promise<CollectionsListResponse> {
-    return apiRequest('/store/collections', {}, CollectionsListResponseSchema);
+  async list(params?: { productType?: string }): Promise<CollectionsListResponse> {
+    const searchParams = new URLSearchParams();
+    if (params?.productType) searchParams.append('productType', params.productType);
+    const query = searchParams.toString();
+    return apiRequest(`/store/collections${query ? `?${query}` : ''}`, {}, CollectionsListResponseSchema);
   },
 
   async getByHandle(handle: string): Promise<{ collection: ProductCollection }> {
@@ -600,8 +603,11 @@ export const brandsApi = {
 // CATEGORIES API
 // ==================
 export const categoriesApi = {
-  async list(): Promise<CategoriesListResponse> {
-    return apiRequest('/store/product-categories', {}, CategoriesListResponseSchema);
+  async list(params?: { productType?: string }): Promise<CategoriesListResponse> {
+    const searchParams = new URLSearchParams();
+    if (params?.productType) searchParams.append('productType', params.productType);
+    const query = searchParams.toString();
+    return apiRequest(`/store/product-categories${query ? `?${query}` : ''}`, {}, CategoriesListResponseSchema);
   },
 
   async getByHandle(handle: string): Promise<{ product_category: ProductCategory }> {

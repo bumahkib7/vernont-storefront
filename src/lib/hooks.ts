@@ -89,7 +89,8 @@ export const queryKeys = {
   // Collections
   collections: {
     all: ['collections'] as const,
-    list: () => [...queryKeys.collections.all, 'list'] as const,
+    list: (params?: Parameters<typeof collectionsApi.list>[0]) =>
+      [...queryKeys.collections.all, 'list', params] as const,
     byHandle: (handle: string) =>
       [...queryKeys.collections.all, 'handle', handle] as const,
     products: (handle: string, params?: Parameters<typeof collectionsApi.getProducts>[1]) =>
@@ -99,7 +100,8 @@ export const queryKeys = {
   // Categories
   categories: {
     all: ['categories'] as const,
-    list: () => [...queryKeys.categories.all, 'list'] as const,
+    list: (params?: Parameters<typeof categoriesApi.list>[0]) =>
+      [...queryKeys.categories.all, 'list', params] as const,
     products: (handle: string, params?: Parameters<typeof categoriesApi.getProducts>[1]) =>
       [...queryKeys.categories.all, 'products', handle, params] as const,
   },
@@ -282,11 +284,12 @@ export function useProductSearch(
  * Fetch all collections
  */
 export function useCollections(
+  params?: Parameters<typeof collectionsApi.list>[0],
   options?: Omit<UseQueryOptions<CollectionsListResponse>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
-    queryKey: queryKeys.collections.list(),
-    queryFn: () => collectionsApi.list(),
+    queryKey: queryKeys.collections.list(params),
+    queryFn: () => collectionsApi.list(params),
     ...options,
   });
 }
@@ -330,11 +333,12 @@ export function useCollectionProducts(
  * Fetch all categories
  */
 export function useCategories(
+  params?: Parameters<typeof categoriesApi.list>[0],
   options?: Omit<UseQueryOptions<CategoriesListResponse>, 'queryKey' | 'queryFn'>
 ) {
   return useQuery({
-    queryKey: queryKeys.categories.list(),
-    queryFn: () => categoriesApi.list(),
+    queryKey: queryKeys.categories.list(params),
+    queryFn: () => categoriesApi.list(params),
     ...options,
   });
 }

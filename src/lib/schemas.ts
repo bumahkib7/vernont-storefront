@@ -209,6 +209,7 @@ export const StoreCollectionSchema = z.object({
   handle: z.string(),
   description: z.string().nullable().optional(),
   thumbnail: z.string().nullable().optional(),
+  product_types: z.array(z.string()).default([]),
   created_at: z.string(),
   updated_at: z.string(),
 });
@@ -286,6 +287,7 @@ export const StoreCategorySchema = z.object({
   is_active: z.boolean().optional(),
   parent_category_id: z.string().nullable().optional(),
   product_count: z.number().optional(),
+  product_types: z.array(z.string()).default([]),
   rank: z.number().default(0),
   created_at: z.string(),
   updated_at: z.string(),
