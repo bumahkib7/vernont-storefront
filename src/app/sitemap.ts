@@ -8,12 +8,14 @@ export const revalidate = 300; // 5 min — short so sitemap updates propagate q
 
 const staticPages = [
   { url: "/", priority: 1.0, changeFrequency: "daily" as const },
-  // Vertical catalog pages (eyewear, shoes, bags, etc.) — auto-discovered from registry
-  ...getAllVerticals().map((v) => ({
-    url: v.catalogPath,
-    priority: 0.9,
-    changeFrequency: "daily" as const,
-  })),
+  // Vertical catalog pages + sub-pages (eyewear, shoes, bags, etc.) — auto-discovered from registry
+  ...getAllVerticals().flatMap((v) => [
+    { url: v.catalogPath, priority: 0.9, changeFrequency: "daily" as const },
+    { url: `${v.catalogPath}/collections`, priority: 0.7, changeFrequency: "weekly" as const },
+    { url: `${v.catalogPath}/brands`, priority: 0.7, changeFrequency: "weekly" as const },
+    { url: `${v.catalogPath}/blog`, priority: 0.7, changeFrequency: "weekly" as const },
+    { url: `${v.catalogPath}/new`, priority: 0.8, changeFrequency: "daily" as const },
+  ]),
   { url: "/new", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/pre-owned", priority: 0.9, changeFrequency: "daily" as const },
   { url: "/gifts", priority: 0.8, changeFrequency: "weekly" as const },
