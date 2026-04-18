@@ -664,6 +664,7 @@ export const tagsApi = {
     limit?: number;
     order?: string;
     q?: string;
+    productType?: string;
   }): Promise<TagsListResponse> {
     const searchParams = new URLSearchParams();
     if (params) {

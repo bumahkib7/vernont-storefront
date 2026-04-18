@@ -315,6 +315,7 @@ export type ProductCategory = StoreCategory;
 export const ProductTagSchema = z.object({
   id: z.string(),
   value: z.string(),
+  product_types: z.array(z.string()).default([]),
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
 });
