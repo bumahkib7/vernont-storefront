@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { MagnifyingGlass, Heart, List, X, CaretLeft, CaretRight, User, SpinnerGap, ShoppingBag } from "@/components/icons";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
@@ -13,10 +13,11 @@ import { useStoreBranding } from "@/context/StoreConfigContext";
 import { useNavigation } from "@/context/NavigationContext";
 import { useBrands } from "@/lib/hooks";
 import { productsApi, type Product } from "@/lib/api";
-import { product as productConfig } from "@/config/vertical";
+import { product as productConfig, getVerticalByPath } from "@/config/vertical";
 
 export function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
@@ -33,9 +34,18 @@ export function Header() {
   const { storeName } = useStoreBranding();
   const { mainNav } = useNavigation();
 
+  // Detect current vertical from pathname to filter brands
+  const currentVertical = getVerticalByPath(pathname);
+  const currentProductType = currentVertical?.productType;
+  const currentCatalogPath = currentVertical?.catalogPath || "/eyewear";
+
   // Brand strip — fetch from backend, show only brands that actually have products.
+  // Filter by current vertical's product type (e.g., SHOES on /shoes page, EYEWEAR on /eyewear page)
   // Cached by React Query (see useBrands); stale-while-revalidate keeps it cheap across page nav.
-  const { data: brandsData } = useBrands({ limit: 20 }, { staleTime: 5 * 60 * 1000 });
+  const { data: brandsData } = useBrands(
+    { limit: 20, productType: currentProductType },
+    { staleTime: 5 * 60 * 1000 }
+  );
   const brandStripItems = (brandsData?.brands ?? [])
     .filter((b) => b.product_count > 0)
     .sort((a, b) => b.product_count - a.product_count)
@@ -278,7 +288,7 @@ export function Header() {
                 {brandStripItems.map((brand) => (
                    <Link
                       key={brand.id}
-                      href={`/eyewear?brand=${encodeURIComponent(brand.slug)}`}
+                      href={`${currentCatalogPath}?brand=${encodeURIComponent(brand.slug)}`}
                       className="text-white text-sm lg:text-[15px] font-bold tracking-widest uppercase hover:opacity-70 transition-opacity"
                    >
                       {brand.name}
